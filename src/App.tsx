@@ -1,12 +1,14 @@
 import React from 'react';
-import './App.css';
+import styles from './App.module.css';
+import Mandalart from './components/mandalart/Mandalart';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
+    <div className={styles.app}>
       <p>Mandalart</p>
+      <Mandalart />
     </div>
   );
-}
+};
 
 export default App;
