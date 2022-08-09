@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { TABLE_SIZE, TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../const';
 import Table from '../table/Table';
 import TopicTable from '../topicTable/TopicTable';
 import styles from './Mandalart.module.css';
 
 const STORAGE_KEY_TOPIC_TREE = 'topicTree';
+const TABLE_ROW_SIZE = 3;
+const TABLE_COL_SIZE = 3;
+const TABLE_SIZE = TABLE_ROW_SIZE * TABLE_COL_SIZE;
 const CENTRAL_IDX = 4;
 
 type TopicNode = {
@@ -85,6 +87,8 @@ const Mandalart = () => {
               <TopicTable
                 key={tableIdx}
                 topics={ToTopics(tableIdx)}
+                rowSize={TABLE_ROW_SIZE}
+                colSize={TABLE_COL_SIZE}
                 onChange={(ev, tableItemIdx) =>
                   handleChange(ev, tableIdx, tableItemIdx)
                 }

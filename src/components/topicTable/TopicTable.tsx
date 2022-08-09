@@ -1,20 +1,26 @@
-import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../const';
 import Table from '../table/Table';
 import TopicInput from '../topicInput/TopicInput';
 import styles from './TopicTable.module.css';
 
 type TopicTableProps = {
   topics: string[];
+  rowSize: number;
+  colSize: number;
   onChange: (ev: React.ChangeEvent<HTMLInputElement>, idx: number) => void;
 };
 
-const TopicTable = ({ topics, onChange }: TopicTableProps) => {
+const TopicTable = ({
+  topics,
+  rowSize,
+  colSize,
+  onChange,
+}: TopicTableProps) => {
   return (
     <div className={styles.topicTable}>
       {
         <Table
-          rowSize={TABLE_ROW_SIZE}
-          colSize={TABLE_COL_SIZE}
+          rowSize={rowSize}
+          colSize={colSize}
           itemGenerator={(idx) => {
             return (
               <TopicInput
