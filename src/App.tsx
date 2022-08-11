@@ -5,7 +5,6 @@ import Mandalart from './components/mandalart/Mandalart';
 const App = () => {
   return (
     <div className={styles.app}>
-      <p>Mandalart</p>
       <Mandalart />
     </div>
   );

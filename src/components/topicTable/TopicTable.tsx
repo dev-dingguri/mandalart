@@ -1,6 +1,5 @@
 import Table from '../table/Table';
 import TopicInput from '../topicInput/TopicInput';
-import styles from './TopicTable.module.css';
 
 type TopicTableProps = {
   topics: string[];
@@ -16,23 +15,19 @@ const TopicTable = ({
   onChange,
 }: TopicTableProps) => {
   return (
-    <div className={styles.topicTable}>
-      {
-        <Table
-          rowSize={rowSize}
-          colSize={colSize}
-          itemGenerator={(idx) => {
-            return (
-              <TopicInput
-                key={idx}
-                topic={topics[idx]}
-                onChange={(ev) => onChange(ev, idx)}
-              />
-            );
-          }}
-        ></Table>
-      }
-    </div>
+    <Table
+      rowSize={rowSize}
+      colSize={colSize}
+      itemGenerator={(idx) => {
+        return (
+          <TopicInput
+            key={idx}
+            topic={topics[idx]}
+            onChange={(ev) => onChange(ev, idx)}
+          />
+        );
+      }}
+    ></Table>
   );
 };
 

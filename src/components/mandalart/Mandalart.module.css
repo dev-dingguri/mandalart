@@ -1,5 +1,7 @@
 .mandalart {
-  width: 90vw;
-  height: 90vw;
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
