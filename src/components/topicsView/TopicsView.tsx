@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PartTopicTables from '../partTopicTables/PartTopicTables';
 import TopicTables from '../topicTables/TopicTables';
 import styles from './TopicsView.module.css';
 
@@ -43,7 +44,11 @@ const initialTopicTree = (): TopicNode => {
       };
 };
 
-const TopicsView = () => {
+type TopicsViewProps = {
+  isViewAll: boolean;
+};
+
+const TopicsView = ({ isViewAll }: TopicsViewProps) => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
 
   const handleChange = (
@@ -77,12 +82,28 @@ const TopicsView = () => {
 
   return (
     <section className={styles.topicsView}>
-      <TopicTables
-        rowSize={TABLE_ROW_SIZE}
-        colSize={TABLE_COL_SIZE}
-        getTopics={getTopics}
-        onChange={handleChange}
-      />
+      {isViewAll ? (
+        <TopicTables
+          rowSize={TABLE_ROW_SIZE}
+          colSize={TABLE_COL_SIZE}
+          getTopics={getTopics}
+          onChange={handleChange}
+          onClick={(tableIdx, tableItemIdx) => {
+            console.log(`${tableIdx}, ${tableItemIdx}`);
+          }}
+        />
+      ) : (
+        <PartTopicTables
+          rowSize={TABLE_ROW_SIZE}
+          colSize={TABLE_COL_SIZE}
+          getTopics={getTopics}
+          onChange={handleChange}
+          initialFocusedTableIdx={CENTRAL_IDX}
+          onClick={(tableIdx, tableItemIdx) => {
+            console.log(`${tableIdx}, ${tableItemIdx}`);
+          }}
+        />
+      )}
     </section>
   );
 };

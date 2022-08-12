@@ -5,3 +5,8 @@
   width: 100%;
   height: 100%;
 }
+
+.viewTypeButton {
+  width: 10em;
+  height: 2em;
+}

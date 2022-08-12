@@ -1,8 +1,8 @@
 import React from 'react';
 import Table from '../table/Table';
-import TopicTable from '../topicTable/TopicTable';
+import TopicTable, { TopicTableViewType } from '../topicTable/TopicTable';
 
-type TopicTablesProps = {
+export type TopicTablesProps = {
   rowSize: number;
   colSize: number;
   getTopics: (tableIdx: number) => string[];
@@ -11,6 +11,8 @@ type TopicTablesProps = {
     tableIdx: number,
     tableItemIdx: number
   ) => void;
+  onClick: (tableIdx: number, tableItemIdx: number) => void;
+  focusedTableIdx?: number;
 };
 
 const TopicTables = ({
@@ -18,7 +20,16 @@ const TopicTables = ({
   colSize,
   getTopics,
   onChange,
+  onClick,
+  focusedTableIdx,
 }: TopicTablesProps) => {
+  const getViewType = (tableIdx: number): TopicTableViewType => {
+    if (focusedTableIdx === undefined) {
+      return 'normal';
+    }
+    return focusedTableIdx === tableIdx ? 'focus' : 'blur';
+  };
+
   return (
     <Table
       rowSize={rowSize}
@@ -30,9 +41,11 @@ const TopicTables = ({
             topics={getTopics(tableIdx)}
             rowSize={rowSize}
             colSize={colSize}
+            viewType={getViewType(tableIdx)}
             onChange={(ev, tableItemIdx) =>
               onChange(ev, tableIdx, tableItemIdx)
             }
+            onClick={(tableItemIdx) => onClick(tableIdx, tableItemIdx)}
           />
         );
       }}

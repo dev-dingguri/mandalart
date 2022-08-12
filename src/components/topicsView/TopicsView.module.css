@@ -1,5 +1,7 @@
 .topicsView {
   width: 80vmin;
   height: 80vmin;
-  /* overflow: hidden; */
+  min-width: 35em;
+  min-height: 35em;
+  overflow: hidden;
 }
