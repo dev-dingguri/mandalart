@@ -34,21 +34,17 @@ const TopicTables = ({
     <Table
       rowSize={rowSize}
       colSize={colSize}
-      itemGenerator={(tableIdx) => {
-        return (
-          <TopicTable
-            key={tableIdx}
-            topics={getTopics(tableIdx)}
-            rowSize={rowSize}
-            colSize={colSize}
-            viewType={getViewType(tableIdx)}
-            onChange={(ev, tableItemIdx) =>
-              onChange(ev, tableIdx, tableItemIdx)
-            }
-            onClick={(tableItemIdx) => onClick(tableIdx, tableItemIdx)}
-          />
-        );
-      }}
+      itemGenerator={(tableIdx) => (
+        <TopicTable
+          key={tableIdx}
+          topics={getTopics(tableIdx)}
+          rowSize={rowSize}
+          colSize={colSize}
+          viewType={getViewType(tableIdx)}
+          onChange={(ev, tableItemIdx) => onChange(ev, tableIdx, tableItemIdx)}
+          onClick={(tableItemIdx) => onClick(tableIdx, tableItemIdx)}
+        />
+      )}
     ></Table>
   );
 };

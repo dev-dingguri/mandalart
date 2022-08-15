@@ -7,7 +7,7 @@ const STORAGE_KEY_TOPIC_TREE = 'topicTree';
 const TABLE_ROW_SIZE = 3;
 const TABLE_COL_SIZE = 3;
 const TABLE_SIZE = TABLE_ROW_SIZE * TABLE_COL_SIZE;
-const CENTRAL_IDX = 4;
+const CENTER_IDX = 4;
 
 type TopicNode = {
   text: string;
@@ -19,12 +19,12 @@ const deepCopy = (node: TopicNode): TopicNode => {
   return JSON.parse(JSON.stringify(node));
 };
 
-const isCentral = (tableIdx: number) => {
-  return tableIdx === CENTRAL_IDX;
+const isCenter = (tableIdx: number) => {
+  return tableIdx === CENTER_IDX;
 };
 
 const toTopicNodeChildrenIdx = (tableIdx: number) => {
-  return tableIdx > CENTRAL_IDX ? tableIdx - 1 : tableIdx;
+  return tableIdx > CENTER_IDX ? tableIdx - 1 : tableIdx;
 };
 
 const initialTopicTree = (): TopicNode => {
@@ -33,14 +33,13 @@ const initialTopicTree = (): TopicNode => {
     ? JSON.parse(saved)
     : {
         text: '',
-        children: Array.from({ length: TABLE_SIZE - 1 }, () => {
-          return {
+        children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
+          text: '',
+          children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
             text: '',
-            children: Array.from({ length: TABLE_SIZE - 1 }, () => {
-              return { text: '', children: [] };
-            }),
-          };
-        }),
+            children: [],
+          })),
+        })),
       };
 };
 
@@ -57,10 +56,10 @@ const TopicsView = ({ isViewAll }: TopicsViewProps) => {
     tableItemIdx: number
   ) => {
     const newTopicTree = deepCopy(topicTree);
-    let topicNode = isCentral(tableIdx)
+    let topicNode = isCenter(tableIdx)
       ? newTopicTree
       : newTopicTree.children[toTopicNodeChildrenIdx(tableIdx)];
-    topicNode = isCentral(tableItemIdx)
+    topicNode = isCenter(tableItemIdx)
       ? topicNode
       : topicNode.children[toTopicNodeChildrenIdx(tableItemIdx)];
     topicNode.text = ev.target.value;
@@ -68,11 +67,11 @@ const TopicsView = ({ isViewAll }: TopicsViewProps) => {
   };
 
   const getTopics = (tableIdx: number) => {
-    const topicNode = isCentral(tableIdx)
+    const topicNode = isCenter(tableIdx)
       ? topicTree
       : topicTree.children[toTopicNodeChildrenIdx(tableIdx)];
     const topics = topicNode.children.map((node) => node.text);
-    topics.splice(CENTRAL_IDX, 0, topicNode.text);
+    topics.splice(CENTER_IDX, 0, topicNode.text);
     return topics;
   };
 
@@ -98,7 +97,7 @@ const TopicsView = ({ isViewAll }: TopicsViewProps) => {
           colSize={TABLE_COL_SIZE}
           getTopics={getTopics}
           onChange={handleChange}
-          initialFocusedTableIdx={CENTRAL_IDX}
+          initialFocusedTableIdx={CENTER_IDX}
           onClick={(tableIdx, tableItemIdx) => {
             console.log(`${tableIdx}, ${tableItemIdx}`);
           }}

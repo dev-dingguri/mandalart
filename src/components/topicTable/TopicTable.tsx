@@ -57,16 +57,14 @@ const TopicTable = ({
       <Table
         rowSize={rowSize}
         colSize={colSize}
-        itemGenerator={(idx) => {
-          return (
-            <TopicInput
-              key={idx}
-              topic={topics[idx]}
-              onChange={(ev) => onChange(ev, idx)}
-              onClick={() => onClick(idx)}
-            />
-          );
-        }}
+        itemGenerator={(idx) => (
+          <TopicInput
+            key={idx}
+            topic={topics[idx]}
+            onChange={(ev) => onChange(ev, idx)}
+            onClick={() => onClick(idx)}
+          />
+        )}
       ></Table>
     </div>
   );

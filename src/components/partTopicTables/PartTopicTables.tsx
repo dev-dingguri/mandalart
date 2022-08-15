@@ -26,8 +26,8 @@ const PartTopicTables = ({
     <div className={styles.partTopicTables}>
       <TopicTables
         {...props}
-        focusedTableIdx={focusedTableIdx}
         onClick={handleClick}
+        focusedTableIdx={focusedTableIdx}
       />
     </div>
   );
