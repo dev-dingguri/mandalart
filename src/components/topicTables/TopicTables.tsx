@@ -1,11 +1,12 @@
 import React from 'react';
 import Table from '../table/Table';
 import TopicTable, { TopicTableViewType } from '../topicTable/TopicTable';
+import { TopicNode } from '../../type/TopicNode';
 
 export type TopicTablesProps = {
   rowSize: number;
   colSize: number;
-  getTopics: (tableIdx: number) => string[];
+  getTopicNode: (tableIdx: number, tableItemIdx: number) => TopicNode;
   onChange: (
     ev: React.ChangeEvent<HTMLInputElement>,
     tableIdx: number,
@@ -18,7 +19,7 @@ export type TopicTablesProps = {
 const TopicTables = ({
   rowSize,
   colSize,
-  getTopics,
+  getTopicNode,
   onChange,
   onClick,
   focusedTableIdx,
@@ -37,7 +38,7 @@ const TopicTables = ({
       itemGenerator={(tableIdx) => (
         <TopicTable
           key={tableIdx}
-          topics={getTopics(tableIdx)}
+          getTopicNode={(tableItemIdx) => getTopicNode(tableIdx, tableItemIdx)}
           rowSize={rowSize}
           colSize={colSize}
           viewType={getViewType(tableIdx)}

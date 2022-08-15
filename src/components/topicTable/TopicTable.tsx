@@ -1,15 +1,16 @@
 import { useEffect, useRef } from 'react';
 import Table from '../table/Table';
 import TopicInput from '../topicInput/TopicInput';
+import { TopicNode } from '../../type/TopicNode';
 import styles from './TopicTable.module.css';
 
 export type TopicTableViewType = 'normal' | 'focus' | 'blur';
 
 type TopicTableProps = {
-  topics: string[];
   rowSize: number;
   colSize: number;
   viewType: TopicTableViewType;
+  getTopicNode: (idx: number) => TopicNode;
   onChange: (ev: React.ChangeEvent<HTMLInputElement>, idx: number) => void;
   onClick: (idx: number) => void;
 };
@@ -28,10 +29,10 @@ const getClassName = (viewType: TopicTableViewType) => {
 };
 
 const TopicTable = ({
-  topics,
   rowSize,
   colSize,
   viewType,
+  getTopicNode,
   onChange,
   onClick,
 }: TopicTableProps) => {
@@ -60,7 +61,7 @@ const TopicTable = ({
         itemGenerator={(idx) => (
           <TopicInput
             key={idx}
-            topic={topics[idx]}
+            topic={getTopicNode(idx).text}
             onChange={(ev) => onChange(ev, idx)}
             onClick={() => onClick(idx)}
           />
