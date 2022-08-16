@@ -6,6 +6,7 @@ import { TopicNode } from '../../type/TopicNode';
 export type TopicTablesProps = {
   rowSize: number;
   colSize: number;
+  focusedTableIdx?: number;
   getTopicNode: (tableIdx: number, tableItemIdx: number) => TopicNode;
   onChange: (
     ev: React.ChangeEvent<HTMLInputElement>,
@@ -13,16 +14,15 @@ export type TopicTablesProps = {
     tableItemIdx: number
   ) => void;
   onClick: (tableIdx: number, tableItemIdx: number) => void;
-  focusedTableIdx?: number;
 };
 
 const TopicTables = ({
   rowSize,
   colSize,
+  focusedTableIdx,
   getTopicNode,
   onChange,
   onClick,
-  focusedTableIdx,
 }: TopicTablesProps) => {
   const getViewType = (tableIdx: number): TopicTableViewType => {
     if (focusedTableIdx === undefined) {

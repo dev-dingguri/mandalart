@@ -37,17 +37,17 @@ const TopicTable = ({
   onClick,
 }: TopicTableProps) => {
   const topicTableRef = useRef<HTMLDivElement>(null);
-  const loaded = useRef(false);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
     if (viewType === 'focus' && topicTableRef.current) {
       topicTableRef.current.scrollIntoView({
-        behavior: loaded.current ? 'smooth' : 'auto',
+        behavior: loadedRef.current ? 'smooth' : 'auto',
         block: 'center',
         inline: 'center',
       });
     }
-    loaded.current = true;
+    loadedRef.current = true;
   }, [viewType]);
 
   return (
