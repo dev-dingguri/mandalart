@@ -15,10 +15,11 @@ const TABLE_SIZE = TABLE_ROW_SIZE * TABLE_COL_SIZE;
 const CENTER_IDX = 4;
 
 const getTopicNode = (
-  node: TopicNode,
+  topicTree: TopicNode,
   tableIdx: number,
   tableItemIdx: number
 ) => {
+  let node = topicTree;
   const idxs = [tableIdx, tableItemIdx];
   idxs.forEach((idx) => {
     node =
@@ -26,6 +27,9 @@ const getTopicNode = (
         ? node
         : node.children[idx < CENTER_IDX ? idx : idx - 1];
   });
+  if (!node) {
+    throw new Error('cannot get node');
+  }
   return node;
 };
 
