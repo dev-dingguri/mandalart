@@ -9,7 +9,7 @@ export type TopicTableViewType = 'normal' | 'focus' | 'blur';
 type TopicTableProps = {
   rowSize: number;
   colSize: number;
-  viewType: TopicTableViewType;
+  viewType?: TopicTableViewType;
   getTopicNode: (idx: number) => TopicNode;
   onChange: (ev: React.ChangeEvent<HTMLInputElement>, idx: number) => void;
   onClick: (idx: number) => void;
@@ -31,7 +31,7 @@ const getClassName = (viewType: TopicTableViewType) => {
 const TopicTable = ({
   rowSize,
   colSize,
-  viewType,
+  viewType = 'normal',
   getTopicNode,
   onChange,
   onClick,
@@ -69,10 +69,6 @@ const TopicTable = ({
       ></Table>
     </div>
   );
-};
-
-TopicTable.defaultProps = {
-  viewType: 'normal',
 };
 
 export default TopicTable;
