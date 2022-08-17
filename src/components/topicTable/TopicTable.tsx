@@ -11,7 +11,6 @@ type TopicTableProps = {
   colSize: number;
   viewType?: TopicTableViewType;
   getTopicNode: (idx: number) => TopicNode;
-  onChange: (ev: React.ChangeEvent<HTMLInputElement>, idx: number) => void;
   onClick: (idx: number) => void;
 };
 
@@ -33,7 +32,6 @@ const TopicTable = ({
   colSize,
   viewType = 'normal',
   getTopicNode,
-  onChange,
   onClick,
 }: TopicTableProps) => {
   const topicTableRef = useRef<HTMLDivElement>(null);
@@ -62,7 +60,6 @@ const TopicTable = ({
           <TopicInput
             key={idx}
             topic={getTopicNode(idx).text}
-            onChange={(ev) => onChange(ev, idx)}
             onClick={() => onClick(idx)}
           />
         )}

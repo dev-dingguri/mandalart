@@ -1,0 +1,18 @@
+.dialog {
+  width: 20em;
+  height: 10em;
+}
+
+.dialogContents {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 0.5em;
+}
+
+.button {
+  width: 100%;
+}
