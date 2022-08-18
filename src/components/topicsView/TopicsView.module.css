@@ -1,7 +1,14 @@
 .topicsView {
   width: 80vmin;
   height: 80vmin;
-  min-width: 35em;
-  min-height: 35em;
+  min-width: 40em;
+  min-height: 40em;
   overflow: hidden;
+}
+
+@media screen and (max-width: 767px) {
+  .topicsView {
+    min-width: 80vw;
+    min-height: 80vw;
+  }
 }
