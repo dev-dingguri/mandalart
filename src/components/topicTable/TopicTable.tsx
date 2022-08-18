@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import Table from '../table/Table';
-import TopicInput from '../topicInput/TopicInput';
+import TopicItem from '../topicItem/TopicItem';
 import { TopicNode } from '../../type/TopicNode';
 import styles from './TopicTable.module.css';
 
@@ -57,7 +57,7 @@ const TopicTable = ({
         rowSize={rowSize}
         colSize={colSize}
         itemGenerator={(idx) => (
-          <TopicInput
+          <TopicItem
             key={idx}
             topic={getTopicNode(idx).text}
             onClick={() => onClick(idx)}
