@@ -1,0 +1,12 @@
+.dialog {
+  width: 20em;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.close {
+  align-self: flex-end;
+}
