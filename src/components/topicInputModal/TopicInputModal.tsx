@@ -1,20 +1,20 @@
 import { useEffect, useRef } from 'react';
 import Dialog from '../dialog/Dialog';
-import styles from './TopicInputDialog.module.css';
+import styles from './TopicInputModal.module.css';
 
-type TopicInputDialogProps = {
+type TopicInputModalProps = {
   isShow: boolean;
   text: string;
   onClose: () => void;
   onEnter: (text: string) => void;
 };
 
-const TopicInputDialog = ({
+const TopicInputModal = ({
   isShow,
   text,
   onClose,
   onEnter,
-}: TopicInputDialogProps) => {
+}: TopicInputModalProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleEnter = () => {
@@ -34,7 +34,7 @@ const TopicInputDialog = ({
       onClose={onClose}
       onEnter={handleEnter}
     >
-      <div className={styles.dialogContents}>
+      <div className={styles.container}>
         <p>내용을 입력하세요.</p>
         <input ref={inputRef} type="text" />
         <div className={styles.buttons}>
@@ -50,4 +50,4 @@ const TopicInputDialog = ({
   );
 };
 
-export default TopicInputDialog;
+export default TopicInputModal;

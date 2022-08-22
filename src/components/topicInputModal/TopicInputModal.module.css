@@ -3,7 +3,7 @@
   height: 10em;
 }
 
-.dialogContents {
+.container {
   display: flex;
   flex-direction: column;
 }

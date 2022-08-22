@@ -7,7 +7,7 @@ import {
   cloneTopicNode,
 } from '../../type/TopicNode';
 import styles from './TopicsView.module.css';
-import TopicInputDialog from '../topicInputDialog/TopicInputDialog';
+import TopicInputModal from '../topicInputModal/TopicInputModal';
 
 const STORAGE_KEY_TOPIC_TREE = 'topicTree';
 const TABLE_ROW_SIZE = 3;
@@ -56,7 +56,7 @@ type TopicsViewProps = {
 
 const TopicsView = ({ isViewAll }: TopicsViewProps) => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
-  const [isShowTopicInputDialog, setIsShowTopicInputDialog] = useState(false);
+  const [isShowTopicInputModal, setIsShowTopicInputModal] = useState(false);
   const updateTopicNodePosRef = useRef<{
     tableIdx: number;
     tableItemIdx: number;
@@ -69,15 +69,15 @@ const TopicsView = ({ isViewAll }: TopicsViewProps) => {
     setTopicTree(newTopicTree);
   };
 
-  const handleTopicInputDialogEnter = (text: string) => {
+  const handleTopicInputModalEnter = (text: string) => {
     if (updateTopicNodePosRef.current) {
       const { tableIdx, tableItemIdx } = updateTopicNodePosRef.current;
       updateItem(tableIdx, tableItemIdx, text);
     }
-    setIsShowTopicInputDialog(false);
+    setIsShowTopicInputModal(false);
   };
 
-  const getTopicInputDialogTopicText = () => {
+  const getTopicInputModalTopicText = () => {
     if (updateTopicNodePosRef.current) {
       const { tableIdx, tableItemIdx } = updateTopicNodePosRef.current;
       return getTopicNode(topicTree, tableIdx, tableItemIdx).text;
@@ -96,7 +96,7 @@ const TopicsView = ({ isViewAll }: TopicsViewProps) => {
       getTopicNode(topicTree, tableIdx, tableItemIdx),
     onClick: (tableIdx, tableItemIdx) => {
       updateTopicNodePosRef.current = { tableIdx, tableItemIdx };
-      setIsShowTopicInputDialog(true);
+      setIsShowTopicInputModal(true);
     },
   };
 
@@ -112,11 +112,11 @@ const TopicsView = ({ isViewAll }: TopicsViewProps) => {
           />
         )}
       </section>
-      <TopicInputDialog
-        isShow={isShowTopicInputDialog}
-        text={getTopicInputDialogTopicText()}
-        onClose={() => setIsShowTopicInputDialog(false)}
-        onEnter={handleTopicInputDialogEnter}
+      <TopicInputModal
+        isShow={isShowTopicInputModal}
+        text={getTopicInputModalTopicText()}
+        onClose={() => setIsShowTopicInputModal(false)}
+        onEnter={handleTopicInputModalEnter}
       />
     </>
   );
