@@ -51,7 +51,7 @@ const Mandalart = () => {
             </button>
           )}
         </div>
-        <TopicsView isViewAll={isViewAll} />
+        <TopicsView isViewAll={isViewAll} user={user} />
         <div className="viewType">
           <button
             className={styles.viewTypeButton}

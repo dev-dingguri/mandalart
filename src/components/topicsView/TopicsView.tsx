@@ -8,6 +8,8 @@ import {
 } from '../../type/TopicNode';
 import styles from './TopicsView.module.css';
 import TopicInputModal from '../topicInputModal/TopicInputModal';
+import { User } from 'firebase/auth';
+import TopicRepository from '../../service/topicRepository';
 
 const STORAGE_KEY_TOPIC_TREE = 'topicTree';
 const TABLE_ROW_SIZE = 3;
@@ -52,9 +54,12 @@ const initialTopicTree = () => {
 
 type TopicsViewProps = {
   isViewAll: boolean;
+  user: User | null;
 };
 
-const TopicsView = ({ isViewAll }: TopicsViewProps) => {
+const topicRepository = new TopicRepository();
+
+const TopicsView = ({ isViewAll, user }: TopicsViewProps) => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
   const [isShowTopicInputModal, setIsShowTopicInputModal] = useState(false);
   const updateTopicNodePosRef = useRef<{
@@ -67,6 +72,12 @@ const TopicsView = ({ isViewAll }: TopicsViewProps) => {
     const newTopic = getTopicNode(newTopicTree, tableIdx, tableItemIdx);
     newTopic.text = text;
     setTopicTree(newTopicTree);
+
+    // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
+    if (user) {
+      console.log('saveTopics');
+      topicRepository.saveTopics(user.uid, newTopicTree);
+    }
   };
 
   const handleTopicInputModalEnter = (text: string) => {
@@ -84,6 +95,22 @@ const TopicsView = ({ isViewAll }: TopicsViewProps) => {
     }
     return '';
   };
+
+  useEffect(() => {
+    if (user) {
+      const stopSync = topicRepository.syncTopics(
+        user.uid,
+        (topicTree: TopicNode) => {
+          console.log('onUpdate');
+          setTopicTree(topicTree);
+        }
+      );
+      return () => {
+        console.log('stopSync');
+        stopSync();
+      };
+    }
+  }, [user]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
