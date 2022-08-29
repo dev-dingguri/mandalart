@@ -3,6 +3,7 @@ import Table from '../table/Table';
 import TopicItem from '../topicItem/TopicItem';
 import { TopicNode } from '../../type/TopicNode';
 import styles from './TopicTable.module.css';
+import { scrollIntoView } from 'seamless-scroll-polyfill';
 
 export type TopicTableViewType = 'normal' | 'focus' | 'blur';
 
@@ -39,7 +40,7 @@ const TopicTable = ({
 
   useEffect(() => {
     if (viewType === 'focus' && topicTableRef.current) {
-      topicTableRef.current.scrollIntoView({
+      scrollIntoView(topicTableRef.current, {
         behavior: loadedRef.current ? 'smooth' : 'auto',
         block: 'center',
         inline: 'center',
