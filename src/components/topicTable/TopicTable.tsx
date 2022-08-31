@@ -4,12 +4,11 @@ import TopicItem from '../topicItem/TopicItem';
 import { TopicNode } from '../../type/TopicNode';
 import styles from './TopicTable.module.css';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
+import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../common/const';
 
 export type TopicTableViewType = 'normal' | 'focus' | 'blur';
 
 type TopicTableProps = {
-  rowSize: number;
-  colSize: number;
   viewType?: TopicTableViewType;
   getTopicNode: (idx: number) => TopicNode;
   onClick: (idx: number) => void;
@@ -29,8 +28,6 @@ const getClassName = (viewType: TopicTableViewType) => {
 };
 
 const TopicTable = ({
-  rowSize,
-  colSize,
   viewType = 'normal',
   getTopicNode,
   onClick,
@@ -55,8 +52,8 @@ const TopicTable = ({
       className={`${styles.topicTable} ${getClassName(viewType)}`}
     >
       <Table
-        rowSize={rowSize}
-        colSize={colSize}
+        rowSize={TABLE_ROW_SIZE}
+        colSize={TABLE_COL_SIZE}
         itemGenerator={(idx) => (
           <TopicItem
             key={idx}

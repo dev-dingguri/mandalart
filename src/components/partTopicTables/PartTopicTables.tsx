@@ -1,18 +1,16 @@
 import React, { useRef, useState, TouchEvent } from 'react';
 import TopicTables, { TopicTablesProps } from '../topicTables/TopicTables';
 import styles from './PartTopicTables.module.css';
+import {
+  TABLE_COL_SIZE,
+  TABLE_SIZE,
+  TABLE_CENTER_IDX,
+} from '../../common/const';
 
-type PartTopicTablesProps = Omit<TopicTablesProps, 'focusedTableIdx'> & {
-  initialFocusedTableIdx: number;
-};
+type PartTopicTablesProps = Omit<TopicTablesProps, 'focusedTableIdx'>;
 
-const PartTopicTables = ({
-  initialFocusedTableIdx,
-  ...props
-}: PartTopicTablesProps) => {
-  const [focusedTableIdx, setFocusedTableIdx] = useState(
-    initialFocusedTableIdx
-  );
+const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
+  const [focusedTableIdx, setFocusedTableIdx] = useState(TABLE_CENTER_IDX);
   const partTopicTablesRef = useRef<HTMLDivElement>(null);
 
   let startY = 0;
@@ -41,31 +39,29 @@ const PartTopicTables = ({
     const endY = ev.changedTouches[0].pageY;
     const endX = ev.changedTouches[0].pageX;
 
-    const tableSize = props.rowSize * props.colSize;
-
     let newFocusedTableIdx = focusedTableIdx;
     const baseline = 70;
     // 아래로 이동
     if (endY - startY < -baseline) {
-      if (newFocusedTableIdx + props.colSize < tableSize) {
-        newFocusedTableIdx += props.colSize;
+      if (newFocusedTableIdx + TABLE_COL_SIZE < TABLE_SIZE) {
+        newFocusedTableIdx += TABLE_COL_SIZE;
       }
     }
     // 위로 이동
     if (endY - startY > baseline) {
-      if (newFocusedTableIdx - props.colSize >= 0) {
-        newFocusedTableIdx -= props.colSize;
+      if (newFocusedTableIdx - TABLE_COL_SIZE >= 0) {
+        newFocusedTableIdx -= TABLE_COL_SIZE;
       }
     }
     // 오른쪽으로 이동
     if (endX - startX < -baseline) {
-      if (newFocusedTableIdx % props.colSize !== props.colSize - 1) {
+      if (newFocusedTableIdx % TABLE_COL_SIZE !== TABLE_COL_SIZE - 1) {
         newFocusedTableIdx += 1;
       }
     }
     // 왼쪽으로 이동
     if (endX - startX > baseline) {
-      if (newFocusedTableIdx % props.colSize !== 0) {
+      if (newFocusedTableIdx % TABLE_COL_SIZE !== 0) {
         newFocusedTableIdx -= 1;
       }
     }

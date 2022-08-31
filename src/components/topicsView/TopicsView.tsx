@@ -10,12 +10,9 @@ import styles from './TopicsView.module.css';
 import TopicInputModal from '../topicInputModal/TopicInputModal';
 import { User } from 'firebase/auth';
 import TopicRepository from '../../service/topicRepository';
+import { TABLE_SIZE, TABLE_CENTER_IDX } from '../../common/const';
 
 const STORAGE_KEY_TOPIC_TREE = 'topicTree';
-const TABLE_ROW_SIZE = 3;
-const TABLE_COL_SIZE = 3;
-const TABLE_SIZE = TABLE_ROW_SIZE * TABLE_COL_SIZE;
-const CENTER_IDX = 4;
 
 const getTopicNode = (
   topicTree: TopicNode,
@@ -26,9 +23,9 @@ const getTopicNode = (
   const idxs = [tableIdx, tableItemIdx];
   idxs.forEach((idx) => {
     node =
-      idx === CENTER_IDX
+      idx === TABLE_CENTER_IDX
         ? node
-        : node.children[idx < CENTER_IDX ? idx : idx - 1];
+        : node.children[idx < TABLE_CENTER_IDX ? idx : idx - 1];
   });
   if (!node) {
     throw new Error('cannot get node');
@@ -117,8 +114,6 @@ const TopicsView = ({ isViewAll, user }: TopicsViewProps) => {
   }, [topicTree]);
 
   const topicTablesProps: TopicTablesProps = {
-    rowSize: TABLE_ROW_SIZE,
-    colSize: TABLE_COL_SIZE,
     getTopicNode: (tableIdx, tableItemIdx) =>
       getTopicNode(topicTree, tableIdx, tableItemIdx),
     onClick: (tableIdx, tableItemIdx) => {
@@ -133,10 +128,7 @@ const TopicsView = ({ isViewAll, user }: TopicsViewProps) => {
         {isViewAll ? (
           <TopicTables {...topicTablesProps} />
         ) : (
-          <PartTopicTables
-            initialFocusedTableIdx={CENTER_IDX}
-            {...topicTablesProps}
-          />
+          <PartTopicTables {...topicTablesProps} />
         )}
       </section>
       <TopicInputModal

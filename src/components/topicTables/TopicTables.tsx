@@ -1,18 +1,15 @@
 import Table from '../table/Table';
 import TopicTable, { TopicTableViewType } from '../topicTable/TopicTable';
 import { TopicNode } from '../../type/TopicNode';
+import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../common/const';
 
 export type TopicTablesProps = {
-  rowSize: number;
-  colSize: number;
   focusedTableIdx?: number;
   getTopicNode: (tableIdx: number, tableItemIdx: number) => TopicNode;
   onClick: (tableIdx: number, tableItemIdx: number) => void;
 };
 
 const TopicTables = ({
-  rowSize,
-  colSize,
   focusedTableIdx,
   getTopicNode,
   onClick,
@@ -26,14 +23,12 @@ const TopicTables = ({
 
   return (
     <Table
-      rowSize={rowSize}
-      colSize={colSize}
+      rowSize={TABLE_ROW_SIZE}
+      colSize={TABLE_COL_SIZE}
       itemGenerator={(tableIdx) => (
         <TopicTable
           key={tableIdx}
           getTopicNode={(tableItemIdx) => getTopicNode(tableIdx, tableItemIdx)}
-          rowSize={rowSize}
-          colSize={colSize}
           viewType={getViewType(tableIdx)}
           onClick={(tableItemIdx) => onClick(tableIdx, tableItemIdx)}
         />
