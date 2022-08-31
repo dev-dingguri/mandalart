@@ -3,7 +3,6 @@
   height: 80vmin;
   min-width: 40em;
   min-height: 40em;
-  overflow: hidden;
 }
 
 @media screen and (max-width: 767px) {

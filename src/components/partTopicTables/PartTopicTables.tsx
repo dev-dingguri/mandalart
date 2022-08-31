@@ -24,11 +24,13 @@ const PartTopicTables = ({
 
   return (
     <div className={styles.partTopicTables}>
-      <TopicTables
-        {...props}
-        focusedTableIdx={focusedTableIdx}
-        onClick={handleClick}
-      />
+      <div className={styles.container}>
+        <TopicTables
+          {...props}
+          focusedTableIdx={focusedTableIdx}
+          onClick={handleClick}
+        />
+      </div>
     </div>
   );
 };
