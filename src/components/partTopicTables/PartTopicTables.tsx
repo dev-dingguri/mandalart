@@ -13,11 +13,11 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   const [focusedTableIdx, setFocusedTableIdx] = useState(TABLE_CENTER_IDX);
   const partTopicTablesRef = useRef<HTMLDivElement>(null);
 
-  let startY = 0;
-  let startX = 0;
-  let startTop = 0;
-  let startLeft = 0;
-  let startTime: Date;
+  const startYRef = useRef(0);
+  const startXRef = useRef(0);
+  const startTopRef = useRef(0);
+  const startLeftRef = useRef(0);
+  const startTimeRef = useRef(new Date());
 
   const handleClick = (tableIdx: number, tableItemIdx: number) => {
     if (tableIdx !== focusedTableIdx) {
@@ -30,11 +30,11 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   const handleTouchStart = (ev: TouchEvent) => {
     if (!partTopicTablesRef.current) return;
 
-    startY = ev.changedTouches[0].pageY;
-    startX = ev.changedTouches[0].pageX;
-    startTop = partTopicTablesRef.current.scrollTop;
-    startLeft = partTopicTablesRef.current.scrollLeft;
-    startTime = new Date();
+    startYRef.current = ev.changedTouches[0].pageY;
+    startXRef.current = ev.changedTouches[0].pageX;
+    startTopRef.current = partTopicTablesRef.current.scrollTop;
+    startLeftRef.current = partTopicTablesRef.current.scrollLeft;
+    startTimeRef.current = new Date();
   };
 
   const handleTouchEnd = (ev: TouchEvent) => {
@@ -44,11 +44,11 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
     const endX = ev.changedTouches[0].pageX;
     const baseline = partTopicTablesRef.current.clientWidth * 0.35;
     const weight = Math.max(
-      (500 - (Date.now() - startTime.getTime())) * 0.1, // 500ms안에 스와이프가 끝나면 가중치 적용
+      (500 - (Date.now() - startTimeRef.current.getTime())) * 0.1, // 500ms안에 스와이프가 끝나면 가중치 적용
       1
     );
-    const moveY = (endY - startY) * weight;
-    const moveX = (endX - startX) * weight;
+    const moveY = (endY - startYRef.current) * weight;
+    const moveX = (endX - startXRef.current) * weight;
 
     let newFocusedTableIdx = focusedTableIdx;
     // 아래로 이동
@@ -77,8 +77,8 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
     }
     if (focusedTableIdx === newFocusedTableIdx) {
       partTopicTablesRef.current.scroll({
-        top: startTop,
-        left: startLeft,
+        top: startTopRef.current,
+        left: startLeftRef.current,
         behavior: 'smooth',
       });
     } else {
@@ -89,12 +89,12 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   const handleTouchMove = (ev: TouchEvent) => {
     if (!partTopicTablesRef.current) return;
 
-    const moveY = -(ev.changedTouches[0].pageY - startY);
-    const moveX = -(ev.changedTouches[0].pageX - startX);
+    const moveY = -(ev.changedTouches[0].pageY - startYRef.current);
+    const moveX = -(ev.changedTouches[0].pageX - startXRef.current);
 
     partTopicTablesRef.current.scroll({
-      top: startTop + moveY,
-      left: startLeft + moveX,
+      top: startTopRef.current + moveY,
+      left: startLeftRef.current + moveX,
       behavior: 'auto',
     });
   };
