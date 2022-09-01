@@ -43,34 +43,33 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
     const endY = ev.changedTouches[0].pageY;
     const endX = ev.changedTouches[0].pageX;
     const baseline = partTopicTablesRef.current.clientWidth * 0.35;
-    const weight = Math.max(
-      (500 - (Date.now() - startTimeRef.current.getTime())) * 0.1, // 500ms안에 스와이프가 끝나면 가중치 적용
-      1
-    );
-    const moveY = (endY - startYRef.current) * weight;
-    const moveX = (endX - startXRef.current) * weight;
+    const moveTime = Date.now() - startTimeRef.current.getTime();
+    // 500ms안에 스와이프가 끝나면 가중치 적용
+    const weight = Math.min(Math.max((500 - moveTime) * 0.02, 1), 5);
+    const forceY = (endY - startYRef.current) * weight;
+    const forceX = (endX - startXRef.current) * weight;
 
     let newFocusedTableIdx = focusedTableIdx;
     // 아래로 이동
-    if (moveY < -baseline) {
+    if (forceY < -baseline) {
       if (newFocusedTableIdx + TABLE_COL_SIZE < TABLE_SIZE) {
         newFocusedTableIdx += TABLE_COL_SIZE;
       }
     }
     // 위로 이동
-    if (moveY > baseline) {
+    if (forceY > baseline) {
       if (newFocusedTableIdx - TABLE_COL_SIZE >= 0) {
         newFocusedTableIdx -= TABLE_COL_SIZE;
       }
     }
     // 오른쪽으로 이동
-    if (moveX < -baseline) {
+    if (forceX < -baseline) {
       if (newFocusedTableIdx % TABLE_COL_SIZE !== TABLE_COL_SIZE - 1) {
         newFocusedTableIdx += 1;
       }
     }
     // 왼쪽으로 이동
-    if (moveX > baseline) {
+    if (forceX > baseline) {
       if (newFocusedTableIdx % TABLE_COL_SIZE !== 0) {
         newFocusedTableIdx -= 1;
       }
