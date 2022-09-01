@@ -17,6 +17,7 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   let startX = 0;
   let startTop = 0;
   let startLeft = 0;
+  let startTime: Date;
 
   const handleClick = (tableIdx: number, tableItemIdx: number) => {
     if (tableIdx !== focusedTableIdx) {
@@ -27,46 +28,55 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   };
 
   const handleTouchStart = (ev: TouchEvent) => {
+    if (!partTopicTablesRef.current) return;
+
     startY = ev.changedTouches[0].pageY;
     startX = ev.changedTouches[0].pageX;
-    if (partTopicTablesRef.current) {
-      startTop = partTopicTablesRef.current.scrollTop;
-      startLeft = partTopicTablesRef.current.scrollLeft;
-    }
+    startTop = partTopicTablesRef.current.scrollTop;
+    startLeft = partTopicTablesRef.current.scrollLeft;
+    startTime = new Date();
   };
 
   const handleTouchEnd = (ev: TouchEvent) => {
+    if (!partTopicTablesRef.current) return;
+
     const endY = ev.changedTouches[0].pageY;
     const endX = ev.changedTouches[0].pageX;
+    const baseline = partTopicTablesRef.current.clientWidth * 0.35;
+    const weight = Math.max(
+      (500 - (Date.now() - startTime.getTime())) * 0.1, // 500ms안에 스와이프가 끝나면 가중치 적용
+      1
+    );
+    const moveY = (endY - startY) * weight;
+    const moveX = (endX - startX) * weight;
 
     let newFocusedTableIdx = focusedTableIdx;
-    const baseline = 70;
     // 아래로 이동
-    if (endY - startY < -baseline) {
+    if (moveY < -baseline) {
       if (newFocusedTableIdx + TABLE_COL_SIZE < TABLE_SIZE) {
         newFocusedTableIdx += TABLE_COL_SIZE;
       }
     }
     // 위로 이동
-    if (endY - startY > baseline) {
+    if (moveY > baseline) {
       if (newFocusedTableIdx - TABLE_COL_SIZE >= 0) {
         newFocusedTableIdx -= TABLE_COL_SIZE;
       }
     }
     // 오른쪽으로 이동
-    if (endX - startX < -baseline) {
+    if (moveX < -baseline) {
       if (newFocusedTableIdx % TABLE_COL_SIZE !== TABLE_COL_SIZE - 1) {
         newFocusedTableIdx += 1;
       }
     }
     // 왼쪽으로 이동
-    if (endX - startX > baseline) {
+    if (moveX > baseline) {
       if (newFocusedTableIdx % TABLE_COL_SIZE !== 0) {
         newFocusedTableIdx -= 1;
       }
     }
     if (focusedTableIdx === newFocusedTableIdx) {
-      partTopicTablesRef.current?.scroll({
+      partTopicTablesRef.current.scroll({
         top: startTop,
         left: startLeft,
         behavior: 'smooth',
@@ -77,10 +87,12 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   };
 
   const handleTouchMove = (ev: TouchEvent) => {
+    if (!partTopicTablesRef.current) return;
+
     const moveY = -(ev.changedTouches[0].pageY - startY);
     const moveX = -(ev.changedTouches[0].pageX - startX);
 
-    partTopicTablesRef.current?.scroll({
+    partTopicTablesRef.current.scroll({
       top: startTop + moveY,
       left: startLeft + moveX,
       behavior: 'auto',
