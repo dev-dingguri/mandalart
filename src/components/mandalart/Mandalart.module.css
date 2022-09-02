@@ -10,9 +10,3 @@
   width: 10em;
   height: 2em;
 }
-
-.header {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-}

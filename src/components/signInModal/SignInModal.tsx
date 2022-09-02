@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from '../dialog/Dialog';
 import styles from './SignInModal.module.css';
-import { User, ProviderId } from 'firebase/auth';
+import { ProviderId } from 'firebase/auth';
 
 type SignInModalProps = {
   isShow: boolean;

@@ -1,26 +1,13 @@
 import { useEffect, useState } from 'react';
-import AuthService from '../../service/authService';
 import TopicsView from '../topicsView/TopicsView';
 import styles from './Mandalart.module.css';
-import { User, ProviderId } from 'firebase/auth';
-import SignInModal from '../signInModal/SignInModal';
-
-const authService = new AuthService();
+import { User } from 'firebase/auth';
+import authService from '../../service/authService';
+import Header from '../header/Header';
 
 const Mandalart = () => {
   const [isViewAll, setIsViewAll] = useState(true);
-  const [isShowSignInModal, setIsShowSignInModal] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-
-  const handleSignIn = (providerid: string) => {
-    authService.signIn(providerid).then((userCred) => {
-      userCred.user && console.log(userCred.user.email);
-      setIsShowSignInModal(false);
-    });
-  };
-  const handleSignOut = () => {
-    authService.signOut();
-  };
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -30,44 +17,24 @@ const Mandalart = () => {
   }, []);
 
   return (
-    <>
-      <SignInModal
-        isShow={isShowSignInModal}
-        onClose={() => setIsShowSignInModal(false)}
-        onSignIn={handleSignIn}
-      />
-      <section className={styles.mandalart}>
-        <div className={styles.header}>
-          <h1>Mandalart</h1>
-          {user ? (
-            <button onClick={handleSignOut}>sign out</button>
-          ) : (
-            <button
-              onClick={() => {
-                setIsShowSignInModal(true);
-              }}
-            >
-              sign in
-            </button>
-          )}
-        </div>
-        <TopicsView isViewAll={isViewAll} user={user} />
-        <div className="viewType">
-          <button
-            className={styles.viewTypeButton}
-            onClick={() => setIsViewAll(true)}
-          >
-            all
-          </button>
-          <button
-            className={styles.viewTypeButton}
-            onClick={() => setIsViewAll(false)}
-          >
-            part
-          </button>
-        </div>
-      </section>
-    </>
+    <section className={styles.mandalart}>
+      <Header user={user} onUserChange={(user: User | null) => setUser(user)} />
+      <TopicsView isViewAll={isViewAll} user={user} />
+      <div className="viewType">
+        <button
+          className={styles.viewTypeButton}
+          onClick={() => setIsViewAll(true)}
+        >
+          all
+        </button>
+        <button
+          className={styles.viewTypeButton}
+          onClick={() => setIsViewAll(false)}
+        >
+          part
+        </button>
+      </div>
+    </section>
   );
 };
 
