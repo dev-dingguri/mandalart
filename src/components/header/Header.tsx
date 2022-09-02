@@ -5,22 +5,15 @@ import authService from '../../service/authService';
 import styles from './Header.module.css';
 
 type HeaderProps = {
-  user: User | null;
-  onUserChange: (user: User | null) => void;
+  user: User | null; // todo: user 정보를 활용하지 않는다면 isSignIn으로 변경
 };
 
-const Header = ({ user, onUserChange }: HeaderProps) => {
+const Header = ({ user }: HeaderProps) => {
   const [isShowSignInModal, setIsShowSignInModal] = useState(false);
 
   const showSignInModal = () => setIsShowSignInModal(true);
   const hideSignInModal = () => setIsShowSignInModal(false);
-  const signIn = (providerid: string) => {
-    authService.signIn(providerid).then((userCred) => {
-      userCred.user && console.log(userCred.user.email);
-      onUserChange(userCred.user);
-      setIsShowSignInModal(false);
-    });
-  };
+  const signIn = (providerid: string) => authService.signIn(providerid);
   const signOut = () => authService.signOut();
 
   return (

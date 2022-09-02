@@ -1,5 +1,10 @@
 import { firebaseAuth } from './firebase';
-import { GoogleAuthProvider, User, signInWithPopup } from 'firebase/auth';
+import {
+  GoogleAuthProvider,
+  User,
+  signInWithRedirect,
+  getRedirectResult,
+} from 'firebase/auth';
 
 class AuthService {
   // todo: BaseOAuthProvider[] 멤버를 가지고 구현체는 주입 받는것 검토
@@ -7,16 +12,19 @@ class AuthService {
 
   signIn(providerId: string) {
     const authProvider = this.getProvider(providerId);
-    // todo: 모바일 환경은 리디렉션
-    return signInWithPopup(firebaseAuth, authProvider);
+    signInWithRedirect(firebaseAuth, authProvider);
   }
 
   signOut() {
     firebaseAuth.signOut();
   }
 
+  getRedirectResult() {
+    return getRedirectResult(firebaseAuth);
+  }
+
   onAuthStateChanged(observer: (user: User | null) => void) {
-    firebaseAuth.onAuthStateChanged((user) => {
+    return firebaseAuth.onAuthStateChanged((user) => {
       observer(user);
     });
   }
