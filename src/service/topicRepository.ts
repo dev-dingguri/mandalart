@@ -22,4 +22,5 @@ class TopicRepository {
   }
 }
 
-export default TopicRepository;
+const topicRepository = new TopicRepository();
+export default topicRepository;

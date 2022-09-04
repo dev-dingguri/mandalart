@@ -9,7 +9,7 @@ import {
 import styles from './TopicsView.module.css';
 import TopicInputModal from '../topicInputModal/TopicInputModal';
 import { User } from 'firebase/auth';
-import TopicRepository from '../../service/topicRepository';
+import topicRepository from '../../service/topicRepository';
 import { TABLE_SIZE, TABLE_CENTER_IDX } from '../../common/const';
 
 const STORAGE_KEY_TOPIC_TREE = 'topicTree';
@@ -53,8 +53,6 @@ type TopicsViewProps = {
   isViewAll: boolean;
   user: User | null;
 };
-
-const topicRepository = new TopicRepository();
 
 const TopicsView = ({ isViewAll, user }: TopicsViewProps) => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
