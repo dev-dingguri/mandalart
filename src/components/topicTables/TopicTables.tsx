@@ -4,21 +4,21 @@ import { TopicNode } from '../../type/TopicNode';
 import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../common/const';
 
 export type TopicTablesProps = {
-  focusedTableIdx?: number;
+  focusedIdx?: number;
   getTopicNode: (tableIdx: number, tableItemIdx: number) => TopicNode;
   onClick: (tableIdx: number, tableItemIdx: number) => void;
 };
 
 const TopicTables = ({
-  focusedTableIdx,
+  focusedIdx,
   getTopicNode,
   onClick,
 }: TopicTablesProps) => {
   const getViewType = (tableIdx: number): TopicTableViewType => {
-    if (focusedTableIdx === undefined) {
+    if (focusedIdx === undefined) {
       return 'normal';
     }
-    return focusedTableIdx === tableIdx ? 'focus' : 'blur';
+    return focusedIdx === tableIdx ? 'focus' : 'blur';
   };
 
   return (

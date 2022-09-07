@@ -8,12 +8,6 @@ import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../common/const';
 
 export type TopicTableViewType = 'normal' | 'focus' | 'blur';
 
-type TopicTableProps = {
-  viewType?: TopicTableViewType;
-  getTopicNode: (idx: number) => TopicNode;
-  onClick: (idx: number) => void;
-};
-
 const getClassName = (viewType: TopicTableViewType) => {
   switch (viewType) {
     case 'normal':
@@ -25,6 +19,12 @@ const getClassName = (viewType: TopicTableViewType) => {
     default:
       throw new Error(`not support viewType: ${viewType}`);
   }
+};
+
+type TopicTableProps = {
+  viewType?: TopicTableViewType;
+  getTopicNode: (idx: number) => TopicNode;
+  onClick: (idx: number) => void;
 };
 
 const TopicTable = ({

@@ -7,91 +7,95 @@ import {
   TABLE_CENTER_IDX,
 } from '../../common/const';
 
-type PartTopicTablesProps = Omit<TopicTablesProps, 'focusedTableIdx'>;
+type PartTopicTablesProps = Omit<TopicTablesProps, 'focusedIdx'>;
 
 const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
-  const [focusedTableIdx, setFocusedTableIdx] = useState(TABLE_CENTER_IDX);
+  const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
   const partTopicTablesRef = useRef<HTMLDivElement>(null);
-
+  // 스와이프 시작시 상태를 저장하기 위한 useRef들
   const startYRef = useRef(0);
   const startXRef = useRef(0);
   const startTopRef = useRef(0);
   const startLeftRef = useRef(0);
   const startTimeRef = useRef(new Date());
 
-  const handleClick = (tableIdx: number, tableItemIdx: number) => {
-    if (tableIdx !== focusedTableIdx) {
-      setFocusedTableIdx(tableIdx);
-    } else {
-      props.onClick(tableIdx, tableItemIdx);
-    }
-  };
-
-  const handleTouchStart = (ev: TouchEvent) => {
-    if (!partTopicTablesRef.current) return;
-
-    startYRef.current = ev.changedTouches[0].pageY;
-    startXRef.current = ev.changedTouches[0].pageX;
-    startTopRef.current = partTopicTablesRef.current.scrollTop;
-    startLeftRef.current = partTopicTablesRef.current.scrollLeft;
-    startTimeRef.current = new Date();
-  };
-
-  const handleTouchEnd = (ev: TouchEvent) => {
-    if (!partTopicTablesRef.current) return;
-
-    const endY = ev.changedTouches[0].pageY;
-    const endX = ev.changedTouches[0].pageX;
-    const baseline = partTopicTablesRef.current.clientWidth * 0.35;
+  const calculateMovedIdx = (idx: number, endY: number, endX: number) => {
+    const tables = partTopicTablesRef.current!;
+    const baseline = tables.clientWidth * 0.35;
     const moveTime = Date.now() - startTimeRef.current.getTime();
     // 500ms안에 스와이프가 끝나면 가중치 적용
     const weight = Math.min(Math.max((500 - moveTime) * 0.02, 1), 5);
     const forceY = (endY - startYRef.current) * weight;
     const forceX = (endX - startXRef.current) * weight;
 
-    let newFocusedTableIdx = focusedTableIdx;
     // 아래로 이동
     if (forceY < -baseline) {
-      if (newFocusedTableIdx + TABLE_COL_SIZE < TABLE_SIZE) {
-        newFocusedTableIdx += TABLE_COL_SIZE;
+      if (idx + TABLE_COL_SIZE < TABLE_SIZE) {
+        idx += TABLE_COL_SIZE;
       }
     }
     // 위로 이동
     if (forceY > baseline) {
-      if (newFocusedTableIdx - TABLE_COL_SIZE >= 0) {
-        newFocusedTableIdx -= TABLE_COL_SIZE;
+      if (idx - TABLE_COL_SIZE >= 0) {
+        idx -= TABLE_COL_SIZE;
       }
     }
     // 오른쪽으로 이동
     if (forceX < -baseline) {
-      if (newFocusedTableIdx % TABLE_COL_SIZE !== TABLE_COL_SIZE - 1) {
-        newFocusedTableIdx += 1;
+      if (idx % TABLE_COL_SIZE !== TABLE_COL_SIZE - 1) {
+        idx += 1;
       }
     }
     // 왼쪽으로 이동
     if (forceX > baseline) {
-      if (newFocusedTableIdx % TABLE_COL_SIZE !== 0) {
-        newFocusedTableIdx -= 1;
+      if (idx % TABLE_COL_SIZE !== 0) {
+        idx -= 1;
       }
     }
-    if (focusedTableIdx === newFocusedTableIdx) {
-      partTopicTablesRef.current.scroll({
+    return idx;
+  };
+
+  const handleClick = (tableIdx: number, tableItemIdx: number) => {
+    if (tableIdx !== focusedIdx) {
+      setFocusedIdx(tableIdx);
+    } else {
+      props.onClick(tableIdx, tableItemIdx);
+    }
+  };
+
+  const handleTouchStart = (ev: TouchEvent) => {
+    const tables = partTopicTablesRef.current!;
+    startYRef.current = ev.changedTouches[0].pageY;
+    startXRef.current = ev.changedTouches[0].pageX;
+    startTopRef.current = tables.scrollTop;
+    startLeftRef.current = tables.scrollLeft;
+    startTimeRef.current = new Date();
+  };
+
+  const handleTouchEnd = (ev: TouchEvent) => {
+    const movedIdx = calculateMovedIdx(
+      focusedIdx,
+      ev.changedTouches[0].pageY,
+      ev.changedTouches[0].pageX
+    );
+    if (movedIdx !== focusedIdx) {
+      setFocusedIdx(movedIdx);
+    } else {
+      const tables = partTopicTablesRef.current!;
+      tables.scroll({
         top: startTopRef.current,
         left: startLeftRef.current,
         behavior: 'smooth',
       });
-    } else {
-      setFocusedTableIdx(newFocusedTableIdx);
     }
   };
 
   const handleTouchMove = (ev: TouchEvent) => {
-    if (!partTopicTablesRef.current) return;
-
     const moveY = -(ev.changedTouches[0].pageY - startYRef.current);
     const moveX = -(ev.changedTouches[0].pageX - startXRef.current);
 
-    partTopicTablesRef.current.scroll({
+    const tables = partTopicTablesRef.current!;
+    tables.scroll({
       top: startTopRef.current + moveY,
       left: startLeftRef.current + moveX,
       behavior: 'auto',
@@ -108,11 +112,7 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
       onTouchMove={handleTouchMove}
     >
       <div className={styles.container}>
-        <TopicTables
-          {...props}
-          focusedTableIdx={focusedTableIdx}
-          onClick={handleClick}
-        />
+        <TopicTables {...props} focusedIdx={focusedIdx} onClick={handleClick} />
       </div>
     </div>
   );
