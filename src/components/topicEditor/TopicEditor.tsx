@@ -1,29 +1,26 @@
 import { useEffect, useRef } from 'react';
 import Dialog from '../dialog/Dialog';
-import styles from './TopicInputModal.module.css';
+import styles from './TopicEditor.module.css';
 
-type TopicInputModalProps = {
+type TopicEditorProps = {
   isShow: boolean;
   text: string;
   onClose: () => void;
   onEnter: (text: string) => void;
 };
 
-const TopicInputModal = ({
-  isShow,
-  text,
-  onClose,
-  onEnter,
-}: TopicInputModalProps) => {
+const TopicEditor = ({ isShow, text, onClose, onEnter }: TopicEditorProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleEnter = () => {
-    onEnter(inputRef.current?.value ? inputRef.current?.value : '');
+    const input = inputRef.current!;
+    onEnter(input.value);
   };
 
   useEffect(() => {
-    if (isShow && inputRef.current) {
-      inputRef.current.value = text;
+    if (isShow) {
+      const input = inputRef.current!;
+      input.value = text;
     }
   }, [isShow, text]);
 
@@ -50,4 +47,4 @@ const TopicInputModal = ({
   );
 };
 
-export default TopicInputModal;
+export default TopicEditor;

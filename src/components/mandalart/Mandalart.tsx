@@ -6,9 +6,9 @@ import authService from '../../service/authService';
 import Header from '../header/Header';
 
 const Mandalart = () => {
-  const [isViewAll, setIsViewAll] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAllView, setIsAllView] = useState(true);
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -41,17 +41,17 @@ const Mandalart = () => {
       ) : (
         <section className={styles.mandalart}>
           <Header user={user} />
-          <TopicsView isViewAll={isViewAll} user={user} />
+          <TopicsView isAllView={isAllView} user={user} />
           <div className="viewType">
             <button
               className={styles.viewTypeButton}
-              onClick={() => setIsViewAll(true)}
+              onClick={() => setIsAllView(true)}
             >
               all
             </button>
             <button
               className={styles.viewTypeButton}
-              onClick={() => setIsViewAll(false)}
+              onClick={() => setIsAllView(false)}
             >
               part
             </button>

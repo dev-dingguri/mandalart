@@ -7,7 +7,7 @@ import {
   cloneTopicNode,
 } from '../../type/TopicNode';
 import styles from './TopicsView.module.css';
-import TopicInputModal from '../topicInputModal/TopicInputModal';
+import TopicEditor from '../topicEditor/TopicEditor';
 import { User } from 'firebase/auth';
 import topicRepository from '../../service/topicRepository';
 import { TABLE_SIZE, TABLE_CENTER_IDX } from '../../common/const';
@@ -50,17 +50,16 @@ const initialTopicTree = () => {
 };
 
 type TopicsViewProps = {
-  isViewAll: boolean;
+  isAllView: boolean;
   user: User | null;
 };
 
-const TopicsView = ({ isViewAll, user }: TopicsViewProps) => {
+const TopicsView = ({ isAllView, user }: TopicsViewProps) => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
-  const [isShowTopicInputModal, setIsShowTopicInputModal] = useState(false);
-  const updateTopicNodePosRef = useRef<{
+  const [editingTopicPos, setEditingTopicPos] = useState<{
     tableIdx: number;
     tableItemIdx: number;
-  }>();
+  } | null>(null);
 
   const updateItem = (tableIdx: number, tableItemIdx: number, text: string) => {
     const newTopicTree = cloneTopicNode(topicTree);
@@ -75,20 +74,31 @@ const TopicsView = ({ isViewAll, user }: TopicsViewProps) => {
     }
   };
 
-  const handleTopicInputModalEnter = (text: string) => {
-    if (updateTopicNodePosRef.current) {
-      const { tableIdx, tableItemIdx } = updateTopicNodePosRef.current;
-      updateItem(tableIdx, tableItemIdx, text);
-    }
-    setIsShowTopicInputModal(false);
+  const isShowEditor = () => {
+    return editingTopicPos !== null;
   };
 
-  const getTopicInputModalTopicText = () => {
-    if (updateTopicNodePosRef.current) {
-      const { tableIdx, tableItemIdx } = updateTopicNodePosRef.current;
-      return getTopicNode(topicTree, tableIdx, tableItemIdx).text;
-    }
-    return '';
+  const handleStartEditor = (tableIdx: number, tableItemIdx: number) => {
+    setEditingTopicPos({ tableIdx, tableItemIdx });
+  };
+
+  const handleEnterEditor = (text: string) => {
+    if (!editingTopicPos) return;
+
+    const { tableIdx, tableItemIdx } = editingTopicPos;
+    updateItem(tableIdx, tableItemIdx, text);
+    setEditingTopicPos(null);
+  };
+
+  const handleCloseEditor = () => {
+    setEditingTopicPos(null);
+  };
+
+  const getEditingTopicText = () => {
+    if (!editingTopicPos) return '';
+
+    const { tableIdx, tableItemIdx } = editingTopicPos;
+    return getTopicNode(topicTree, tableIdx, tableItemIdx).text;
   };
 
   useEffect(() => {
@@ -114,26 +124,23 @@ const TopicsView = ({ isViewAll, user }: TopicsViewProps) => {
   const topicTablesProps: TopicTablesProps = {
     getTopicNode: (tableIdx, tableItemIdx) =>
       getTopicNode(topicTree, tableIdx, tableItemIdx),
-    onClick: (tableIdx, tableItemIdx) => {
-      updateTopicNodePosRef.current = { tableIdx, tableItemIdx };
-      setIsShowTopicInputModal(true);
-    },
+    onTopicClick: handleStartEditor,
   };
 
   return (
     <>
       <section className={styles.topicsView}>
-        {isViewAll ? (
+        {isAllView ? (
           <TopicTables {...topicTablesProps} />
         ) : (
           <PartTopicTables {...topicTablesProps} />
         )}
       </section>
-      <TopicInputModal
-        isShow={isShowTopicInputModal}
-        text={getTopicInputModalTopicText()}
-        onClose={() => setIsShowTopicInputModal(false)}
-        onEnter={handleTopicInputModalEnter}
+      <TopicEditor
+        isShow={isShowEditor()}
+        text={getEditingTopicText()}
+        onClose={handleCloseEditor}
+        onEnter={handleEnterEditor}
       />
     </>
   );

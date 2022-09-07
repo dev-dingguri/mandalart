@@ -20,18 +20,20 @@ const Dialog = ({
   const modalRef = useRef<HTMLDialogElement>(null);
 
   const show = useCallback(() => {
-    if (!modalRef.current?.open) {
+    const modal = modalRef.current!;
+    if (!modal.open) {
       if (isModal) {
-        modalRef.current?.showModal();
+        modal.showModal();
       } else {
-        modalRef.current?.show();
+        modal.show();
       }
     }
   }, [isModal]);
 
   const hide = useCallback(() => {
-    if (modalRef.current?.open) {
-      modalRef.current?.close();
+    const modal = modalRef.current!;
+    if (modal.open) {
+      modal.close();
     }
   }, []);
 

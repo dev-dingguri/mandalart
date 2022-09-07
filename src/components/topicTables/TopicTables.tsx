@@ -6,13 +6,13 @@ import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../common/const';
 export type TopicTablesProps = {
   focusedIdx?: number;
   getTopicNode: (tableIdx: number, tableItemIdx: number) => TopicNode;
-  onClick: (tableIdx: number, tableItemIdx: number) => void;
+  onTopicClick: (tableIdx: number, tableItemIdx: number) => void;
 };
 
 const TopicTables = ({
   focusedIdx,
   getTopicNode,
-  onClick,
+  onTopicClick,
 }: TopicTablesProps) => {
   const getViewType = (tableIdx: number): TopicTableViewType => {
     if (focusedIdx === undefined) {
@@ -30,7 +30,7 @@ const TopicTables = ({
           key={tableIdx}
           getTopicNode={(tableItemIdx) => getTopicNode(tableIdx, tableItemIdx)}
           viewType={getViewType(tableIdx)}
-          onClick={(tableItemIdx) => onClick(tableIdx, tableItemIdx)}
+          onTopicClick={(tableItemIdx) => onTopicClick(tableIdx, tableItemIdx)}
         />
       )}
     ></Table>

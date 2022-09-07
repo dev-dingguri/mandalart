@@ -8,36 +8,37 @@ import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../common/const';
 
 export type TopicTableViewType = 'normal' | 'focus' | 'blur';
 
-const getClassName = (viewType: TopicTableViewType) => {
-  switch (viewType) {
-    case 'normal':
-      return styles.normal;
-    case 'focus':
-      return styles.focus;
-    case 'blur':
-      return styles.blur;
-    default:
-      throw new Error(`not support viewType: ${viewType}`);
-  }
-};
-
 type TopicTableProps = {
   viewType?: TopicTableViewType;
   getTopicNode: (idx: number) => TopicNode;
-  onClick: (idx: number) => void;
+  onTopicClick: (idx: number) => void;
 };
 
 const TopicTable = ({
   viewType = 'normal',
   getTopicNode,
-  onClick,
+  onTopicClick,
 }: TopicTableProps) => {
   const topicTableRef = useRef<HTMLDivElement>(null);
   const loadedRef = useRef(false);
 
+  const getClassName = () => {
+    switch (viewType) {
+      case 'normal':
+        return styles.normal;
+      case 'focus':
+        return styles.focus;
+      case 'blur':
+        return styles.blur;
+      default:
+        throw new Error(`not support viewType: ${viewType}`);
+    }
+  };
+
   useEffect(() => {
-    if (viewType === 'focus' && topicTableRef.current) {
-      scrollIntoView(topicTableRef.current, {
+    const topicTable = topicTableRef.current!;
+    if (viewType === 'focus') {
+      scrollIntoView(topicTable, {
         behavior: loadedRef.current ? 'smooth' : 'auto',
         block: 'center',
         inline: 'center',
@@ -49,7 +50,7 @@ const TopicTable = ({
   return (
     <div
       ref={topicTableRef}
-      className={`${styles.topicTable} ${getClassName(viewType)}`}
+      className={`${styles.topicTable} ${getClassName()}`}
     >
       <Table
         rowSize={TABLE_ROW_SIZE}
@@ -58,7 +59,7 @@ const TopicTable = ({
           <TopicItem
             key={idx}
             topic={getTopicNode(idx).text}
-            onClick={() => onClick(idx)}
+            onClick={() => onTopicClick(idx)}
           />
         )}
       ></Table>

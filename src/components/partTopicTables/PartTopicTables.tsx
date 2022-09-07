@@ -55,11 +55,11 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
     return idx;
   };
 
-  const handleClick = (tableIdx: number, tableItemIdx: number) => {
+  const handleTopicClick = (tableIdx: number, tableItemIdx: number) => {
     if (tableIdx !== focusedIdx) {
       setFocusedIdx(tableIdx);
     } else {
-      props.onClick(tableIdx, tableItemIdx);
+      props.onTopicClick(tableIdx, tableItemIdx);
     }
   };
 
@@ -112,7 +112,11 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
       onTouchMove={handleTouchMove}
     >
       <div className={styles.container}>
-        <TopicTables {...props} focusedIdx={focusedIdx} onClick={handleClick} />
+        <TopicTables
+          {...props}
+          focusedIdx={focusedIdx}
+          onTopicClick={handleTopicClick}
+        />
       </div>
     </div>
   );
