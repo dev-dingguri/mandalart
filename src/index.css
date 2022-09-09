@@ -5,18 +5,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
 
-/* disable pull to refresh & 모바일 브라우저 주소창 고정 */
-body {
+  /* disable pull to refresh */
   overflow: hidden;
 }
-
-#root {
-  height: 100vh;
-  overflow-y: auto;
-}
-/* !disable pull to refresh & 모바일 브라우저 주소창 고정 */
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -25,4 +17,16 @@ code {
 
 * {
   box-sizing: border-box;
+  font-size: 1rem;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  outline: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.react-icons {
+  font-size: inherit;
 }

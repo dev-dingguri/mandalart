@@ -1,22 +1,45 @@
+@value bgColor1 from '../../common/style.css';
+@value bgColor2 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
+@value accentColor1 from '../../common/style.css';
+
 .toggle {
   display: flex;
-  width: 80%;
-}
-
-.allViewButton,
-.partViewButton {
-  width: 50%;
+  width: 100%;
   height: 2.5em;
 }
 
+.allViewButton,
+.partViewButton {  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  background-color: bgColor2;
+  color: fontColor1;
+}
+
 .allViewButton {
-  border-radius: 0.3em 0 0 0.3em;
+  border-radius: 0.3rem 0 0 0.3rem;
+  font-size: 1.5rem;
 }
 
 .partViewButton {
-  border-radius: 0 0.3em 0.3em 0;
+  border-radius: 0 0.3rem 0.3rem 0;
+  font-size: 2.5rem;
+}
+
+.crop {
+  max-width: 1.5rem;
+  max-height: 1.5rem;
+  font-size: inherit;
+  overflow: hidden;
+}
+
+.partViewIco {
+  transform: translate(-0.5rem, -0.5rem);
 }
 
 .selected {
-  background-color: skyblue;
+  background-color: accentColor1;
 }

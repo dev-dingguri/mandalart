@@ -1,5 +1,5 @@
 import Table from '../table/Table';
-import TopicTable, { TopicTableViewType } from '../topicTable/TopicTable';
+import TopicTable from '../topicTable/TopicTable';
 import { TopicNode } from '../../type/TopicNode';
 import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../common/const';
 
@@ -14,11 +14,8 @@ const TopicTables = ({
   getTopicNode,
   onTopicClick,
 }: TopicTablesProps) => {
-  const getViewType = (tableIdx: number): TopicTableViewType => {
-    if (focusedIdx === undefined) {
-      return 'normal';
-    }
-    return focusedIdx === tableIdx ? 'focus' : 'blur';
+  const isFocused = (tableIdx: number): boolean => {
+    return focusedIdx === tableIdx;
   };
 
   return (
@@ -28,11 +25,13 @@ const TopicTables = ({
       itemGenerator={(tableIdx) => (
         <TopicTable
           key={tableIdx}
+          tableIdx={tableIdx}
+          isFocused={isFocused(tableIdx)}
           getTopicNode={(tableItemIdx) => getTopicNode(tableIdx, tableItemIdx)}
-          viewType={getViewType(tableIdx)}
           onTopicClick={(tableItemIdx) => onTopicClick(tableIdx, tableItemIdx)}
         />
       )}
+      space="4px"
     ></Table>
   );
 };

@@ -1,18 +1,71 @@
+@value bgColor1 from '../../common/style.css';
+@value bgColor2 from '../../common/style.css';
+@value borderColor1 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
+@value accentColor1 from '../../common/style.css';
+@value modalBackdropFilter from '../../common/style.css';
+
 .dialog {
   width: 20em;
-  height: 10em;
+  padding: 0;
+  border: 0;  
+  border-radius: 0.5rem;
+  background-color: bgColor1;
+  color: fontColor1;
+}
+
+.dialog::backdrop {
+  backdrop-filter: modalBackdropFilter;
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  padding: 1.5em;  
+}
+
+.title {
+  text-align: center;
+  font-size: 1.3rem;
+  line-height: 1em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.input {
+  height: 2em;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  outline: none;
+  border: 1px solid borderColor1;
+  background-color: bgColor1;
+  color: fontColor1;
+  border-radius: 0.3rem;
+  padding-left: calc(0.25em - 1px);
+}
+
+.combo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 4.5em;
+  height: 1.5em;
+  padding-left: 0.25em;
+  background-color: bgColor1;
+  color: fontColor1;
 }
 
 .buttons {
+  align-self: flex-end;
   display: flex;
-  margin-top: 0.5em;
+  margin-top: 1.25em;
 }
 
 .button {
-  width: 100%;
+  width: 4.5em;
+  height: 2em;
+  margin-left: 0.5em;
+  background-color: bgColor2;
+  color: fontColor1;
+  border-radius: 0.3rem;
 }

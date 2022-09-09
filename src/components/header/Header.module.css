@@ -1,8 +1,61 @@
+@value bgColor1 from '../../common/style.css';
+@value bgColor2 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
+
 .header {
   display: flex;
-  justify-content: space-around;
   align-items: center;
   width: 100%;
   height: 3em;
-  padding: 0.25em 0;
+  padding: 0.5em 0;
+  color: fontColor1;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin: 0;
+}
+
+.right {
+  display: flex;
+  height: 100%;
+  margin-left: auto;
+}
+
+.title {
+  font-size: 1.3rem;
+  line-height: 1em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.signOutButton,
+.signInButton {
+  width: 5em;
+  border-radius: 0.3rem;
+  background-color: bgColor2;
+  color: fontColor1;
+}
+
+.listButton,
+.etcButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.3333333333333333em;
+  height: 1.3333333333333333em;
+  border-radius: 0.3rem;
+  font-size: 1.5rem;
+  padding: 0;
+  background-color: bgColor1;
+  color: fontColor1;
+}
+
+.listButton {
+  margin-right: 0.16666666666666666em;
+}
+.etcButton {
+  margin-left: 0.16666666666666666em;
 }

@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
+import Button from '../button/Button';
 import Dialog from '../dialog/Dialog';
 import styles from './TopicEditor.module.css';
+import { BsFillCaretDownFill } from 'react-icons/bs';
 
 type TopicEditorProps = {
   isShow: boolean;
@@ -32,15 +34,24 @@ const TopicEditor = ({ isShow, text, onClose, onEnter }: TopicEditorProps) => {
       onEnter={handleEnter}
     >
       <div className={styles.container}>
-        <p>내용을 입력하세요.</p>
-        <input ref={inputRef} type="text" />
+        <h1 className={styles.title}>Topic</h1>
+        <input
+          ref={inputRef}
+          className={styles.input}
+          type="text"
+          placeholder="Please enter your content."
+        />
+        <button className={styles.combo}>
+          <span>doing </span>
+          <BsFillCaretDownFill />
+        </button>
         <div className={styles.buttons}>
-          <button className={styles.button} onClick={handleEnter}>
-            확인
-          </button>
-          <button className={styles.button} onClick={onClose}>
-            취소
-          </button>
+          <Button className={styles.button} onClick={onClose}>
+            cancel
+          </Button>
+          <Button className={styles.button} onClick={handleEnter}>
+            save
+          </Button>
         </div>
       </div>
     </Dialog>

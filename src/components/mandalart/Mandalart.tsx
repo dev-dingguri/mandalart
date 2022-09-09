@@ -41,9 +41,20 @@ const Mandalart = () => {
         <h1 className={styles.loading}>Loading...</h1>
       ) : (
         <section className={styles.mandalart}>
-          <Header user={user} />
-          <TopicsView isAllView={isAllView} user={user} />
-          <TopicsViewTypeToggle isAllView={isAllView} onToggle={(isAllView) => setIsAllView(isAllView)} />
+          <div className={styles.header}>
+            <Header user={user} />
+          </div>
+          <div className={styles.scrollArea}>
+            <div className={styles.container}>
+              <TopicsView isAllView={isAllView} user={user} />
+              <div className={styles.bottom}>
+                <TopicsViewTypeToggle
+                  isAllView={isAllView}
+                  onToggle={(isAllView) => setIsAllView(isAllView)}
+                />
+              </div>
+            </div>
+          </div>
         </section>
       )}
     </>

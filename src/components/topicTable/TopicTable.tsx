@@ -4,54 +4,58 @@ import TopicItem from '../topicItem/TopicItem';
 import { TopicNode } from '../../type/TopicNode';
 import styles from './TopicTable.module.css';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
-import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '../../common/const';
-
-export type TopicTableViewType = 'normal' | 'focus' | 'blur';
+import {
+  TABLE_ROW_SIZE,
+  TABLE_COL_SIZE,
+  TABLE_CENTER_IDX,
+} from '../../common/const';
 
 type TopicTableProps = {
-  viewType?: TopicTableViewType;
+  tableIdx: number;
+  isFocused?: boolean;
   getTopicNode: (idx: number) => TopicNode;
   onTopicClick: (idx: number) => void;
 };
 
 const TopicTable = ({
-  viewType = 'normal',
+  tableIdx,
+  isFocused = false,
   getTopicNode,
   onTopicClick,
 }: TopicTableProps) => {
   const topicTableRef = useRef<HTMLDivElement>(null);
   const loadedRef = useRef(false);
 
-  const getClassName = () => {
-    switch (viewType) {
-      case 'normal':
-        return styles.normal;
-      case 'focus':
-        return styles.focus;
-      case 'blur':
-        return styles.blur;
-      default:
-        throw new Error(`not support viewType: ${viewType}`);
+  const isAccent = (tableItemIdx: number) => {
+    if (tableIdx === TABLE_CENTER_IDX) {
+      return tableItemIdx !== TABLE_CENTER_IDX;
+    } else {
+      return tableItemIdx === TABLE_CENTER_IDX;
     }
   };
 
   useEffect(() => {
-    const topicTable = topicTableRef.current!;
-    if (viewType === 'focus') {
-      scrollIntoView(topicTable, {
-        behavior: loadedRef.current ? 'smooth' : 'auto',
-        block: 'center',
-        inline: 'center',
-      });
-    }
+    const scrollCenterIfFocus = (behavior: ScrollBehavior) => {
+      if (isFocused) {
+        const topicTable = topicTableRef.current!;
+        scrollIntoView(topicTable, {
+          behavior: behavior,
+          block: 'center',
+          inline: 'center',
+        });
+      }
+    };
+    const handleResize = () => scrollCenterIfFocus('auto');
+
+    scrollCenterIfFocus(loadedRef.current ? 'smooth' : 'auto');
     loadedRef.current = true;
-  }, [viewType]);
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isFocused]);
 
   return (
-    <div
-      ref={topicTableRef}
-      className={`${styles.topicTable} ${getClassName()}`}
-    >
+    <div ref={topicTableRef} className={styles.topicTable}>
       <Table
         rowSize={TABLE_ROW_SIZE}
         colSize={TABLE_COL_SIZE}
@@ -59,9 +63,11 @@ const TopicTable = ({
           <TopicItem
             key={idx}
             topic={getTopicNode(idx).text}
+            isAccent={isAccent(idx)}
             onClick={() => onTopicClick(idx)}
           />
         )}
+        space="2px"
       ></Table>
     </div>
   );

@@ -1,12 +1,77 @@
+@value bgColor1 from '../../common/style.css';
+@value bgColor2 from '../../common/style.css';
+@value borderColor1 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
+@value fontColor2 from '../../common/style.css';
+@value modalBackdropFilter from '../../common/style.css';
+
 .dialog {
   width: 20em;
+  padding: 0;
+  border: 0;  
+  border-radius: 0.3rem;
+  background-color: bgColor1;
+  color: fontColor1;
+}
+
+.dialog::backdrop {
+  backdrop-filter: modalBackdropFilter;
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
-.close {
-  align-self: flex-end;
+.contents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2em 1.5em;
+}
+
+.closeButton {
+  display: flex;  
+  justify-content: center;
+  align-items: center;  
+  width: 2em;
+  height: 2em;
+  border-radius: 0.3rem;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  background-color: bgColor1;
+  color: fontColor1;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.3rem;
+  line-height: 1em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.message {
+  text-align: center; 
+  vertical-align: middle;
+  margin-top: 0.75em;
+  margin-bottom: 1.25em;
+  color: fontColor2;
+}
+
+.signInButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3em;
+  border-radius: 0.3rem;
+  background-color: bgColor2;
+  color: fontColor1;
+}
+
+.logo {
+  width: 1.1em;
+  margin-right: 0.5em;
 }

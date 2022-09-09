@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PartTopicTables from '../partTopicTables/PartTopicTables';
 import TopicTables, { TopicTablesProps } from '../topicTables/TopicTables';
 import {
@@ -130,11 +130,13 @@ const TopicsView = ({ isAllView, user }: TopicsViewProps) => {
   return (
     <>
       <section className={styles.topicsView}>
-        {isAllView ? (
-          <TopicTables {...topicTablesProps} />
-        ) : (
-          <PartTopicTables {...topicTablesProps} />
-        )}
+        <div className={styles.container}>
+          {isAllView ? (
+            <TopicTables {...topicTablesProps} />
+          ) : (
+            <PartTopicTables {...topicTablesProps} />
+          )}
+        </div>
       </section>
       <TopicEditor
         isShow={isShowEditor()}

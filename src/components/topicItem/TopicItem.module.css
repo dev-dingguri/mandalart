@@ -1,20 +1,24 @@
+@value bgColor1 from '../../common/style.css';
+@value bgColor2 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
+@value accentColor1 from '../../common/style.css';
+
 .topicItem {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative; /* 반응형 정사각형 */
-  width: 100%;
-  height: 100%;
-  border: 1px solid black; /* test */
+  background-color: bgColor2;
+  color: fontColor1;
 }
 
-.topicItem::after {
-  padding-bottom: 100%; /* 반응형 정사각형 */
+.topicItem.accent {
+  background-color: accentColor1;
 }
 
-.text {
-  position: absolute; /* 반응형 정사각형 */
-  
+.text { 
+  font-size: 0.75rem;
+  text-align: center;
+  margin: 0;
   /* 텍스트가 영역을 벗어나지 않도록 처리 */
   /* 가로 */
   word-break: break-all;
@@ -24,10 +28,28 @@
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  /* !텍스트가 영역을 벗어나지 않도록 처리 */
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (min-width: 30rem) {
   .text {
-    font-size: 0.7rem;
+    font-size: 1rem;
   }
 }
+
+/* 반응형 정사각형 */
+.topicItem {
+  position: relative;
+  width: 100%;
+}
+
+.topicItem::after {
+  content: '';
+  display: block;
+  padding-bottom: 100%;
+}
+
+.text {
+  position: absolute;
+}
+/* !반응형 정사각형 */
