@@ -4,6 +4,7 @@ import styles from './Mandalart.module.css';
 import { User } from 'firebase/auth';
 import authService from '../../service/authService';
 import Header from '../header/Header';
+import TopicsViewTypeToggle from '../topicsViewTypeToggle/TopicsViewTypeToggle';
 
 const Mandalart = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -42,20 +43,7 @@ const Mandalart = () => {
         <section className={styles.mandalart}>
           <Header user={user} />
           <TopicsView isAllView={isAllView} user={user} />
-          <div className="viewType">
-            <button
-              className={styles.viewTypeButton}
-              onClick={() => setIsAllView(true)}
-            >
-              all
-            </button>
-            <button
-              className={styles.viewTypeButton}
-              onClick={() => setIsAllView(false)}
-            >
-              part
-            </button>
-          </div>
+          <TopicsViewTypeToggle isAllView={isAllView} onToggle={(isAllView) => setIsAllView(isAllView)} />
         </section>
       )}
     </>

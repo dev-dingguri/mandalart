@@ -1,0 +1,22 @@
+.toggle {
+  display: flex;
+  width: 80%;
+}
+
+.allViewButton,
+.partViewButton {
+  width: 50%;
+  height: 2.5em;
+}
+
+.allViewButton {
+  border-radius: 0.3em 0 0 0.3em;
+}
+
+.partViewButton {
+  border-radius: 0 0.3em 0.3em 0;
+}
+
+.selected {
+  background-color: skyblue;
+}
