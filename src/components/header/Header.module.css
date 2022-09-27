@@ -31,8 +31,7 @@
   margin: 0;
 }
 
-.signOutButton,
-.signInButton {
+.signButton {
   width: 5em;
   border-radius: 0.3rem;
   background-color: bgColor2;

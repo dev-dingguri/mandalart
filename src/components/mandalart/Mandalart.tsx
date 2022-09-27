@@ -5,11 +5,18 @@ import { User } from 'firebase/auth';
 import authService from '../../service/authService';
 import Header from '../header/Header';
 import TopicsViewTypeToggle from '../topicsViewTypeToggle/TopicsViewTypeToggle';
+import SignInModal from '../signInModal/SignInModal';
 
 const Mandalart = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isAllView, setIsAllView] = useState(true);
+  const [isShowSignInModal, setIsShowSignInModal] = useState(false);
+
+  const showSignInModal = () => setIsShowSignInModal(true);
+  const hideSignInModal = () => setIsShowSignInModal(false);
+  const handleSignIn = (providerid: string) => authService.signIn(providerid);
+  const handleSignOut = () => authService.signOut();
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -40,22 +47,33 @@ const Mandalart = () => {
       {isLoading ? (
         <h1 className={styles.loading}>Loading...</h1>
       ) : (
-        <section className={styles.mandalart}>
-          <div className={styles.header}>
-            <Header user={user} />
-          </div>
-          <div className={styles.scrollArea}>
-            <div className={styles.container}>
-              <TopicsView isAllView={isAllView} user={user} />
-              <div className={styles.bottom}>
-                <TopicsViewTypeToggle
-                  isAllView={isAllView}
-                  onToggle={(isAllView) => setIsAllView(isAllView)}
-                />
+        <>
+          <section className={styles.mandalart}>
+            <div className={styles.header}>
+              <Header
+                isSignIn={user !== null}
+                onSignInClick={showSignInModal}
+                onSignOutClick={handleSignOut}
+              />
+            </div>
+            <div className={styles.scrollArea}>
+              <div className={styles.container}>
+                <TopicsView isAllView={isAllView} user={user} />
+                <div className={styles.bottom}>
+                  <TopicsViewTypeToggle
+                    isAllView={isAllView}
+                    onToggle={(isAllView) => setIsAllView(isAllView)}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+          <SignInModal
+            isShow={isShowSignInModal}
+            onClose={hideSignInModal}
+            onSignIn={handleSignIn}
+          />
+        </>
       )}
     </>
   );
