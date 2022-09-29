@@ -3,7 +3,7 @@
 @value borderColor1 from '../../common/style.css';
 @value fontColor1 from '../../common/style.css';
 @value fontColor2 from '../../common/style.css';
-@value modalBackdropFilter from '../../common/style.css';
+@value backdropFilter from '../../common/style.css';
 
 .dialog {
   width: 20em;
@@ -15,7 +15,7 @@
 }
 
 .dialog::backdrop {
-  backdrop-filter: modalBackdropFilter;
+  backdrop-filter: backdropFilter;
 }
 
 .container {

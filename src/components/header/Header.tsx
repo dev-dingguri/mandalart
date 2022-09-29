@@ -7,9 +7,17 @@ type HeaderProps = {
   isSignIn: boolean;
   onSignInClick: () => void;
   onSignOutClick: () => void;
+  onAsideClick: () => void;
+  onEtcClick: () => void;
 };
 
-const Header = ({ isSignIn, onSignInClick, onSignOutClick }: HeaderProps) => {
+const Header = ({
+  isSignIn,
+  onSignInClick,
+  onSignOutClick,
+  onAsideClick,
+  onEtcClick,
+}: HeaderProps) => {
   const signButton = isSignIn ? (
     <Button className={styles.signButton} onClick={onSignOutClick}>
       sign out
@@ -20,22 +28,20 @@ const Header = ({ isSignIn, onSignInClick, onSignOutClick }: HeaderProps) => {
     </Button>
   );
   return (
-    <>
-      <header className={styles.header}>
-        <div className={styles.left}>
-          <Button className={styles.listButton}>
-            <BsList />
-          </Button>
-          <h1 className={styles.title}>Mandalart</h1>
-        </div>
-        <div className={styles.right}>
-          {signButton}
-          <Button className={styles.etcButton}>
-            <BsThreeDots />
-          </Button>
-        </div>
-      </header>
-    </>
+    <header className={styles.header}>
+      <div className={styles.left}>
+        <Button className={styles.asideButton} onClick={onAsideClick}>
+          <BsList />
+        </Button>
+        <h1 className={styles.title}>Mandalart</h1>
+      </div>
+      <div className={styles.right}>
+        {signButton}
+        <Button className={styles.etcButton} onClick={onEtcClick}>
+          <BsThreeDots />
+        </Button>
+      </div>
+    </header>
   );
 };
 

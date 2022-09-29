@@ -10,4 +10,4 @@
 @value buttonActiveEffectColor: #b5b5b533;
 
 /* etc */
-@value modalBackdropFilter: brightness(90%) blur(2px);
+@value backdropFilter: brightness(120%) blur(2px);

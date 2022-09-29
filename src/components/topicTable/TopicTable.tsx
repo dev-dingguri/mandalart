@@ -24,7 +24,7 @@ const TopicTable = ({
   onTopicClick,
 }: TopicTableProps) => {
   const topicTableRef = useRef<HTMLDivElement>(null);
-  const loadedRef = useRef(false);
+  const isLoadedRef = useRef(false);
 
   const isAccent = (tableItemIdx: number) => {
     if (tableIdx === TABLE_CENTER_IDX) {
@@ -47,8 +47,8 @@ const TopicTable = ({
     };
     const handleResize = () => scrollCenterIfFocus('auto');
 
-    scrollCenterIfFocus(loadedRef.current ? 'smooth' : 'auto');
-    loadedRef.current = true;
+    scrollCenterIfFocus(isLoadedRef.current ? 'smooth' : 'auto');
+    isLoadedRef.current = true;
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);

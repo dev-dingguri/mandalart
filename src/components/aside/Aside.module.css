@@ -1,0 +1,163 @@
+@value bgColor1 from '../../common/style.css';
+@value bgColor2 from '../../common/style.css';
+@value borderColor1 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
+@value fontColor2 from '../../common/style.css';
+@value buttonHoverEffectColor from '../../common/style.css';
+@value buttonActiveEffectColor from '../../common/style.css';
+@value backdropFilter from '../../common/style.css';
+
+@value mobileAsideWidth: 70%;
+
+.container {
+  position: fixed;
+  display: flex;
+  width: 0;
+  height: 100%;
+  color: fontColor1;
+}
+
+.container.show {
+  width: 100%;
+  backdrop-filter: backdropFilter;
+}
+
+.aside {
+  position: fixed;
+  left: calc(mobileAsideWidth * -1);
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  width: mobileAsideWidth;
+  height: 100%;
+  background-color: bgColor1;
+  transition: all 300ms ease-out;
+}
+
+.aside.show {
+  transform: translateX(100%);
+}
+
+.outside {
+  width: 100%;
+}
+
+@media screen and (min-width: 30rem) {
+  /* 30 * 0.7 = 21*/
+  @value asideWidth: 21rem;
+  .aside {
+    left: calc(asideWidth * -1);
+    width: asideWidth;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 3em;
+  padding: 0 1em;
+}
+
+.title {
+  font-size: 1.3rem;
+  line-height: 1em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.list {
+  list-style: none;
+  width: 100%;
+  margin: 0;
+  padding: 0.25em 0.5em;
+  border-top: 1px solid borderColor1;
+  border-bottom: 1px solid borderColor1;
+  overflow: auto;
+}
+
+/* scrollbar */
+/* Firefox */
+.list {
+  scrollbar-width: thin;
+  scrollbar-color: bgColor2 bgColor1;
+}
+/* !Firefox */
+/* Safari and Chrome */
+.list {
+  overflow: overlay;
+}
+
+.list::-webkit-scrollbar {
+  background-color: bgColor1;
+  width: 6px;
+}
+
+.list::-webkit-scrollbar-thumb {  
+  background-color: bgColor2;
+  border-radius: 3px;
+}
+/* !Safari and Chrome */
+/* !scrollbar */
+
+.item {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  height: 2em;
+  line-height: 2em;
+  padding: 0 0.5em;
+  border-radius: 0.3rem;
+}
+
+.item + .item {
+  margin-top: 0.25em;
+}
+
+.item p {
+  margin: 0;
+  margin-left: 0.5em;
+}
+
+.closeButton,
+.etcButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 0.3rem;
+  padding: 0;
+  background-color: transparent;
+  color: fontColor1;
+  margin-left: auto;
+}
+
+.newButton {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  height: 2em;
+  line-height: 2em;
+  padding: 0 0.5em;
+  margin: 0.25em 0.5em;
+  border-radius: 0.3rem;
+  background-color: transparent;
+  color: fontColor2;
+}
+
+.newButton p {
+  margin: 0;
+  margin-left: 0.5em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item:hover {
+    box-shadow: inset 0 0 0 10em buttonHoverEffectColor;
+  }
+}
+
+.item:active {
+  box-shadow: inset 0 0 0 10em buttonActiveEffectColor;
+}

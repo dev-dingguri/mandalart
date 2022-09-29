@@ -6,12 +6,17 @@ import authService from '../../service/authService';
 import Header from '../header/Header';
 import TopicsViewTypeToggle from '../topicsViewTypeToggle/TopicsViewTypeToggle';
 import SignInModal from '../signInModal/SignInModal';
+import Aside from '../aside/Aside';
 
 const Mandalart = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isAllView, setIsAllView] = useState(true);
+  const [isShowAside, setIsShowAside] = useState(false);
   const [isShowSignInModal, setIsShowSignInModal] = useState(false);
+
+  const showAside = () => setIsShowAside(true);
+  const hideAside = () => setIsShowAside(false);
 
   const showSignInModal = () => setIsShowSignInModal(true);
   const hideSignInModal = () => setIsShowSignInModal(false);
@@ -54,6 +59,8 @@ const Mandalart = () => {
                 isSignIn={user !== null}
                 onSignInClick={showSignInModal}
                 onSignOutClick={handleSignOut}
+                onAsideClick={showAside}
+                onEtcClick={() => {}}
               />
             </div>
             <div className={styles.scrollArea}>
@@ -67,6 +74,7 @@ const Mandalart = () => {
                 </div>
               </div>
             </div>
+            <Aside isShow={isShowAside} onClose={hideAside} />
           </section>
           <SignInModal
             isShow={isShowSignInModal}
