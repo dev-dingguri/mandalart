@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import styles from './Dialog.module.css';
 
 type DialogProps = {
   isShow: boolean;
@@ -65,7 +66,7 @@ const Dialog = ({
   }, [handleKey]);
 
   return (
-    <dialog className={className} ref={modalRef}>
+    <dialog className={`${styles.dialog} ${className}`} ref={modalRef}>
       {children}
     </dialog>
   );

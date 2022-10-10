@@ -1,0 +1,5 @@
+@value popupShadow from '../../common/style.css';
+
+.dialog {
+  box-shadow: popupShadow;
+}
