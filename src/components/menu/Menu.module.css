@@ -1,0 +1,11 @@
+.container {
+  visibility: hidden;
+}
+
+.container.show {
+  visibility: visible;
+}
+
+.menu {
+  position: fixed;
+}

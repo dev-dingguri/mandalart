@@ -1,5 +1,5 @@
 @value bgColor1 from '../../common/style.css';
-@value bgColor2 from '../../common/style.css';
+@value bgColor3 from '../../common/style.css';
 @value borderColor1 from '../../common/style.css';
 @value fontColor1 from '../../common/style.css';
 @value fontColor2 from '../../common/style.css';
@@ -8,8 +8,8 @@
 .dialog {
   width: 20em;
   padding: 0;
-  border: 0;  
-  border-radius: 0.3rem;
+  border: 0;
+  border-radius: 5px;
   background-color: bgColor1;
   color: fontColor1;
 }
@@ -32,12 +32,12 @@
 }
 
 .closeButton {
-  display: flex;  
+  display: flex;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
   width: 2em;
   height: 2em;
-  border-radius: 0.3rem;
+  border-radius: 5px;
   position: absolute;
   top: 0.5em;
   right: 0.5em;
@@ -54,8 +54,8 @@
 }
 
 .message {
-  text-align: center; 
-  vertical-align: middle;
+  text-align: center;
+  vertical-align: mandalartIddle;
   margin-top: 0.75em;
   margin-bottom: 1.25em;
   color: fontColor2;
@@ -66,8 +66,8 @@
   justify-content: center;
   align-items: center;
   height: 3em;
-  border-radius: 0.3rem;
-  background-color: bgColor2;
+  border-radius: 5px;
+  background-color: bgColor3;
   color: fontColor1;
 }
 

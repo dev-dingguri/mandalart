@@ -7,9 +7,15 @@ import Header from '../header/Header';
 import TopicsViewTypeToggle from '../topicsViewTypeToggle/TopicsViewTypeToggle';
 import SignInModal from '../signInModal/SignInModal';
 import Aside from '../aside/Aside';
+import mandalartRepository from '../../service/mandalartRepository';
+import { MandalartMetadata } from '../../type/MandalartMetadata';
 
 const Mandalart = () => {
   const [user, setUser] = useState<User | null>(null);
+  const [metadataMap, setMetadataMap] = useState(
+    new Map<string, MandalartMetadata>()
+  );
+  const [selectedMandalartId, setSelectedMandalartId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isAllView, setIsAllView] = useState(true);
   const [isShowAside, setIsShowAside] = useState(false);
@@ -25,7 +31,6 @@ const Mandalart = () => {
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
-      console.log(`onAuthStateChanged user=${user?.email}`);
       setUser(user);
     });
   }, []);
@@ -47,6 +52,25 @@ const Mandalart = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      const stopSync = mandalartRepository.syncMetadata(
+        user.uid,
+        (metadataMap) => {
+          setMetadataMap(metadataMap);
+          if (!metadataMap.has(selectedMandalartId)) {
+            const lastId = Array.from(metadataMap.keys()).pop();
+            console.log(lastId);
+            setSelectedMandalartId(lastId ? lastId : '');
+          }
+        }
+      );
+      return () => {
+        stopSync();
+      };
+    }
+  }, [user, selectedMandalartId]);
+
   return (
     <>
       {isLoading ? (
@@ -65,7 +89,12 @@ const Mandalart = () => {
             </div>
             <div className={styles.scrollArea}>
               <div className={styles.container}>
-                <TopicsView isAllView={isAllView} user={user} />
+                {/* mandalart title */}
+                <TopicsView
+                  isAllView={isAllView}
+                  user={user}
+                  mandalartId={selectedMandalartId} // todo: 유효하지 않은(e.g. 삭제) mandalartId가 입력될때 처리
+                />
                 <div className={styles.bottom}>
                   <TopicsViewTypeToggle
                     isAllView={isAllView}
@@ -74,7 +103,31 @@ const Mandalart = () => {
                 </div>
               </div>
             </div>
-            <Aside isShow={isShowAside} onClose={hideAside} />
+            <Aside
+              isShow={isShowAside}
+              mandalartMetadataMap={metadataMap}
+              selectedMandalartId={selectedMandalartId}
+              onSelectMandalart={(mandalartId) =>
+                setSelectedMandalartId(mandalartId)
+              }
+              onDeleteMandalart={(mandalartId) => {
+                user &&
+                  mandalartRepository.removeMandalart(user.uid, mandalartId);
+              }}
+              onRenameMandalart={(mandalartId, name) => {
+                user &&
+                  mandalartRepository.saveMetadata(user.uid, mandalartId, {
+                    title: name,
+                  });
+              }}
+              onNewMandalart={() => {
+                const mandalartId = user
+                  ? mandalartRepository.newMandalart(user.uid)
+                  : null;
+                mandalartId && setSelectedMandalartId(mandalartId);
+              }}
+              onClose={hideAside}
+            />
           </section>
           <SignInModal
             isShow={isShowSignInModal}

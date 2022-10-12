@@ -1,0 +1,94 @@
+@value bgColor2 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
+@value buttonHoverEffectColor from '../../common/style.css';
+@value buttonActiveEffectColor from '../../common/style.css';
+@value popupShadow from '../../common/style.css';
+
+.item {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  height: 2em;
+  line-height: 2em;
+  padding: 0 0.5em;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.item + .item {
+  margin-top: 0.25em;
+}
+
+.item.selected {
+  box-shadow: inset 0 0 0 10em buttonActiveEffectColor;
+}
+
+.item p {
+  /* 텍스트가 영역을 벗어나지 않도록 처리 */
+  /* 가로 */
+  word-break: break-all;
+  /* 세로 */
+  line-height: 1em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  /* !텍스트가 영역을 벗어나지 않도록 처리 */
+  margin: 0;
+  margin-left: 0.5em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item:hover {
+    box-shadow: inset 0 0 0 10em buttonHoverEffectColor;
+  }
+}
+
+.item:active {
+  box-shadow: inset 0 0 0 10em buttonActiveEffectColor;
+}
+
+.etcButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 5px;
+  padding: 0;
+  background-color: transparent;
+  color: fontColor1;
+  margin-left: auto;
+}
+
+/* menu */
+
+.menu {
+  background-color: bgColor2;
+  padding: 0.5em 0.3em;
+  border-radius: 5px;
+  box-shadow: popupShadow;
+}
+
+.menu li {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  width: 6em;
+  height: 2em;
+  padding: 0 0.7em;
+  border-radius: 5px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .menu li:hover {
+    box-shadow: inset 0 0 0 10em buttonHoverEffectColor;
+  }
+}
+
+.menu li:active {
+  box-shadow: inset 0 0 0 10em buttonActiveEffectColor;
+}
+
+/* !menu */

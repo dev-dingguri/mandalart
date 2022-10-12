@@ -27,6 +27,10 @@ button {
   cursor: pointer;
 }
 
+li {
+  list-style: none;
+}
+
 .react-icons {
   font-size: inherit;
 }

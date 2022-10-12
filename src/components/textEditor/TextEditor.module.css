@@ -44,17 +44,6 @@
   padding-left: calc(0.25em - 1px);
 }
 
-.combo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 4.5em;
-  height: 1.5em;
-  padding-left: 0.25em;
-  background-color: bgColor1;
-  color: fontColor1;
-}
-
 .buttons {
   align-self: flex-end;
   display: flex;

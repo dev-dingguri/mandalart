@@ -1,13 +1,14 @@
 /* colors */
 @value bgColor1: #272727;
-@value bgColor2: #494949;
+@value bgColor2: #323232;
+@value bgColor3: #494949;
 @value borderColor1: #494949;
 @value fontColor1: #EEF0F2;
 @value fontColor2: #BCBEBF;
 @value accentColor1: #1670FC;
 @value accentColor2: #0046C8;
-@value buttonHoverEffectColor: #b5b5b51a;
-@value buttonActiveEffectColor: #b5b5b533;
+@value buttonHoverEffectColor: rgba(181, 181, 181, 0.1);
+@value buttonActiveEffectColor: rgba(181, 181, 181, 0.2);
 
 /* etc */
 @value backdropFilter: brightness(120%) blur(2px);

@@ -1,5 +1,5 @@
 @value bgColor1 from '../../common/style.css';
-@value bgColor2 from '../../common/style.css';
+@value bgColor3 from '../../common/style.css';
 @value fontColor1 from '../../common/style.css';
 @value accentColor1 from '../../common/style.css';
 
@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: bgColor2;
+  background-color: bgColor3;
   color: fontColor1;
 }
 

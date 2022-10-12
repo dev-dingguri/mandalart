@@ -1,5 +1,5 @@
 @value bgColor1 from '../../common/style.css';
-@value bgColor2 from '../../common/style.css';
+@value bgColor3 from '../../common/style.css';
 @value borderColor1 from '../../common/style.css';
 @value fontColor1 from '../../common/style.css';
 @value fontColor2 from '../../common/style.css';
@@ -10,15 +10,12 @@
 @value mobileAsideWidth: 70%;
 
 .container {
-  position: fixed;
-  display: flex;
-  width: 0;
-  height: 100%;
-  color: fontColor1;
+  visibility: hidden;
+  transition: backdrop-filter 200ms ease-out, visibility 200ms ease-out;
 }
 
 .container.show {
-  width: 100%;
+  visibility: visible;
   backdrop-filter: backdropFilter;
 }
 
@@ -30,16 +27,13 @@
   flex-direction: column;
   width: mobileAsideWidth;
   height: 100%;
+  color: fontColor1;
   background-color: bgColor1;
-  transition: all 300ms ease-out;
+  transition: transform 200ms ease-out;
 }
 
 .aside.show {
   transform: translateX(100%);
-}
-
-.outside {
-  width: 100%;
 }
 
 @media screen and (min-width: 30rem) {
@@ -66,68 +60,13 @@
   margin: 0;
 }
 
-.list {
-  list-style: none;
-  width: 100%;
-  margin: 0;
-  padding: 0.25em 0.5em;
-  border-top: 1px solid borderColor1;
-  border-bottom: 1px solid borderColor1;
-  overflow: auto;
-}
-
-/* scrollbar */
-/* Firefox */
-.list {
-  scrollbar-width: thin;
-  scrollbar-color: bgColor2 bgColor1;
-}
-/* !Firefox */
-/* Safari and Chrome */
-.list {
-  overflow: overlay;
-}
-
-.list::-webkit-scrollbar {
-  background-color: bgColor1;
-  width: 6px;
-}
-
-.list::-webkit-scrollbar-thumb {  
-  background-color: bgColor2;
-  border-radius: 3px;
-}
-/* !Safari and Chrome */
-/* !scrollbar */
-
-.item {
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  width: 100%;
-  height: 2em;
-  line-height: 2em;
-  padding: 0 0.5em;
-  border-radius: 0.3rem;
-}
-
-.item + .item {
-  margin-top: 0.25em;
-}
-
-.item p {
-  margin: 0;
-  margin-left: 0.5em;
-}
-
-.closeButton,
-.etcButton {
+.closeButton {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 1.5em;
   height: 1.5em;
-  border-radius: 0.3rem;
+  border-radius: 5px;
   padding: 0;
   background-color: transparent;
   color: fontColor1;
@@ -142,7 +81,7 @@
   line-height: 2em;
   padding: 0 0.5em;
   margin: 0.25em 0.5em;
-  border-radius: 0.3rem;
+  border-radius: 5px;
   background-color: transparent;
   color: fontColor2;
 }
@@ -150,14 +89,4 @@
 .newButton p {
   margin: 0;
   margin-left: 0.5em;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .item:hover {
-    box-shadow: inset 0 0 0 10em buttonHoverEffectColor;
-  }
-}
-
-.item:active {
-  box-shadow: inset 0 0 0 10em buttonActiveEffectColor;
 }

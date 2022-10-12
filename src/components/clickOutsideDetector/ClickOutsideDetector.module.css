@@ -1,0 +1,12 @@
+.detector {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.outside {
+  width: 100%;
+}

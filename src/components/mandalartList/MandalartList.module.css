@@ -1,0 +1,36 @@
+@value bgColor1 from '../../common/style.css';
+@value bgColor3 from '../../common/style.css';
+@value borderColor1 from '../../common/style.css';
+
+.list {
+  width: 100%;
+  margin: 0;
+  padding: 0.25em 0.5em;
+  border-top: 1px solid borderColor1;
+  border-bottom: 1px solid borderColor1;
+  overflow: auto;
+}
+
+/* scrollbar */
+/* Firefox */
+.list {
+  scrollbar-width: thin;
+  scrollbar-color: bgColor3 bgColor1;
+}
+/* !Firefox */
+/* Safari and Chrome */
+.list {
+  overflow: overlay;
+}
+
+.list::-webkit-scrollbar {
+  background-color: bgColor1;
+  width: 6px;
+}
+
+.list::-webkit-scrollbar-thumb {  
+  background-color: bgColor3;
+  border-radius: 3px;
+}
+/* !Safari and Chrome */
+/* !scrollbar */

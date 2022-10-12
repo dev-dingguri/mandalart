@@ -59,11 +59,13 @@ const Dialog = ({
   );
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKey);
-    return () => {
-      window.removeEventListener('keydown', handleKey);
-    };
-  }, [handleKey]);
+    if (isShow) {
+      window.addEventListener('keydown', handleKey);
+      return () => {
+        window.removeEventListener('keydown', handleKey);
+      };
+    }
+  }, [isShow, handleKey]);
 
   return (
     <dialog className={`${styles.dialog} ${className}`} ref={modalRef}>

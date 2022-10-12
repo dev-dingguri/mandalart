@@ -11,6 +11,7 @@ import TopicEditor from '../topicEditor/TopicEditor';
 import { User } from 'firebase/auth';
 import topicRepository from '../../service/topicRepository';
 import { TABLE_SIZE, TABLE_CENTER_IDX } from '../../common/const';
+import mandalartRepository from '../../service/mandalartRepository';
 
 const STORAGE_KEY_TOPIC_TREE = 'topicTree';
 
@@ -52,9 +53,10 @@ const initialTopicTree = () => {
 type TopicsViewProps = {
   isAllView: boolean;
   user: User | null;
+  mandalartId: string;
 };
 
-const TopicsView = ({ isAllView, user }: TopicsViewProps) => {
+const TopicsView = ({ isAllView, user, mandalartId }: TopicsViewProps) => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
   const [editingTopicPos, setEditingTopicPos] = useState<{
     tableIdx: number;
@@ -69,8 +71,7 @@ const TopicsView = ({ isAllView, user }: TopicsViewProps) => {
 
     // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
     if (user) {
-      console.log('saveTopics');
-      topicRepository.saveTopics(user.uid, newTopicTree);
+      mandalartRepository.saveTopics(user.uid, mandalartId, newTopicTree);
     }
   };
 
@@ -102,20 +103,19 @@ const TopicsView = ({ isAllView, user }: TopicsViewProps) => {
   };
 
   useEffect(() => {
-    if (user) {
-      const stopSync = topicRepository.syncTopics(
+    if (user && mandalartId.length) {
+      const stopSync = mandalartRepository.syncTopics(
         user.uid,
+        mandalartId,
         (topicTree: TopicNode) => {
-          console.log('onUpdate');
           setTopicTree(topicTree);
         }
       );
       return () => {
-        console.log('stopSync');
         stopSync();
       };
     }
-  }, [user]);
+  }, [user, mandalartId]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));

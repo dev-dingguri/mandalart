@@ -1,5 +1,5 @@
 @value bgColor1 from '../../common/style.css';
-@value bgColor2 from '../../common/style.css';
+@value bgColor3 from '../../common/style.css';
 @value borderColor1 from '../../common/style.css';
 
 @value mobileContentsWidth: 90vw;
@@ -68,7 +68,7 @@
 /* Firefox */
 .scrollArea {
   scrollbar-width: thin;
-  scrollbar-color: bgColor2 bgColor1;
+  scrollbar-color: bgColor3 bgColor1;
 }
 /* !Firefox */
 /* Safari and Chrome */
@@ -82,7 +82,7 @@
 }
 
 .scrollArea::-webkit-scrollbar-thumb {  
-  background-color: bgColor2;
+  background-color: bgColor3;
   border-radius: 3px;
 }
 /* !Safari and Chrome */
