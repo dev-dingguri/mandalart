@@ -9,6 +9,48 @@ import SignInModal from '../signInModal/SignInModal';
 import Aside from '../aside/Aside';
 import mandalartRepository from '../../service/mandalartRepository';
 import { MandalartMetadata } from '../../type/MandalartMetadata';
+import {
+  TopicNode,
+  parseTopicNode,
+  cloneTopicNode,
+} from '../../type/TopicNode';
+import {
+  TABLE_SIZE,
+  TABLE_CENTER_IDX,
+  STORAGE_KEY_TOPIC_TREE,
+} from '../../common/const';
+
+const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
+  if (topicTree) {
+    if (topicTree.text !== '') {
+      return true;
+    }
+    if (topicTree.children) {
+      for (let i = 0; i < topicTree.children.length; ++i) {
+        if (isAnyTopicChanged(topicTree.children[i])) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+};
+
+const initialTopicTree = () => {
+  const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
+  return saved
+    ? parseTopicNode(saved)
+    : {
+        text: '',
+        children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
+          text: '',
+          children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
+            text: '',
+            children: [],
+          })),
+        })),
+      };
+};
 
 const Mandalart = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -16,6 +58,7 @@ const Mandalart = () => {
     new Map<string, MandalartMetadata>()
   );
   const [selectedMandalartId, setSelectedMandalartId] = useState('');
+  const [topicTree, setTopicTree] = useState(initialTopicTree);
   const [isLoading, setIsLoading] = useState(false);
   const [isAllView, setIsAllView] = useState(true);
   const [isShowAside, setIsShowAside] = useState(false);
@@ -40,8 +83,16 @@ const Mandalart = () => {
     authService
       .getRedirectResult()
       .then((userCred) => {
-        if (userCred?.user) {
+        const user = userCred?.user;
+        if (user) {
           console.log('login success');
+          if (isAnyTopicChanged(topicTree)) {
+            const mandalartId = mandalartRepository.newMandalart(user.uid);
+            if (mandalartId) {
+              mandalartRepository.saveTopics(user.uid, mandalartId, topicTree);
+              setSelectedMandalartId(mandalartId);
+            }
+          }
         }
       })
       .catch((e) => {
@@ -71,6 +122,25 @@ const Mandalart = () => {
     }
   }, [user, selectedMandalartId]);
 
+  useEffect(() => {
+    if (user && selectedMandalartId.length) {
+      const stopSync = mandalartRepository.syncTopics(
+        user.uid,
+        selectedMandalartId,
+        (topicTree: TopicNode) => {
+          setTopicTree(topicTree);
+        }
+      );
+      return () => {
+        stopSync();
+      };
+    }
+  }, [user, selectedMandalartId]);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
+  }, [topicTree]);
+
   return (
     <>
       {isLoading ? (
@@ -92,8 +162,18 @@ const Mandalart = () => {
                 {/* mandalart title */}
                 <TopicsView
                   isAllView={isAllView}
-                  user={user}
-                  mandalartId={selectedMandalartId} // todo: 유효하지 않은(e.g. 삭제) mandalartId가 입력될때 처리
+                  topicTree={topicTree}
+                  onTopicTreeChange={(topicTree) => {
+                    setTopicTree(topicTree);
+                    // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
+                    if (user) {
+                      mandalartRepository.saveTopics(
+                        user.uid,
+                        selectedMandalartId,
+                        topicTree
+                      );
+                    }
+                  }}
                 />
                 <div className={styles.bottom}>
                   <TopicsViewTypeToggle

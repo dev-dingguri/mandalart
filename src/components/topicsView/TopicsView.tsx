@@ -1,19 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import PartTopicTables from '../partTopicTables/PartTopicTables';
 import TopicTables, { TopicTablesProps } from '../topicTables/TopicTables';
-import {
-  TopicNode,
-  parseTopicNode,
-  cloneTopicNode,
-} from '../../type/TopicNode';
+import { TopicNode, cloneTopicNode } from '../../type/TopicNode';
 import styles from './TopicsView.module.css';
 import TopicEditor from '../topicEditor/TopicEditor';
-import { User } from 'firebase/auth';
-import topicRepository from '../../service/topicRepository';
-import { TABLE_SIZE, TABLE_CENTER_IDX } from '../../common/const';
+import { TABLE_CENTER_IDX } from '../../common/const';
 import mandalartRepository from '../../service/mandalartRepository';
-
-const STORAGE_KEY_TOPIC_TREE = 'topicTree';
 
 const getTopicNode = (
   topicTree: TopicNode,
@@ -34,30 +26,17 @@ const getTopicNode = (
   return node;
 };
 
-const initialTopicTree = () => {
-  const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
-  return saved
-    ? parseTopicNode(saved)
-    : {
-        text: '',
-        children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-          text: '',
-          children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-            text: '',
-            children: [],
-          })),
-        })),
-      };
-};
-
 type TopicsViewProps = {
   isAllView: boolean;
-  user: User | null;
-  mandalartId: string;
+  topicTree: TopicNode;
+  onTopicTreeChange: (topicTree: TopicNode) => void;
 };
 
-const TopicsView = ({ isAllView, user, mandalartId }: TopicsViewProps) => {
-  const [topicTree, setTopicTree] = useState(initialTopicTree);
+const TopicsView = ({
+  isAllView,
+  topicTree,
+  onTopicTreeChange,
+}: TopicsViewProps) => {
   const [editingTopicPos, setEditingTopicPos] = useState<{
     tableIdx: number;
     tableItemIdx: number;
@@ -67,12 +46,7 @@ const TopicsView = ({ isAllView, user, mandalartId }: TopicsViewProps) => {
     const newTopicTree = cloneTopicNode(topicTree);
     const newTopic = getTopicNode(newTopicTree, tableIdx, tableItemIdx);
     newTopic.text = text;
-    setTopicTree(newTopicTree);
-
-    // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
-    if (user) {
-      mandalartRepository.saveTopics(user.uid, mandalartId, newTopicTree);
-    }
+    onTopicTreeChange(newTopicTree);
   };
 
   const isShowEditor = () => {
@@ -101,25 +75,6 @@ const TopicsView = ({ isAllView, user, mandalartId }: TopicsViewProps) => {
     const { tableIdx, tableItemIdx } = editingTopicPos;
     return getTopicNode(topicTree, tableIdx, tableItemIdx).text;
   };
-
-  useEffect(() => {
-    if (user && mandalartId.length) {
-      const stopSync = mandalartRepository.syncTopics(
-        user.uid,
-        mandalartId,
-        (topicTree: TopicNode) => {
-          setTopicTree(topicTree);
-        }
-      );
-      return () => {
-        stopSync();
-      };
-    }
-  }, [user, mandalartId]);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
-  }, [topicTree]);
 
   const topicTablesProps: TopicTablesProps = {
     getTopicNode: (tableIdx, tableItemIdx) =>
