@@ -1,0 +1,40 @@
+@value bgColor1 from '../../common/style.css';
+@value bgColor3 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
+
+.notice {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: fontColor1;
+  background-color: bgColor1;
+}
+
+.message {
+  font-weight: bold;
+  font-size: 2.5rem;
+  margin: 0;
+  margin-bottom: 0.25em;
+}
+
+.newButton {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  height: 1.5em;
+  font-size: 1.5rem;
+  padding-left: 0.5em;
+  padding-right: 0.75em;
+  border-radius: 5px;
+  background-color: bgColor3;
+  color: fontColor1;
+}
+
+.newButton p {
+  margin: 0;
+  margin-left: 0.25em;
+  font-size: inherit;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Aside.module.css';
-import { BsChevronDoubleLeft, BsPlusLg } from 'react-icons/bs';
+import { BsChevronDoubleLeft, BsPlus } from 'react-icons/bs';
 import Button from '../button/Button';
 import { MandalartMetadata } from '../../type/MandalartMetadata';
 import MandalartList from '../mandalartList/MandalartList';
@@ -57,7 +57,7 @@ const Aside = ({
           onRename={onRenameMandalart}
         />
         <Button className={styles.newButton} onClick={handleNewClick}>
-          <BsPlusLg />
+          <BsPlus />
           <p>new</p>
         </Button>
       </div>

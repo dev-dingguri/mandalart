@@ -19,6 +19,7 @@ import {
   TABLE_CENTER_IDX,
   STORAGE_KEY_TOPIC_TREE,
 } from '../../common/const';
+import NoContentNotice from '../noContentNotice/NoContentNotice';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -172,30 +173,41 @@ const Mandalart = () => {
               />
             </div>
             <div className={styles.scrollArea}>
-              <div className={styles.container}>
-                {/* mandalart title */}
-                <TopicsView
-                  isAllView={isAllView}
-                  topicTree={topicTree}
-                  onTopicTreeChange={(topicTree) => {
-                    setTopicTree(topicTree);
-                    // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
-                    if (user) {
-                      mandalartRepository.saveTopics(
-                        user.uid,
-                        selectedMandalartId,
-                        topicTree
-                      );
-                    }
+              {user && metadataMap.size === 0 ? (
+                <NoContentNotice
+                  onNewMandalart={() => {
+                    const mandalartId = user
+                      ? mandalartRepository.newMandalart(user.uid)
+                      : null;
+                    mandalartId && setSelectedMandalartId(mandalartId);
                   }}
                 />
-                <div className={styles.bottom}>
-                  <TopicsViewTypeToggle
+              ) : (
+                <div className={styles.container}>
+                  {/* mandalart title */}
+                  <TopicsView
                     isAllView={isAllView}
-                    onToggle={(isAllView) => setIsAllView(isAllView)}
+                    topicTree={topicTree}
+                    onTopicTreeChange={(topicTree) => {
+                      setTopicTree(topicTree);
+                      // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
+                      if (user) {
+                        mandalartRepository.saveTopics(
+                          user.uid,
+                          selectedMandalartId,
+                          topicTree
+                        );
+                      }
+                    }}
                   />
+                  <div className={styles.bottom}>
+                    <TopicsViewTypeToggle
+                      isAllView={isAllView}
+                      onToggle={(isAllView) => setIsAllView(isAllView)}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <Aside
               isShow={isShowAside}
