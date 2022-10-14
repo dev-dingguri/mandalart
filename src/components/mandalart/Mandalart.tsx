@@ -70,7 +70,21 @@ const Mandalart = () => {
   const showSignInModal = () => setIsShowSignInModal(true);
   const hideSignInModal = () => setIsShowSignInModal(false);
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
-  const handleSignOut = () => authService.signOut();
+  const handleSignOut = () => {
+    authService.signOut();
+    setMetadataMap(new Map<string, MandalartMetadata>());
+    setSelectedMandalartId('');
+    setTopicTree({
+      text: '',
+      children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
+        text: '',
+        children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
+          text: '',
+          children: [],
+        })),
+      })),
+    });
+  };
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -101,7 +115,7 @@ const Mandalart = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, []);
+  }, [topicTree]);
 
   useEffect(() => {
     if (user) {
