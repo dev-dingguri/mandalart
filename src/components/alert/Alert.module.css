@@ -1,0 +1,40 @@
+@value bgColor1 from '../../common/style.css';
+@value bgColor3 from '../../common/style.css';
+@value borderColor1 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
+@value accentColor1 from '../../common/style.css';
+@value backdropFilter from '../../common/style.css';
+
+.alert {
+  display: flex;
+  flex-direction: column;
+  min-width: 20em;
+  min-height: 5em;
+  padding: 2em 1.5em;
+  border: 0;
+  border-radius: 5px;
+  background-color: bgColor1;
+  color: fontColor1;
+}
+
+.alert::backdrop {
+  backdrop-filter: backdropFilter;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.3rem;
+  line-height: 1em;
+  font-weight: bold;
+  margin: 0;
+}
+
+.okButton {
+  align-self: flex-end;
+  width: 4.5em;
+  height: 2em;
+  margin-left: 0.5em;
+  background-color: bgColor3;
+  color: fontColor1;
+  border-radius: 5px;
+}

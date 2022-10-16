@@ -21,6 +21,7 @@ import {
 } from '../../common/const';
 import NoContentNotice from '../noContentNotice/NoContentNotice';
 import TextEditor from '../textEditor/TextEditor';
+import Alert from '../alert/Alert';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -66,6 +67,8 @@ const Mandalart = () => {
   const [isShowAside, setIsShowAside] = useState(false);
   const [isShowSignInModal, setIsShowSignInModal] = useState(false);
   const [isShowTitleEditor, setIsShowTitleEditor] = useState(false);
+  const [isShowAlert, setIsShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   const showAside = () => setIsShowAside(true);
   const hideAside = () => setIsShowAside(false);
@@ -91,6 +94,15 @@ const Mandalart = () => {
 
   const showTitleEditor = () => setIsShowTitleEditor(true);
   const hideTitleEditor = () => setIsShowTitleEditor(false);
+
+  const showAlert = (message: string) => {
+    setAlertMessage(message);
+    setIsShowAlert(true);
+  };
+  const hideAlert = () => {
+    setAlertMessage('');
+    setIsShowAlert(false);
+  };
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -238,10 +250,14 @@ const Mandalart = () => {
                   });
               }}
               onNewMandalart={() => {
-                const mandalartId = user
-                  ? mandalartRepository.newMandalart(user.uid)
-                  : null;
-                mandalartId && setSelectedMandalartId(mandalartId);
+                if (user) {
+                  const mandalartId = mandalartRepository.newMandalart(
+                    user.uid
+                  );
+                  mandalartId && setSelectedMandalartId(mandalartId);
+                } else {
+                  showAlert('Login is required to add a new mandalart.');
+                }
               }}
               onClose={hideAside}
             />
@@ -266,6 +282,11 @@ const Mandalart = () => {
                 );
               hideTitleEditor();
             }}
+          />
+          <Alert
+            isShow={isShowAlert}
+            message={alertMessage}
+            onClose={hideAlert}
           />
         </>
       )}
