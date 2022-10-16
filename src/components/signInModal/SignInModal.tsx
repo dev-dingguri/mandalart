@@ -13,18 +13,6 @@ type SignInModalProps = {
 };
 
 const SignInModal = ({ isShow, onClose, onSignIn }: SignInModalProps) => {
-  const handleSignIn = (
-    ev: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    const target = ev.currentTarget as HTMLButtonElement;
-    const providerid = target.dataset.providerid;
-    if (providerid) {
-      onSignIn(providerid);
-    } else {
-      throw new Error('no provider id');
-    }
-  };
-
   return (
     <Dialog className={styles.dialog} isShow={isShow} onClose={onClose}>
       <div className={styles.container}>
@@ -39,8 +27,7 @@ const SignInModal = ({ isShow, onClose, onSignIn }: SignInModalProps) => {
           </p>
           <Button
             className={styles.signInButton}
-            data-providerid={ProviderId.GOOGLE}
-            onClick={handleSignIn}
+            onClick={() => onSignIn(ProviderId.GOOGLE)}
           >
             <img className={styles.logo} src={googleIco} alt="google" />
             <span>Sign in with Google</span>

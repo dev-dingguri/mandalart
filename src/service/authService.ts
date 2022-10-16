@@ -1,4 +1,4 @@
-import { firebaseAuth } from './firebase';
+import { firebaseAuth as auth } from './firebase';
 import {
   GoogleAuthProvider,
   User,
@@ -12,19 +12,19 @@ class AuthService {
 
   signIn(providerId: string) {
     const authProvider = this.getProvider(providerId);
-    signInWithRedirect(firebaseAuth, authProvider);
+    signInWithRedirect(auth, authProvider);
   }
 
   signOut() {
-    firebaseAuth.signOut();
+    auth.signOut();
   }
 
   getRedirectResult() {
-    return getRedirectResult(firebaseAuth);
+    return getRedirectResult(auth);
   }
 
   onAuthStateChanged(observer: (user: User | null) => void) {
-    return firebaseAuth.onAuthStateChanged((user) => {
+    return auth.onAuthStateChanged((user) => {
       observer(user);
     });
   }

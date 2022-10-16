@@ -1,18 +1,15 @@
 import { TABLE_SIZE } from './../common/const';
 import { MandalartMetadata } from './../type/MandalartMetadata';
-import { firebaseDatabase } from './firebase';
-import { ref, set, off, remove, onValue, push, child } from 'firebase/database';
+import { firebaseDatabase as db } from './firebase';
+import { ref, set, off, remove, onValue, push } from 'firebase/database';
 import { TopicNode } from '../type/TopicNode';
 
 class MandalartRepository {
   newMandalart(userId: string) {
-    const mandalartId = push(
-      ref(firebaseDatabase, `${userId}/mandalart/metadata`),
-      {
-        title: 'untitled',
-      }
-    ).key;
-    set(ref(firebaseDatabase, `${userId}/mandalart/topics/${mandalartId}`), {
+    const mandalartId = push(ref(db, `${userId}/mandalart/metadata`), {
+      title: 'untitled',
+    }).key;
+    set(ref(db, `${userId}/mandalart/topics/${mandalartId}`), {
       text: '',
       children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
         text: '',
@@ -26,10 +23,8 @@ class MandalartRepository {
   }
 
   removeMandalart(userId: string, mandalartId: string) {
-    remove(
-      ref(firebaseDatabase, `${userId}/mandalart/metadata/${mandalartId}`)
-    );
-    remove(ref(firebaseDatabase, `${userId}/mandalart/topics/${mandalartId}`));
+    remove(ref(db, `${userId}/mandalart/metadata/${mandalartId}`));
+    remove(ref(db, `${userId}/mandalart/topics/${mandalartId}`));
   }
 
   saveMetadata(
@@ -37,17 +32,14 @@ class MandalartRepository {
     mandalartId: string,
     metadata: MandalartMetadata
   ) {
-    set(
-      ref(firebaseDatabase, `${userId}/mandalart/metadata/${mandalartId}`),
-      metadata
-    );
+    set(ref(db, `${userId}/mandalart/metadata/${mandalartId}`), metadata);
   }
 
   syncMetadata(
     userId: string,
     onUpdate: (metadataMap: Map<string, MandalartMetadata>) => void
   ) {
-    const metadataRef = ref(firebaseDatabase, `${userId}/mandalart/metadata`);
+    const metadataRef = ref(db, `${userId}/mandalart/metadata`);
     onValue(metadataRef, (snapshot) => {
       const metadataMap = new Map<string, MandalartMetadata>();
       snapshot.forEach((childSnapshot) => {
@@ -62,14 +54,11 @@ class MandalartRepository {
   }
 
   saveTopics(userId: string, mandalartId: string, topics: TopicNode) {
-    set(
-      ref(firebaseDatabase, `${userId}/mandalart/topics/${mandalartId}`),
-      topics
-    );
+    set(ref(db, `${userId}/mandalart/topics/${mandalartId}`), topics);
   }
 
   removeTopics(userId: string, mandalartId: string) {
-    remove(ref(firebaseDatabase, `${userId}/mandalart/topics/${mandalartId}`));
+    remove(ref(db, `${userId}/mandalart/topics/${mandalartId}`));
   }
 
   syncTopics(
@@ -77,10 +66,7 @@ class MandalartRepository {
     mandalartId: string,
     onUpdate: (topicNode: TopicNode) => void
   ) {
-    const topicsRef = ref(
-      firebaseDatabase,
-      `${userId}/mandalart/topics/${mandalartId}`
-    );
+    const topicsRef = ref(db, `${userId}/mandalart/topics/${mandalartId}`);
     onValue(topicsRef, (snapshot) => {
       const val = snapshot.val();
       val && onUpdate(val);
