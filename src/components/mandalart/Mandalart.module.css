@@ -1,6 +1,7 @@
 @value bgColor1 from '../../common/style.css';
 @value bgColor3 from '../../common/style.css';
 @value borderColor1 from '../../common/style.css';
+@value fontColor1 from '../../common/style.css';
 
 @value mobileContentsWidth: 90vw;
 @value mobileContentsMinWidth: 20em;
@@ -62,6 +63,12 @@
   overflow: auto;
   border-top: 1px solid borderColor1;
   padding-top: 0.5em;
+}
+
+.title {
+  color: fontColor1;
+  font-size: 2rem;
+  margin: 0.25em 0;
 }
 
 /* scrollbar */

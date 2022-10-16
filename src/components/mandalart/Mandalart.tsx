@@ -20,6 +20,7 @@ import {
   STORAGE_KEY_TOPIC_TREE,
 } from '../../common/const';
 import NoContentNotice from '../noContentNotice/NoContentNotice';
+import TextEditor from '../textEditor/TextEditor';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -64,6 +65,7 @@ const Mandalart = () => {
   const [isAllView, setIsAllView] = useState(true);
   const [isShowAside, setIsShowAside] = useState(false);
   const [isShowSignInModal, setIsShowSignInModal] = useState(false);
+  const [isShowTitleEditor, setIsShowTitleEditor] = useState(false);
 
   const showAside = () => setIsShowAside(true);
   const hideAside = () => setIsShowAside(false);
@@ -86,6 +88,9 @@ const Mandalart = () => {
       })),
     });
   };
+
+  const showTitleEditor = () => setIsShowTitleEditor(true);
+  const hideTitleEditor = () => setIsShowTitleEditor(false);
 
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
@@ -156,6 +161,8 @@ const Mandalart = () => {
     localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
   }, [topicTree]);
 
+  const title = metadataMap.get(selectedMandalartId)?.title;
+
   return (
     <>
       {isLoading ? (
@@ -184,7 +191,11 @@ const Mandalart = () => {
                 />
               ) : (
                 <div className={styles.container}>
-                  {/* mandalart title */}
+                  {title && (
+                    <h1 className={styles.title} onClick={showTitleEditor}>
+                      {title}
+                    </h1>
+                  )}
                   <TopicsView
                     isAllView={isAllView}
                     topicTree={topicTree}
@@ -239,6 +250,22 @@ const Mandalart = () => {
             isShow={isShowSignInModal}
             onClose={hideSignInModal}
             onSignIn={handleSignIn}
+          />
+          <TextEditor
+            isShow={isShowTitleEditor}
+            value={title ? title : ''}
+            onClose={hideTitleEditor}
+            onEnter={(name) => {
+              user &&
+                mandalartRepository.saveMetadata(
+                  user.uid,
+                  selectedMandalartId,
+                  {
+                    title: name,
+                  }
+                );
+              hideTitleEditor();
+            }}
           />
         </>
       )}
