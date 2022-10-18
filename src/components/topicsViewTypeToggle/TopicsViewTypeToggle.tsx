@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './TopicsViewTypeToggle.module.css';
-import Button from '../button/Button';
+import Button from 'components/button/Button';
 import { BsGrid3X3 } from 'react-icons/bs';
 
 type TopicsViewTypeToggleProps = {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { MandalartMetadata } from '../../type/MandalartMetadata';
+import { MandalartMetadata } from 'types/MandalartMetadata';
 import styles from './MandalartList.module.css';
-import MandalartListItem from '../mandalartListItem/MandalartListItem';
+import MandalartListItem from 'components/mandalartListItem/MandalartListItem';
 
 type MandalartListProps = {
   metadataMap: Map<string, MandalartMetadata>;

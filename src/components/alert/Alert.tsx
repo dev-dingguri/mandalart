@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../button/Button';
-import Dialog from '../dialog/Dialog';
+import Button from 'components/button/Button';
+import Dialog from 'components/dialog/Dialog';
 import styles from './Alert.module.css';
 
 type AlertProps = {

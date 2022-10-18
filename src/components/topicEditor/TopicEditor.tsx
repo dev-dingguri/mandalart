@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import Button from '../button/Button';
-import Dialog from '../dialog/Dialog';
+import Button from 'components/button/Button';
+import Dialog from 'components/dialog/Dialog';
 import styles from './TopicEditor.module.css';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 

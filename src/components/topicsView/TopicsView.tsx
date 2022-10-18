@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import PartTopicTables from '../partTopicTables/PartTopicTables';
-import TopicTables, { TopicTablesProps } from '../topicTables/TopicTables';
-import { TopicNode, cloneTopicNode } from '../../type/TopicNode';
+import PartTopicTables from 'components/partTopicTables/PartTopicTables';
+import TopicTables, {
+  TopicTablesProps,
+} from 'components/topicTables/TopicTables';
+import { TopicNode, cloneTopicNode } from 'types/TopicNode';
 import styles from './TopicsView.module.css';
-import TopicEditor from '../topicEditor/TopicEditor';
-import { TABLE_CENTER_IDX } from '../../common/const';
-import mandalartRepository from '../../service/mandalartRepository';
+import TopicEditor from 'components/topicEditor/TopicEditor';
+import { TABLE_CENTER_IDX } from 'common/const';
+import mandalartRepository from 'service/mandalartRepository';
 
 const getTopicNode = (
   topicTree: TopicNode,

@@ -1,8 +1,8 @@
-import { TABLE_SIZE } from './../common/const';
-import { MandalartMetadata } from './../type/MandalartMetadata';
+import { TABLE_SIZE } from 'common/const';
+import { MandalartMetadata } from 'types/MandalartMetadata';
 import { firebaseDatabase as db } from './firebase';
 import { ref, set, off, remove, onValue, push } from 'firebase/database';
-import { TopicNode } from '../type/TopicNode';
+import { TopicNode } from 'types/TopicNode';
 
 class MandalartRepository {
   newMandalart(userId: string) {

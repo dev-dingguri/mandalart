@@ -1,6 +1,6 @@
-@value bgColor1 from '../../common/style.css';
-@value bgColor3 from '../../common/style.css';
-@value borderColor1 from '../../common/style.css';
+@value bgColor1 from 'common/style.css';
+@value bgColor3 from 'common/style.css';
+@value borderColor1 from 'common/style.css';
 
 .list {
   width: 100%;
@@ -28,7 +28,7 @@
   width: 6px;
 }
 
-.list::-webkit-scrollbar-thumb {  
+.list::-webkit-scrollbar-thumb {
   background-color: bgColor3;
   border-radius: 3px;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import Dialog from '../dialog/Dialog';
-import Button from '../button/Button';
+import Dialog from 'components/dialog/Dialog';
+import Button from 'components/button/Button';
 import styles from './TextEditor.module.css';
 
 type TextEditorProps = {

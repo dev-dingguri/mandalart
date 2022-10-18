@@ -1,7 +1,7 @@
-@value bgColor1 from '../../common/style.css';
-@value bgColor3 from '../../common/style.css';
-@value fontColor1 from '../../common/style.css';
-@value accentColor1 from '../../common/style.css';
+@value bgColor1 from 'common/style.css';
+@value bgColor3 from 'common/style.css';
+@value fontColor1 from 'common/style.css';
+@value accentColor1 from 'common/style.css';
 
 .topicItem {
   display: flex;
@@ -15,7 +15,7 @@
   background-color: accentColor1;
 }
 
-.text { 
+.text {
   font-size: 0.75rem;
   text-align: center;
   margin: 0;

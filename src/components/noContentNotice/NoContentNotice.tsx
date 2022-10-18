@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../button/Button';
+import Button from 'components/button/Button';
 import { BsPlus } from 'react-icons/bs';
 import styles from './NoContentNotice.module.css';
 

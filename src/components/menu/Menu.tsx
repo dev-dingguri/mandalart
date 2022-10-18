@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Menu.module.css';
-import ClickOutsideDetector from '../clickOutsideDetector/ClickOutsideDetector';
+import ClickOutsideDetector from 'components/clickOutsideDetector/ClickOutsideDetector';
 
 export type MenuProps = {
   isShow: boolean;

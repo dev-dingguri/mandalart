@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { MandalartMetadata } from '../../type/MandalartMetadata';
-import Button from '../button/Button';
+import { MandalartMetadata } from 'types/MandalartMetadata';
+import Button from 'components/button/Button';
 import { BsGrid3X3, BsThreeDots } from 'react-icons/bs';
 import styles from './MandalartListItem.module.css';
-import Menu, { MenuProps } from '../menu/Menu';
-import TextEditor from '../textEditor/TextEditor';
+import Menu, { MenuProps } from 'components/menu/Menu';
+import TextEditor from 'components/textEditor/TextEditor';
 
 type ItemMenuProps = Omit<MenuProps, 'children'> & {
   onDelete: () => void;

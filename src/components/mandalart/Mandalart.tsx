@@ -1,27 +1,23 @@
 import { useEffect, useState } from 'react';
-import TopicsView from '../topicsView/TopicsView';
+import TopicsView from 'components/topicsView/TopicsView';
 import styles from './Mandalart.module.css';
 import { User } from 'firebase/auth';
-import authService from '../../service/authService';
-import Header from '../header/Header';
-import TopicsViewTypeToggle from '../topicsViewTypeToggle/TopicsViewTypeToggle';
-import SignInModal from '../signInModal/SignInModal';
-import Aside from '../aside/Aside';
-import mandalartRepository from '../../service/mandalartRepository';
-import { MandalartMetadata } from '../../type/MandalartMetadata';
-import {
-  TopicNode,
-  parseTopicNode,
-  cloneTopicNode,
-} from '../../type/TopicNode';
+import authService from 'service/authService';
+import Header from 'components/header/Header';
+import TopicsViewTypeToggle from 'components/topicsViewTypeToggle/TopicsViewTypeToggle';
+import SignInModal from 'components/signInModal/SignInModal';
+import Aside from 'components/aside/Aside';
+import mandalartRepository from 'service/mandalartRepository';
+import { MandalartMetadata } from 'types/MandalartMetadata';
+import { TopicNode, parseTopicNode, cloneTopicNode } from 'types/TopicNode';
 import {
   TABLE_SIZE,
   TABLE_CENTER_IDX,
   STORAGE_KEY_TOPIC_TREE,
-} from '../../common/const';
-import NoContentNotice from '../noContentNotice/NoContentNotice';
-import TextEditor from '../textEditor/TextEditor';
-import Alert from '../alert/Alert';
+} from 'common/const';
+import NoContentNotice from 'components/noContentNotice/NoContentNotice';
+import TextEditor from 'components/textEditor/TextEditor';
+import Alert from 'components/alert/Alert';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {

@@ -1,8 +1,8 @@
-@value bgColor2 from '../../common/style.css';
-@value fontColor1 from '../../common/style.css';
-@value buttonHoverEffectColor from '../../common/style.css';
-@value buttonActiveEffectColor from '../../common/style.css';
-@value popupShadow from '../../common/style.css';
+@value bgColor2 from 'common/style.css';
+@value fontColor1 from 'common/style.css';
+@value buttonHoverEffectColor from 'common/style.css';
+@value buttonActiveEffectColor from 'common/style.css';
+@value popupShadow from 'common/style.css';
 
 .item {
   display: flex;

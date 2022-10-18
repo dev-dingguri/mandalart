@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './Aside.module.css';
 import { BsChevronDoubleLeft, BsPlus } from 'react-icons/bs';
-import Button from '../button/Button';
-import { MandalartMetadata } from '../../type/MandalartMetadata';
-import MandalartList from '../mandalartList/MandalartList';
-import ClickOutsideDetector from '../clickOutsideDetector/ClickOutsideDetector';
+import Button from 'components/button/Button';
+import MandalartList from 'components/mandalartList/MandalartList';
+import ClickOutsideDetector from 'components/clickOutsideDetector/ClickOutsideDetector';
+import { MandalartMetadata } from 'types/MandalartMetadata';
 
 type AsideProps = {
   isShow: boolean;

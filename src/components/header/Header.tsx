@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Header.module.css';
-import Button from '../button/Button';
+import Button from 'components/button/Button';
 import { BsList, BsThreeDots } from 'react-icons/bs';
 
 type HeaderProps = {

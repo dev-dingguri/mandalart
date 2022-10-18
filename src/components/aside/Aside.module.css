@@ -1,11 +1,11 @@
-@value bgColor1 from '../../common/style.css';
-@value bgColor3 from '../../common/style.css';
-@value borderColor1 from '../../common/style.css';
-@value fontColor1 from '../../common/style.css';
-@value fontColor2 from '../../common/style.css';
-@value buttonHoverEffectColor from '../../common/style.css';
-@value buttonActiveEffectColor from '../../common/style.css';
-@value backdropFilter from '../../common/style.css';
+@value bgColor1 from 'common/style.css';
+@value bgColor3 from 'common/style.css';
+@value borderColor1 from 'common/style.css';
+@value fontColor1 from 'common/style.css';
+@value fontColor2 from 'common/style.css';
+@value buttonHoverEffectColor from 'common/style.css';
+@value buttonActiveEffectColor from 'common/style.css';
+@value backdropFilter from 'common/style.css';
 
 @value mobileAsideWidth: 70%;
 
