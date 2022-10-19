@@ -66,9 +66,21 @@
 }
 
 .title {
+  /* 텍스트가 영역을 벗어나지 않도록 처리 */
+  /* 가로 */
+  word-break: break-all;
+  /* 세로 */
+  line-height: 1em;
+  min-height: 1em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  /* !텍스트가 영역을 벗어나지 않도록 처리 */
   color: fontColor1;
   font-size: 2rem;
-  margin: 0.25em 0;
+  margin: 0;
+  margin-bottom: 0.25em;
 }
 
 /* scrollbar */
