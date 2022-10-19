@@ -59,7 +59,7 @@ const TopicTable = ({
           <TopicItem
             key={idx}
             topic={getTopicNode(idx).text}
-            isAccent={isAccent(idx)}
+            isAccented={isAccent(idx)}
             onClick={() => onTopicClick(idx)}
           />
         )}

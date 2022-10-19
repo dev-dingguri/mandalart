@@ -53,8 +53,8 @@ class MandalartRepository {
     return () => off(metadataRef);
   }
 
-  saveTopics(userId: string, mandalartId: string, topics: TopicNode) {
-    set(ref(db, `${userId}/mandalart/topics/${mandalartId}`), topics);
+  saveTopics(userId: string, mandalartId: string, topicTree: TopicNode) {
+    set(ref(db, `${userId}/mandalart/topics/${mandalartId}`), topicTree);
   }
 
   removeTopics(userId: string, mandalartId: string) {

@@ -23,7 +23,7 @@ class AuthService {
     return getRedirectResult(auth);
   }
 
-  onAuthStateChanged(observer: (user: User | null) => void) {
+  onAuthStateChange(observer: (user: User | null) => void) {
     return auth.onAuthStateChanged((user) => {
       observer(user);
     });

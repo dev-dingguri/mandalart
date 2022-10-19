@@ -7,15 +7,11 @@ import Header from 'components/header/Header';
 import TopicsViewTypeToggle from 'components/topicsViewTypeToggle/TopicsViewTypeToggle';
 import SignInModal from 'components/signInModal/SignInModal';
 import Aside from 'components/aside/Aside';
-import mandalartRepository from 'service/mandalartRepository';
+import repository from 'service/mandalartRepository';
 import { MandalartMetadata } from 'types/MandalartMetadata';
-import { TopicNode, parseTopicNode, cloneTopicNode } from 'types/TopicNode';
-import {
-  TABLE_SIZE,
-  TABLE_CENTER_IDX,
-  STORAGE_KEY_TOPIC_TREE,
-} from 'common/const';
-import NoContentNotice from 'components/noContentNotice/NoContentNotice';
+import { TopicNode, parseTopicNode } from 'types/TopicNode';
+import { TABLE_SIZE, STORAGE_KEY_TOPIC_TREE } from 'common/const';
+import NoMandalartNotice from 'components/noMandalartNotice/NoMandalartNotice';
 import TextEditor from 'components/textEditor/TextEditor';
 import Alert from 'components/alert/Alert';
 
@@ -60,7 +56,7 @@ const Mandalart = () => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
   const [isLoading, setIsLoading] = useState(false);
   const [isAllView, setIsAllView] = useState(true);
-  const [isShowAside, setIsShownAside] = useState(false);
+  const [isShownAside, setIsShownAside] = useState(false);
   const [isShownSignInModal, setIsShownSignInModal] = useState(false);
   const [isShownTitleEditor, setIsShownTitleEditor] = useState(false);
   const [isShownAlert, setIsShownAlert] = useState(false);
@@ -101,7 +97,7 @@ const Mandalart = () => {
   };
 
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
+    authService.onAuthStateChange((user) => {
       setUser(user);
     });
   }, []);
@@ -115,9 +111,9 @@ const Mandalart = () => {
         if (user) {
           console.log('login success');
           if (isAnyTopicChanged(topicTree)) {
-            const mandalartId = mandalartRepository.newMandalart(user.uid);
+            const mandalartId = repository.newMandalart(user.uid);
             if (mandalartId) {
-              mandalartRepository.saveTopics(user.uid, mandalartId, topicTree);
+              repository.saveTopics(user.uid, mandalartId, topicTree);
               setSelectedMandalartId(mandalartId);
             }
           }
@@ -133,17 +129,14 @@ const Mandalart = () => {
 
   useEffect(() => {
     if (user) {
-      const stopSync = mandalartRepository.syncMetadata(
-        user.uid,
-        (metadataMap) => {
-          setMetadataMap(metadataMap);
-          if (!metadataMap.has(selectedMandalartId)) {
-            const lastId = Array.from(metadataMap.keys()).pop();
-            console.log(lastId);
-            setSelectedMandalartId(lastId ? lastId : '');
-          }
+      const stopSync = repository.syncMetadata(user.uid, (metadataMap) => {
+        setMetadataMap(metadataMap);
+        if (!metadataMap.has(selectedMandalartId)) {
+          const lastId = Array.from(metadataMap.keys()).pop();
+          console.log(lastId);
+          setSelectedMandalartId(lastId ? lastId : '');
         }
-      );
+      });
       return () => {
         stopSync();
       };
@@ -152,7 +145,7 @@ const Mandalart = () => {
 
   useEffect(() => {
     if (user && selectedMandalartId.length) {
-      const stopSync = mandalartRepository.syncTopics(
+      const stopSync = repository.syncTopics(
         user.uid,
         selectedMandalartId,
         (topicTree: TopicNode) => {
@@ -180,7 +173,7 @@ const Mandalart = () => {
           <section className={styles.mandalart}>
             <div className={styles.header}>
               <Header
-                isSignIn={user !== null}
+                isSignedIn={user !== null}
                 onSignInClick={showSignInModal}
                 onSignOutClick={handleSignOut}
                 onAsideClick={showAside}
@@ -189,10 +182,10 @@ const Mandalart = () => {
             </div>
             <div className={styles.scrollArea}>
               {user && metadataMap.size === 0 ? (
-                <NoContentNotice
+                <NoMandalartNotice
                   onNewMandalart={() => {
                     const mandalartId = user
-                      ? mandalartRepository.newMandalart(user.uid)
+                      ? repository.newMandalart(user.uid)
                       : null;
                     mandalartId && setSelectedMandalartId(mandalartId);
                   }}
@@ -211,7 +204,7 @@ const Mandalart = () => {
                       setTopicTree(topicTree);
                       // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
                       if (user) {
-                        mandalartRepository.saveTopics(
+                        repository.saveTopics(
                           user.uid,
                           selectedMandalartId,
                           topicTree
@@ -229,27 +222,24 @@ const Mandalart = () => {
               )}
             </div>
             <Aside
-              isShow={isShowAside}
+              isShown={isShownAside}
               mandalartMetadataMap={metadataMap}
               selectedMandalartId={selectedMandalartId}
               onSelectMandalart={(mandalartId) =>
                 setSelectedMandalartId(mandalartId)
               }
               onDeleteMandalart={(mandalartId) => {
-                user &&
-                  mandalartRepository.removeMandalart(user.uid, mandalartId);
+                user && repository.removeMandalart(user.uid, mandalartId);
               }}
               onRenameMandalart={(mandalartId, name) => {
                 user &&
-                  mandalartRepository.saveMetadata(user.uid, mandalartId, {
+                  repository.saveMetadata(user.uid, mandalartId, {
                     title: name,
                   });
               }}
               onNewMandalart={() => {
                 if (user) {
-                  const mandalartId = mandalartRepository.newMandalart(
-                    user.uid
-                  );
+                  const mandalartId = repository.newMandalart(user.uid);
                   mandalartId && setSelectedMandalartId(mandalartId);
                 } else {
                   showAlert('Login is required to add a new mandalart.');
@@ -269,13 +259,9 @@ const Mandalart = () => {
             onClose={hideTitleEditor}
             onEnter={(name) => {
               user &&
-                mandalartRepository.saveMetadata(
-                  user.uid,
-                  selectedMandalartId,
-                  {
-                    title: name,
-                  }
-                );
+                repository.saveMetadata(user.uid, selectedMandalartId, {
+                  title: name,
+                });
               hideTitleEditor();
             }}
           />

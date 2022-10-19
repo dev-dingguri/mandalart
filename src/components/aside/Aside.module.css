@@ -14,7 +14,7 @@
   transition: backdrop-filter 200ms ease-out, visibility 200ms ease-out;
 }
 
-.container.show {
+.container.shown {
   visibility: visible;
   backdrop-filter: backdropFilter;
 }
@@ -32,7 +32,7 @@
   transition: transform 200ms ease-out;
 }
 
-.aside.show {
+.aside.shown {
   transform: translateX(100%);
 }
 

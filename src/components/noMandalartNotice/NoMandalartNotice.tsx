@@ -1,13 +1,13 @@
 import React from 'react';
 import Button from 'components/button/Button';
 import { BsPlus } from 'react-icons/bs';
-import styles from './NoContentNotice.module.css';
+import styles from './NoMandalartNotice.module.css';
 
-type NoContentNoticeProps = {
+type NoMandalartNoticeProps = {
   onNewMandalart: () => void;
 };
 
-const NoContentNotice = ({ onNewMandalart }: NoContentNoticeProps) => {
+const NoMandalartNotice = ({ onNewMandalart }: NoMandalartNoticeProps) => {
   return (
     <div className={styles.notice}>
       <p className={styles.message}>No Mandalart</p>
@@ -19,4 +19,4 @@ const NoContentNotice = ({ onNewMandalart }: NoContentNoticeProps) => {
   );
 };
 
-export default NoContentNotice;
+export default NoMandalartNotice;

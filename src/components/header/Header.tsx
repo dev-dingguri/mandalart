@@ -4,7 +4,7 @@ import Button from 'components/button/Button';
 import { BsList, BsThreeDots } from 'react-icons/bs';
 
 type HeaderProps = {
-  isSignIn: boolean;
+  isSignedIn: boolean;
   onSignInClick: () => void;
   onSignOutClick: () => void;
   onAsideClick: () => void;
@@ -12,13 +12,13 @@ type HeaderProps = {
 };
 
 const Header = ({
-  isSignIn,
+  isSignedIn,
   onSignInClick,
   onSignOutClick,
   onAsideClick,
   onEtcClick,
 }: HeaderProps) => {
-  const signButton = isSignIn ? (
+  const signButton = isSignedIn ? (
     <Button className={styles.signButton} onClick={onSignOutClick}>
       sign out
     </Button>

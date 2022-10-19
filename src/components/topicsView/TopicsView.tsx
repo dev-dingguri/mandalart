@@ -7,7 +7,6 @@ import { TopicNode, cloneTopicNode } from 'types/TopicNode';
 import styles from './TopicsView.module.css';
 import TopicEditor from 'components/topicEditor/TopicEditor';
 import { TABLE_CENTER_IDX } from 'common/const';
-import mandalartRepository from 'service/mandalartRepository';
 
 const getTopicNode = (
   topicTree: TopicNode,

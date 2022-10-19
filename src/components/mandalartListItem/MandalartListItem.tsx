@@ -59,8 +59,8 @@ const MandalartListItem = ({
   onDelete,
   onRename,
 }: MandalartListItemProps) => {
-  const [isShowMenu, setShowMenu] = useState(false);
-  const [isShowEditor, setIsShownEditor] = useState(false);
+  const [isShownMenu, setShownMenu] = useState(false);
+  const [isShownEditor, setIsShownEditor] = useState(false);
   const [menuLeft, setMenuLeft] = useState(0);
   const [menuTop, setMenuTop] = useState(0);
 
@@ -69,11 +69,11 @@ const MandalartListItem = ({
     ev.stopPropagation();
     setMenuLeft(ev.pageX);
     setMenuTop(ev.pageY);
-    setShowMenu(true);
+    setShownMenu(true);
   };
   const hideMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
     ev.stopPropagation();
-    setShowMenu(false);
+    setShownMenu(false);
   };
 
   const showEditor = () => setIsShownEditor(true);
@@ -93,7 +93,7 @@ const MandalartListItem = ({
         </Button>
       </li>
       <ItemMenu
-        isShow={isShowMenu}
+        isShown={isShownMenu}
         left={menuLeft}
         top={menuTop}
         onClose={hideMenu}
@@ -101,7 +101,7 @@ const MandalartListItem = ({
         onRename={showEditor}
       />
       <TextEditor
-        isShown={isShowEditor}
+        isShown={isShownEditor}
         value={metadata.title}
         onClose={hideEditor}
         onEnter={(name) => {
