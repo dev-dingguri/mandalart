@@ -27,6 +27,7 @@
   flex-direction: column;
   width: mobileAsideWidth;
   height: 100%;
+  padding: 1em 0;
   color: fontColor1;
   background-color: bgColor1;
   transition: transform 200ms ease-out;
@@ -58,19 +59,6 @@
   line-height: 1em;
   font-weight: bold;
   margin: 0;
-}
-
-.closeButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 5px;
-  padding: 0;
-  background-color: transparent;
-  color: fontColor1;
-  margin-left: auto;
 }
 
 .newButton {

@@ -80,18 +80,16 @@ const MandalartListItem = ({
   const hideEditor = () => setIsShownEditor(false);
 
   return (
-    <>
-      <li
-        className={`${styles.item} ${isSelected && styles.selected}`}
-        onClick={onSelect}
-        onContextMenu={showMenu}
-      >
-        <BsGrid3X3 />
-        <p>{metadata.title}</p>
-        <Button className={styles.etcButton} onClick={showMenu}>
-          <BsThreeDots />
-        </Button>
-      </li>
+    <li
+      className={`${styles.item} ${isSelected && styles.selected}`}
+      onClick={onSelect}
+      onContextMenu={showMenu}
+    >
+      <BsGrid3X3 className={styles.icon} />
+      <p>{metadata.title}</p>
+      <Button className={styles.etcButton} onClick={showMenu}>
+        <BsThreeDots />
+      </Button>
       <ItemMenu
         isShown={isShownMenu}
         left={menuLeft}
@@ -109,7 +107,7 @@ const MandalartListItem = ({
           hideEditor();
         }}
       />
-    </>
+    </li>
   );
 };
 

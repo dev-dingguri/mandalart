@@ -6,7 +6,7 @@ import authService from 'service/authService';
 import Header from 'components/header/Header';
 import TopicsViewTypeToggle from 'components/topicsViewTypeToggle/TopicsViewTypeToggle';
 import SignInModal from 'components/signInModal/SignInModal';
-import Aside from 'components/aside/Aside';
+import LeftAside from 'components/leftAside/LeftAside';
 import repository from 'service/mandalartRepository';
 import { MandalartMetadata } from 'types/MandalartMetadata';
 import { TopicNode, parseTopicNode } from 'types/TopicNode';
@@ -221,7 +221,7 @@ const Mandalart = () => {
                 </div>
               )}
             </div>
-            <Aside
+            <LeftAside
               isShown={isShownAside}
               mandalartMetadataMap={metadataMap}
               selectedMandalartId={selectedMandalartId}
@@ -242,7 +242,7 @@ const Mandalart = () => {
                   const mandalartId = repository.newMandalart(user.uid);
                   mandalartId && setSelectedMandalartId(mandalartId);
                 } else {
-                  showAlert('Login is required to add a new mandalart.');
+                  showAlert('Sign in is required to add a new mandalart.');
                 }
               }}
               onClose={hideAside}

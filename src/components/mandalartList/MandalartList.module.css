@@ -6,7 +6,6 @@
   width: 100%;
   margin: 0;
   padding: 0.25em 0.5em;
-  border-top: 1px solid borderColor1;
   border-bottom: 1px solid borderColor1;
   overflow: auto;
 }

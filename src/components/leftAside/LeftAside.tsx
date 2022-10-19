@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from './Aside.module.css';
-import { BsChevronDoubleLeft, BsPlus } from 'react-icons/bs';
+import styles from './LeftAside.module.css';
+import { BsPlus } from 'react-icons/bs';
 import Button from 'components/button/Button';
 import MandalartList from 'components/mandalartList/MandalartList';
 import OutsideClickDetector from 'components/outsideClickDetector/OutsideClickDetector';
 import { MandalartMetadata } from 'types/MandalartMetadata';
 
-type AsideProps = {
+type LeftAsideProps = {
   isShown: boolean;
   mandalartMetadataMap: Map<string, MandalartMetadata>;
   selectedMandalartId: string;
@@ -17,7 +17,7 @@ type AsideProps = {
   onClose: () => void;
 };
 
-const Aside = ({
+const LeftAside = ({
   isShown,
   mandalartMetadataMap: metadataMap,
   selectedMandalartId,
@@ -26,7 +26,7 @@ const Aside = ({
   onRenameMandalart,
   onNewMandalart,
   onClose,
-}: AsideProps) => {
+}: LeftAsideProps) => {
   const handleSelectMandalart = (mandalartId: string) => {
     onSelectMandalart(mandalartId);
     onClose();
@@ -43,12 +43,6 @@ const Aside = ({
       onOutsideLClick={onClose}
     >
       <div className={`${styles.aside} ${isShown && styles.shown}`}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>Mandalart</h1>
-          <Button className={styles.closeButton} onClick={onClose}>
-            <BsChevronDoubleLeft />
-          </Button>
-        </header>
         <MandalartList
           metadataMap={metadataMap}
           selectedId={selectedMandalartId}
@@ -65,4 +59,4 @@ const Aside = ({
   );
 };
 
-export default Aside;
+export default LeftAside;

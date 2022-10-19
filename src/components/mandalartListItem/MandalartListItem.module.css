@@ -35,8 +35,7 @@
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   /* !텍스트가 영역을 벗어나지 않도록 처리 */
-  margin: 0;
-  margin-left: 0.5em;
+  margin: 0 0.5em;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -47,6 +46,10 @@
 
 .item:active {
   box-shadow: inset 0 0 0 10em buttonActiveEffectColor;
+}
+
+.icon {
+  min-width: 1em;
 }
 
 .etcButton {

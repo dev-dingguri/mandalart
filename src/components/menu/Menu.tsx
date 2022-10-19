@@ -11,17 +11,13 @@ export type MenuProps = {
 };
 
 const Menu = ({ isShown, left, top, children, onClose }: MenuProps) => {
-  return (
-    <OutsideClickDetector
-      className={`${styles.container} ${isShown && styles.shown}`}
-      onOutsideLClick={onClose}
-      onOutsideRClick={onClose}
-    >
+  return isShown ? (
+    <OutsideClickDetector onOutsideLClick={onClose} onOutsideRClick={onClose}>
       <div className={styles.menu} style={{ left: left, top: top }}>
         {children}
       </div>
     </OutsideClickDetector>
-  );
+  ) : null;
 };
 
 export default Menu;

@@ -1,11 +1,3 @@
-.container {
-  visibility: hidden;
-}
-
-.container.shown {
-  visibility: visible;
-}
-
 .menu {
   position: fixed;
 }
