@@ -3,9 +3,11 @@
 @value borderColor1 from 'common/style.css';
 @value fontColor1 from 'common/style.css';
 @value fontColor2 from 'common/style.css';
-@value backdropFilter from 'common/style.css';
 
 .dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   width: 20em;
   padding: 0;
   border: 0;
@@ -14,33 +16,23 @@
   color: fontColor1;
 }
 
-.dialog::backdrop {
-  backdrop-filter: backdropFilter;
-}
-
 .container {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-}
-
-.contents {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 2em 1.5em;
 }
 
-.closeButton {
+.closeButton {  
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
   display: flex;
   justify-content: center;
   align-items: center;
   width: 2em;
   height: 2em;
   border-radius: 5px;
-  position: absolute;
-  top: 0.5em;
-  right: 0.5em;
   background-color: bgColor1;
   color: fontColor1;
 }

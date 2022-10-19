@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import styles from './Dialog.module.css';
 
 type DialogProps = {
-  isShow: boolean;
+  isShown: boolean;
   isModal?: boolean;
   className?: string;
   children?: React.ReactNode;
@@ -11,7 +11,7 @@ type DialogProps = {
 };
 
 const Dialog = ({
-  isShow,
+  isShown,
   isModal = true,
   className,
   children,
@@ -32,46 +32,43 @@ const Dialog = ({
   }, [isModal]);
 
   const hide = useCallback(() => {
-    const modal = modalRef.current!;
-    if (modal.open) {
-      modal.close();
-    }
+    modalRef.current?.close();
   }, []);
 
   useEffect(() => {
-    if (isShow) {
+    if (isShown) {
       show();
     } else {
       hide();
     }
-  }, [isShow, show, hide]);
+  }, [isShown, show, hide]);
 
   const handleKey = useCallback(
     (ev: KeyboardEvent) => {
       if (ev.key === 'Escape') {
         ev.preventDefault();
         onClose();
-      } else if (ev.key === 'Enter' && onEnter) {
-        onEnter(ev);
+      } else if (ev.key === 'Enter') {
+        onEnter && onEnter(ev);
       }
     },
     [onClose, onEnter]
   );
 
   useEffect(() => {
-    if (isShow) {
+    if (isShown) {
       window.addEventListener('keydown', handleKey);
       return () => {
         window.removeEventListener('keydown', handleKey);
       };
     }
-  }, [isShow, handleKey]);
+  }, [isShown, handleKey]);
 
-  return (
+  return isShown ? (
     <dialog className={`${styles.dialog} ${className}`} ref={modalRef}>
       {children}
     </dialog>
-  );
+  ) : null;
 };
 
 export default Dialog;

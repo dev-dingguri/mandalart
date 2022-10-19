@@ -60,7 +60,7 @@ const MandalartListItem = ({
   onRename,
 }: MandalartListItemProps) => {
   const [isShowMenu, setShowMenu] = useState(false);
-  const [isShowEditor, setIsShowEditor] = useState(false);
+  const [isShowEditor, setIsShownEditor] = useState(false);
   const [menuLeft, setMenuLeft] = useState(0);
   const [menuTop, setMenuTop] = useState(0);
 
@@ -76,8 +76,8 @@ const MandalartListItem = ({
     setShowMenu(false);
   };
 
-  const showEditor = () => setIsShowEditor(true);
-  const hideEditor = () => setIsShowEditor(false);
+  const showEditor = () => setIsShownEditor(true);
+  const hideEditor = () => setIsShownEditor(false);
 
   return (
     <>
@@ -101,7 +101,7 @@ const MandalartListItem = ({
         onRename={showEditor}
       />
       <TextEditor
-        isShow={isShowEditor}
+        isShown={isShowEditor}
         value={metadata.title}
         onClose={hideEditor}
         onEnter={(name) => {

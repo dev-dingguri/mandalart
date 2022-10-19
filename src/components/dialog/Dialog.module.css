@@ -1,5 +1,10 @@
 @value popupShadow from 'common/style.css';
+@value backdropFilter from 'common/style.css';
 
 .dialog {
   box-shadow: popupShadow;
+}
+
+.dialog::backdrop {
+  backdrop-filter: backdropFilter;
 }

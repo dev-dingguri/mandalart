@@ -4,16 +4,16 @@ import Dialog from 'components/dialog/Dialog';
 import styles from './Alert.module.css';
 
 type AlertProps = {
-  isShow: boolean;
+  isShown: boolean;
   message: string;
   onClose: () => void;
 };
 
-const Alert = ({ isShow, message, onClose }: AlertProps) => {
+const Alert = ({ isShown, message, onClose }: AlertProps) => {
   return (
     <Dialog
       className={styles.alert}
-      isShow={isShow}
+      isShown={isShown}
       onClose={onClose}
       onEnter={onClose}
     >

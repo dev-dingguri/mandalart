@@ -3,7 +3,6 @@
 @value borderColor1 from 'common/style.css';
 @value fontColor1 from 'common/style.css';
 @value accentColor1 from 'common/style.css';
-@value backdropFilter from 'common/style.css';
 
 .alert {
   display: flex;
@@ -15,10 +14,6 @@
   border-radius: 5px;
   background-color: bgColor1;
   color: fontColor1;
-}
-
-.alert::backdrop {
-  backdrop-filter: backdropFilter;
 }
 
 .title {

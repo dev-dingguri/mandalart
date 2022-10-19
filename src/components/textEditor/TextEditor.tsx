@@ -4,7 +4,7 @@ import Button from 'components/button/Button';
 import styles from './TextEditor.module.css';
 
 type TextEditorProps = {
-  isShow: boolean;
+  isShown: boolean;
   title?: string;
   value: string;
   placeholder?: string;
@@ -13,7 +13,7 @@ type TextEditorProps = {
 };
 
 const TextEditor = ({
-  isShow,
+  isShown,
   title = 'Mandalart',
   value = '',
   placeholder,
@@ -28,35 +28,33 @@ const TextEditor = ({
   };
 
   useEffect(() => {
-    if (isShow) {
+    if (isShown) {
       const input = inputRef.current!;
       input.value = value;
     }
-  }, [isShow, value]);
+  }, [isShown, value]);
 
   return (
     <Dialog
-      isShow={isShow}
+      isShown={isShown}
       className={styles.dialog}
       onClose={onClose}
       onEnter={handleEnter}
     >
-      <div className={styles.container}>
-        <h1 className={styles.title}>{title}</h1>
-        <input
-          ref={inputRef}
-          className={styles.input}
-          type="text"
-          placeholder={placeholder}
-        />
-        <div className={styles.buttons}>
-          <Button className={styles.button} onClick={onClose}>
-            cancel
-          </Button>
-          <Button className={styles.button} onClick={handleEnter}>
-            save
-          </Button>
-        </div>
+      <h1 className={styles.title}>{title}</h1>
+      <input
+        ref={inputRef}
+        className={styles.input}
+        type="text"
+        placeholder={placeholder}
+      />
+      <div className={styles.buttons}>
+        <Button className={styles.button} onClick={onClose}>
+          cancel
+        </Button>
+        <Button className={styles.button} onClick={handleEnter}>
+          save
+        </Button>
       </div>
     </Dialog>
   );

@@ -3,25 +3,16 @@
 @value borderColor1 from 'common/style.css';
 @value fontColor1 from 'common/style.css';
 @value accentColor1 from 'common/style.css';
-@value backdropFilter from 'common/style.css';
 
 .dialog {
+  display: flex;
+  flex-direction: column;
   width: 20em;
-  padding: 0;
+  padding: 1.5em;
   border: 0;
   border-radius: 10px;
   background-color: bgColor1;
   color: fontColor1;
-}
-
-.dialog::backdrop {
-  backdrop-filter: backdropFilter;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  padding: 1.5em;
 }
 
 .title {

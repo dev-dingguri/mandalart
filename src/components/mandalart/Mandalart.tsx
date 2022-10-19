@@ -60,17 +60,17 @@ const Mandalart = () => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
   const [isLoading, setIsLoading] = useState(false);
   const [isAllView, setIsAllView] = useState(true);
-  const [isShowAside, setIsShowAside] = useState(false);
-  const [isShowSignInModal, setIsShowSignInModal] = useState(false);
-  const [isShowTitleEditor, setIsShowTitleEditor] = useState(false);
-  const [isShowAlert, setIsShowAlert] = useState(false);
+  const [isShowAside, setIsShownAside] = useState(false);
+  const [isShownSignInModal, setIsShownSignInModal] = useState(false);
+  const [isShownTitleEditor, setIsShownTitleEditor] = useState(false);
+  const [isShownAlert, setIsShownAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const showAside = () => setIsShowAside(true);
-  const hideAside = () => setIsShowAside(false);
+  const showAside = () => setIsShownAside(true);
+  const hideAside = () => setIsShownAside(false);
 
-  const showSignInModal = () => setIsShowSignInModal(true);
-  const hideSignInModal = () => setIsShowSignInModal(false);
+  const showSignInModal = () => setIsShownSignInModal(true);
+  const hideSignInModal = () => setIsShownSignInModal(false);
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => {
     authService.signOut();
@@ -88,16 +88,16 @@ const Mandalart = () => {
     });
   };
 
-  const showTitleEditor = () => setIsShowTitleEditor(true);
-  const hideTitleEditor = () => setIsShowTitleEditor(false);
+  const showTitleEditor = () => setIsShownTitleEditor(true);
+  const hideTitleEditor = () => setIsShownTitleEditor(false);
 
   const showAlert = (message: string) => {
     setAlertMessage(message);
-    setIsShowAlert(true);
+    setIsShownAlert(true);
   };
   const hideAlert = () => {
     setAlertMessage('');
-    setIsShowAlert(false);
+    setIsShownAlert(false);
   };
 
   useEffect(() => {
@@ -259,12 +259,12 @@ const Mandalart = () => {
             />
           </section>
           <SignInModal
-            isShow={isShowSignInModal}
+            isShown={isShownSignInModal}
             onClose={hideSignInModal}
             onSignIn={handleSignIn}
           />
           <TextEditor
-            isShow={isShowTitleEditor}
+            isShown={isShownTitleEditor}
             value={title ? title : ''}
             onClose={hideTitleEditor}
             onEnter={(name) => {
@@ -280,7 +280,7 @@ const Mandalart = () => {
             }}
           />
           <Alert
-            isShow={isShowAlert}
+            isShown={isShownAlert}
             message={alertMessage}
             onClose={hideAlert}
           />

@@ -51,7 +51,7 @@ const TopicsView = ({
     onTopicTreeChange(newTopicTree);
   };
 
-  const isShowEditor = () => {
+  const isShownEditor = () => {
     return editingTopicPos !== null;
   };
 
@@ -96,7 +96,7 @@ const TopicsView = ({
         </div>
       </section>
       <TopicEditor
-        isShow={isShowEditor()}
+        isShown={isShownEditor()}
         text={getEditingTopicText()}
         onClose={handleCloseEditor}
         onEnter={handleEnterEditor}
