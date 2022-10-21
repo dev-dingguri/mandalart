@@ -1,3 +1,34 @@
+@value bgColor2 from 'common/style.css';
+@value fontColor1 from 'common/style.css';
+@value buttonHoverEffectColor from 'common/style.css';
+@value buttonActiveEffectColor from 'common/style.css';
+@value popupShadow from 'common/style.css';
+
 .menu {
   position: fixed;
+  background-color: bgColor2;
+  padding: 0.5em 0.3em;
+  border-radius: 5px;
+  color: fontColor1;
+  box-shadow: popupShadow;
+}
+
+.menu li {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  width: 6em;
+  height: 2em;
+  padding: 0 0.7em;
+  border-radius: 5px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .menu li:hover {
+    box-shadow: inset 0 0 0 10em buttonHoverEffectColor;
+  }
+}
+
+.menu li:active {
+  box-shadow: inset 0 0 0 10em buttonActiveEffectColor;
 }

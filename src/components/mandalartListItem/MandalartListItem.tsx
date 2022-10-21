@@ -3,46 +3,8 @@ import { MandalartMetadata } from 'types/MandalartMetadata';
 import Button from 'components/button/Button';
 import { BsGrid3X3, BsThreeDots } from 'react-icons/bs';
 import styles from './MandalartListItem.module.css';
-import Menu, { MenuProps } from 'components/menu/Menu';
+import Menu from 'components/menu/Menu';
 import TextEditor from 'components/textEditor/TextEditor';
-
-type ItemMenuProps = Omit<MenuProps, 'children'> & {
-  onDelete: () => void;
-  onRename: () => void;
-};
-
-const ItemMenu = ({
-  onDelete,
-  onRename,
-  ...contextMenuProps
-}: ItemMenuProps) => {
-  const onClose = contextMenuProps.onClose;
-
-  const handleMenuClick = (ev: React.MouseEvent<Element, MouseEvent>) =>
-    ev.stopPropagation();
-
-  const handleDelete = (ev: React.MouseEvent<Element, MouseEvent>) => {
-    onDelete();
-    onClose(ev);
-  };
-  const handleRename = (ev: React.MouseEvent<Element, MouseEvent>) => {
-    onRename();
-    onClose(ev);
-  };
-
-  return (
-    <Menu {...contextMenuProps}>
-      <ul
-        className={styles.menu}
-        onClick={handleMenuClick}
-        onContextMenu={handleMenuClick}
-      >
-        <li onClick={handleDelete}>Delete</li>
-        <li onClick={handleRename}>Rename</li>
-      </ul>
-    </Menu>
-  );
-};
 
 type MandalartListItemProps = {
   metadata: MandalartMetadata;
@@ -61,23 +23,37 @@ const MandalartListItem = ({
 }: MandalartListItemProps) => {
   const [isShownMenu, setShownMenu] = useState(false);
   const [isShownEditor, setIsShownEditor] = useState(false);
-  const [menuLeft, setMenuLeft] = useState(0);
-  const [menuTop, setMenuTop] = useState(0);
+  const [menuX, setMenuX] = useState(0);
+  const [menuY, setMenuY] = useState(0);
 
   const showMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
     ev.preventDefault();
     ev.stopPropagation();
-    setMenuLeft(ev.pageX);
-    setMenuTop(ev.pageY);
+    setMenuX(ev.pageX);
+    setMenuY(ev.pageY);
     setShownMenu(true);
   };
-  const hideMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
-    ev.stopPropagation();
+  const hideMenu = () => {
     setShownMenu(false);
   };
 
   const showEditor = () => setIsShownEditor(true);
   const hideEditor = () => setIsShownEditor(false);
+
+  const handleMenuSelect = (value: string) => {
+    if (value === 'delete') {
+      onDelete();
+    } else if (value === 'rename') {
+      showEditor();
+    } else {
+      throw new Error('not support value');
+    }
+  };
+
+  const menuOptions = [
+    { value: 'delete', name: 'Delete' },
+    { value: 'rename', name: 'Rename' },
+  ];
 
   return (
     <li
@@ -90,13 +66,13 @@ const MandalartListItem = ({
       <Button className={styles.etcButton} onClick={showMenu}>
         <BsThreeDots />
       </Button>
-      <ItemMenu
+      <Menu
         isShown={isShownMenu}
-        left={menuLeft}
-        top={menuTop}
+        xPos={menuX}
+        yPos={menuY}
+        options={menuOptions}
+        onSelect={handleMenuSelect}
         onClose={hideMenu}
-        onDelete={onDelete}
-        onRename={showEditor}
       />
       <TextEditor
         isShown={isShownEditor}
