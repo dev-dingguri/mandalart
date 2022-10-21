@@ -1,0 +1,109 @@
+@value bgColor1 from 'common/style.css';
+@value bgColor3 from 'common/style.css';
+@value borderColor1 from 'common/style.css';
+@value fontColor1 from 'common/style.css';
+@value backdropFilter from 'common/style.css';
+
+@value mobileAsideWidth: 80%;
+
+.container {
+  flex-direction: row-reverse;
+  visibility: hidden;
+  transition: backdrop-filter 200ms ease-out, visibility 200ms ease-out;
+}
+
+.container.shown {
+  visibility: visible;
+  backdrop-filter: backdropFilter;
+}
+
+/* todo: 애니메이션 */
+.aside {
+  display: flex;
+  flex-direction: column;
+  min-width: mobileAsideWidth;
+  height: 100%;
+  padding: 0 0.5em;
+  color: fontColor1;
+  background-color: bgColor1;
+  /* transition: transform 200ms ease-out; */
+  /* transform: translateX(100%); */
+}
+
+.aside.shown {
+  /* transform: translateX(0); */
+}
+
+@media screen and (min-width: 30rem) {
+  /* 30 * 0.8 = 24*/
+  @value asideWidth: 24rem;
+  .aside {
+    min-width: asideWidth;
+  }
+}
+
+.list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* scrollbar */
+/* Firefox */
+.list {
+  scrollbar-width: thin;
+  scrollbar-color: bgColor3 bgColor1;
+}
+/* !Firefox */
+/* Safari and Chrome */
+.list {
+  overflow: overlay;
+}
+
+.list::-webkit-scrollbar {
+  background-color: bgColor1;
+  width: 6px;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: bgColor3;
+  border-radius: 3px;
+}
+/* !Safari and Chrome */
+/* !scrollbar */
+
+.item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  line-height: 2em;
+  padding: 0.5em 0;
+  cursor: pointer;
+  border-bottom: 1px solid borderColor1;
+}
+
+@media screen and (min-width: 30rem) {
+  .item {
+    justify-content: space-between;
+    flex-direction: row;
+  }
+}
+
+.text {
+  /* 텍스트가 영역을 벗어나지 않도록 처리 */
+  /* 가로 */
+  word-break: break-all;
+  /* 세로 */
+  line-height: 1em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  /* !텍스트가 영역을 벗어나지 않도록 처리 */
+  margin: 0.5em;
+  font-weight: 600;
+}
+
+.themeSelect {
+  width: 12em;
+}

@@ -22,7 +22,7 @@
 
 .newButton {
   display: flex;
-  justify-items: center;
+  justify-content: center;
   align-items: center;
   height: 1.5em;
   font-size: 1.5rem;

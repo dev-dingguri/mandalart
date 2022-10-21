@@ -15,11 +15,9 @@
 
 .menu li {
   display: flex;
-  justify-items: center;
   align-items: center;
-  width: 6em;
   height: 2em;
-  padding: 0 0.7em;
+  padding: 0 1em;
   border-radius: 5px;
 }
 

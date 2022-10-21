@@ -3,8 +3,6 @@
 @value borderColor1 from 'common/style.css';
 @value fontColor1 from 'common/style.css';
 @value fontColor2 from 'common/style.css';
-@value buttonHoverEffectColor from 'common/style.css';
-@value buttonActiveEffectColor from 'common/style.css';
 @value backdropFilter from 'common/style.css';
 
 @value mobileAsideWidth: 70%;
@@ -20,55 +18,36 @@
 }
 
 .aside {
-  position: fixed;
-  left: calc(mobileAsideWidth * -1);
-  right: 0;
   display: flex;
   flex-direction: column;
-  width: mobileAsideWidth;
+  min-width: mobileAsideWidth;
   height: 100%;
-  padding: 1em 0;
+  padding: 0 0.5em;
   color: fontColor1;
   background-color: bgColor1;
   transition: transform 200ms ease-out;
+  transform: translateX(-100%);
 }
 
 .aside.shown {
-  transform: translateX(100%);
+  transform: translateX(0);
 }
 
 @media screen and (min-width: 30rem) {
   /* 30 * 0.7 = 21*/
   @value asideWidth: 21rem;
   .aside {
-    left: calc(asideWidth * -1);
-    width: asideWidth;
+    min-width: asideWidth;
   }
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 3em;
-  padding: 0 1em;
-}
-
-.title {
-  font-size: 1.3rem;
-  line-height: 1em;
-  font-weight: bold;
-  margin: 0;
 }
 
 .newButton {
   display: flex;
-  justify-items: center;
   align-items: center;
   height: 2em;
   line-height: 2em;
   padding: 0 0.5em;
-  margin: 0.25em 0.5em;
+  margin: 0.5em 0;
   border-radius: 5px;
   background-color: transparent;
   color: fontColor2;

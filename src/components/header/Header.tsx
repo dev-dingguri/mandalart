@@ -7,7 +7,7 @@ type HeaderProps = {
   isSignedIn: boolean;
   onSignInClick: () => void;
   onSignOutClick: () => void;
-  onAsideClick: () => void;
+  onListClick: () => void;
   onEtcClick: () => void;
 };
 
@@ -15,7 +15,7 @@ const Header = ({
   isSignedIn,
   onSignInClick,
   onSignOutClick,
-  onAsideClick,
+  onListClick,
   onEtcClick,
 }: HeaderProps) => {
   const signButton = isSignedIn ? (
@@ -30,7 +30,7 @@ const Header = ({
   return (
     <header className={styles.header}>
       <div className={styles.left}>
-        <Button className={styles.asideButton} onClick={onAsideClick}>
+        <Button className={styles.asideButton} onClick={onListClick}>
           <BsList />
         </Button>
         <h1 className={styles.title}>Mandalart</h1>

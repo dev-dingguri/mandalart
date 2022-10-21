@@ -23,14 +23,14 @@ const MandalartListItem = ({
 }: MandalartListItemProps) => {
   const [isShownMenu, setShownMenu] = useState(false);
   const [isShownEditor, setIsShownEditor] = useState(false);
-  const [menuX, setMenuX] = useState(0);
   const [menuY, setMenuY] = useState(0);
+  const [menuX, setMenuX] = useState(0);
 
   const showMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
     ev.preventDefault();
     ev.stopPropagation();
-    setMenuX(ev.pageX);
     setMenuY(ev.pageY);
+    setMenuX(ev.pageX);
     setShownMenu(true);
   };
   const hideMenu = () => {
@@ -68,8 +68,8 @@ const MandalartListItem = ({
       </Button>
       <Menu
         isShown={isShownMenu}
-        xPos={menuX}
         yPos={menuY}
+        xPos={menuX}
         options={menuOptions}
         onSelect={handleMenuSelect}
         onClose={hideMenu}

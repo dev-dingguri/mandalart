@@ -9,8 +9,8 @@ type MenuOption = {
 
 type MenuProps = {
   isShown: boolean;
-  xPos: number;
   yPos: number;
+  xPos: number;
   options: MenuOption[];
   onSelect: (value: string) => void;
   onClose: () => void;
@@ -18,8 +18,8 @@ type MenuProps = {
 
 const Menu = ({
   isShown,
-  xPos,
   yPos,
+  xPos,
   options,
   onSelect,
   onClose,
@@ -51,7 +51,7 @@ const Menu = ({
     >
       <ul
         className={styles.menu}
-        style={{ left: xPos, top: yPos }}
+        style={{ top: yPos, left: xPos }}
         onClick={stopClickPropagation}
         onContextMenu={stopClickPropagation}
       >

@@ -6,7 +6,7 @@
 @value mobileContainerWidth: 90vw;
 @value mobileContainerMinWidth: 20em;
 @value containerWidth: min(90vw, 80vh);
-@value containerMinWidth: 30em;
+@value containerMinWidth: 27em;
 @value addHeaderWidth: 0.8em;
 
 .mandalart {

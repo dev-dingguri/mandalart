@@ -14,6 +14,7 @@ import { TABLE_SIZE, STORAGE_KEY_TOPIC_TREE } from 'common/const';
 import NoMandalartNotice from 'components/noMandalartNotice/NoMandalartNotice';
 import TextEditor from 'components/textEditor/TextEditor';
 import Alert from 'components/alert/Alert';
+import RightAside from 'components/rightAside/RightAside';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -56,14 +57,17 @@ const Mandalart = () => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
   const [isLoading, setIsLoading] = useState(false);
   const [isAllView, setIsAllView] = useState(true);
-  const [isShownAside, setIsShownAside] = useState(false);
+  const [isShownLeftAside, setIsShownLeftAside] = useState(false);
+  const [isShownRightAside, setIsShownRightAside] = useState(false);
   const [isShownSignInModal, setIsShownSignInModal] = useState(false);
   const [isShownTitleEditor, setIsShownTitleEditor] = useState(false);
   const [isShownAlert, setIsShownAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const showAside = () => setIsShownAside(true);
-  const hideAside = () => setIsShownAside(false);
+  const showLeftAside = () => setIsShownLeftAside(true);
+  const hideLeftAside = () => setIsShownLeftAside(false);
+  const showRightAside = () => setIsShownRightAside(true);
+  const hideRightAside = () => setIsShownRightAside(false);
 
   const showSignInModal = () => setIsShownSignInModal(true);
   const hideSignInModal = () => setIsShownSignInModal(false);
@@ -176,8 +180,8 @@ const Mandalart = () => {
                 isSignedIn={user !== null}
                 onSignInClick={showSignInModal}
                 onSignOutClick={handleSignOut}
-                onAsideClick={showAside}
-                onEtcClick={() => {}}
+                onListClick={showLeftAside}
+                onEtcClick={showRightAside}
               />
             </div>
             <div className={styles.scrollArea}>
@@ -222,7 +226,7 @@ const Mandalart = () => {
               )}
             </div>
             <LeftAside
-              isShown={isShownAside}
+              isShown={isShownLeftAside}
               mandalartMetadataMap={metadataMap}
               selectedMandalartId={selectedMandalartId}
               onSelectMandalart={(mandalartId) =>
@@ -245,8 +249,9 @@ const Mandalart = () => {
                   showAlert('Sign in is required to add a new Mandalart.');
                 }
               }}
-              onClose={hideAside}
+              onClose={hideLeftAside}
             />
+            <RightAside isShown={isShownRightAside} onClose={hideRightAside} />
           </section>
           <SignInModal
             isShown={isShownSignInModal}
