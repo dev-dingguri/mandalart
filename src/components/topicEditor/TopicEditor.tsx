@@ -46,10 +46,10 @@ const TopicEditor = ({ isShown, text, onClose, onEnter }: TopicEditorProps) => {
       </button>
       <div className={styles.buttons}>
         <Button className={styles.button} onClick={onClose}>
-          cancel
+          Cancel
         </Button>
         <Button className={styles.button} onClick={handleEnter}>
-          save
+          Save
         </Button>
       </div>
     </Dialog>

@@ -13,7 +13,7 @@ const NoMandalartNotice = ({ onNewMandalart }: NoMandalartNoticeProps) => {
       <p className={styles.message}>No Mandalart</p>
       <Button className={styles.newButton} onClick={onNewMandalart}>
         <BsPlus />
-        <p>new</p>
+        <p>New</p>
       </Button>
     </div>
   );

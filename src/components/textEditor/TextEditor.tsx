@@ -50,10 +50,10 @@ const TextEditor = ({
       />
       <div className={styles.buttons}>
         <Button className={styles.button} onClick={onClose}>
-          cancel
+          Cancel
         </Button>
         <Button className={styles.button} onClick={handleEnter}>
-          save
+          Save
         </Button>
       </div>
     </Dialog>

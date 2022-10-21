@@ -37,8 +37,8 @@ const ItemMenu = ({
         onClick={handleMenuClick}
         onContextMenu={handleMenuClick}
       >
-        <li onClick={handleDelete}>delete</li>
-        <li onClick={handleRename}>rename</li>
+        <li onClick={handleDelete}>Delete</li>
+        <li onClick={handleRename}>Rename</li>
       </ul>
     </Menu>
   );

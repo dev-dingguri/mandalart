@@ -7,7 +7,7 @@ import { TopicNode } from 'types/TopicNode';
 class MandalartRepository {
   newMandalart(userId: string) {
     const mandalartId = push(ref(db, `${userId}/mandalart/metadata`), {
-      title: 'untitled',
+      title: 'Untitled',
     }).key;
     set(ref(db, `${userId}/mandalart/topics/${mandalartId}`), {
       text: '',

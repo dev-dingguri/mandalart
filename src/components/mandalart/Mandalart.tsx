@@ -242,7 +242,7 @@ const Mandalart = () => {
                   const mandalartId = repository.newMandalart(user.uid);
                   mandalartId && setSelectedMandalartId(mandalartId);
                 } else {
-                  showAlert('Sign in is required to add a new mandalart.');
+                  showAlert('Sign in is required to add a new Mandalart.');
                 }
               }}
               onClose={hideAside}

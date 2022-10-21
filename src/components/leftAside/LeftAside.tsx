@@ -52,7 +52,7 @@ const LeftAside = ({
         />
         <Button className={styles.newButton} onClick={handleNewClick}>
           <BsPlus />
-          <p>new</p>
+          <p>New</p>
         </Button>
       </div>
     </OutsideClickDetector>

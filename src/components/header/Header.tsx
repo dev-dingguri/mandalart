@@ -20,11 +20,11 @@ const Header = ({
 }: HeaderProps) => {
   const signButton = isSignedIn ? (
     <Button className={styles.signButton} onClick={onSignOutClick}>
-      sign out
+      Sign out
     </Button>
   ) : (
     <Button className={styles.signButton} onClick={onSignInClick}>
-      sign in
+      Sign in
     </Button>
   );
   return (
