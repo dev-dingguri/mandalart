@@ -5,7 +5,7 @@
 @value fontColor2 from 'common/style.css';
 @value backdropFilter from 'common/style.css';
 
-@value mobileAsideWidth: 70%;
+@value mobileAsideWidth: 70vw;
 
 .container {
   visibility: hidden;
@@ -20,8 +20,8 @@
 .aside {
   display: flex;
   flex-direction: column;
-  min-width: mobileAsideWidth;
-  height: 100%;
+  width: mobileAsideWidth;
+  height: 100vh;
   padding: 0 0.5em;
   color: fontColor1;
   background-color: bgColor1;
@@ -37,7 +37,7 @@
   /* 30 * 0.7 = 21*/
   @value asideWidth: 21rem;
   .aside {
-    min-width: asideWidth;
+    width: asideWidth;
   }
 }
 

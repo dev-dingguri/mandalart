@@ -14,14 +14,19 @@ const OutsideClickDetector = ({
   onOutsideLClick,
   onOutsideRClick,
 }: OutsideClickDetectorProps) => {
+  const stopPropagation = (ev: React.MouseEvent<Element, MouseEvent>) => {
+    ev.stopPropagation();
+  };
+
   return (
-    <div className={`${styles.detector} ${className}`}>
-      {children}
-      <div
-        className={styles.outside}
-        onClick={onOutsideLClick}
-        onContextMenu={onOutsideRClick}
-      />
+    <div
+      className={`${styles.detector} ${className}`}
+      onClick={onOutsideLClick}
+      onContextMenu={onOutsideRClick}
+    >
+      <div onClick={stopPropagation} onContextMenu={stopPropagation}>
+        {children}
+      </div>
     </div>
   );
 };

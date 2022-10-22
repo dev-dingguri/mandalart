@@ -4,7 +4,7 @@
 @value fontColor1 from 'common/style.css';
 @value backdropFilter from 'common/style.css';
 
-@value mobileAsideWidth: 80%;
+@value mobileAsideWidth: 80vw;
 
 .container {
   flex-direction: row-reverse;
@@ -21,8 +21,8 @@
 .aside {
   display: flex;
   flex-direction: column;
-  min-width: mobileAsideWidth;
-  height: 100%;
+  width: mobileAsideWidth;
+  height: 100vh;
   padding: 0 0.5em;
   color: fontColor1;
   background-color: bgColor1;
@@ -31,14 +31,14 @@
 }
 
 .aside.shown {
-  /* transform: translateX(0); */
+  transform: translateX(0);
 }
 
 @media screen and (min-width: 30rem) {
   /* 30 * 0.8 = 24*/
   @value asideWidth: 24rem;
   .aside {
-    min-width: asideWidth;
+    width: asideWidth;
   }
 }
 
