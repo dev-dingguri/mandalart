@@ -22,16 +22,17 @@ const Select = ({
   selectedValue,
   onSelect,
 }: SelectProps) => {
-  const selectRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [isShownMenu, setIsShownMenu] = useState(false);
   const [menuY, setMenuY] = useState(0);
   const [menuX, setMenuX] = useState(0);
 
   const showMenu = () => {
-    const select = selectRef.current;
+    const select = ref.current;
     if (select) {
-      setMenuY(select.offsetTop + select.offsetHeight + 3);
-      setMenuX(select.offsetLeft);
+      const rect = select.getBoundingClientRect();
+      setMenuY(rect.top + rect.height + 3);
+      setMenuX(rect.left);
     }
     setIsShownMenu(true);
   };
@@ -48,7 +49,7 @@ const Select = ({
   })();
 
   return (
-    <div ref={selectRef} className={className}>
+    <div ref={ref} className={className}>
       <Button className={styles.button} onClick={showMenu}>
         <p>{selectedName}</p>
         <BsFillCaretDownFill />

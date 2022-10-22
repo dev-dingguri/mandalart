@@ -7,7 +7,6 @@
 @value mobileAsideWidth: 80vw;
 
 .container {
-  flex-direction: row-reverse;
   visibility: hidden;
   transition: backdrop-filter 200ms ease-out, visibility 200ms ease-out;
 }
@@ -17,8 +16,11 @@
   backdrop-filter: backdropFilter;
 }
 
-/* todo: 애니메이션 */
 .aside {
+  position: fixed;
+  /* transform을 사용할 경우 position: fixed가 된 요소는 
+     transform가 있는 요소에 상대적이 되기 때문에 right를 사용 */
+  right: calc(mobileAsideWidth * -1);
   display: flex;
   flex-direction: column;
   width: mobileAsideWidth;
@@ -26,23 +28,24 @@
   padding: 0 0.5em;
   color: fontColor1;
   background-color: bgColor1;
-  /* transition: transform 200ms ease-out; */
-  /* transform: translateX(100%); */
+  transition: right 200ms ease-out;
 }
 
 .aside.shown {
-  transform: translateX(0);
+  right: 0;
 }
 
 @media screen and (min-width: 30rem) {
   /* 30 * 0.8 = 24*/
   @value asideWidth: 24rem;
   .aside {
+    right: calc(asideWidth * -1);
     width: asideWidth;
   }
 }
 
 .list {
+  position: relative;
   width: 100%;
   margin: 0;
   padding: 0;
