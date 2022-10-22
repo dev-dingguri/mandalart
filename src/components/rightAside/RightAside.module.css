@@ -24,7 +24,7 @@
   display: flex;
   flex-direction: column;
   width: mobileAsideWidth;
-  height: 100vh;
+  height: 100%;
   padding: 0 0.5em;
   color: fontColor1;
   background-color: bgColor1;
@@ -44,36 +44,36 @@
   }
 }
 
-.list {
-  position: relative;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
 /* scrollbar */
 /* Firefox */
-.list {
+.aside {
   scrollbar-width: thin;
   scrollbar-color: bgColor3 bgColor1;
 }
 /* !Firefox */
 /* Safari and Chrome */
-.list {
+.aside {
+  overflow: auto;
   overflow: overlay;
 }
 
-.list::-webkit-scrollbar {
+.aside::-webkit-scrollbar {
   background-color: bgColor1;
   width: 6px;
 }
 
-.list::-webkit-scrollbar-thumb {
+.aside::-webkit-scrollbar-thumb {
   background-color: bgColor3;
   border-radius: 3px;
 }
 /* !Safari and Chrome */
 /* !scrollbar */
+
+.list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 .item {
   display: flex;

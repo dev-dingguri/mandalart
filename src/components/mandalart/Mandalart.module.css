@@ -60,7 +60,6 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  overflow: auto;
   border-top: 1px solid borderColor1;
   padding-top: 0.5em;
 }
@@ -92,6 +91,7 @@
 /* !Firefox */
 /* Safari and Chrome */
 .scrollArea {
+  overflow: auto;
   overflow: overlay;
 }
 
