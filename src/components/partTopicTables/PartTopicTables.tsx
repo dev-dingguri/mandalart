@@ -9,7 +9,7 @@ type PartTopicTablesProps = Omit<TopicTablesProps, 'focusedIdx'>;
 
 const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
-  const partTopicTablesRef = useRef<HTMLDivElement>(null);
+  const tablesRef = useRef<HTMLDivElement>(null);
   // 스와이프 시작시 상태를 저장하기 위한 useRef들
   const startYRef = useRef(0);
   const startXRef = useRef(0);
@@ -18,7 +18,7 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   const startTimeRef = useRef(new Date());
 
   const calculateMovedIdx = (idx: number, endY: number, endX: number) => {
-    const tables = partTopicTablesRef.current!;
+    const tables = tablesRef.current!;
     const baseline = tables.clientWidth * 0.35;
     const moveTime = Date.now() - startTimeRef.current.getTime();
     // 500ms안에 스와이프가 끝나면 가중치 적용
@@ -62,7 +62,7 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   };
 
   const handleTouchStart = (ev: TouchEvent) => {
-    const tables = partTopicTablesRef.current!;
+    const tables = tablesRef.current!;
     startYRef.current = ev.changedTouches[0].pageY;
     startXRef.current = ev.changedTouches[0].pageX;
     startTopRef.current = tables.scrollTop;
@@ -79,7 +79,7 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
     if (movedIdx !== focusedIdx) {
       setFocusedIdx(movedIdx);
     } else {
-      const tables = partTopicTablesRef.current!;
+      const tables = tablesRef.current!;
       tables.scroll({
         top: startTopRef.current,
         left: startLeftRef.current,
@@ -92,7 +92,7 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
     const moveY = -(ev.changedTouches[0].pageY - startYRef.current);
     const moveX = -(ev.changedTouches[0].pageX - startXRef.current);
 
-    const tables = partTopicTablesRef.current!;
+    const tables = tablesRef.current!;
     tables.scroll({
       top: startTopRef.current + moveY,
       left: startLeftRef.current + moveX,
@@ -102,7 +102,7 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
 
   return (
     <div
-      ref={partTopicTablesRef}
+      ref={tablesRef}
       className={styles.partTopicTables}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}

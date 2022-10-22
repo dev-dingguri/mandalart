@@ -19,7 +19,7 @@ const TopicTable = ({
   getTopicNode,
   onTopicClick,
 }: TopicTableProps) => {
-  const topicTableRef = useRef<HTMLDivElement>(null);
+  const tableRef = useRef<HTMLDivElement>(null);
   const isLoadedRef = useRef(false);
 
   const isAccent = (tableItemIdx: number) => {
@@ -33,7 +33,7 @@ const TopicTable = ({
   useEffect(() => {
     const scrollCenterIfFocus = (behavior: ScrollBehavior) => {
       if (isFocused) {
-        const topicTable = topicTableRef.current!;
+        const topicTable = tableRef.current!;
         scrollIntoView(topicTable, {
           behavior: behavior,
           block: 'center',
@@ -51,7 +51,7 @@ const TopicTable = ({
   }, [isFocused]);
 
   return (
-    <div ref={topicTableRef} className={styles.topicTable}>
+    <div ref={tableRef} className={styles.topicTable}>
       <Table
         rowSize={TABLE_ROW_SIZE}
         colSize={TABLE_COL_SIZE}

@@ -18,10 +18,10 @@ const Dialog = ({
   onClose,
   onEnter,
 }: DialogProps) => {
-  const modalRef = useRef<HTMLDialogElement>(null);
+  const ref = useRef<HTMLDialogElement>(null);
 
   const show = useCallback(() => {
-    const modal = modalRef.current!;
+    const modal = ref.current!;
     if (!modal.open) {
       if (isModal) {
         modal.showModal();
@@ -32,7 +32,7 @@ const Dialog = ({
   }, [isModal]);
 
   const hide = useCallback(() => {
-    modalRef.current?.close();
+    ref.current?.close();
   }, []);
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const Dialog = ({
   }, [isShown, handleKey]);
 
   return isShown ? (
-    <dialog className={`${styles.dialog} ${className}`} ref={modalRef}>
+    <dialog className={`${styles.dialog} ${className}`} ref={ref}>
       {children}
     </dialog>
   ) : null;

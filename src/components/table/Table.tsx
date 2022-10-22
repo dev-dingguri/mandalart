@@ -14,10 +14,10 @@ const Table = ({
   itemGenerator,
   space = '0',
 }: TableProps) => {
-  const tableRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    const table = tableRef.current!;
+    const table = ref.current!;
     table.style.setProperty('--space', `${space}`);
   }, [space]);
 
@@ -39,7 +39,7 @@ const Table = ({
     );
   }
   return (
-    <div ref={tableRef} className={styles.table}>
+    <div ref={ref} className={styles.table}>
       {table}
     </div>
   );
