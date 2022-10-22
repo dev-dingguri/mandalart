@@ -13,3 +13,6 @@
 /* etc */
 @value backdropFilter: brightness(120%) blur(2px);
 @value popupShadow: rgba(0, 0, 0, 0.5) 0px 0px 17px;
+
+/* size */
+@value scrollbarWidth: 6px;

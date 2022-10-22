@@ -1,6 +1,7 @@
 @value bgColor1 from 'common/style.css';
 @value bgColor3 from 'common/style.css';
 @value hoverEffectColor from 'common/style.css';
+@value scrollbarWidth from 'common/style.css';
 
 .app {
   width: 100%;
@@ -11,7 +12,7 @@
 /* Scrollbar */
 /* Chrome, Opera, Safari */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: scrollbarWidth;
 }
 
 ::-webkit-scrollbar-track {
@@ -20,7 +21,7 @@
 
 ::-webkit-scrollbar-thumb {
   background-color: bgColor3;
-  border-radius: 3px;
+  border-radius: calc(scrollbarWidth / 2);
 }
 
 @media (hover: hover) and (pointer: fine) {

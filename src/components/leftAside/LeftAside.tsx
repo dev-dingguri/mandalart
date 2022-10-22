@@ -50,10 +50,12 @@ const LeftAside = ({
           onDelete={onDeleteMandalart}
           onRename={onRenameMandalart}
         />
-        <Button className={styles.newButton} onClick={handleNewClick}>
-          <BsPlus />
-          <p>New</p>
-        </Button>
+        <div className={styles.bottom}>
+          <Button className={styles.newButton} onClick={handleNewClick}>
+            <BsPlus />
+            <p>New</p>
+          </Button>
+        </div>
       </div>
     </OutsideClickDetector>
   );

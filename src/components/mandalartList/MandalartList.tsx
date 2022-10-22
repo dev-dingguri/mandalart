@@ -33,7 +33,11 @@ const MandalartList = ({
   );
   items.reverse();
 
-  return <ul className={styles.list}>{items}</ul>;
+  return (
+    <div className={styles.scrollArea}>
+      <ul className={styles.list}>{items}</ul>
+    </div>
+  );
 };
 
 export default MandalartList;

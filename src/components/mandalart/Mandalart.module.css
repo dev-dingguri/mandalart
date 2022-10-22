@@ -63,7 +63,7 @@
   border-top: 1px solid borderColor1;
   padding-top: 0.5em;
   overflow: auto;
-  overflow: overlay;
+  scrollbar-gutter: stable both-edges;
 }
 
 .title {

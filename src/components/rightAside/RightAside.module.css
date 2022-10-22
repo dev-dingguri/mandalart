@@ -3,6 +3,7 @@
 @value borderColor1 from 'common/style.css';
 @value fontColor1 from 'common/style.css';
 @value backdropFilter from 'common/style.css';
+@value scrollbarWidth from 'common/style.css';
 
 @value mobileAsideWidth: 80vw;
 
@@ -25,12 +26,12 @@
   flex-direction: column;
   width: mobileAsideWidth;
   height: 100%;
-  padding: 0 0.5em;
+  padding: 0;
   color: fontColor1;
   background-color: bgColor1;
   transition: right 200ms ease-out;
   overflow: auto;
-  overflow: overlay;
+  scrollbar-gutter: stable both-edges;
 }
 
 .aside.shown {

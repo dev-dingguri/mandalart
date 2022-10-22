@@ -1,12 +1,15 @@
 @value bgColor1 from 'common/style.css';
 @value bgColor3 from 'common/style.css';
 @value borderColor1 from 'common/style.css';
+@value scrollbarWidth from 'common/style.css';
+
+.scrollArea {
+  overflow: auto;
+  scrollbar-gutter: stable both-edges;
+}
 
 .list {
   width: 100%;
   margin: 0;
-  padding: 0.5em 0;
-  border-bottom: 1px solid borderColor1;
-  overflow: auto;
-  overflow: overlay;
+  padding: scrollbarWidth 0;
 }
