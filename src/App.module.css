@@ -1,5 +1,38 @@
+@value bgColor1 from 'common/style.css';
+@value bgColor3 from 'common/style.css';
+@value hoverEffectColor from 'common/style.css';
+
 .app {
   width: 100%;
   /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 크기 계산 */
   height: var(--vh, 100vh);
 }
+
+/* Scrollbar */
+/* Chrome, Opera, Safari */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: bgColor1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: bgColor3;
+  border-radius: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  ::-webkit-scrollbar-thumb:hover {
+    box-shadow: inset 0 0 0 10em hoverEffectColor;
+  }
+}
+/* !Chrome, Opera, Safari */
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: bgColor3 bgColor1;
+}
+/* !Firefox */
+/* !Scrollbar */

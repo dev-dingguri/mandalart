@@ -29,6 +29,8 @@
   color: fontColor1;
   background-color: bgColor1;
   transition: right 200ms ease-out;
+  overflow: auto;
+  overflow: overlay;
 }
 
 .aside.shown {
@@ -43,31 +45,6 @@
     width: asideWidth;
   }
 }
-
-/* scrollbar */
-/* Firefox */
-.aside {
-  scrollbar-width: thin;
-  scrollbar-color: bgColor3 bgColor1;
-}
-/* !Firefox */
-/* Safari and Chrome */
-.aside {
-  overflow: auto;
-  overflow: overlay;
-}
-
-.aside::-webkit-scrollbar {
-  background-color: bgColor1;
-  width: 6px;
-}
-
-.aside::-webkit-scrollbar-thumb {
-  background-color: bgColor3;
-  border-radius: 3px;
-}
-/* !Safari and Chrome */
-/* !scrollbar */
 
 .list {
   width: 100%;

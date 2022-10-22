@@ -1,12 +1,12 @@
-@value buttonHoverEffectColor from 'common/style.css';
-@value buttonActiveEffectColor from 'common/style.css';
+@value hoverEffectColor from 'common/style.css';
+@value activeEffectColor from 'common/style.css';
 
 @media (hover: hover) and (pointer: fine) {
   .button:hover {
-    box-shadow: inset 0 0 0 10em buttonHoverEffectColor;
+    box-shadow: inset 0 0 0 10em hoverEffectColor;
   }
 }
 
 .button:active {
-  box-shadow: inset 0 0 0 10em buttonActiveEffectColor;
+  box-shadow: inset 0 0 0 10em activeEffectColor;
 }

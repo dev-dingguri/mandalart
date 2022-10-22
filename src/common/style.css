@@ -7,8 +7,8 @@
 @value fontColor2: #BCBEBF;
 @value accentColor1: #1670FC;
 @value accentColor2: #0046C8;
-@value buttonHoverEffectColor: rgba(181, 181, 181, 0.1);
-@value buttonActiveEffectColor: rgba(181, 181, 181, 0.2);
+@value hoverEffectColor: rgba(181, 181, 181, 0.1);
+@value activeEffectColor: rgba(181, 181, 181, 0.2);
 
 /* etc */
 @value backdropFilter: brightness(120%) blur(2px);
