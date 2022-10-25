@@ -13,6 +13,7 @@
 /* Chrome, Opera, Safari */
 ::-webkit-scrollbar {
   width: scrollbarWidth;
+  height: scrollbarWidth;
 }
 
 ::-webkit-scrollbar-track {

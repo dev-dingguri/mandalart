@@ -1,0 +1,73 @@
+@value bgColor1 from 'common/style.css';
+@value bgColor3 from 'common/style.css';
+@value borderColor1 from 'common/style.css';
+@value fontColor1 from 'common/style.css';
+
+@value sidePadding: 5%;
+
+.license {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: bgColor1;
+  color: fontColor1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 3em;
+  padding: 0 sidePadding;
+  color: fontColor1;
+  border-bottom: 1px solid borderColor1;
+}
+
+.goBackButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.3333333333333333em;
+  height: 1.3333333333333333em;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  padding: 0;
+  background-color: bgColor1;
+  color: fontColor1;
+}
+
+.title {
+  font-size: 1.3rem;
+  line-height: 1em;
+  font-weight: bold;
+  margin: 0;
+  margin-left: 0.25em;
+}
+
+.list {
+  margin: 0;
+  padding: 0 sidePadding;
+  overflow: auto;
+  scrollbar-gutter: stable both-edges;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em 0;
+  border-bottom: 1px solid borderColor1;
+}
+
+.item h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  margin-bottom: 0.5em;
+}
+
+.item p,
+.item a {
+  margin: 0;
+  margin-bottom: 0.25em;
+  color: fontColor1;
+  word-wrap:break-word;
+}

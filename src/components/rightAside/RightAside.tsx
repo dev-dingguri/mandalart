@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './RightAside.module.css';
 import OutsideClickDetector from 'components/outsideClickDetector/OutsideClickDetector';
 import Select from 'components/select/Select';
+import { useNavigate } from 'react-router-dom';
 
 type ItemProps = {
   text: string;
@@ -34,6 +35,11 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
     setSelectedTheme(value);
   };
 
+  const navigate = useNavigate();
+  const goToOpenSourceLicense = () => {
+    navigate('/mandalart/open-source-license');
+  };
+
   return (
     <OutsideClickDetector
       className={`${styles.container} ${isShown && styles.shown}`}
@@ -49,10 +55,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
               onSelect={handleThemeSelect}
             />
           </Item>
-          <Item
-            text="Open source license"
-            onClick={() => console.log('open NOTICE')}
-          />
+          <Item text="Open source license" onClick={goToOpenSourceLicense} />
         </ul>
       </div>
     </OutsideClickDetector>

@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './App.module.css';
 import Mandalart from './components/mandalart/Mandalart';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import OpenSourceLicenses from 'components/openSourceLicenses/OpenSourceLicenses';
 
 const App = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -18,7 +20,15 @@ const App = () => {
 
   return (
     <div ref={ref} className={styles.app}>
-      <Mandalart />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/mandalart" element={<Mandalart />} />
+          <Route
+            path="/mandalart/open-source-license"
+            element={<OpenSourceLicenses />}
+          />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 };

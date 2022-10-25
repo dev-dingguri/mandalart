@@ -36,6 +36,11 @@ li {
   list-style: none;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 .react-icons {
   font-size: inherit;
 }
