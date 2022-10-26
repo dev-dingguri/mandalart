@@ -4,7 +4,11 @@ import TopicItem from 'components/topicItem/TopicItem';
 import { TopicNode } from 'types/TopicNode';
 import styles from './TopicTable.module.css';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
-import { TABLE_ROW_SIZE, TABLE_COL_SIZE, TABLE_CENTER_IDX } from 'common/const';
+import {
+  TABLE_ROW_SIZE,
+  TABLE_COL_SIZE,
+  TABLE_CENTER_IDX,
+} from 'constants/constants';
 
 type TopicTableProps = {
   tableIdx: number;

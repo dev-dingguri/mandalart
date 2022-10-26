@@ -1,10 +1,10 @@
-@value bgColor1 from 'common/style.css';
-@value bgColor3 from 'common/style.css';
-@value borderColor1 from 'common/style.css';
-@value fontColor1 from 'common/style.css';
-@value fontColor2 from 'common/style.css';
-@value backdropFilter from 'common/style.css';
-@value scrollbarWidth from 'common/style.css';
+@value bgColor1 from 'assets/css/styles.css';
+@value bgColor3 from 'assets/css/styles.css';
+@value borderColor1 from 'assets/css/styles.css';
+@value fontColor1 from 'assets/css/styles.css';
+@value fontColor2 from 'assets/css/styles.css';
+@value backdropFilter from 'assets/css/styles.css';
+@value scrollbarWidth from 'assets/css/styles.css';
 
 @value mobileAsideWidth: 70vw;
 

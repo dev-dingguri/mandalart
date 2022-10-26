@@ -6,7 +6,7 @@ import TopicTables, {
 import { TopicNode, cloneTopicNode } from 'types/TopicNode';
 import styles from './TopicsView.module.css';
 import TopicEditor from 'components/topicEditor/TopicEditor';
-import { TABLE_CENTER_IDX } from 'common/const';
+import { TABLE_CENTER_IDX } from 'constants/constants';
 
 const getTopicNode = (
   topicTree: TopicNode,

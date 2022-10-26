@@ -1,4 +1,4 @@
-import { TABLE_SIZE } from 'common/const';
+import { TABLE_SIZE } from 'constants/constants';
 import { MandalartMetadata } from 'types/MandalartMetadata';
 import { firebaseDatabase as db } from './firebase';
 import { ref, set, off, remove, onValue, push } from 'firebase/database';

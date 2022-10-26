@@ -1,8 +1,8 @@
-@value bgColor2 from 'common/style.css';
-@value fontColor1 from 'common/style.css';
-@value hoverEffectColor from 'common/style.css';
-@value activeEffectColor from 'common/style.css';
-@value popupShadow from 'common/style.css';
+@value bgColor2 from 'assets/css/styles.css';
+@value fontColor1 from 'assets/css/styles.css';
+@value hoverEffectColor from 'assets/css/styles.css';
+@value activeEffectColor from 'assets/css/styles.css';
+@value popupShadow from 'assets/css/styles.css';
 
 .menu {
   position: fixed;

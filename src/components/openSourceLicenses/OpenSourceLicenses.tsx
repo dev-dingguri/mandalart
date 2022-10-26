@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import licenseDataFile from 'assets/json/openSourceLicenses.json';
+import { useEffect, useState } from 'react';
+import licenseDataFile from 'assets/json/packageLicenses.json';
 import { BsChevronLeft } from 'react-icons/bs';
 import styles from './OpenSourceLicenses.module.css';
 import Button from 'components/button/Button';

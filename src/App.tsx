@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './App.module.css';
-import Mandalart from './components/mandalart/Mandalart';
+import Mandalart from 'components/mandalart/Mandalart';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import OpenSourceLicenses from 'components/openSourceLicenses/OpenSourceLicenses';
 

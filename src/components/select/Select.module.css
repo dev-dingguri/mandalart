@@ -1,7 +1,7 @@
-@value bgColor1 from 'common/style.css';
-@value bgColor2 from 'common/style.css';
-@value borderColor1 from 'common/style.css';
-@value fontColor1 from 'common/style.css';
+@value bgColor1 from 'assets/css/styles.css';
+@value bgColor2 from 'assets/css/styles.css';
+@value borderColor1 from 'assets/css/styles.css';
+@value fontColor1 from 'assets/css/styles.css';
 
 .button {
   display: flex;

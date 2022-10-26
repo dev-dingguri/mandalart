@@ -3,7 +3,11 @@ import TopicTables, {
   TopicTablesProps,
 } from 'components/topicTables/TopicTables';
 import styles from './PartTopicTables.module.css';
-import { TABLE_COL_SIZE, TABLE_SIZE, TABLE_CENTER_IDX } from 'common/const';
+import {
+  TABLE_COL_SIZE,
+  TABLE_SIZE,
+  TABLE_CENTER_IDX,
+} from 'constants/constants';
 
 type PartTopicTablesProps = Omit<TopicTablesProps, 'focusedIdx'>;
 

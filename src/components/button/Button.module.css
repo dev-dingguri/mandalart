@@ -1,5 +1,5 @@
-@value hoverEffectColor from 'common/style.css';
-@value activeEffectColor from 'common/style.css';
+@value hoverEffectColor from 'assets/css/styles.css';
+@value activeEffectColor from 'assets/css/styles.css';
 
 @media (hover: hover) and (pointer: fine) {
   .button:hover {

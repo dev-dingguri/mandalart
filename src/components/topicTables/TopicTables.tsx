@@ -1,7 +1,7 @@
 import Table from 'components/table/Table';
 import TopicTable from 'components/topicTable/TopicTable';
 import { TopicNode } from 'types/TopicNode';
-import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'common/const';
+import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';
 
 export type TopicTablesProps = {
   focusedIdx?: number;
