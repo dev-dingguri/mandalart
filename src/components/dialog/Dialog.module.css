@@ -1,10 +1,7 @@
-@value popupShadow from 'assets/css/styles.css';
-@value backdropFilter from 'assets/css/styles.css';
-
 .dialog {
-  box-shadow: popupShadow;
+  box-shadow: var(--shadow-popup);
 }
 
 .dialog::backdrop {
-  backdrop-filter: backdropFilter;
+  backdrop-filter: var(--filter-backdrop);
 }

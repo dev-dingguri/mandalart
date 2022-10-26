@@ -1,7 +1,3 @@
-@value fontColor1 from 'assets/css/styles.css';
-@value hoverEffectColor from 'assets/css/styles.css';
-@value activeEffectColor from 'assets/css/styles.css';
-
 .item {
   display: flex;
   justify-content: center;
@@ -19,7 +15,7 @@
 }
 
 .item.selected {
-  box-shadow: inset 0 0 0 10em activeEffectColor;
+  box-shadow: inset 0 0 0 10em var(--color-active-effect);
 }
 
 .item p {
@@ -38,12 +34,12 @@
 
 @media (hover: hover) and (pointer: fine) {
   .item:hover {
-    box-shadow: inset 0 0 0 10em hoverEffectColor;
+    box-shadow: inset 0 0 0 10em var(--color-hover-effect);
   }
 }
 
 .item:active {
-  box-shadow: inset 0 0 0 10em activeEffectColor;
+  box-shadow: inset 0 0 0 10em var(--color-active-effect);
 }
 
 .icon {
@@ -59,6 +55,6 @@
   border-radius: 5px;
   padding: 0;
   background-color: transparent;
-  color: fontColor1;
+  color: var(--color-font-1);
   margin-left: auto;
 }

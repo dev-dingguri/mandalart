@@ -1,18 +1,13 @@
-@value bgColor1 from 'assets/css/styles.css';
-@value bgColor3 from 'assets/css/styles.css';
-@value fontColor1 from 'assets/css/styles.css';
-@value accentColor1 from 'assets/css/styles.css';
-
 .topicItem {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: bgColor3;
-  color: fontColor1;
+  background-color: var(--color-bg-3);
+  color: var(--color-font-1);
 }
 
 .topicItem.accented {
-  background-color: accentColor1;
+  background-color: var(--color-accent-1);
 }
 
 .text {

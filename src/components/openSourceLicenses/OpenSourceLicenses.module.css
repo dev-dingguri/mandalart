@@ -1,16 +1,11 @@
-@value bgColor1 from 'assets/css/styles.css';
-@value bgColor3 from 'assets/css/styles.css';
-@value borderColor1 from 'assets/css/styles.css';
-@value fontColor1 from 'assets/css/styles.css';
-
 @value sidePadding: 5%;
 
 .license {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: bgColor1;
-  color: fontColor1;
+  background-color: var(--color-bg-1);
+  color: var(--color-font-1);
 }
 
 .header {
@@ -19,8 +14,8 @@
   width: 100%;
   min-height: 3em;
   padding: 0 sidePadding;
-  color: fontColor1;
-  border-bottom: 1px solid borderColor1;
+  color: var(--color-font-1);
+  border-bottom: 1px solid var(--color-border-1);
 }
 
 .goBackButton {
@@ -32,8 +27,8 @@
   border-radius: 5px;
   font-size: 1.5rem;
   padding: 0;
-  background-color: bgColor1;
-  color: fontColor1;
+  background-color: var(--color-bg-1);
+  color: var(--color-font-1);
 }
 
 .title {
@@ -55,7 +50,7 @@
   display: flex;
   flex-direction: column;
   padding: 0.5em 0;
-  border-bottom: 1px solid borderColor1;
+  border-bottom: 1px solid var(--color-border-1);
 }
 
 .item h3 {
@@ -68,6 +63,6 @@
 .item a {
   margin: 0;
   margin-bottom: 0.25em;
-  color: fontColor1;
+  color: var(--color-font-1);
   word-wrap:break-word;
 }

@@ -1,9 +1,3 @@
-@value bgColor1 from 'assets/css/styles.css';
-@value bgColor3 from 'assets/css/styles.css';
-@value borderColor1 from 'assets/css/styles.css';
-@value fontColor1 from 'assets/css/styles.css';
-@value accentColor1 from 'assets/css/styles.css';
-
 .alert {
   display: flex;
   flex-direction: column;
@@ -12,8 +6,8 @@
   padding: 2em 1.5em;
   border: 0;
   border-radius: 5px;
-  background-color: bgColor1;
-  color: fontColor1;
+  background-color: var(--color-bg-1);
+  color: var(--color-font-1);
 }
 
 .title {
@@ -29,7 +23,7 @@
   width: 4.5em;
   height: 2em;
   margin-left: 0.5em;
-  background-color: bgColor3;
-  color: fontColor1;
+  background-color: var(--color-bg-3);
+  color: var(--color-font-1);
   border-radius: 5px;
 }

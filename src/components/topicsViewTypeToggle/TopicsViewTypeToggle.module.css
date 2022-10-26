@@ -1,8 +1,3 @@
-@value bgColor1 from 'assets/css/styles.css';
-@value bgColor3 from 'assets/css/styles.css';
-@value fontColor1 from 'assets/css/styles.css';
-@value accentColor1 from 'assets/css/styles.css';
-
 .toggle {
   display: flex;
   width: 100%;
@@ -15,8 +10,8 @@
   justify-content: center;
   align-items: center;
   width: 50%;
-  background-color: bgColor3;
-  color: fontColor1;
+  background-color: var(--color-bg-3);
+  color: var(--color-font-1);
 }
 
 .allViewButton {
@@ -41,5 +36,5 @@
 }
 
 .selected {
-  background-color: accentColor1;
+  background-color: var(--color-accent-1);
 }

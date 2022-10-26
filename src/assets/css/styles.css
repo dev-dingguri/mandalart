@@ -1,18 +1,25 @@
-/* colors */
-@value bgColor1: #272727;
-@value bgColor2: #323232;
-@value bgColor3: #494949;
-@value borderColor1: #494949;
-@value fontColor1: #EEF0F2;
-@value fontColor2: #BCBEBF;
-@value accentColor1: #1670FC;
-@value accentColor2: #0046C8;
-@value hoverEffectColor: rgba(181, 181, 181, 0.1);
-@value activeEffectColor: rgba(181, 181, 181, 0.2);
+:root {
+  /* colors */
+  --color-bg-1: #272727;
+  --color-bg-2: #323232;
+  --color-bg-3: #494949;
+  --color-border-1: #494949;
+  --color-font-1: #EEF0F2;
+  --color-font-2: #BCBEBF;
+  --color-accent-1: #1670FC;
+  --color-accent-2: #0046C8;
+  --color-hover-effect: rgba(181, 181, 181, 0.1);
+  --color-active-effect: rgba(181, 181, 181, 0.2);
 
-/* etc */
-@value backdropFilter: brightness(120%) blur(2px);
-@value popupShadow: rgba(0, 0, 0, 0.5) 0px 0px 17px;
+  /* size */
+  --size-scrollbar-width: 6px;
+  
+  /* etc */
+  --shadow-popup: rgba(0, 0, 0, 0.5) 0px 0px 17px;
+}
 
-/* size */
-@value scrollbarWidth: 6px;
+/* backdrop */
+:root,
+dialog::backdrop {
+  --filter-backdrop: brightness(120%) blur(2px);
+}

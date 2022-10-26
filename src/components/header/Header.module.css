@@ -1,14 +1,10 @@
-@value bgColor1 from 'assets/css/styles.css';
-@value bgColor3 from 'assets/css/styles.css';
-@value fontColor1 from 'assets/css/styles.css';
-
 .header {
   display: flex;
   align-items: center;
   width: 100%;
   min-height: 3em;
   padding: 0;
-  color: fontColor1;
+  color: var(--color-font-1);
 }
 
 .left {
@@ -34,8 +30,8 @@
 .signButton {
   width: 5em;
   border-radius: 5px;
-  background-color: bgColor3;
-  color: fontColor1;
+  background-color: var(--color-bg-3);
+  color: var(--color-font-1);
 }
 
 .asideButton,
@@ -48,8 +44,8 @@
   border-radius: 5px;
   font-size: 1.5rem;
   padding: 0;
-  background-color: bgColor1;
-  color: fontColor1;
+  background-color: var(--color-bg-1);
+  color: var(--color-font-1);
 }
 
 .asideButton {

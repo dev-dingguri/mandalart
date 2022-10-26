@@ -1,7 +1,3 @@
-@value bgColor1 from 'assets/css/styles.css';
-@value bgColor3 from 'assets/css/styles.css';
-@value fontColor1 from 'assets/css/styles.css';
-
 .notice {
   display: flex;
   flex-direction: column;
@@ -9,8 +5,8 @@
   align-items: center;
   width: 100%;
   height: 100%;
-  color: fontColor1;
-  background-color: bgColor1;
+  color: var(--color-font-1);
+  background-color: var(--color-bg-1);
 }
 
 .message {
@@ -29,8 +25,8 @@
   padding-left: 0.5em;
   padding-right: 0.75em;
   border-radius: 5px;
-  background-color: bgColor3;
-  color: fontColor1;
+  background-color: var(--color-bg-3);
+  color: var(--color-font-1);
 }
 
 .newButton p {
