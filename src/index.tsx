@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { IconContext } from 'react-icons/lib';
+import { ThemeProvider } from 'contexts/ThemeContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -12,7 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <IconContext.Provider value={{ className: 'react-icons' }}>
-      <App />
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
     </IconContext.Provider>
   </React.StrictMode>
 );

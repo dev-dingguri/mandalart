@@ -3,6 +3,7 @@ import styles from './RightAside.module.css';
 import OutsideClickDetector from 'components/outsideClickDetector/OutsideClickDetector';
 import Select from 'components/select/Select';
 import { useNavigate } from 'react-router-dom';
+import { Theme, ThemeContextType, useTheme } from 'contexts/ThemeContext';
 
 type ItemProps = {
   text: string;
@@ -19,20 +20,26 @@ const Item = ({ text, children, onClick }: ItemProps) => {
   );
 };
 
+type ThemeOption = {
+  value: Theme;
+  name: string;
+};
+
 type RightAsideProps = {
   isShown: boolean;
   onClose: () => void;
 };
 
 const RightAside = ({ isShown, onClose }: RightAsideProps) => {
-  const themeOptions = [
+  const { theme, selectTheme } = useTheme() as ThemeContextType;
+
+  const themeOptions: ThemeOption[] = [
     { value: 'system', name: 'Use System setting' },
     { value: 'light', name: 'Light' },
     { value: 'dark', name: 'Dark' },
   ];
-  const [selectedTheme, setSelectedTheme] = useState(themeOptions[0].value);
   const handleThemeSelect = (value: string) => {
-    setSelectedTheme(value);
+    selectTheme(value as Theme);
   };
 
   const navigate = useNavigate();
@@ -51,7 +58,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
             <Select
               className={styles.themeSelect}
               options={themeOptions}
-              selectedValue={selectedTheme}
+              selectedValue={theme}
               onSelect={handleThemeSelect}
             />
           </Item>
