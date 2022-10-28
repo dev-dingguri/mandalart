@@ -5,8 +5,8 @@ import TopicTables, {
 } from 'components/topicTables/TopicTables';
 import { TopicNode, cloneTopicNode } from 'types/TopicNode';
 import styles from './TopicsView.module.css';
-import TopicEditor from 'components/topicEditor/TopicEditor';
 import { TABLE_CENTER_IDX } from 'constants/constants';
+import TextEditor from 'components/textEditor/TextEditor';
 
 const getTopicNode = (
   topicTree: TopicNode,
@@ -94,9 +94,11 @@ const TopicsView = ({
           )}
         </div>
       </section>
-      <TopicEditor
+      <TextEditor
         isShown={isShownEditor()}
-        text={getEditingTopicText()}
+        title={'Topic'}
+        value={getEditingTopicText()}
+        placeholder={'Please enter your content.'}
         onClose={handleCloseEditor}
         onEnter={handleEnterEditor}
       />
