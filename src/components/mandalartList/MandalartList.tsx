@@ -18,9 +18,9 @@ const MandalartList = ({
   onDelete,
   onRename,
 }: MandalartListProps) => {
-  const items: JSX.Element[] = [];
-  metadataMap.forEach((metadata, mandalartId) =>
-    items.push(
+  const items = Array.from(metadataMap)
+    .reverse()
+    .map(([mandalartId, metadata]) => (
       <MandalartListItem
         key={mandalartId}
         metadata={metadata}
@@ -29,9 +29,7 @@ const MandalartList = ({
         onDelete={() => onDelete(mandalartId)}
         onRename={(name) => onRename(mandalartId, name)}
       />
-    )
-  );
-  items.reverse();
+    ));
 
   return (
     <div className={styles.scrollArea}>
