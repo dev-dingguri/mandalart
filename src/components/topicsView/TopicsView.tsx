@@ -14,12 +14,10 @@ const getTopicNode = (
   tableItemIdx: number
 ) => {
   let node = topicTree;
-  const idxs = [tableIdx, tableItemIdx];
-  idxs.forEach((idx) => {
-    node =
-      idx === TABLE_CENTER_IDX
-        ? node
-        : node.children[idx < TABLE_CENTER_IDX ? idx : idx - 1];
+  [tableIdx, tableItemIdx].forEach((idx) => {
+    if (idx !== TABLE_CENTER_IDX) {
+      node = node.children[idx < TABLE_CENTER_IDX ? idx : idx - 1];
+    }
   });
   if (!node) {
     throw new Error('cannot get node');

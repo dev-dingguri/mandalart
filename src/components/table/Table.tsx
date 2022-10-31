@@ -21,23 +21,22 @@ const Table = ({
     table.style.setProperty('--space', `${space}`);
   }, [space]);
 
-  const table: JSX.Element[] = [];
-  for (let row = 0; row < rowSize; ++row) {
-    const rows: JSX.Element[] = [];
-    for (let col = 0; col < colSize; ++col) {
+  const table = Array.from({ length: rowSize }, (_, row) => {
+    const rows = Array.from({ length: colSize }, (_, col) => {
       const idx = row * rowSize + col;
-      rows.push(
+      return (
         <div key={idx} className={styles.item}>
           {itemGenerator(idx)}
         </div>
       );
-    }
-    table.push(
+    });
+    return (
       <div key={row} className={styles.row}>
         {rows}
       </div>
     );
-  }
+  });
+
   return (
     <div ref={ref} className={styles.table}>
       {table}
