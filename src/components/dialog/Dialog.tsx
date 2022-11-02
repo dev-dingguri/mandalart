@@ -64,10 +64,10 @@ const Dialog = ({
   useEffect(() => {
     if (isShown) {
       window.addEventListener('keydown', handleKey);
-      return () => {
-        window.removeEventListener('keydown', handleKey);
-      };
     }
+    return () => {
+      window.removeEventListener('keydown', handleKey);
+    };
   }, [isShown, handleKey]);
 
   const themeClassName = isLightTheme(theme) && 'light';

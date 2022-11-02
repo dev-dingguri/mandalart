@@ -132,34 +132,32 @@ const Mandalart = () => {
   }, [topicTree]);
 
   useEffect(() => {
-    if (user) {
-      const stopSync = repository.syncMetadata(user.uid, (metadataMap) => {
-        setMetadataMap(metadataMap);
-        if (!metadataMap.has(selectedMandalartId)) {
-          const lastId = Array.from(metadataMap.keys()).pop();
-          console.log(lastId);
-          setSelectedMandalartId(lastId ? lastId : '');
-        }
-      });
-      return () => {
-        stopSync();
-      };
+    if (!user) {
+      return;
     }
+    const stopSync = repository.syncMetadata(user.uid, (metadataMap) => {
+      setMetadataMap(metadataMap);
+      if (!metadataMap.has(selectedMandalartId)) {
+        const lastId = Array.from(metadataMap.keys()).pop();
+        console.log(lastId);
+        setSelectedMandalartId(lastId ? lastId : '');
+      }
+    });
+    return () => stopSync();
   }, [user, selectedMandalartId]);
 
   useEffect(() => {
-    if (user && selectedMandalartId.length) {
-      const stopSync = repository.syncTopics(
-        user.uid,
-        selectedMandalartId,
-        (topicTree: TopicNode) => {
-          setTopicTree(topicTree);
-        }
-      );
-      return () => {
-        stopSync();
-      };
+    if (!user || selectedMandalartId.length === 0) {
+      return;
     }
+    const stopSync = repository.syncTopics(
+      user.uid,
+      selectedMandalartId,
+      (topicTree: TopicNode) => {
+        setTopicTree(topicTree);
+      }
+    );
+    return () => stopSync();
   }, [user, selectedMandalartId]);
 
   useEffect(() => {

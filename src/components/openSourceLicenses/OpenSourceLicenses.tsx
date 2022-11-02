@@ -57,7 +57,9 @@ const parseLicenseData = (licenseData: LicenseData) => {
 
 const OpenSourceLicenses = () => {
   const [licenseData, setLicenseData] = useState<LicenseDatum[]>([]);
-  useEffect(() => setLicenseData(parseLicenseData(licenseDataFile)), []);
+  useEffect(() => {
+    setLicenseData(parseLicenseData(licenseDataFile));
+  }, []);
 
   const location = useLocation();
   const navigate = useNavigate();

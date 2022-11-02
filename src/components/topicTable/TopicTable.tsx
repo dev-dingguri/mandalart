@@ -45,13 +45,14 @@ const TopicTable = ({
         });
       }
     };
-    const handleResize = () => scrollCenterIfFocus('auto');
-
     scrollCenterIfFocus(isLoadedRef.current ? 'smooth' : 'auto');
     isLoadedRef.current = true;
 
+    const handleResize = () => scrollCenterIfFocus('auto');
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [isFocused]);
 
   return (
