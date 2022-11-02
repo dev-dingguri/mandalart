@@ -5,39 +5,39 @@ import { BsList, BsThreeDots } from 'react-icons/bs';
 
 type HeaderProps = {
   isSignedIn: boolean;
-  onSignInClick: () => void;
-  onSignOutClick: () => void;
-  onListClick: () => void;
-  onEtcClick: () => void;
+  onShowSignInUI: () => void;
+  onSignOut: () => void;
+  onShowLeftAside: () => void;
+  onShowRightAside: () => void;
 };
 
 const Header = ({
   isSignedIn,
-  onSignInClick,
-  onSignOutClick,
-  onListClick,
-  onEtcClick,
+  onShowSignInUI,
+  onSignOut,
+  onShowLeftAside,
+  onShowRightAside,
 }: HeaderProps) => {
   const signButton = isSignedIn ? (
-    <Button className={styles.signButton} onClick={onSignOutClick}>
+    <Button className={styles.signButton} onClick={onSignOut}>
       Sign out
     </Button>
   ) : (
-    <Button className={styles.signButton} onClick={onSignInClick}>
+    <Button className={styles.signButton} onClick={onShowSignInUI}>
       Sign in
     </Button>
   );
   return (
     <header className={styles.header}>
       <div className={styles.left}>
-        <Button className={styles.asideButton} onClick={onListClick}>
+        <Button className={styles.asideButton} onClick={onShowLeftAside}>
           <BsList />
         </Button>
         <h1 className={styles.title}>Mandalart</h1>
       </div>
       <div className={styles.right}>
         {signButton}
-        <Button className={styles.etcButton} onClick={onEtcClick}>
+        <Button className={styles.etcButton} onClick={onShowRightAside}>
           <BsThreeDots />
         </Button>
       </div>

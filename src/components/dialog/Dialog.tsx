@@ -37,7 +37,7 @@ const Dialog = ({
     }
   }, [isModal]);
 
-  const hide = useCallback(() => {
+  const close = useCallback(() => {
     ref.current?.close();
   }, []);
 
@@ -45,9 +45,9 @@ const Dialog = ({
     if (isShown) {
       show();
     } else {
-      hide();
+      close();
     }
-  }, [isShown, show, hide]);
+  }, [isShown, show, close]);
 
   const handleKey = useCallback(
     (ev: KeyboardEvent) => {

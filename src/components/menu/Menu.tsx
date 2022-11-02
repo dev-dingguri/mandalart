@@ -24,15 +24,14 @@ const Menu = ({
   onSelect,
   onClose,
 }: MenuProps) => {
-  const handleItemClick = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-    onClose();
-
+  const handleSelect = (ev: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
     const value = ev.currentTarget.dataset.value;
     if (value) {
       onSelect(value);
     } else {
       throw new Error('no value');
     }
+    onClose();
   };
 
   const stopClickPropagation = (ev: React.MouseEvent<Element, MouseEvent>) => {
@@ -59,7 +58,7 @@ const Menu = ({
           <li
             key={option.value}
             data-value={option.value}
-            onClick={handleItemClick}
+            onClick={handleSelect}
           >
             {option.name}
           </li>

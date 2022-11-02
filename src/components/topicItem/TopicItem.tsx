@@ -3,14 +3,18 @@ import styles from './TopicItem.module.css';
 type TopicItemProps = {
   topic: string;
   isAccented: boolean;
-  onClick: () => void;
+  onShowTopicEditor: () => void;
 };
 
-const TopicItem = ({ topic, isAccented, onClick }: TopicItemProps) => {
+const TopicItem = ({
+  topic,
+  isAccented,
+  onShowTopicEditor,
+}: TopicItemProps) => {
   return (
     <div
       className={`${styles.topicItem} ${isAccented && styles.accented}`}
-      onClick={onClick}
+      onClick={onShowTopicEditor}
     >
       <p className={styles.text}>{topic}</p>
     </div>

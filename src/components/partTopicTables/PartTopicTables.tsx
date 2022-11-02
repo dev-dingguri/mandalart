@@ -57,11 +57,11 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
     return idx;
   };
 
-  const handleTopicClick = (tableIdx: number, tableItemIdx: number) => {
+  const handleShowTopicEditor = (tableIdx: number, tableItemIdx: number) => {
     if (tableIdx !== focusedIdx) {
       setFocusedIdx(tableIdx);
     } else {
-      props.onTopicClick(tableIdx, tableItemIdx);
+      props.onShowTopicEditor(tableIdx, tableItemIdx);
     }
   };
 
@@ -117,7 +117,7 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
         <TopicTables
           {...props}
           focusedIdx={focusedIdx}
-          onTopicClick={handleTopicClick}
+          onShowTopicEditor={handleShowTopicEditor}
         />
       </div>
     </div>

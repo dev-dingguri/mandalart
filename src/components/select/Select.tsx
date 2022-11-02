@@ -27,7 +27,7 @@ const Select = ({
   const [menuY, setMenuY] = useState(0);
   const [menuX, setMenuX] = useState(0);
 
-  const showMenu = () => {
+  const handleShowMenu = () => {
     const select = ref.current;
     if (select) {
       const rect = select.getBoundingClientRect();
@@ -36,7 +36,7 @@ const Select = ({
     }
     setIsShownMenu(true);
   };
-  const hideMenu = () => setIsShownMenu(false);
+  const handleCloseMenu = () => setIsShownMenu(false);
 
   const selectedName = (() => {
     const selectedOption = options.find(
@@ -50,7 +50,7 @@ const Select = ({
 
   return (
     <div ref={ref} className={className}>
-      <Button className={styles.button} onClick={showMenu}>
+      <Button className={styles.button} onClick={handleShowMenu}>
         <p>{selectedName}</p>
         <BsFillCaretDownFill />
       </Button>
@@ -60,7 +60,7 @@ const Select = ({
         xPos={menuX}
         options={options}
         onSelect={onSelect}
-        onClose={hideMenu}
+        onClose={handleCloseMenu}
       />
     </div>
   );

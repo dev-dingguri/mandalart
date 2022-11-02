@@ -48,24 +48,24 @@ const TopicsView = ({
     onTopicTreeChange(newTopicTree);
   };
 
-  const isShownEditor = () => {
+  const isShownTopicEditor = () => {
     return editingTopicPos !== null;
   };
 
-  const handleStartEditor = (tableIdx: number, tableItemIdx: number) => {
+  const handleShowTopicEditor = (tableIdx: number, tableItemIdx: number) => {
     setEditingTopicPos({ tableIdx, tableItemIdx });
   };
 
-  const handleEnterEditor = (text: string) => {
+  const handleCloseTopicEditor = () => {
+    setEditingTopicPos(null);
+  };
+
+  const handleTopicEditorEnter = (text: string) => {
     if (!editingTopicPos) return;
 
     const { tableIdx, tableItemIdx } = editingTopicPos;
     updateItem(tableIdx, tableItemIdx, text);
-    setEditingTopicPos(null);
-  };
-
-  const handleCloseEditor = () => {
-    setEditingTopicPos(null);
+    handleCloseTopicEditor();
   };
 
   const getEditingTopicText = () => {
@@ -78,7 +78,7 @@ const TopicsView = ({
   const topicTablesProps: TopicTablesProps = {
     getTopicNode: (tableIdx, tableItemIdx) =>
       getTopicNode(topicTree, tableIdx, tableItemIdx),
-    onTopicClick: handleStartEditor,
+    onShowTopicEditor: handleShowTopicEditor,
   };
 
   return (
@@ -93,12 +93,12 @@ const TopicsView = ({
         </div>
       </section>
       <TextEditor
-        isShown={isShownEditor()}
+        isShown={isShownTopicEditor()}
         title={'Topic'}
         value={getEditingTopicText()}
         placeholder={'Please enter your content.'}
-        onClose={handleCloseEditor}
-        onEnter={handleEnterEditor}
+        onClose={handleCloseTopicEditor}
+        onEnter={handleTopicEditorEnter}
       />
     </>
   );

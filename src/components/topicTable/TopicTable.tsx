@@ -14,14 +14,14 @@ type TopicTableProps = {
   tableIdx: number;
   isFocused?: boolean;
   getTopicNode: (idx: number) => TopicNode;
-  onTopicClick: (idx: number) => void;
+  onShowTopicEditor: (idx: number) => void;
 };
 
 const TopicTable = ({
   tableIdx,
   isFocused = false,
   getTopicNode,
-  onTopicClick,
+  onShowTopicEditor: onTopicClick,
 }: TopicTableProps) => {
   const tableRef = useRef<HTMLDivElement>(null);
   const isLoadedRef = useRef(false);
@@ -64,7 +64,7 @@ const TopicTable = ({
             key={idx}
             topic={getTopicNode(idx).text}
             isAccented={isAccent(idx)}
-            onClick={() => onTopicClick(idx)}
+            onShowTopicEditor={() => onTopicClick(idx)}
           />
         )}
         space="2px"

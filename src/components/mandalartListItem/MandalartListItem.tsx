@@ -26,25 +26,25 @@ const MandalartListItem = ({
   const [menuY, setMenuY] = useState(0);
   const [menuX, setMenuX] = useState(0);
 
-  const showMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
+  const handleShowMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
     ev.preventDefault();
     ev.stopPropagation();
     setMenuY(ev.pageY);
     setMenuX(ev.pageX);
     setShownMenu(true);
   };
-  const hideMenu = () => {
+  const handleCloseMenu = () => {
     setShownMenu(false);
   };
 
-  const showEditor = () => setIsShownEditor(true);
-  const hideEditor = () => setIsShownEditor(false);
+  const handleShowEditor = () => setIsShownEditor(true);
+  const handleCloseEditor = () => setIsShownEditor(false);
 
   const handleMenuSelect = (value: string) => {
     if (value === 'delete') {
       onDelete();
     } else if (value === 'rename') {
-      showEditor();
+      handleShowEditor();
     } else {
       throw new Error('not support value');
     }
@@ -59,11 +59,11 @@ const MandalartListItem = ({
     <li
       className={`${styles.item} ${isSelected && styles.selected}`}
       onClick={onSelect}
-      onContextMenu={showMenu}
+      onContextMenu={handleShowMenu}
     >
       <BsGrid3X3 className={styles.icon} />
       <p>{metadata.title}</p>
-      <Button className={styles.etcButton} onClick={showMenu}>
+      <Button className={styles.etcButton} onClick={handleShowMenu}>
         <BsThreeDots />
       </Button>
       <Menu
@@ -72,15 +72,15 @@ const MandalartListItem = ({
         xPos={menuX}
         options={menuOptions}
         onSelect={handleMenuSelect}
-        onClose={hideMenu}
+        onClose={handleCloseMenu}
       />
       <TextEditor
         isShown={isShownEditor}
         value={metadata.title}
-        onClose={hideEditor}
+        onClose={handleCloseEditor}
         onEnter={(name) => {
           onRename(name);
-          hideEditor();
+          handleCloseEditor();
         }}
       />
     </li>

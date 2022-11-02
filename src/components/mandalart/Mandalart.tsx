@@ -64,13 +64,13 @@ const Mandalart = () => {
   const [isShownAlert, setIsShownAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const showLeftAside = () => setIsShownLeftAside(true);
-  const hideLeftAside = () => setIsShownLeftAside(false);
-  const showRightAside = () => setIsShownRightAside(true);
-  const hideRightAside = () => setIsShownRightAside(false);
+  const handleShowLeftAside = () => setIsShownLeftAside(true);
+  const handleCloseLeftAside = () => setIsShownLeftAside(false);
+  const handleShowRightAside = () => setIsShownRightAside(true);
+  const handleCloseRightAside = () => setIsShownRightAside(false);
 
-  const showSignInModal = () => setIsShownSignInModal(true);
-  const hideSignInModal = () => setIsShownSignInModal(false);
+  const handleShowSignInModal = () => setIsShownSignInModal(true);
+  const handleCloseSignInModal = () => setIsShownSignInModal(false);
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => {
     authService.signOut();
@@ -88,14 +88,14 @@ const Mandalart = () => {
     });
   };
 
-  const showTitleEditor = () => setIsShownTitleEditor(true);
-  const hideTitleEditor = () => setIsShownTitleEditor(false);
+  const handleShowTitleEditor = () => setIsShownTitleEditor(true);
+  const handleCloseTitleEditor = () => setIsShownTitleEditor(false);
 
-  const showAlert = (message: string) => {
+  const handleShowAlert = (message: string) => {
     setAlertMessage(message);
     setIsShownAlert(true);
   };
-  const hideAlert = () => {
+  const handleCloseAlert = () => {
     setAlertMessage('');
     setIsShownAlert(false);
   };
@@ -178,10 +178,10 @@ const Mandalart = () => {
             <div className={styles.header}>
               <Header
                 isSignedIn={user !== null}
-                onSignInClick={showSignInModal}
-                onSignOutClick={handleSignOut}
-                onListClick={showLeftAside}
-                onEtcClick={showRightAside}
+                onShowSignInUI={handleShowSignInModal}
+                onSignOut={handleSignOut}
+                onShowLeftAside={handleShowLeftAside}
+                onShowRightAside={handleShowRightAside}
               />
             </div>
             <div className={styles.scrollArea}>
@@ -197,7 +197,10 @@ const Mandalart = () => {
               ) : (
                 <div className={styles.container}>
                   {title && (
-                    <h1 className={styles.title} onClick={showTitleEditor}>
+                    <h1
+                      className={styles.title}
+                      onClick={handleShowTitleEditor}
+                    >
                       {title}
                     </h1>
                   )}
@@ -246,34 +249,39 @@ const Mandalart = () => {
                   const mandalartId = repository.newMandalart(user.uid);
                   mandalartId && setSelectedMandalartId(mandalartId);
                 } else {
-                  showAlert('Sign in is required to add a new Mandalart.');
+                  handleShowAlert(
+                    'Sign in is required to add a new Mandalart.'
+                  );
                 }
               }}
-              onClose={hideLeftAside}
+              onClose={handleCloseLeftAside}
             />
-            <RightAside isShown={isShownRightAside} onClose={hideRightAside} />
+            <RightAside
+              isShown={isShownRightAside}
+              onClose={handleCloseRightAside}
+            />
           </section>
           <SignInModal
             isShown={isShownSignInModal}
-            onClose={hideSignInModal}
+            onClose={handleCloseSignInModal}
             onSignIn={handleSignIn}
           />
           <TextEditor
             isShown={isShownTitleEditor}
             value={title ? title : ''}
-            onClose={hideTitleEditor}
+            onClose={handleCloseTitleEditor}
             onEnter={(name) => {
               user &&
                 repository.saveMetadata(user.uid, selectedMandalartId, {
                   title: name,
                 });
-              hideTitleEditor();
+              handleCloseTitleEditor();
             }}
           />
           <Alert
             isShown={isShownAlert}
             message={alertMessage}
-            onClose={hideAlert}
+            onClose={handleCloseAlert}
           />
         </>
       )}
