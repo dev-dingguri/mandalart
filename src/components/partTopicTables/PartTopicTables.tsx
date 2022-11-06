@@ -21,40 +21,41 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
   const startLeftRef = useRef(0);
   const startTimeRef = useRef(new Date());
 
-  const calculateMovedIdx = (idx: number, endY: number, endX: number) => {
+  const calculateMovedIdx = (endY: number, endX: number) => {
+    let movedIdx = focusedIdx;
     const tables = tablesRef.current!;
     const baseline = tables.clientWidth * 0.35;
-    const moveTime = Date.now() - startTimeRef.current.getTime();
+    const period = Date.now() - startTimeRef.current.getTime();
     // 500ms안에 스와이프가 끝나면 가중치 적용
-    const weight = Math.min(Math.max((500 - moveTime) * 0.02, 1), 5);
+    const weight = Math.min(Math.max((500 - period) * 0.02, 1), 5);
     const forceY = (endY - startYRef.current) * weight;
     const forceX = (endX - startXRef.current) * weight;
 
     // 아래로 이동
     if (forceY < -baseline) {
-      if (idx + TABLE_COL_SIZE < TABLE_SIZE) {
-        idx += TABLE_COL_SIZE;
+      if (movedIdx + TABLE_COL_SIZE < TABLE_SIZE) {
+        movedIdx += TABLE_COL_SIZE;
       }
     }
     // 위로 이동
     if (forceY > baseline) {
-      if (idx - TABLE_COL_SIZE >= 0) {
-        idx -= TABLE_COL_SIZE;
+      if (movedIdx - TABLE_COL_SIZE >= 0) {
+        movedIdx -= TABLE_COL_SIZE;
       }
     }
     // 오른쪽으로 이동
     if (forceX < -baseline) {
-      if (idx % TABLE_COL_SIZE !== TABLE_COL_SIZE - 1) {
-        idx += 1;
+      if (movedIdx % TABLE_COL_SIZE !== TABLE_COL_SIZE - 1) {
+        movedIdx += 1;
       }
     }
     // 왼쪽으로 이동
     if (forceX > baseline) {
-      if (idx % TABLE_COL_SIZE !== 0) {
-        idx -= 1;
+      if (movedIdx % TABLE_COL_SIZE !== 0) {
+        movedIdx -= 1;
       }
     }
-    return idx;
+    return movedIdx;
   };
 
   const handleShowTopicEditor = (tableIdx: number, tableItemIdx: number) => {
@@ -76,7 +77,6 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
 
   const handleTouchEnd = (ev: TouchEvent) => {
     const movedIdx = calculateMovedIdx(
-      focusedIdx,
       ev.changedTouches[0].pageY,
       ev.changedTouches[0].pageX
     );
