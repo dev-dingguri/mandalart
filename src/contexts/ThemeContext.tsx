@@ -24,8 +24,9 @@ export const ThemeProvider = ({ children }: { children?: React.ReactNode }) => {
 };
 
 const initialTheme = (): Theme => {
-  return ['system', 'light', 'dark'].includes(localStorage.theme)
-    ? localStorage.theme
+  const theme = localStorage.getItem('theme');
+  return theme && ['system', 'light', 'dark'].includes(theme)
+    ? (theme as Theme)
     : 'system';
 };
 
@@ -35,7 +36,7 @@ const updateTheme = (theme: Theme) => {
   } else {
     document.documentElement.classList.remove('light');
   }
-  localStorage.theme = theme;
+  localStorage.setItem('theme', theme);
 };
 
 export const isLightTheme = (theme: Theme) => {
