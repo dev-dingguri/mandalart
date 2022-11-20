@@ -15,6 +15,7 @@ import NoMandalartNotice from 'components/noMandalartNotice/NoMandalartNotice';
 import TextEditor from 'components/textEditor/TextEditor';
 import Alert from 'components/alert/Alert';
 import RightAside from 'components/rightAside/RightAside';
+import useUser from 'hooks/useUser';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -49,13 +50,14 @@ const initialTopicTree = () => {
 };
 
 const Mandalart = () => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, isLoading] = useUser(null);
+  //const [user, setUser] = useState<User | null>(null);
   const [metadataMap, setMetadataMap] = useState(
     new Map<string, MandalartMetadata>()
   );
   const [selectedMandalartId, setSelectedMandalartId] = useState('');
   const [topicTree, setTopicTree] = useState(initialTopicTree);
-  const [isLoading, setIsLoading] = useState(false);
+  //const [isLoading, setIsLoading] = useState(false);
   const [isAllView, setIsAllView] = useState(true);
   const [isShownLeftAside, setIsShownLeftAside] = useState(false);
   const [isShownRightAside, setIsShownRightAside] = useState(false);
@@ -100,36 +102,37 @@ const Mandalart = () => {
     setIsShownAlert(false);
   };
 
-  useEffect(() => {
-    authService.onAuthStateChange((user) => {
-      setUser(user);
-    });
-  }, []);
+  // useEffect(() => {
+  //   authService.onAuthStateChange((user) => {
+  //     setUser(user);
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    setIsLoading(true);
-    authService
-      .getRedirectResult()
-      .then((userCred) => {
-        const user = userCred?.user;
-        if (user) {
-          console.log('login success');
-          if (isAnyTopicChanged(topicTree)) {
-            const mandalartId = repository.newMandalart(user.uid);
-            if (mandalartId) {
-              repository.saveTopics(user.uid, mandalartId, topicTree);
-              setSelectedMandalartId(mandalartId);
-            }
-          }
-        }
-      })
-      .catch((e) => {
-        console.log(`errorCode=${e.code} errorMessage=${e.message}`);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, [topicTree]);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   authService
+  //     .getRedirectResult()
+  //     .then((userCred) => {
+  //       const user = userCred?.user;
+  //       // 대체할 코드 필요
+  //       if (user) {
+  //         console.log('login success');
+  //         if (isAnyTopicChanged(topicTree)) {
+  //           const mandalartId = repository.newMandalart(user.uid);
+  //           if (mandalartId) {
+  //             repository.saveTopics(user.uid, mandalartId, topicTree);
+  //             setSelectedMandalartId(mandalartId);
+  //           }
+  //         }
+  //       }
+  //     })
+  //     .catch((e) => {
+  //       console.log(`errorCode=${e.code} errorMessage=${e.message}`);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // }, [topicTree]);
 
   useEffect(() => {
     if (!user) {

@@ -11,13 +11,13 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
-    <IconContext.Provider value={{ className: 'react-icons' }}>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </IconContext.Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <IconContext.Provider value={{ className: 'react-icons' }}>
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  </IconContext.Provider>
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
