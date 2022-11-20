@@ -16,6 +16,7 @@ import TextEditor from 'components/textEditor/TextEditor';
 import Alert from 'components/alert/Alert';
 import RightAside from 'components/rightAside/RightAside';
 import useUser from 'hooks/useUser';
+import useMandalarts from 'hooks/useMandalarts';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -52,9 +53,13 @@ const initialTopicTree = () => {
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
   //const [user, setUser] = useState<User | null>(null);
-  const [metadataMap, setMetadataMap] = useState(
-    new Map<string, MandalartMetadata>()
+  const [metadataMap, setMetadataMap] = useMandalarts(
+    new Map<string, MandalartMetadata>(),
+    user
   );
+  // const [metadataMap, setMetadataMap] = useState(
+  //   new Map<string, MandalartMetadata>()
+  // );
   const [selectedMandalartId, setSelectedMandalartId] = useState('');
   const [topicTree, setTopicTree] = useState(initialTopicTree);
   //const [isLoading, setIsLoading] = useState(false);
@@ -114,7 +119,7 @@ const Mandalart = () => {
   //     .getRedirectResult()
   //     .then((userCred) => {
   //       const user = userCred?.user;
-  //       // 대체할 코드 필요
+  //       // 살려야함
   //       if (user) {
   //         console.log('login success');
   //         if (isAnyTopicChanged(topicTree)) {
@@ -134,20 +139,21 @@ const Mandalart = () => {
   //     });
   // }, [topicTree]);
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
-    const stopSync = repository.syncMetadata(user.uid, (metadataMap) => {
-      setMetadataMap(metadataMap);
-      if (!metadataMap.has(selectedMandalartId)) {
-        const lastId = Array.from(metadataMap.keys()).pop();
-        console.log(lastId);
-        setSelectedMandalartId(lastId ? lastId : '');
-      }
-    });
-    return () => stopSync();
-  }, [user, selectedMandalartId]);
+  // useEffect(() => {
+  //   if (!user) {
+  //     return;
+  //   }
+  //   const stopSync = repository.syncMetadata(user.uid, (metadataMap) => {
+  //     setMetadataMap(metadataMap);
+  //     // 살려야함
+  //     // if (!metadataMap.has(selectedMandalartId)) {
+  //     //   const lastId = Array.from(metadataMap.keys()).pop();
+  //     //   console.log(lastId);
+  //     //   setSelectedMandalartId(lastId ? lastId : '');
+  //     // }
+  //   });
+  //   return () => stopSync();
+  // }, [user, selectedMandalartId]);
 
   useEffect(() => {
     if (!user || selectedMandalartId.length === 0) {
