@@ -73,13 +73,22 @@ class MandalartRepository {
   syncTopics(
     userId: string,
     mandalartId: string,
-    onUpdate: (topicNode: TopicNode) => void
+    onUpdate: (topicNode: TopicNode) => void,
+    onError?: (error: Error) => void
   ) {
     const topicsRef = ref(db, `${userId}/mandalart/topics/${mandalartId}`);
-    onValue(topicsRef, (snapshot) => {
-      const val = snapshot.val();
-      val && onUpdate(val);
-    });
+    onValue(
+      topicsRef,
+      (snapshot) => {
+        const val = snapshot.val();
+        if (val) {
+          onUpdate(val);
+        } else {
+          onError && onError(new Error('snapshot is empty'));
+        }
+      },
+      onError
+    );
     // 콜백을 삭제하는 함수를 리턴해서 호출할 수 있도록 함
     return () => off(topicsRef);
   }

@@ -17,6 +17,7 @@ import Alert from 'components/alert/Alert';
 import RightAside from 'components/rightAside/RightAside';
 import useUser from 'hooks/useUser';
 import useMandalarts from 'hooks/useMandalarts';
+import useTopics from 'hooks/useTopics';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -52,17 +53,16 @@ const initialTopicTree = () => {
 
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
-  //const [user, setUser] = useState<User | null>(null);
   const [metadataMap, setMetadataMap] = useMandalarts(
     new Map<string, MandalartMetadata>(),
     user
   );
-  // const [metadataMap, setMetadataMap] = useState(
-  //   new Map<string, MandalartMetadata>()
-  // );
   const [selectedMandalartId, setSelectedMandalartId] = useState('');
-  const [topicTree, setTopicTree] = useState(initialTopicTree);
-  //const [isLoading, setIsLoading] = useState(false);
+  const [topicTree, setTopicTree] = useTopics(
+    initialTopicTree,
+    user,
+    selectedMandalartId
+  );
   const [isAllView, setIsAllView] = useState(true);
   const [isShownLeftAside, setIsShownLeftAside] = useState(false);
   const [isShownRightAside, setIsShownRightAside] = useState(false);
@@ -155,19 +155,19 @@ const Mandalart = () => {
   //   return () => stopSync();
   // }, [user, selectedMandalartId]);
 
-  useEffect(() => {
-    if (!user || selectedMandalartId.length === 0) {
-      return;
-    }
-    const stopSync = repository.syncTopics(
-      user.uid,
-      selectedMandalartId,
-      (topicTree: TopicNode) => {
-        setTopicTree(topicTree);
-      }
-    );
-    return () => stopSync();
-  }, [user, selectedMandalartId]);
+  // useEffect(() => {
+  //   if (!user || selectedMandalartId.length === 0) {
+  //     return;
+  //   }
+  //   const stopSync = repository.syncTopics(
+  //     user.uid,
+  //     selectedMandalartId,
+  //     (topicTree: TopicNode) => {
+  //       setTopicTree(topicTree);
+  //     }
+  //   );
+  //   return () => stopSync();
+  // }, [user, selectedMandalartId]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
