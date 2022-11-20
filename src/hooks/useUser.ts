@@ -5,7 +5,7 @@ import { initialState } from 'types/initialState';
 
 const useUser = (initialUser: initialState<User | null>) => {
   const [user, setUser] = useState<User | null>(initialUser);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
@@ -16,6 +16,8 @@ const useUser = (initialUser: initialState<User | null>) => {
   }, []);
 
   useEffect(() => {
+    setIsLoading(true);
+    setError(null);
     authService
       .getRedirectResult()
       .catch((e) => {
