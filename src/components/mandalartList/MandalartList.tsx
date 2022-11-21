@@ -5,7 +5,7 @@ import MandalartListItem from 'components/mandalartListItem/MandalartListItem';
 
 type MandalartListProps = {
   metadataMap: Map<string, MandalartMetadata>;
-  selectedId: string;
+  selectedId: string | null;
   onSelect: (mandalartId: string) => void;
   onDelete: (mandalartId: string) => void;
   onRename: (mandalartId: string, name: string) => void;

@@ -9,7 +9,7 @@ import { MandalartMetadata } from 'types/MandalartMetadata';
 type LeftAsideProps = {
   isShown: boolean;
   mandalartMetadataMap: Map<string, MandalartMetadata>;
-  selectedMandalartId: string;
+  selectedMandalartId: string | null;
   onSelectMandalart: (mandalartId: string) => void;
   onDeleteMandalart: (mandalartId: string) => void;
   onRenameMandalart: (mandalartId: string, name: string) => void;

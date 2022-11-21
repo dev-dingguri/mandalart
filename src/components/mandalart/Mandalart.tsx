@@ -57,7 +57,9 @@ const Mandalart = () => {
     new Map<string, MandalartMetadata>(),
     user
   );
-  const [selectedMandalartId, setSelectedMandalartId] = useState('');
+  const [selectedMandalartId, setSelectedMandalartId] = useState<string | null>(
+    null
+  );
   const [topicTree, setTopicTree] = useTopics(
     initialTopicTree,
     user,
@@ -82,7 +84,7 @@ const Mandalart = () => {
   const handleSignOut = () => {
     authService.signOut();
     setMetadataMap(new Map<string, MandalartMetadata>());
-    setSelectedMandalartId('');
+    setSelectedMandalartId(null);
     setTopicTree({
       text: '',
       children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
@@ -173,7 +175,9 @@ const Mandalart = () => {
     localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
   }, [topicTree]);
 
-  const title = metadataMap.get(selectedMandalartId)?.title;
+  const title = selectedMandalartId
+    ? metadataMap.get(selectedMandalartId)?.title
+    : '';
 
   return (
     <>
@@ -217,7 +221,7 @@ const Mandalart = () => {
                     onTopicTreeChange={(topicTree) => {
                       setTopicTree(topicTree);
                       // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
-                      if (user) {
+                      if (user && selectedMandalartId) {
                         repository.saveTopics(
                           user.uid,
                           selectedMandalartId,
@@ -278,10 +282,11 @@ const Mandalart = () => {
             value={title ? title : ''}
             onClose={handleCloseTitleEditor}
             onEnter={(name) => {
-              user &&
+              if (user && selectedMandalartId) {
                 repository.saveMetadata(user.uid, selectedMandalartId, {
                   title: name,
                 });
+              }
               handleCloseTitleEditor();
             }}
           />

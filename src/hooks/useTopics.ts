@@ -8,14 +8,14 @@ import { TopicNode } from 'types/TopicNode';
 const useTopics = (
   initialTopicTree: initialState<TopicNode>,
   user: User | null,
-  mandalartId: string
+  mandalartId: string | null
 ) => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    if (!user || mandalartId.length === 0) return;
+    if (!user || !mandalartId) return;
 
     setIsLoading(true);
     setError(null);
