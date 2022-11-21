@@ -109,11 +109,15 @@ const Mandalart = () => {
     setIsShownAlert(false);
   };
 
-  // useEffect(() => {
-  //   authService.onAuthStateChange((user) => {
-  //     setUser(user);
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (!user) return;
+
+    if (!selectedMandalartId || !metadataMap.has(selectedMandalartId)) {
+      const lastId = Array.from(metadataMap.keys()).pop();
+      console.log(lastId);
+      setSelectedMandalartId(lastId ? lastId : null);
+    }
+  }, [metadataMap, user, selectedMandalartId]);
 
   // useEffect(() => {
   //   setIsLoading(true);
@@ -140,36 +144,6 @@ const Mandalart = () => {
   //       setIsLoading(false);
   //     });
   // }, [topicTree]);
-
-  // useEffect(() => {
-  //   if (!user) {
-  //     return;
-  //   }
-  //   const stopSync = repository.syncMetadata(user.uid, (metadataMap) => {
-  //     setMetadataMap(metadataMap);
-  //     // 살려야함
-  //     // if (!metadataMap.has(selectedMandalartId)) {
-  //     //   const lastId = Array.from(metadataMap.keys()).pop();
-  //     //   console.log(lastId);
-  //     //   setSelectedMandalartId(lastId ? lastId : '');
-  //     // }
-  //   });
-  //   return () => stopSync();
-  // }, [user, selectedMandalartId]);
-
-  // useEffect(() => {
-  //   if (!user || selectedMandalartId.length === 0) {
-  //     return;
-  //   }
-  //   const stopSync = repository.syncTopics(
-  //     user.uid,
-  //     selectedMandalartId,
-  //     (topicTree: TopicNode) => {
-  //       setTopicTree(topicTree);
-  //     }
-  //   );
-  //   return () => stopSync();
-  // }, [user, selectedMandalartId]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
