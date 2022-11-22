@@ -18,6 +18,7 @@ import RightAside from 'components/rightAside/RightAside';
 import useUser from 'hooks/useUser';
 import useMandalarts from 'hooks/useMandalarts';
 import useTopics from 'hooks/useTopics';
+import usePrevious from 'hooks/usePrevious';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -53,6 +54,7 @@ const initialTopicTree = () => {
 
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
+  const prevUser = usePrevious<User | null>(user);
   const [metadataMap, setMetadataMap] = useMandalarts(
     new Map<string, MandalartMetadata>(),
     user
@@ -119,31 +121,18 @@ const Mandalart = () => {
     }
   }, [metadataMap, user, selectedMandalartId]);
 
-  // useEffect(() => {
-  //   setIsLoading(true);
-  //   authService
-  //     .getRedirectResult()
-  //     .then((userCred) => {
-  //       const user = userCred?.user;
-  //       // 살려야함
-  //       if (user) {
-  //         console.log('login success');
-  //         if (isAnyTopicChanged(topicTree)) {
-  //           const mandalartId = repository.newMandalart(user.uid);
-  //           if (mandalartId) {
-  //             repository.saveTopics(user.uid, mandalartId, topicTree);
-  //             setSelectedMandalartId(mandalartId);
-  //           }
-  //         }
-  //       }
-  //     })
-  //     .catch((e) => {
-  //       console.log(`errorCode=${e.code} errorMessage=${e.message}`);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // }, [topicTree]);
+  useEffect(() => {
+    if (prevUser || !user) return;
+
+    console.log('first run after sign in');
+    if (isAnyTopicChanged(topicTree)) {
+      const mandalartId = repository.newMandalart(user.uid);
+      if (mandalartId) {
+        repository.saveTopics(user.uid, mandalartId, topicTree);
+        setSelectedMandalartId(mandalartId);
+      }
+    }
+  }, [prevUser, user, topicTree]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
