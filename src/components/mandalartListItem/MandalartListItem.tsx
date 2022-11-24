@@ -5,6 +5,7 @@ import { BsGrid3X3, BsThreeDots } from 'react-icons/bs';
 import styles from './MandalartListItem.module.css';
 import Menu from 'components/menu/Menu';
 import TextEditor from 'components/textEditor/TextEditor';
+import useBoolean from 'hooks/useBoolean';
 
 type MandalartListItemProps = {
   metadata: MandalartMetadata;
@@ -21,8 +22,9 @@ const MandalartListItem = ({
   onDelete,
   onRename,
 }: MandalartListItemProps) => {
-  const [isShownMenu, setShownMenu] = useState(false);
-  const [isShownEditor, setIsShownEditor] = useState(false);
+  const [isShownMenu, { on: showMenu, off: closeMenu }] = useBoolean(false);
+  const [isShownEditor, { on: showEditor, off: closeEditor }] =
+    useBoolean(false);
   const [menuY, setMenuY] = useState(0);
   const [menuX, setMenuX] = useState(0);
 
@@ -31,20 +33,14 @@ const MandalartListItem = ({
     ev.stopPropagation();
     setMenuY(ev.pageY);
     setMenuX(ev.pageX);
-    setShownMenu(true);
+    showMenu();
   };
-  const handleCloseMenu = () => {
-    setShownMenu(false);
-  };
-
-  const handleShowEditor = () => setIsShownEditor(true);
-  const handleCloseEditor = () => setIsShownEditor(false);
 
   const handleMenuSelect = (value: string) => {
     if (value === 'delete') {
       onDelete();
     } else if (value === 'rename') {
-      handleShowEditor();
+      showEditor();
     } else {
       throw new Error('not support value');
     }
@@ -72,15 +68,15 @@ const MandalartListItem = ({
         xPos={menuX}
         options={menuOptions}
         onSelect={handleMenuSelect}
-        onClose={handleCloseMenu}
+        onClose={closeMenu}
       />
       <TextEditor
         isShown={isShownEditor}
         value={metadata.title}
-        onClose={handleCloseEditor}
+        onClose={closeEditor}
         onEnter={(name) => {
           onRename(name);
-          handleCloseEditor();
+          closeEditor();
         }}
       />
     </li>

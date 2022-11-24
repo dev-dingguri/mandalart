@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import { MandalartMetadata } from 'types/MandalartMetadata';
 import { User } from 'firebase/auth';
 import repository from 'services/mandalartRepository';
-import { initialState } from 'types/initialState';
 
 const useMandalarts = (
-  initialMandalarts: initialState<Map<string, MandalartMetadata>>,
+  initialMandalarts: Map<string, MandalartMetadata>,
   user: User | null
 ) => {
   const [mandalarts, setMandalarts] = useState(initialMandalarts);

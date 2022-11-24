@@ -1,5 +1,6 @@
 import Button from 'components/button/Button';
 import Menu from 'components/menu/Menu';
+import useBoolean from 'hooks/useBoolean';
 import React, { useRef, useState } from 'react';
 import { BsFillCaretDownFill } from 'react-icons/bs';
 import styles from './Select.module.css';
@@ -23,7 +24,7 @@ const Select = ({
   onSelect,
 }: SelectProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [isShownMenu, setIsShownMenu] = useState(false);
+  const [isShownMenu, { on: showMenu, off: closeMenu }] = useBoolean(false);
   const [menuY, setMenuY] = useState(0);
   const [menuX, setMenuX] = useState(0);
 
@@ -34,9 +35,8 @@ const Select = ({
       setMenuY(rect.top + rect.height + 3);
       setMenuX(rect.left);
     }
-    setIsShownMenu(true);
+    showMenu();
   };
-  const handleCloseMenu = () => setIsShownMenu(false);
 
   const selectedName = (() => {
     const selectedOption = options.find(
@@ -60,7 +60,7 @@ const Select = ({
         xPos={menuX}
         options={options}
         onSelect={onSelect}
-        onClose={handleCloseMenu}
+        onClose={closeMenu}
       />
     </div>
   );

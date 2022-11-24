@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 import authService from 'services/authService';
-import { initialState } from 'types/initialState';
 
-const useUser = (initialUser: initialState<User | null>) => {
+const useUser = (initialUser: User | null) => {
   const [user, setUser] = useState<User | null>(initialUser);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);

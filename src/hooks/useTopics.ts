@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import { MandalartMetadata } from 'types/MandalartMetadata';
 import { User } from 'firebase/auth';
 import repository from 'services/mandalartRepository';
-import { initialState } from 'types/initialState';
 import { TopicNode } from 'types/TopicNode';
 
 const useTopics = (
-  initialTopicTree: initialState<TopicNode>,
+  initialTopicTree: TopicNode,
   user: User | null,
   mandalartId: string | null
 ) => {

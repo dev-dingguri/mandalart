@@ -19,6 +19,7 @@ import useUser from 'hooks/useUser';
 import useMandalarts from 'hooks/useMandalarts';
 import useTopics from 'hooks/useTopics';
 import usePrevious from 'hooks/usePrevious';
+import useBoolean from 'hooks/useBoolean';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -36,7 +37,7 @@ const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   return false;
 };
 
-const initialTopicTree = () => {
+const initialTopicTree = (() => {
   const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
   return saved
     ? parseTopicNode(saved)
@@ -50,7 +51,7 @@ const initialTopicTree = () => {
           })),
         })),
       };
-};
+})();
 
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
@@ -68,20 +69,17 @@ const Mandalart = () => {
     selectedMandalartId
   );
   const [isAllView, setIsAllView] = useState(true);
-  const [isShownLeftAside, setIsShownLeftAside] = useState(false);
-  const [isShownRightAside, setIsShownRightAside] = useState(false);
-  const [isShownSignInModal, setIsShownSignInModal] = useState(false);
-  const [isShownTitleEditor, setIsShownTitleEditor] = useState(false);
+  const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
+    useBoolean(false);
+  const [isShownRightAside, { on: showRightAside, off: closeRightAside }] =
+    useBoolean(false);
+  const [isShownSignInModal, { on: showSignInModal, off: closeSignInModal }] =
+    useBoolean(false);
+  const [isShownTitleEditor, { on: showTitleEditor, off: closeTitleEditor }] =
+    useBoolean(false);
   const [isShownAlert, setIsShownAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const handleShowLeftAside = () => setIsShownLeftAside(true);
-  const handleCloseLeftAside = () => setIsShownLeftAside(false);
-  const handleShowRightAside = () => setIsShownRightAside(true);
-  const handleCloseRightAside = () => setIsShownRightAside(false);
-
-  const handleShowSignInModal = () => setIsShownSignInModal(true);
-  const handleCloseSignInModal = () => setIsShownSignInModal(false);
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => {
     authService.signOut();
@@ -98,9 +96,6 @@ const Mandalart = () => {
       })),
     });
   };
-
-  const handleShowTitleEditor = () => setIsShownTitleEditor(true);
-  const handleCloseTitleEditor = () => setIsShownTitleEditor(false);
 
   const handleShowAlert = (message: string) => {
     setAlertMessage(message);
@@ -152,10 +147,10 @@ const Mandalart = () => {
             <div className={styles.header}>
               <Header
                 isSignedIn={user !== null}
-                onShowSignInUI={handleShowSignInModal}
+                onShowSignInUI={showSignInModal}
                 onSignOut={handleSignOut}
-                onShowLeftAside={handleShowLeftAside}
-                onShowRightAside={handleShowRightAside}
+                onShowLeftAside={showLeftAside}
+                onShowRightAside={showRightAside}
               />
             </div>
             <div className={styles.scrollArea}>
@@ -171,10 +166,7 @@ const Mandalart = () => {
               ) : (
                 <div className={styles.container}>
                   {title && (
-                    <h1
-                      className={styles.title}
-                      onClick={handleShowTitleEditor}
-                    >
+                    <h1 className={styles.title} onClick={showTitleEditor}>
                       {title}
                     </h1>
                   )}
@@ -228,29 +220,26 @@ const Mandalart = () => {
                   );
                 }
               }}
-              onClose={handleCloseLeftAside}
+              onClose={closeLeftAside}
             />
-            <RightAside
-              isShown={isShownRightAside}
-              onClose={handleCloseRightAside}
-            />
+            <RightAside isShown={isShownRightAside} onClose={closeRightAside} />
           </section>
           <SignInModal
             isShown={isShownSignInModal}
-            onClose={handleCloseSignInModal}
+            onClose={closeSignInModal}
             onSignIn={handleSignIn}
           />
           <TextEditor
             isShown={isShownTitleEditor}
             value={title ? title : ''}
-            onClose={handleCloseTitleEditor}
+            onClose={closeTitleEditor}
             onEnter={(name) => {
               if (user && selectedMandalartId) {
                 repository.saveMetadata(user.uid, selectedMandalartId, {
                   title: name,
                 });
               }
-              handleCloseTitleEditor();
+              closeTitleEditor();
             }}
           />
           <Alert
