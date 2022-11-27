@@ -1,8 +1,4 @@
-import {
-  isLightTheme,
-  ThemeContextType,
-  useTheme,
-} from 'contexts/ThemeContext';
+import { useTheme } from 'contexts/ThemeContext';
 import React, { useCallback, useEffect, useRef } from 'react';
 import styles from './Dialog.module.css';
 
@@ -24,7 +20,7 @@ const Dialog = ({
   onEnter,
 }: DialogProps) => {
   const ref = useRef<HTMLDialogElement>(null);
-  const { theme } = useTheme() as ThemeContextType;
+  const { isDisplayLightTheme } = useTheme();
 
   const show = useCallback(() => {
     const modal = ref.current!;
@@ -70,7 +66,7 @@ const Dialog = ({
     };
   }, [isShown, handleKey]);
 
-  const themeClassName = isLightTheme(theme) && 'light';
+  const themeClassName = isDisplayLightTheme() && 'light';
 
   return isShown ? (
     <dialog

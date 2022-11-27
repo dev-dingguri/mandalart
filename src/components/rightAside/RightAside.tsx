@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './RightAside.module.css';
 import OutsideClickDetector from 'components/outsideClickDetector/OutsideClickDetector';
 import Select from 'components/select/Select';
 import { useNavigate } from 'react-router-dom';
-import { Theme, ThemeContextType, useTheme } from 'contexts/ThemeContext';
+import { Theme, useTheme } from 'contexts/ThemeContext';
 
 type ItemProps = {
   text: string;
@@ -31,7 +31,7 @@ type RightAsideProps = {
 };
 
 const RightAside = ({ isShown, onClose }: RightAsideProps) => {
-  const { theme, selectTheme } = useTheme() as ThemeContextType;
+  const { theme, selectTheme } = useTheme();
 
   const themeOptions: ThemeOption[] = [
     { value: 'system', name: 'Use System setting' },

@@ -2,12 +2,13 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export type Theme = 'system' | 'light' | 'dark';
 
-export type ThemeContextType = {
+type ContextValue = {
   theme: Theme;
   selectTheme: (theme: Theme) => void;
+  isDisplayLightTheme: () => boolean;
 };
 
-const ThemeContext = createContext<ThemeContextType | null>(null);
+const ThemeContext = createContext<ContextValue | null>(null);
 
 export const ThemeProvider = ({ children }: { children?: React.ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(initialTheme);
@@ -17,7 +18,13 @@ export const ThemeProvider = ({ children }: { children?: React.ReactNode }) => {
   }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, selectTheme: setTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        selectTheme: setTheme,
+        isDisplayLightTheme: () => isDisplayLightTheme(theme),
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );
@@ -31,7 +38,7 @@ const initialTheme = (): Theme => {
 };
 
 const updateTheme = (theme: Theme) => {
-  if (isLightTheme(theme)) {
+  if (isDisplayLightTheme(theme)) {
     document.documentElement.classList.add('light');
   } else {
     document.documentElement.classList.remove('light');
@@ -39,7 +46,7 @@ const updateTheme = (theme: Theme) => {
   localStorage.setItem('theme', theme);
 };
 
-export const isLightTheme = (theme: Theme) => {
+const isDisplayLightTheme = (theme: Theme) => {
   return (
     theme === 'light' ||
     (theme === 'system' &&
@@ -47,4 +54,4 @@ export const isLightTheme = (theme: Theme) => {
   );
 };
 
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => useContext(ThemeContext)!;
