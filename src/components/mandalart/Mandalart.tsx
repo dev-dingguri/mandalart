@@ -13,13 +13,13 @@ import { TopicNode, parseTopicNode } from 'types/TopicNode';
 import { TABLE_SIZE, STORAGE_KEY_TOPIC_TREE } from 'constants/constants';
 import NoMandalartNotice from 'components/noMandalartNotice/NoMandalartNotice';
 import TextEditor from 'components/textEditor/TextEditor';
-import Alert from 'components/alert/Alert';
 import RightAside from 'components/rightAside/RightAside';
 import useUser from 'hooks/useUser';
 import useMandalarts from 'hooks/useMandalarts';
 import useTopics from 'hooks/useTopics';
 import usePrevious from 'hooks/usePrevious';
 import useBoolean from 'hooks/useBoolean';
+import { useAlert } from 'contexts/AlertContext';
 
 const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
   if (topicTree) {
@@ -77,8 +77,7 @@ const Mandalart = () => {
     useBoolean(false);
   const [isShownTitleEditor, { on: showTitleEditor, off: closeTitleEditor }] =
     useBoolean(false);
-  const [isShownAlert, setIsShownAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
+  const { Alert, showAlert } = useAlert();
 
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => {
@@ -95,15 +94,6 @@ const Mandalart = () => {
         })),
       })),
     });
-  };
-
-  const handleShowAlert = (message: string) => {
-    setAlertMessage(message);
-    setIsShownAlert(true);
-  };
-  const handleCloseAlert = () => {
-    setAlertMessage('');
-    setIsShownAlert(false);
   };
 
   useEffect(() => {
@@ -215,9 +205,7 @@ const Mandalart = () => {
                   const mandalartId = repository.newMandalart(user.uid);
                   mandalartId && setSelectedMandalartId(mandalartId);
                 } else {
-                  handleShowAlert(
-                    'Sign in is required to add a new Mandalart.'
-                  );
+                  showAlert('Sign in is required to add a new Mandalart.');
                 }
               }}
               onClose={closeLeftAside}
@@ -242,11 +230,7 @@ const Mandalart = () => {
               closeTitleEditor();
             }}
           />
-          <Alert
-            isShown={isShownAlert}
-            message={alertMessage}
-            onClose={handleCloseAlert}
-          />
+          <Alert />
         </>
       )}
     </>
