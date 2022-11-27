@@ -8,14 +8,14 @@ import TopicsViewTypeToggle from 'components/topicsViewTypeToggle/TopicsViewType
 import SignInModal from 'components/signInModal/SignInModal';
 import LeftAside from 'components/leftAside/LeftAside';
 import repository from 'services/mandalartRepository';
-import { MandalartMetadata } from 'types/MandalartMetadata';
+import { Snippet } from 'types/Snippet';
 import { TopicNode, parseTopicNode } from 'types/TopicNode';
 import { TABLE_SIZE, STORAGE_KEY_TOPIC_TREE } from 'constants/constants';
 import NoMandalartNotice from 'components/noMandalartNotice/NoMandalartNotice';
 import TextEditor from 'components/textEditor/TextEditor';
 import RightAside from 'components/rightAside/RightAside';
 import useUser from 'hooks/useUser';
-import useMandalarts from 'hooks/useMandalarts';
+import useSnippets from 'hooks/useSnippets';
 import useTopics from 'hooks/useTopics';
 import usePrevious from 'hooks/usePrevious';
 import useBoolean from 'hooks/useBoolean';
@@ -56,8 +56,8 @@ const initialTopicTree = (() => {
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
   const prevUser = usePrevious<User | null>(user);
-  const [metadataMap, setMetadataMap] = useMandalarts(
-    new Map<string, MandalartMetadata>(),
+  const [snippetMap, setSnippetMap] = useSnippets(
+    new Map<string, Snippet>(),
     user
   );
   const [selectedMandalartId, setSelectedMandalartId] = useState<string | null>(
@@ -82,7 +82,7 @@ const Mandalart = () => {
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => {
     authService.signOut();
-    setMetadataMap(new Map<string, MandalartMetadata>());
+    setSnippetMap(new Map<string, Snippet>());
     setSelectedMandalartId(null);
     setTopicTree({
       text: '',
@@ -99,12 +99,12 @@ const Mandalart = () => {
   useEffect(() => {
     if (!user) return;
 
-    if (!selectedMandalartId || !metadataMap.has(selectedMandalartId)) {
-      const lastId = Array.from(metadataMap.keys()).pop();
+    if (!selectedMandalartId || !snippetMap.has(selectedMandalartId)) {
+      const lastId = Array.from(snippetMap.keys()).pop();
       console.log(lastId);
       setSelectedMandalartId(lastId ? lastId : null);
     }
-  }, [metadataMap, user, selectedMandalartId]);
+  }, [snippetMap, user, selectedMandalartId]);
 
   useEffect(() => {
     if (prevUser || !user) return;
@@ -124,7 +124,7 @@ const Mandalart = () => {
   }, [topicTree]);
 
   const title = selectedMandalartId
-    ? metadataMap.get(selectedMandalartId)?.title
+    ? snippetMap.get(selectedMandalartId)?.title
     : '';
 
   return (
@@ -144,7 +144,7 @@ const Mandalart = () => {
               />
             </div>
             <div className={styles.scrollArea}>
-              {user && metadataMap.size === 0 ? (
+              {user && snippetMap.size === 0 ? (
                 <NoMandalartNotice
                   onNewMandalart={() => {
                     const mandalartId = user
@@ -186,7 +186,7 @@ const Mandalart = () => {
             </div>
             <LeftAside
               isShown={isShownLeftAside}
-              mandalartMetadataMap={metadataMap}
+              snippetMap={snippetMap}
               selectedMandalartId={selectedMandalartId}
               onSelectMandalart={(mandalartId) =>
                 setSelectedMandalartId(mandalartId)
@@ -196,7 +196,7 @@ const Mandalart = () => {
               }}
               onRenameMandalart={(mandalartId, name) => {
                 user &&
-                  repository.saveMetadata(user.uid, mandalartId, {
+                  repository.saveSnippets(user.uid, mandalartId, {
                     title: name,
                   });
               }}
@@ -223,7 +223,7 @@ const Mandalart = () => {
             onClose={closeTitleEditor}
             onEnter={(name) => {
               if (user && selectedMandalartId) {
-                repository.saveMetadata(user.uid, selectedMandalartId, {
+                repository.saveSnippets(user.uid, selectedMandalartId, {
                   title: name,
                 });
               }

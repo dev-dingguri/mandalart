@@ -1,10 +1,10 @@
 import React from 'react';
-import { MandalartMetadata } from 'types/MandalartMetadata';
+import { Snippet } from 'types/Snippet';
 import styles from './MandalartList.module.css';
 import MandalartListItem from 'components/mandalartListItem/MandalartListItem';
 
 type MandalartListProps = {
-  metadataMap: Map<string, MandalartMetadata>;
+  snippetMap: Map<string, Snippet>;
   selectedId: string | null;
   onSelect: (mandalartId: string) => void;
   onDelete: (mandalartId: string) => void;
@@ -12,18 +12,18 @@ type MandalartListProps = {
 };
 
 const MandalartList = ({
-  metadataMap,
+  snippetMap,
   selectedId,
   onSelect,
   onDelete,
   onRename,
 }: MandalartListProps) => {
-  const items = Array.from(metadataMap)
+  const items = Array.from(snippetMap)
     .reverse()
-    .map(([mandalartId, metadata]) => (
+    .map(([mandalartId, snippet]) => (
       <MandalartListItem
         key={mandalartId}
-        metadata={metadata}
+        snippet={snippet}
         isSelected={selectedId === mandalartId}
         onSelect={() => onSelect(mandalartId)}
         onDelete={() => onDelete(mandalartId)}

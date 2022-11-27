@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MandalartMetadata } from 'types/MandalartMetadata';
+import { Snippet } from 'types/Snippet';
 import Button from 'components/button/Button';
 import { BsGrid3X3, BsThreeDots } from 'react-icons/bs';
 import styles from './MandalartListItem.module.css';
@@ -8,7 +8,7 @@ import TextEditor from 'components/textEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
 
 type MandalartListItemProps = {
-  metadata: MandalartMetadata;
+  snippet: Snippet;
   isSelected: boolean;
   onSelect: () => void;
   onDelete: () => void;
@@ -16,7 +16,7 @@ type MandalartListItemProps = {
 };
 
 const MandalartListItem = ({
-  metadata,
+  snippet,
   isSelected,
   onSelect,
   onDelete,
@@ -58,7 +58,7 @@ const MandalartListItem = ({
       onContextMenu={handleShowMenu}
     >
       <BsGrid3X3 className={styles.icon} />
-      <p>{metadata.title}</p>
+      <p>{snippet.title}</p>
       <Button className={styles.etcButton} onClick={handleShowMenu}>
         <BsThreeDots />
       </Button>
@@ -72,7 +72,7 @@ const MandalartListItem = ({
       />
       <TextEditor
         isShown={isShownEditor}
-        value={metadata.title}
+        value={snippet.title}
         onClose={closeEditor}
         onEnter={(name) => {
           onRename(name);

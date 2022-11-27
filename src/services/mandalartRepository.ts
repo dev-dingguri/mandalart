@@ -1,15 +1,15 @@
 import { TABLE_SIZE } from 'constants/constants';
-import { MandalartMetadata } from 'types/MandalartMetadata';
+import { Snippet } from 'types/Snippet';
 import { firebaseDatabase as db } from './firebase';
 import { ref, set, off, remove, onValue, push } from 'firebase/database';
 import { TopicNode } from 'types/TopicNode';
 
 class MandalartRepository {
   newMandalart(userId: string) {
-    const mandalartId = push(ref(db, `${userId}/mandalart/metadata`), {
+    const mandalartId = push(ref(db, `${userId}/mandalarts/snippets`), {
       title: 'Untitled',
     }).key;
-    set(ref(db, `${userId}/mandalart/topics/${mandalartId}`), {
+    set(ref(db, `${userId}/mandalarts/topics/${mandalartId}`), {
       text: '',
       children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
         text: '',
@@ -23,35 +23,31 @@ class MandalartRepository {
   }
 
   removeMandalart(userId: string, mandalartId: string) {
-    remove(ref(db, `${userId}/mandalart/metadata/${mandalartId}`));
-    remove(ref(db, `${userId}/mandalart/topics/${mandalartId}`));
+    remove(ref(db, `${userId}/mandalarts/snippets/${mandalartId}`));
+    remove(ref(db, `${userId}/mandalarts/topics/${mandalartId}`));
   }
 
-  saveMetadata(
-    userId: string,
-    mandalartId: string,
-    metadata: MandalartMetadata
-  ) {
-    set(ref(db, `${userId}/mandalart/metadata/${mandalartId}`), metadata);
+  saveSnippets(userId: string, mandalartId: string, snippet: Snippet) {
+    set(ref(db, `${userId}/mandalarts/snippets/${mandalartId}`), snippet);
   }
 
-  syncMetadata(
+  syncSnippets(
     userId: string,
-    onUpdate: (metadataMap: Map<string, MandalartMetadata>) => void,
+    onUpdate: (snippetMap: Map<string, Snippet>) => void,
     onError?: (error: Error) => void
   ) {
-    const metadataRef = ref(db, `${userId}/mandalart/metadata`);
+    const snippetsRef = ref(db, `${userId}/mandalarts/snippets`);
     onValue(
-      metadataRef,
+      snippetsRef,
       (snapshot) => {
-        const metadataMap = new Map<string, MandalartMetadata>();
+        const snippetMap = new Map<string, Snippet>();
         snapshot.forEach((childSnapshot) => {
           const key = childSnapshot.key;
           const val = childSnapshot.val();
-          key && metadataMap.set(key, val);
+          key && snippetMap.set(key, val);
         });
-        if (metadataMap.size) {
-          onUpdate(metadataMap);
+        if (snippetMap.size) {
+          onUpdate(snippetMap);
         } else {
           onError && onError(new Error('snapshot is empty'));
         }
@@ -59,28 +55,28 @@ class MandalartRepository {
       onError
     );
     // 콜백을 삭제하는 함수를 리턴해서 호출할 수 있도록 함
-    return () => off(metadataRef);
+    return () => off(snippetsRef);
   }
 
   saveTopics(userId: string, mandalartId: string, topicTree: TopicNode) {
-    set(ref(db, `${userId}/mandalart/topics/${mandalartId}`), topicTree);
+    set(ref(db, `${userId}/mandalarts/topics/${mandalartId}`), topicTree);
   }
 
   removeTopics(userId: string, mandalartId: string) {
-    remove(ref(db, `${userId}/mandalart/topics/${mandalartId}`));
+    remove(ref(db, `${userId}/mandalarts/topics/${mandalartId}`));
   }
 
   syncTopics(
     userId: string,
     mandalartId: string,
-    onUpdate: (topicNode: TopicNode) => void,
+    onUpdate: (topicTree: TopicNode) => void,
     onError?: (error: Error) => void
   ) {
-    const topicsRef = ref(db, `${userId}/mandalart/topics/${mandalartId}`);
+    const topicsRef = ref(db, `${userId}/mandalarts/topics/${mandalartId}`);
     onValue(
       topicsRef,
-      (snapshot) => {
-        const val = snapshot.val();
+      (topicTree) => {
+        const val = topicTree.val();
         if (val) {
           onUpdate(val);
         } else {

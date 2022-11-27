@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { MandalartMetadata } from 'types/MandalartMetadata';
+import { Snippet } from 'types/Snippet';
 import { User } from 'firebase/auth';
 import repository from 'services/mandalartRepository';
 import useBoolean from 'hooks/useBoolean';
 
-const useMandalarts = (
-  initialMandalarts: Map<string, MandalartMetadata>,
+const useSnippets = (
+  initialSnippetMap: Map<string, Snippet>,
   user: User | null
 ) => {
-  const [mandalarts, setMandalarts] = useState(initialMandalarts);
+  const [snippetMap, setSnippetMap] = useState(initialSnippetMap);
   const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -17,10 +17,10 @@ const useMandalarts = (
 
     startLoading();
     setError(null);
-    const stopSync = repository.syncMetadata(
+    const stopSync = repository.syncSnippets(
       user.uid,
-      (mandalarts) => {
-        setMandalarts(mandalarts);
+      (snippetMap) => {
+        setSnippetMap(snippetMap);
         endLoading();
       },
       (e) => {
@@ -32,7 +32,7 @@ const useMandalarts = (
   }, [user, startLoading, endLoading]);
 
   // tuple로 고정
-  return [mandalarts, setMandalarts, isLoading, error] as const;
+  return [snippetMap, setSnippetMap, isLoading, error] as const;
 };
 
-export default useMandalarts;
+export default useSnippets;

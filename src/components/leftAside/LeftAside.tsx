@@ -4,11 +4,11 @@ import { BsPlus } from 'react-icons/bs';
 import Button from 'components/button/Button';
 import MandalartList from 'components/mandalartList/MandalartList';
 import OutsideClickDetector from 'components/outsideClickDetector/OutsideClickDetector';
-import { MandalartMetadata } from 'types/MandalartMetadata';
+import { Snippet } from 'types/Snippet';
 
 type LeftAsideProps = {
   isShown: boolean;
-  mandalartMetadataMap: Map<string, MandalartMetadata>;
+  snippetMap: Map<string, Snippet>;
   selectedMandalartId: string | null;
   onSelectMandalart: (mandalartId: string) => void;
   onDeleteMandalart: (mandalartId: string) => void;
@@ -19,7 +19,7 @@ type LeftAsideProps = {
 
 const LeftAside = ({
   isShown,
-  mandalartMetadataMap: metadataMap,
+  snippetMap,
   selectedMandalartId,
   onSelectMandalart,
   onDeleteMandalart,
@@ -44,7 +44,7 @@ const LeftAside = ({
     >
       <div className={`${styles.aside} ${isShown && styles.shown}`}>
         <MandalartList
-          metadataMap={metadataMap}
+          snippetMap={snippetMap}
           selectedId={selectedMandalartId}
           onSelect={handleSelectMandalart}
           onDelete={onDeleteMandalart}
