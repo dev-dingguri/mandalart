@@ -20,37 +20,22 @@ import useTopics from 'hooks/useTopics';
 import usePrevious from 'hooks/usePrevious';
 import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
+import { isEqual } from 'lodash';
 
-const isAnyTopicChanged = (topicTree: TopicNode): boolean => {
-  if (topicTree) {
-    if (topicTree.text !== '') {
-      return true;
-    }
-    if (topicTree.children) {
-      for (let i = 0; i < topicTree.children.length; ++i) {
-        if (isAnyTopicChanged(topicTree.children[i])) {
-          return true;
-        }
-      }
-    }
-  }
-  return false;
+const emptyTopicTree = {
+  text: '',
+  children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
+    text: '',
+    children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
+      text: '',
+      children: [],
+    })),
+  })),
 };
 
 const initialTopicTree = (() => {
   const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
-  return saved
-    ? parseTopicNode(saved)
-    : {
-        text: '',
-        children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-          text: '',
-          children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-            text: '',
-            children: [],
-          })),
-        })),
-      };
+  return saved ? parseTopicNode(saved) : emptyTopicTree;
 })();
 
 const Mandalart = () => {
@@ -84,16 +69,7 @@ const Mandalart = () => {
     authService.signOut();
     setSnippetMap(new Map<string, Snippet>());
     setSelectedMandalartId(null);
-    setTopicTree({
-      text: '',
-      children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-        text: '',
-        children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-          text: '',
-          children: [],
-        })),
-      })),
-    });
+    setTopicTree(emptyTopicTree);
   };
 
   useEffect(() => {
@@ -110,7 +86,7 @@ const Mandalart = () => {
     if (prevUser || !user) return;
 
     console.log('first run after sign in');
-    if (isAnyTopicChanged(topicTree)) {
+    if (!isEqual(topicTree, emptyTopicTree)) {
       const mandalartId = repository.newMandalart(user.uid);
       if (mandalartId) {
         repository.saveTopics(user.uid, mandalartId, topicTree);
