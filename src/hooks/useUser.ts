@@ -1,10 +1,11 @@
+import useBoolean from 'hooks/useBoolean';
 import { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 import authService from 'services/authService';
 
 const useUser = (initialUser: User | null) => {
   const [user, setUser] = useState<User | null>(initialUser);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(false);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const useUser = (initialUser: User | null) => {
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
+    startLoading();
     setError(null);
     authService
       .getRedirectResult()
@@ -24,9 +25,9 @@ const useUser = (initialUser: User | null) => {
         setError(e);
       })
       .finally(() => {
-        setIsLoading(false);
+        endLoading();
       });
-  }, []);
+  }, [startLoading, endLoading]);
 
   // tuple로 고정
   return [user, isLoading, error] as const;

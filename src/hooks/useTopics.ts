@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 import repository from 'services/mandalartRepository';
 import { TopicNode } from 'types/TopicNode';
+import useBoolean from 'hooks/useBoolean';
 
 const useTopics = (
   initialTopicTree: TopicNode,
@@ -9,28 +10,28 @@ const useTopics = (
   mandalartId: string | null
 ) => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(false);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     if (!user || !mandalartId) return;
 
-    setIsLoading(true);
+    startLoading();
     setError(null);
     const stopSync = repository.syncTopics(
       user.uid,
       mandalartId,
       (topicTree: TopicNode) => {
         setTopicTree(topicTree);
-        setIsLoading(false);
+        endLoading();
       },
       (e) => {
         setError(e);
-        setIsLoading(false);
+        endLoading();
       }
     );
     return () => stopSync();
-  }, [user, mandalartId]);
+  }, [user, mandalartId, startLoading, endLoading]);
 
   // tuple로 고정
   return [topicTree, setTopicTree, isLoading, error] as const;
