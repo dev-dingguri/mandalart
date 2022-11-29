@@ -1,25 +1,20 @@
-import { TABLE_SIZE } from 'constants/constants';
 import { Snippet } from 'types/Snippet';
 import { firebaseDatabase as db } from './firebase';
 import { ref, set, off, remove, onValue, push } from 'firebase/database';
 import { TopicNode } from 'types/TopicNode';
 
 class MandalartRepository {
-  newMandalart(userId: string) {
+  newMandalart(userId: string, topicTree: TopicNode) {
     const mandalartId = push(ref(db, `${userId}/mandalarts/snippets`), {
       title: 'Untitled',
     }).key;
-    set(ref(db, `${userId}/mandalarts/topics/${mandalartId}`), {
-      text: '',
-      children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-        text: '',
-        children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-          text: '',
-          children: [],
-        })),
-      })),
+    // todo: mandalartId == null인 경우 처리
+    return set(
+      ref(db, `${userId}/mandalarts/topics/${mandalartId}`),
+      topicTree
+    ).then(() => {
+      return mandalartId;
     });
-    return mandalartId;
   }
 
   removeMandalart(userId: string, mandalartId: string) {
@@ -28,7 +23,10 @@ class MandalartRepository {
   }
 
   saveSnippets(userId: string, mandalartId: string, snippet: Snippet) {
-    set(ref(db, `${userId}/mandalarts/snippets/${mandalartId}`), snippet);
+    return set(
+      ref(db, `${userId}/mandalarts/snippets/${mandalartId}`),
+      snippet
+    );
   }
 
   syncSnippets(
@@ -59,11 +57,14 @@ class MandalartRepository {
   }
 
   saveTopics(userId: string, mandalartId: string, topicTree: TopicNode) {
-    set(ref(db, `${userId}/mandalarts/topics/${mandalartId}`), topicTree);
+    return set(
+      ref(db, `${userId}/mandalarts/topics/${mandalartId}`),
+      topicTree
+    );
   }
 
   removeTopics(userId: string, mandalartId: string) {
-    remove(ref(db, `${userId}/mandalarts/topics/${mandalartId}`));
+    return remove(ref(db, `${userId}/mandalarts/topics/${mandalartId}`));
   }
 
   syncTopics(

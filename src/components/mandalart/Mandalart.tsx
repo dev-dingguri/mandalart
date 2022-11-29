@@ -87,11 +87,9 @@ const Mandalart = () => {
 
     console.log('first run after sign in');
     if (!isEqual(topicTree, emptyTopicTree)) {
-      const mandalartId = repository.newMandalart(user.uid);
-      if (mandalartId) {
-        repository.saveTopics(user.uid, mandalartId, topicTree);
-        setSelectedMandalartId(mandalartId);
-      }
+      repository.newMandalart(user.uid, topicTree).then((mandalartId) => {
+        mandalartId && setSelectedMandalartId(mandalartId);
+      });
     }
   }, [prevUser, user, topicTree]);
 
@@ -123,10 +121,13 @@ const Mandalart = () => {
               {user && snippetMap.size === 0 ? (
                 <NoMandalartNotice
                   onNewMandalart={() => {
-                    const mandalartId = user
-                      ? repository.newMandalart(user.uid)
-                      : null;
-                    mandalartId && setSelectedMandalartId(mandalartId);
+                    if (!user) return;
+
+                    repository
+                      .newMandalart(user.uid, emptyTopicTree)
+                      .then((mandalartId) => {
+                        mandalartId && setSelectedMandalartId(mandalartId);
+                      });
                   }}
                 />
               ) : (
@@ -177,12 +178,15 @@ const Mandalart = () => {
                   });
               }}
               onNewMandalart={() => {
-                if (user) {
-                  const mandalartId = repository.newMandalart(user.uid);
-                  mandalartId && setSelectedMandalartId(mandalartId);
-                } else {
+                if (!user) {
                   showAlert('Sign in is required to add a new Mandalart.');
+                  return;
                 }
+                repository
+                  .newMandalart(user.uid, emptyTopicTree)
+                  .then((mandalartId) => {
+                    mandalartId && setSelectedMandalartId(mandalartId);
+                  });
               }}
               onClose={closeLeftAside}
             />
