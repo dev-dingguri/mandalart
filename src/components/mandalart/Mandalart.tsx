@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import TopicsView from 'components/topicsView/TopicsView';
 import styles from './Mandalart.module.css';
-import { User } from 'firebase/auth';
 import authService from 'services/authService';
 import Header from 'components/header/Header';
 import TopicsViewTypeToggle from 'components/topicsViewTypeToggle/TopicsViewTypeToggle';
@@ -17,7 +16,6 @@ import RightAside from 'components/rightAside/RightAside';
 import useUser from 'hooks/useUser';
 import useSnippets from 'hooks/useSnippets';
 import useTopics from 'hooks/useTopics';
-import usePrevious from 'hooks/usePrevious';
 import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
 import { isEqual } from 'lodash';
@@ -33,14 +31,8 @@ const emptyTopicTree = {
   })),
 };
 
-const initialTopicTree = (() => {
-  const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
-  return saved ? parseTopicNode(saved) : emptyTopicTree;
-})();
-
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
-  const prevUser = usePrevious<User | null>(user);
   const [snippetMap, setSnippetMap] = useSnippets(
     new Map<string, Snippet>(),
     user
@@ -49,7 +41,7 @@ const Mandalart = () => {
     null
   );
   const [topicTree, setTopicTree] = useTopics(
-    initialTopicTree,
+    emptyTopicTree,
     user,
     selectedMandalartId
   );
@@ -83,19 +75,31 @@ const Mandalart = () => {
   }, [snippetMap, user, selectedMandalartId]);
 
   useEffect(() => {
-    if (prevUser || !user) return;
+    const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
+    if (!saved) return;
 
-    console.log('first run after sign in');
-    if (!isEqual(topicTree, emptyTopicTree)) {
-      repository.newMandalart(user.uid, topicTree).then((mandalartId) => {
-        mandalartId && setSelectedMandalartId(mandalartId);
-      });
+    const topicTree = parseTopicNode(saved) as TopicNode;
+    if (!isAnyTopicChanged(topicTree)) return;
+
+    if (user) {
+      localStorage.removeItem(STORAGE_KEY_TOPIC_TREE);
+      repository
+        .newMandalart(user.uid, topicTree)
+        .then((mandalartId) => {
+          mandalartId && setSelectedMandalartId(mandalartId);
+        })
+        .catch(() => {
+          localStorage.setItem(STORAGE_KEY_TOPIC_TREE, saved);
+        });
+    } else {
+      setTopicTree(topicTree);
     }
-  }, [prevUser, user, topicTree]);
+  }, [user, setTopicTree]);
 
   useEffect(() => {
+    if (user) return;
     localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
-  }, [topicTree]);
+  }, [user, topicTree]);
 
   const title = selectedMandalartId
     ? snippetMap.get(selectedMandalartId)?.title
@@ -215,6 +219,10 @@ const Mandalart = () => {
       )}
     </>
   );
+};
+
+const isAnyTopicChanged = (topicTree: TopicNode) => {
+  return !isEqual(topicTree, emptyTopicTree);
 };
 
 export default Mandalart;
