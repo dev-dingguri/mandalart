@@ -20,12 +20,12 @@ const useSnippets = (
     const stopSync = repository.syncSnippets(
       user.uid,
       (snippetMap) => {
-        setSnippetMap(snippetMap);
         endLoading();
+        setSnippetMap(snippetMap);
       },
       (e) => {
-        setError(e);
         endLoading();
+        setError(e);
       }
     );
     return () => stopSync();

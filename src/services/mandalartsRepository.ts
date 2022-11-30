@@ -45,11 +45,7 @@ class MandalartsRepository {
           const val = childSnapshot.val();
           key && snippetMap.set(key, val);
         });
-        if (snippetMap.size) {
-          onUpdate(snippetMap);
-        } else {
-          onError && onError(new Error('snapshot is empty'));
-        }
+        onUpdate(snippetMap);
       },
       onError
     );
@@ -77,13 +73,9 @@ class MandalartsRepository {
     const topicsRef = ref(db, `${userId}/mandalarts/topics/${mandalartId}`);
     onValue(
       topicsRef,
-      (topicTree) => {
-        const val = topicTree.val();
-        if (val) {
-          onUpdate(val);
-        } else {
-          onError && onError(new Error('snapshot is empty'));
-        }
+      (snapshot) => {
+        const topicTree = snapshot.val();
+        topicTree && onUpdate(topicTree);
       },
       onError
     );

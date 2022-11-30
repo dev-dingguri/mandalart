@@ -22,12 +22,12 @@ const useTopics = (
       user.uid,
       mandalartId,
       (topicTree: TopicNode) => {
-        setTopicTree(topicTree);
         endLoading();
+        setTopicTree(topicTree);
       },
       (e) => {
-        setError(e);
         endLoading();
+        setError(e);
       }
     );
     return () => stopSync();
