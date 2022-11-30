@@ -22,7 +22,7 @@ const TopicTables = ({
     <Table
       rowSize={TABLE_ROW_SIZE}
       colSize={TABLE_COL_SIZE}
-      itemGenerator={(tableIdx) => (
+      cell={({ idx: tableIdx }) => (
         <TopicTable
           key={tableIdx}
           tableIdx={tableIdx}
