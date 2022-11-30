@@ -1,4 +1,4 @@
-import Alert from 'components/alert/Alert';
+import Alert from 'components/Alert/Alert';
 import { createContext, useContext, useState } from 'react';
 
 type ContextValue = {
