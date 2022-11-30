@@ -6,7 +6,7 @@ import TopicsViewTypeToggle from 'components/TopicsViewTypeToggle/TopicsViewType
 import SignInModal from 'components/SignInModal/SignInModal';
 import TopicsView from 'components/TopicsView/TopicsView';
 import LeftAside from 'components/LeftAside/LeftAside';
-import repository from 'services/mandalartRepository';
+import repository from 'services/mandalartsRepository';
 import { Snippet } from 'types/Snippet';
 import { TopicNode, parseTopicNode } from 'types/TopicNode';
 import { TABLE_SIZE, STORAGE_KEY_TOPIC_TREE } from 'constants/constants';
@@ -20,7 +20,7 @@ import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
 import { isEqual } from 'lodash';
 
-const emptyTopicTree = {
+const EMPTY_TOPIC_TREE: TopicNode = {
   text: '',
   children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
     text: '',
@@ -29,6 +29,10 @@ const emptyTopicTree = {
       children: [],
     })),
   })),
+};
+
+const DEFAULT_SNIPPET: Snippet = {
+  title: 'Untitled',
 };
 
 const Mandalart = () => {
@@ -41,7 +45,7 @@ const Mandalart = () => {
     null
   );
   const [topicTree, setTopicTree] = useTopics(
-    emptyTopicTree,
+    EMPTY_TOPIC_TREE,
     user,
     selectedMandalartId
   );
@@ -61,7 +65,7 @@ const Mandalart = () => {
     authService.signOut();
     setSnippetMap(new Map<string, Snippet>());
     setSelectedMandalartId(null);
-    setTopicTree(emptyTopicTree);
+    setTopicTree(EMPTY_TOPIC_TREE);
   };
 
   useEffect(() => {
@@ -84,7 +88,7 @@ const Mandalart = () => {
     if (user) {
       localStorage.removeItem(STORAGE_KEY_TOPIC_TREE);
       repository
-        .newMandalart(user.uid, topicTree)
+        .createMandalart(user.uid, DEFAULT_SNIPPET, topicTree)
         .then((mandalartId) => {
           mandalartId && setSelectedMandalartId(mandalartId);
         })
@@ -124,11 +128,15 @@ const Mandalart = () => {
             <div className={styles.scrollArea}>
               {user && snippetMap.size === 0 ? (
                 <NoMandalartNotice
-                  onNewMandalart={() => {
+                  onCreateMandalart={() => {
                     if (!user) return;
 
                     repository
-                      .newMandalart(user.uid, emptyTopicTree)
+                      .createMandalart(
+                        user.uid,
+                        DEFAULT_SNIPPET,
+                        EMPTY_TOPIC_TREE
+                      )
                       .then((mandalartId) => {
                         mandalartId && setSelectedMandalartId(mandalartId);
                       });
@@ -181,13 +189,13 @@ const Mandalart = () => {
                     title: name,
                   });
               }}
-              onNewMandalart={() => {
+              onCreateMandalart={() => {
                 if (!user) {
                   showAlert('Sign in is required to add a new Mandalart.');
                   return;
                 }
                 repository
-                  .newMandalart(user.uid, emptyTopicTree)
+                  .createMandalart(user.uid, DEFAULT_SNIPPET, EMPTY_TOPIC_TREE)
                   .then((mandalartId) => {
                     mandalartId && setSelectedMandalartId(mandalartId);
                   });
@@ -221,8 +229,9 @@ const Mandalart = () => {
   );
 };
 
+// todo: 비로그인 상태일 때 제목을 작성할 수 있게 되면 snippet도 검사
 const isAnyTopicChanged = (topicTree: TopicNode) => {
-  return !isEqual(topicTree, emptyTopicTree);
+  return !isEqual(topicTree, EMPTY_TOPIC_TREE);
 };
 
 export default Mandalart;

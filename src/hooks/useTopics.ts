@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
-import repository from 'services/mandalartRepository';
+import repository from 'services/mandalartsRepository';
 import { TopicNode } from 'types/TopicNode';
 import useBoolean from 'hooks/useBoolean';
 

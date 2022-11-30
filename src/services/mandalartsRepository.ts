@@ -3,11 +3,12 @@ import { firebaseDatabase as db } from './firebase';
 import { ref, set, off, remove, onValue, push } from 'firebase/database';
 import { TopicNode } from 'types/TopicNode';
 
-class MandalartRepository {
-  newMandalart(userId: string, topicTree: TopicNode) {
-    const mandalartId = push(ref(db, `${userId}/mandalarts/snippets`), {
-      title: 'Untitled',
-    }).key;
+class MandalartsRepository {
+  createMandalart(userId: string, snippet: Snippet, topicTree: TopicNode) {
+    const mandalartId = push(
+      ref(db, `${userId}/mandalarts/snippets`),
+      snippet
+    ).key;
     // todo: mandalartId == null인 경우 처리
     return set(
       ref(db, `${userId}/mandalarts/topics/${mandalartId}`),
@@ -91,5 +92,5 @@ class MandalartRepository {
   }
 }
 
-const mandalartRepository = new MandalartRepository();
+const mandalartRepository = new MandalartsRepository();
 export default mandalartRepository;

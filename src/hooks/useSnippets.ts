@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Snippet } from 'types/Snippet';
 import { User } from 'firebase/auth';
-import repository from 'services/mandalartRepository';
+import repository from 'services/mandalartsRepository';
 import useBoolean from 'hooks/useBoolean';
 
 const useSnippets = (

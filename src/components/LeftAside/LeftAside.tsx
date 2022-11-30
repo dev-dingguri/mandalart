@@ -13,7 +13,7 @@ type LeftAsideProps = {
   onSelectMandalart: (mandalartId: string) => void;
   onDeleteMandalart: (mandalartId: string) => void;
   onRenameMandalart: (mandalartId: string, name: string) => void;
-  onNewMandalart: () => void;
+  onCreateMandalart: () => void;
   onClose: () => void;
 };
 
@@ -24,7 +24,7 @@ const LeftAside = ({
   onSelectMandalart,
   onDeleteMandalart,
   onRenameMandalart,
-  onNewMandalart,
+  onCreateMandalart,
   onClose,
 }: LeftAsideProps) => {
   const handleSelectMandalart = (mandalartId: string) => {
@@ -33,7 +33,7 @@ const LeftAside = ({
   };
 
   const handleNewClick = () => {
-    onNewMandalart();
+    onCreateMandalart();
     onClose();
   };
 
