@@ -181,7 +181,7 @@ const Mandalart = () => {
                 setSelectedMandalartId(mandalartId)
               }
               onDeleteMandalart={(mandalartId) => {
-                user && repository.removeMandalart(user.uid, mandalartId);
+                user && repository.deleteMandalart(user.uid, mandalartId);
               }}
               onRenameMandalart={(mandalartId, name) => {
                 user &&

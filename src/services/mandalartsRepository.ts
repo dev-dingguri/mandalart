@@ -18,7 +18,7 @@ class MandalartsRepository {
     });
   }
 
-  removeMandalart(userId: string, mandalartId: string) {
+  deleteMandalart(userId: string, mandalartId: string) {
     remove(ref(db, `${userId}/mandalarts/snippets/${mandalartId}`));
     remove(ref(db, `${userId}/mandalarts/topics/${mandalartId}`));
   }
@@ -64,7 +64,7 @@ class MandalartsRepository {
     );
   }
 
-  removeTopics(userId: string, mandalartId: string) {
+  deleteTopics(userId: string, mandalartId: string) {
     return remove(ref(db, `${userId}/mandalarts/topics/${mandalartId}`));
   }
 
