@@ -1,33 +1,22 @@
 import { Snippet } from 'types/Snippet';
 import { firebaseDatabase as db } from './firebase';
-import { ref, set, off, remove, onValue, push } from 'firebase/database';
+import { ref, set, remove, onValue, push } from 'firebase/database';
 import { TopicNode } from 'types/TopicNode';
 
+const SNIPPETS_PATH = '/mandalarts/snippets/';
+const TOPICS_PATH = '/mandalarts/topics/';
+
 class MandalartsRepository {
-  createMandalart(userId: string, snippet: Snippet, topicTree: TopicNode) {
-    const mandalartId = push(
-      ref(db, `${userId}/mandalarts/snippets`),
-      snippet
-    ).key;
-    // todo: mandalartId == null인 경우 처리
-    return set(
-      ref(db, `${userId}/mandalarts/topics/${mandalartId}`),
-      topicTree
-    ).then(() => {
-      return mandalartId;
-    });
+  createSnippet(userId: string, snippet: Snippet) {
+    return push(ref(db, `${userId}${SNIPPETS_PATH}`), snippet);
   }
 
-  deleteMandalart(userId: string, mandalartId: string) {
-    remove(ref(db, `${userId}/mandalarts/snippets/${mandalartId}`));
-    remove(ref(db, `${userId}/mandalarts/topics/${mandalartId}`));
+  saveSnippet(userId: string, mandalartId: string, snippet: Snippet) {
+    return set(ref(db, `${userId}${SNIPPETS_PATH}${mandalartId}`), snippet);
   }
 
-  saveSnippets(userId: string, mandalartId: string, snippet: Snippet) {
-    return set(
-      ref(db, `${userId}/mandalarts/snippets/${mandalartId}`),
-      snippet
-    );
+  deleteSnippet(userId: string, mandalartId: string) {
+    return remove(ref(db, `${userId}${SNIPPETS_PATH}${mandalartId}`));
   }
 
   syncSnippets(
@@ -35,9 +24,8 @@ class MandalartsRepository {
     onUpdate: (snippetMap: Map<string, Snippet>) => void,
     onError?: (error: Error) => void
   ) {
-    const snippetsRef = ref(db, `${userId}/mandalarts/snippets`);
-    onValue(
-      snippetsRef,
+    return onValue(
+      ref(db, `${userId}${SNIPPETS_PATH}`),
       (snapshot) => {
         const snippetMap = new Map<string, Snippet>();
         snapshot.forEach((childSnapshot) => {
@@ -49,19 +37,14 @@ class MandalartsRepository {
       },
       onError
     );
-    // 콜백을 삭제하는 함수를 리턴해서 호출할 수 있도록 함
-    return () => off(snippetsRef);
   }
 
   saveTopics(userId: string, mandalartId: string, topicTree: TopicNode) {
-    return set(
-      ref(db, `${userId}/mandalarts/topics/${mandalartId}`),
-      topicTree
-    );
+    return set(ref(db, `${userId}${TOPICS_PATH}${mandalartId}`), topicTree);
   }
 
   deleteTopics(userId: string, mandalartId: string) {
-    return remove(ref(db, `${userId}/mandalarts/topics/${mandalartId}`));
+    return remove(ref(db, `${userId}${TOPICS_PATH}${mandalartId}`));
   }
 
   syncTopics(
@@ -70,17 +53,14 @@ class MandalartsRepository {
     onUpdate: (topicTree: TopicNode) => void,
     onError?: (error: Error) => void
   ) {
-    const topicsRef = ref(db, `${userId}/mandalarts/topics/${mandalartId}`);
-    onValue(
-      topicsRef,
+    return onValue(
+      ref(db, `${userId}${TOPICS_PATH}${mandalartId}`),
       (snapshot) => {
         const topicTree = snapshot.val();
         topicTree && onUpdate(topicTree);
       },
       onError
     );
-    // 콜백을 삭제하는 함수를 리턴해서 호출할 수 있도록 함
-    return () => off(topicsRef);
   }
 }
 
