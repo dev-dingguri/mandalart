@@ -12,11 +12,11 @@ class AuthService {
 
   signIn(providerId: string) {
     const authProvider = this.getProvider(providerId);
-    signInWithRedirect(auth, authProvider);
+    return signInWithRedirect(auth, authProvider);
   }
 
   signOut() {
-    auth.signOut();
+    return auth.signOut();
   }
 
   getRedirectResult() {
@@ -24,7 +24,7 @@ class AuthService {
   }
 
   onAuthStateChanged(observer: (user: User | null) => void) {
-    auth.onAuthStateChanged((user) => {
+    return auth.onAuthStateChanged((user) => {
       observer(user);
     });
   }

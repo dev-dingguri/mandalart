@@ -9,7 +9,7 @@ const useUser = (initialUser: User | null) => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
+    return authService.onAuthStateChanged((user) => {
       console.log(`AuthStateChange user=${user ? user.email : 'none'}`);
       setUser(user);
     });
