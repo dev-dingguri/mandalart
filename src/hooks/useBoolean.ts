@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import useToggle from 'hooks/useToggle';
 
-function useBoolean(initialValue: boolean) {
+const useBoolean = (initialValue: boolean) => {
   const [value, toggle] = useToggle(initialValue);
 
   const handlers = useMemo(
@@ -14,6 +14,6 @@ function useBoolean(initialValue: boolean) {
   );
 
   return [value, handlers] as const;
-}
+};
 
 export default useBoolean;
