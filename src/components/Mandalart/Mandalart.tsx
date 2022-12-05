@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './Mandalart.module.css';
 import authService from 'services/authService';
 import Header from 'components/Header/Header';
@@ -6,22 +6,22 @@ import TopicsViewTypeToggle from 'components/TopicsViewTypeToggle/TopicsViewType
 import SignInModal from 'components/SignInModal/SignInModal';
 import TopicsView from 'components/TopicsView/TopicsView';
 import LeftAside from 'components/LeftAside/LeftAside';
-import repository from 'services/mandalartsRepository';
 import { Snippet } from 'types/Snippet';
-import { TopicNode, parseTopicNode } from 'types/TopicNode';
-import { TABLE_SIZE, STORAGE_KEY_TOPIC_TREE } from 'constants/constants';
+import { TopicNode } from 'types/TopicNode';
+import { TABLE_SIZE } from 'constants/constants';
 import NoMandalartNotice from 'components/NoMandalartNotice/NoMandalartNotice';
 import TextEditor from 'components/TextEditor/TextEditor';
 import RightAside from 'components/RightAside/RightAside';
 import useUser from 'hooks/useUser';
-import useSnippets from 'hooks/useSnippets';
-import useTopics from 'hooks/useTopics';
 import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
-import { isEqual } from 'lodash';
-import { useCallback } from 'react';
+import useMandalarts from '../../hooks/useMandalarts';
 
-const EMPTY_TOPIC_TREE: TopicNode = {
+export const DEFAULT_SNIPPET: Snippet = {
+  title: 'Untitled',
+};
+
+export const EMPTY_TOPIC_TREE: TopicNode = {
   text: '',
   children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
     text: '',
@@ -32,24 +32,28 @@ const EMPTY_TOPIC_TREE: TopicNode = {
   })),
 };
 
-const DEFAULT_SNIPPET: Snippet = {
-  title: 'Untitled',
-};
-
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
-  const [snippetMap, setSnippetMap] = useSnippets(
-    new Map<string, Snippet>(),
-    user
-  );
-  const [selectedMandalartId, setSelectedMandalartId] = useState<string | null>(
-    null
-  );
-  const [topicTree, setTopicTree] = useTopics(
-    EMPTY_TOPIC_TREE,
+  const [
+    snippetMap,
+    currentMandalartId,
+    currentTopicTree,
+    updateSnippetMap,
+    updateMandalartId,
+    updateTopicTree,
+    createMandalart,
+    deleteMandalart,
+    saveSnippet,
+    saveTopics,
+  ] = useMandalarts(
     user,
-    selectedMandalartId
+    new Map<string, Snippet>(),
+    null,
+    EMPTY_TOPIC_TREE,
+    DEFAULT_SNIPPET,
+    EMPTY_TOPIC_TREE
   );
+
   const [isAllView, setIsAllView] = useState(true);
   const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
     useBoolean(false);
@@ -64,95 +68,13 @@ const Mandalart = () => {
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => {
     authService.signOut();
-    setSnippetMap(new Map<string, Snippet>());
-    setSelectedMandalartId(null);
-    setTopicTree(EMPTY_TOPIC_TREE);
+    updateSnippetMap(new Map<string, Snippet>());
+    updateMandalartId(null);
+    updateTopicTree(EMPTY_TOPIC_TREE);
   };
 
-  const createMandalart = useCallback(
-    (userId: string, snippet: Snippet, topicTree: TopicNode) => {
-      return repository
-        .createSnippet(userId, snippet)
-        .then(({ key: mandalartId }) => {
-          if (!mandalartId) {
-            throw new Error('snippet creation failed.');
-          }
-          setSnippetMap(new Map(snippetMap).set(mandalartId, snippet));
-          setTopicTree(topicTree);
-          setSelectedMandalartId(mandalartId);
-          return repository.saveTopics(userId, mandalartId, topicTree);
-        });
-    },
-    [setSnippetMap, setTopicTree, snippetMap]
-  );
-
-  const deleteMandalart = useCallback(
-    (userId: string, mandalartId: string) => {
-      const _snippetMap = new Map(snippetMap);
-      if (_snippetMap.delete(mandalartId)) {
-        setSnippetMap(_snippetMap);
-      }
-      // todo: 현재 선택된 만다라트 지웠을 때 처리
-      return repository.deleteSnippet(userId, mandalartId).then(() => {
-        return repository.deleteTopics(userId, mandalartId);
-      });
-    },
-    [snippetMap, setSnippetMap]
-  );
-
-  const saveSnippet = useCallback(
-    (userId: string, mandalartId: string, snippet: Snippet) => {
-      setSnippetMap(new Map(snippetMap).set(mandalartId, snippet));
-      return repository.saveSnippet(userId, mandalartId, snippet);
-    },
-    [snippetMap, setSnippetMap]
-  );
-
-  const saveTopics = useCallback(
-    (userId: string, mandalartId: string, topicTree: TopicNode) => {
-      if (selectedMandalartId === mandalartId) {
-        setTopicTree(topicTree);
-      }
-      return repository.saveTopics(userId, mandalartId, topicTree);
-    },
-    [selectedMandalartId, setTopicTree]
-  );
-
-  useEffect(() => {
-    if (!user) return;
-
-    if (!selectedMandalartId || !snippetMap.has(selectedMandalartId)) {
-      const lastId = Array.from(snippetMap.keys()).pop();
-      console.log(lastId);
-      setSelectedMandalartId(lastId ? lastId : null);
-    }
-  }, [snippetMap, user, selectedMandalartId]);
-
-  useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
-    if (!saved) return;
-
-    const topicTree = parseTopicNode(saved) as TopicNode;
-
-    if (user) {
-      if (!isAnyTopicChanged(topicTree)) return;
-
-      localStorage.removeItem(STORAGE_KEY_TOPIC_TREE);
-      createMandalart(user.uid, DEFAULT_SNIPPET, topicTree).catch(() => {
-        localStorage.setItem(STORAGE_KEY_TOPIC_TREE, saved);
-      });
-    } else {
-      setTopicTree(topicTree);
-    }
-  }, [user, setTopicTree, createMandalart]);
-
-  useEffect(() => {
-    if (user) return;
-    localStorage.setItem(STORAGE_KEY_TOPIC_TREE, JSON.stringify(topicTree));
-  }, [user, topicTree]);
-
-  const title = selectedMandalartId
-    ? snippetMap.get(selectedMandalartId)?.title
+  const title = currentMandalartId
+    ? snippetMap.get(currentMandalartId)?.title
     : '';
 
   return (
@@ -193,12 +115,12 @@ const Mandalart = () => {
                   )}
                   <TopicsView
                     isAllView={isAllView}
-                    topicTree={topicTree}
+                    topicTree={currentTopicTree}
                     onTopicTreeChange={(topicTree) => {
-                      setTopicTree(topicTree);
+                      updateTopicTree(topicTree);
                       // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
-                      if (user && selectedMandalartId) {
-                        saveTopics(user.uid, selectedMandalartId, topicTree);
+                      if (user && currentMandalartId) {
+                        saveTopics(user.uid, currentMandalartId, topicTree);
                       }
                     }}
                   />
@@ -214,9 +136,9 @@ const Mandalart = () => {
             <LeftAside
               isShown={isShownLeftAside}
               snippetMap={snippetMap}
-              selectedMandalartId={selectedMandalartId}
+              selectedMandalartId={currentMandalartId}
               onSelectMandalart={(mandalartId) =>
-                setSelectedMandalartId(mandalartId)
+                updateMandalartId(mandalartId)
               }
               onDeleteMandalart={(mandalartId) => {
                 user && deleteMandalart(user.uid, mandalartId);
@@ -248,8 +170,8 @@ const Mandalart = () => {
             value={title ? title : ''}
             onClose={closeTitleEditor}
             onEnter={(name) => {
-              if (user && selectedMandalartId) {
-                saveSnippet(user.uid, selectedMandalartId, {
+              if (user && currentMandalartId) {
+                saveSnippet(user.uid, currentMandalartId, {
                   title: name,
                 });
               }
@@ -261,11 +183,6 @@ const Mandalart = () => {
       )}
     </>
   );
-};
-
-// todo: 비로그인 상태일 때 제목을 작성할 수 있게 되면 snippet도 검사
-const isAnyTopicChanged = (topicTree: TopicNode) => {
-  return !isEqual(topicTree, EMPTY_TOPIC_TREE);
 };
 
 export default Mandalart;
