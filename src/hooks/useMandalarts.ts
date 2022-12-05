@@ -94,27 +94,35 @@ const useMandalarts = (
   }, [user, snippetMap, currentMandalartId]);
 
   useEffect(() => {
+    if (!user) return;
+
     const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
     if (!saved) return;
 
-    const topicTree = parseTopicNode(saved) as TopicNode;
+    const topicTree = parseTopicNode(saved);
+    if (!isAnyTopicChanged(topicTree)) return;
 
-    if (user) {
-      if (!isAnyTopicChanged(topicTree)) return;
+    localStorage.removeItem(STORAGE_KEY_TOPIC_TREE);
+    createMandalart(user.uid, defaultSnippet, topicTree).catch(() => {
+      localStorage.setItem(STORAGE_KEY_TOPIC_TREE, saved);
+    });
+  }, [user, createMandalart, defaultSnippet, isAnyTopicChanged]);
 
-      localStorage.removeItem(STORAGE_KEY_TOPIC_TREE);
-      createMandalart(user.uid, defaultSnippet, topicTree).catch(() => {
-        localStorage.setItem(STORAGE_KEY_TOPIC_TREE, saved);
-      });
-    } else {
-      updateTopicTree(topicTree);
-    }
+  useEffect(() => {
+    if (user) return;
+
+    const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
+    const topicTree = saved ? parseTopicNode(saved) : defaultTopicTree;
+
+    updateSnippetMap(new Map<string, Snippet>());
+    updateMandalartId(null);
+    updateTopicTree(topicTree);
   }, [
     user,
+    defaultTopicTree,
+    updateSnippetMap,
+    updateMandalartId,
     updateTopicTree,
-    createMandalart,
-    defaultSnippet,
-    isAnyTopicChanged,
   ]);
 
   useEffect(() => {

@@ -66,12 +66,7 @@ const Mandalart = () => {
   const { Alert, showAlert } = useAlert();
 
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
-  const handleSignOut = () => {
-    authService.signOut();
-    updateSnippetMap(new Map<string, Snippet>());
-    updateMandalartId(null);
-    updateTopicTree(EMPTY_TOPIC_TREE);
-  };
+  const handleSignOut = () => authService.signOut();
 
   const title = currentMandalartId
     ? snippetMap.get(currentMandalartId)?.title
