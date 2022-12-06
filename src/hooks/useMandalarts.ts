@@ -27,9 +27,12 @@ const useMandalarts = (
   );
 
   const createMandalart = useCallback(
-    (userId: string, snippet: Snippet, topicTree: TopicNode) => {
+    async (user: User | null, snippet: Snippet, topicTree: TopicNode) => {
+      if (!user) {
+        throw new Error('cannot create because user is null.');
+      }
       return repository
-        .createSnippet(userId, snippet)
+        .createSnippet(user.uid, snippet)
         .then(({ key: mandalartId }) => {
           if (!mandalartId) {
             throw new Error('snippet creation failed.');
@@ -37,40 +40,50 @@ const useMandalarts = (
           updateSnippetMap(new Map(snippetMap).set(mandalartId, snippet));
           updateTopicTree(topicTree);
           updateMandalartId(mandalartId);
-          return repository.saveTopics(userId, mandalartId, topicTree);
+          return repository.saveTopics(user.uid, mandalartId, topicTree);
         });
     },
     [updateSnippetMap, updateTopicTree, snippetMap]
   );
 
   const deleteMandalart = useCallback(
-    (userId: string, mandalartId: string) => {
+    async (user: User | null, mandalartId: string | null) => {
+      if (!mandalartId) return;
       const _snippetMap = new Map(snippetMap);
       if (_snippetMap.delete(mandalartId)) {
         updateSnippetMap(_snippetMap);
       }
       // todo: 현재 선택된 만다라트 지웠을 때 처리
-      return repository.deleteSnippet(userId, mandalartId).then(() => {
-        return repository.deleteTopics(userId, mandalartId);
+      if (!user) return;
+      return repository.deleteSnippet(user.uid, mandalartId).then(() => {
+        return repository.deleteTopics(user.uid, mandalartId);
       });
     },
     [snippetMap, updateSnippetMap]
   );
 
   const saveSnippet = useCallback(
-    (userId: string, mandalartId: string, snippet: Snippet) => {
+    async (user: User | null, mandalartId: string | null, snippet: Snippet) => {
+      if (!mandalartId) return;
       updateSnippetMap(new Map(snippetMap).set(mandalartId, snippet));
-      return repository.saveSnippet(userId, mandalartId, snippet);
+
+      if (!user) return;
+      return repository.saveSnippet(user.uid, mandalartId, snippet);
     },
     [snippetMap, updateSnippetMap]
   );
 
   const saveTopics = useCallback(
-    (userId: string, mandalartId: string, topicTree: TopicNode) => {
+    async (
+      user: User | null,
+      mandalartId: string | null,
+      topicTree: TopicNode
+    ) => {
       if (currentMandalartId === mandalartId) {
         updateTopicTree(topicTree);
       }
-      return repository.saveTopics(userId, mandalartId, topicTree);
+      if (!user || !mandalartId) return;
+      return repository.saveTopics(user.uid, mandalartId, topicTree);
     },
     [currentMandalartId, updateTopicTree]
   );
@@ -98,12 +111,11 @@ const useMandalarts = (
 
     const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
     if (!saved) return;
-
     const topicTree = parseTopicNode(saved);
     if (!isAnyTopicChanged(topicTree)) return;
 
     localStorage.removeItem(STORAGE_KEY_TOPIC_TREE);
-    createMandalart(user.uid, defaultSnippet, topicTree).catch(() => {
+    createMandalart(user, defaultSnippet, topicTree).catch(() => {
       localStorage.setItem(STORAGE_KEY_TOPIC_TREE, saved);
     });
   }, [user, createMandalart, defaultSnippet, isAnyTopicChanged]);
@@ -137,9 +149,7 @@ const useMandalarts = (
     snippetMap,
     currentMandalartId,
     currentTopicTree,
-    updateSnippetMap,
     updateMandalartId,
-    updateTopicTree,
     createMandalart,
     deleteMandalart,
     saveSnippet,

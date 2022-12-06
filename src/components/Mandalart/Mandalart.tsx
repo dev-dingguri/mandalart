@@ -38,9 +38,7 @@ const Mandalart = () => {
     snippetMap,
     currentMandalartId,
     currentTopicTree,
-    updateSnippetMap,
     updateMandalartId,
-    updateTopicTree,
     createMandalart,
     deleteMandalart,
     saveSnippet,
@@ -92,13 +90,7 @@ const Mandalart = () => {
               {user && snippetMap.size === 0 ? (
                 <NoMandalartNotice
                   onCreateMandalart={() => {
-                    if (!user) return;
-
-                    createMandalart(
-                      user.uid,
-                      DEFAULT_SNIPPET,
-                      EMPTY_TOPIC_TREE
-                    );
+                    createMandalart(user, DEFAULT_SNIPPET, EMPTY_TOPIC_TREE);
                   }}
                 />
               ) : (
@@ -112,11 +104,7 @@ const Mandalart = () => {
                     isAllView={isAllView}
                     topicTree={currentTopicTree}
                     onTopicTreeChange={(topicTree) => {
-                      updateTopicTree(topicTree);
-                      // todo: useEffect(() => {...}, [topicTree, user]); 에서 처리 검토
-                      if (user && currentMandalartId) {
-                        saveTopics(user.uid, currentMandalartId, topicTree);
-                      }
+                      saveTopics(user, currentMandalartId, topicTree);
                     }}
                   />
                   <div className={styles.bottom}>
@@ -136,20 +124,19 @@ const Mandalart = () => {
                 updateMandalartId(mandalartId)
               }
               onDeleteMandalart={(mandalartId) => {
-                user && deleteMandalart(user.uid, mandalartId);
+                deleteMandalart(user, mandalartId);
               }}
               onRenameMandalart={(mandalartId, name) => {
-                user &&
-                  saveSnippet(user.uid, mandalartId, {
-                    title: name,
-                  });
+                saveSnippet(user, mandalartId, {
+                  title: name,
+                });
               }}
               onCreateMandalart={() => {
                 if (!user) {
                   showAlert('Sign in is required to add a new Mandalart.');
                   return;
                 }
-                createMandalart(user.uid, DEFAULT_SNIPPET, EMPTY_TOPIC_TREE);
+                createMandalart(user, DEFAULT_SNIPPET, EMPTY_TOPIC_TREE);
               }}
               onClose={closeLeftAside}
             />
@@ -165,11 +152,9 @@ const Mandalart = () => {
             value={title ? title : ''}
             onClose={closeTitleEditor}
             onEnter={(name) => {
-              if (user && currentMandalartId) {
-                saveSnippet(user.uid, currentMandalartId, {
-                  title: name,
-                });
-              }
+              saveSnippet(user, currentMandalartId, {
+                title: name,
+              });
               closeTitleEditor();
             }}
           />
