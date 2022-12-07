@@ -5,7 +5,7 @@ import authService from 'services/authService';
 
 const useUser = (initialUser: User | null) => {
   const [user, setUser] = useState<User | null>(initialUser);
-  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(false);
+  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {

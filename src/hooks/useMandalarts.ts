@@ -16,7 +16,10 @@ const useMandalarts = (
   defaultSnippet: Snippet,
   defaultTopicTree: TopicNode
 ) => {
-  const [snippetMap, updateSnippetMap] = useSnippets(initialSnippetMap, user);
+  const [snippetMap, updateSnippetMap, isSnippetMapLoading] = useSnippets(
+    initialSnippetMap,
+    user
+  );
   const [currentMandalartId, updateMandalartId] = useState<string | null>(
     initialMandalartId
   );
@@ -107,7 +110,7 @@ const useMandalarts = (
   }, [user, snippetMap, currentMandalartId]);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || isSnippetMapLoading) return;
 
     const saved = localStorage.getItem(STORAGE_KEY_TOPIC_TREE);
     if (!saved) return;
@@ -118,7 +121,13 @@ const useMandalarts = (
     createMandalart(user, defaultSnippet, topicTree).catch(() => {
       localStorage.setItem(STORAGE_KEY_TOPIC_TREE, saved);
     });
-  }, [user, createMandalart, defaultSnippet, isAnyTopicChanged]);
+  }, [
+    user,
+    isSnippetMapLoading,
+    createMandalart,
+    defaultSnippet,
+    isAnyTopicChanged,
+  ]);
 
   useEffect(() => {
     if (user) return;

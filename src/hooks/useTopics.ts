@@ -10,7 +10,7 @@ const useTopics = (
   mandalartId: string | null
 ) => {
   const [topicTree, setTopicTree] = useState(initialTopicTree);
-  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(false);
+  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {

@@ -9,7 +9,7 @@ const useSnippets = (
   user: User | null
 ) => {
   const [snippetMap, setSnippetMap] = useState(initialSnippetMap);
-  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(false);
+  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
