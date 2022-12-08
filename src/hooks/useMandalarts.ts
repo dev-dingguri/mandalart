@@ -40,40 +40,43 @@ const useMandalarts = (
           if (!mandalartId) {
             throw new Error('snippet creation failed.');
           }
-          updateSnippetMap(new Map(snippetMap).set(mandalartId, snippet));
+          updateSnippetMap((snippetMap) =>
+            new Map(snippetMap).set(mandalartId, snippet)
+          );
           updateTopicTree(topicTree);
           updateMandalartId(mandalartId);
           return repository.saveTopics(user.uid, mandalartId, topicTree);
         });
     },
-    [updateSnippetMap, updateTopicTree, snippetMap]
+    [updateSnippetMap, updateTopicTree]
   );
 
   const deleteMandalart = useCallback(
     async (user: User | null, mandalartId: string | null) => {
       if (!mandalartId) return;
-      const _snippetMap = new Map(snippetMap);
-      if (_snippetMap.delete(mandalartId)) {
-        updateSnippetMap(_snippetMap);
-      }
+      updateSnippetMap((snippetMap) => {
+        const deleted = new Map(snippetMap);
+        return deleted.delete(mandalartId) ? deleted : snippetMap;
+      });
       // todo: 현재 선택된 만다라트 지웠을 때 처리
       if (!user) return;
       return repository.deleteSnippet(user.uid, mandalartId).then(() => {
         return repository.deleteTopics(user.uid, mandalartId);
       });
     },
-    [snippetMap, updateSnippetMap]
+    [updateSnippetMap]
   );
 
   const saveSnippet = useCallback(
     async (user: User | null, mandalartId: string | null, snippet: Snippet) => {
       if (!mandalartId) return;
-      updateSnippetMap(new Map(snippetMap).set(mandalartId, snippet));
-
+      updateSnippetMap((snippetMap) =>
+        new Map(snippetMap).set(mandalartId, snippet)
+      );
       if (!user) return;
       return repository.saveSnippet(user.uid, mandalartId, snippet);
     },
-    [snippetMap, updateSnippetMap]
+    [updateSnippetMap]
   );
 
   const saveTopics = useCallback(
