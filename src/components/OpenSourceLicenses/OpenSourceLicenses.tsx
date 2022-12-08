@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import licenseDataFile from 'assets/json/packageLicenses.json';
+import licensesDataFile from 'assets/json/packageLicenses.json';
 import { BsChevronLeft } from 'react-icons/bs';
 import styles from './OpenSourceLicenses.module.css';
 import Button from 'components/Button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 /*
- * licenseDataFile
+ * licensesDataFile
  * Created with 'license-checker --production -excludePrivatePackages --customPath [customPath.json] --json'
  *
  * [customPath.json]
@@ -27,17 +27,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
  *  }
  */
 
-type LicenseDatum = {
+type LicenseData = {
   name: string;
   licenses: string;
   repository: string;
 };
 
-type LicenseData = {
-  [packageName: string]: LicenseDatum;
+type LicensesData = {
+  [packageName: string]: LicenseData;
 };
 
-const Item = ({ name, licenses, repository }: LicenseDatum) => {
+const Item = ({ name, licenses, repository }: LicenseData) => {
   return (
     <li className={styles.item}>
       <h3>{name}</h3>
@@ -51,14 +51,14 @@ const Item = ({ name, licenses, repository }: LicenseDatum) => {
   );
 };
 
-const parseLicenseData = (licenseData: LicenseData) => {
-  return Object.keys(licenseData).map((key) => licenseData[key]);
+const parseLicensesData = (licensesData: LicensesData) => {
+  return Object.keys(licensesData).map((key) => licensesData[key]);
 };
 
 const OpenSourceLicenses = () => {
-  const [licenseData, setLicenseData] = useState<LicenseDatum[]>([]);
+  const [licensesData, setLicensesData] = useState<LicenseData[]>([]);
   useEffect(() => {
-    setLicenseData(parseLicenseData(licenseDataFile));
+    setLicensesData(parseLicensesData(licensesDataFile));
   }, []);
 
   const location = useLocation();
@@ -80,8 +80,8 @@ const OpenSourceLicenses = () => {
         <h1 className={styles.title}>Open Source Licenses</h1>
       </header>
       <ul className={styles.list}>
-        {licenseData.map((datum, idx) => (
-          <Item key={idx} {...datum} />
+        {licensesData.map((data, idx) => (
+          <Item key={idx} {...data} />
         ))}
       </ul>
     </section>
