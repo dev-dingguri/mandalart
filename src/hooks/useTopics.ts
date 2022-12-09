@@ -5,11 +5,13 @@ import { TopicNode } from 'types/TopicNode';
 import useBoolean from 'hooks/useBoolean';
 
 const useTopics = (
-  initialTopicTree: TopicNode,
+  initialTopicTree: TopicNode | null,
   user: User | null,
   mandalartId: string | null
 ) => {
-  const [topicTree, setTopicTree] = useState(initialTopicTree);
+  const [topicTree, setTopicTree] = useState<TopicNode | null>(
+    initialTopicTree
+  );
   const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -22,18 +24,17 @@ const useTopics = (
       user.uid,
       mandalartId,
       (topicTree: TopicNode) => {
-        endLoading();
         setTopicTree(topicTree);
+        endLoading();
       },
       (e) => {
-        endLoading();
         setError(e);
+        endLoading();
       }
     );
     return () => stopSync();
   }, [user, mandalartId, startLoading, endLoading]);
 
-  // tuple로 고정
   return [topicTree, setTopicTree, isLoading, error] as const;
 };
 

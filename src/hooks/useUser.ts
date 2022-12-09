@@ -29,7 +29,6 @@ const useUser = (initialUser: User | null) => {
       });
   }, [startLoading, endLoading]);
 
-  // tuple로 고정
   return [user, isLoading, error] as const;
 };
 

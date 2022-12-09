@@ -20,18 +20,17 @@ const useSnippets = (
     const stopSync = repository.syncSnippets(
       user.uid,
       (snippetMap) => {
-        endLoading();
         setSnippetMap(snippetMap);
+        endLoading();
       },
       (e) => {
-        endLoading();
         setError(e);
+        endLoading();
       }
     );
     return () => stopSync();
   }, [user, startLoading, endLoading]);
 
-  // tuple로 고정
   return [snippetMap, setSnippetMap, isLoading, error] as const;
 };
 

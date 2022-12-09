@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import styles from './Mandalart.module.css';
 import authService from 'services/authService';
 import Header from 'components/Header/Header';
@@ -6,9 +6,7 @@ import TopicsViewTypeToggle from 'components/TopicsViewTypeToggle/TopicsViewType
 import SignInModal from 'components/SignInModal/SignInModal';
 import TopicsView from 'components/TopicsView/TopicsView';
 import LeftAside from 'components/LeftAside/LeftAside';
-import { Snippet } from 'types/Snippet';
-import { TopicNode } from 'types/TopicNode';
-import { TABLE_SIZE } from 'constants/constants';
+import { DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE } from 'constants/constants';
 import NoMandalartNotice from 'components/NoMandalartNotice/NoMandalartNotice';
 import TextEditor from 'components/TextEditor/TextEditor';
 import RightAside from 'components/RightAside/RightAside';
@@ -16,21 +14,7 @@ import useUser from 'hooks/useUser';
 import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
 import useMandalarts from '../../hooks/useMandalarts';
-
-export const DEFAULT_SNIPPET: Snippet = {
-  title: 'Untitled',
-};
-
-export const EMPTY_TOPIC_TREE: TopicNode = {
-  text: '',
-  children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-    text: '',
-    children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
-      text: '',
-      children: [],
-    })),
-  })),
-};
+import { Snippet } from '../../types/Snippet';
 
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
@@ -43,14 +27,7 @@ const Mandalart = () => {
     deleteMandalart,
     saveSnippet,
     saveTopics,
-  ] = useMandalarts(
-    user,
-    new Map<string, Snippet>(),
-    null,
-    EMPTY_TOPIC_TREE,
-    DEFAULT_SNIPPET,
-    EMPTY_TOPIC_TREE
-  );
+  ] = useMandalarts(user, new Map<string, Snippet>(), null, null);
 
   const [isAllView, setIsAllView] = useState(true);
   const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
@@ -66,9 +43,11 @@ const Mandalart = () => {
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => authService.signOut();
 
-  const title = currentMandalartId
-    ? snippetMap.get(currentMandalartId)?.title
-    : '';
+  const title = useMemo(() => {
+    if (!currentMandalartId) return '';
+    const title = snippetMap.get(currentMandalartId)?.title;
+    return title ? title : '';
+  }, [snippetMap, currentMandalartId]);
 
   return (
     <>
@@ -87,19 +66,23 @@ const Mandalart = () => {
               />
             </div>
             <div className={styles.scrollArea}>
-              {user && snippetMap.size === 0 ? (
+              {snippetMap.size === 0 ? (
                 <NoMandalartNotice
                   onCreateMandalart={() => {
-                    createMandalart(user, DEFAULT_SNIPPET, EMPTY_TOPIC_TREE);
+                    createMandalart(
+                      user,
+                      DEFAULT_SNIPPET,
+                      DEFAULT_TOPIC_TREE
+                    ).catch((e: Error) => {
+                      showAlert(e.message);
+                    });
                   }}
                 />
-              ) : (
+              ) : currentTopicTree ? (
                 <div className={styles.container}>
-                  {title && (
-                    <h1 className={styles.title} onClick={showTitleEditor}>
-                      {title}
-                    </h1>
-                  )}
+                  <h1 className={styles.title} onClick={showTitleEditor}>
+                    {title}
+                  </h1>
                   <TopicsView
                     isAllView={isAllView}
                     topicTree={currentTopicTree}
@@ -114,7 +97,7 @@ const Mandalart = () => {
                     />
                   </div>
                 </div>
-              )}
+              ) : null}
             </div>
             <LeftAside
               isShown={isShownLeftAside}
@@ -132,11 +115,13 @@ const Mandalart = () => {
                 });
               }}
               onCreateMandalart={() => {
-                if (!user) {
-                  showAlert('Sign in is required to add a new Mandalart.');
-                  return;
-                }
-                createMandalart(user, DEFAULT_SNIPPET, EMPTY_TOPIC_TREE);
+                createMandalart(
+                  user,
+                  DEFAULT_SNIPPET,
+                  DEFAULT_TOPIC_TREE
+                ).catch((e: Error) => {
+                  showAlert(e.message);
+                });
               }}
               onClose={closeLeftAside}
             />
@@ -149,7 +134,7 @@ const Mandalart = () => {
           />
           <TextEditor
             isShown={isShownTitleEditor}
-            value={title ? title : ''}
+            value={title}
             onClose={closeTitleEditor}
             onEnter={(name) => {
               saveSnippet(user, currentMandalartId, {
