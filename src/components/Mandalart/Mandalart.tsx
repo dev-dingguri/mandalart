@@ -114,6 +114,10 @@ const Mandalart = () => {
                   title: name,
                 });
               }}
+              onResetMandalart={(mandalartId) => {
+                saveSnippet(user, mandalartId, DEFAULT_SNIPPET);
+                saveTopics(user, mandalartId, DEFAULT_TOPIC_TREE);
+              }}
               onCreateMandalart={() => {
                 createMandalart(
                   user,

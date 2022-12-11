@@ -8,6 +8,7 @@ type MandalartListProps = {
   selectedId: string | null;
   onSelect: (mandalartId: string) => void;
   onDelete: (mandalartId: string) => void;
+  onReset: (mandalartId: string) => void;
   onRename: (mandalartId: string, name: string) => void;
 };
 
@@ -16,6 +17,7 @@ const MandalartList = ({
   selectedId,
   onSelect,
   onDelete,
+  onReset,
   onRename,
 }: MandalartListProps) => {
   const items = Array.from(snippetMap)
@@ -26,9 +28,10 @@ const MandalartList = ({
         mandalartId={mandalartId}
         snippet={snippet}
         isSelected={selectedId === mandalartId}
-        onSelect={() => onSelect(mandalartId)}
-        onDelete={() => onDelete(mandalartId)}
-        onRename={(name) => onRename(mandalartId, name)}
+        onSelect={onSelect}
+        onDelete={onDelete}
+        onReset={onReset}
+        onRename={onRename}
       />
     ));
 

@@ -13,9 +13,10 @@ type MandalartListItemProps = {
   mandalartId: string;
   snippet: Snippet;
   isSelected: boolean;
-  onSelect: () => void;
-  onDelete: () => void;
-  onRename: (name: string) => void;
+  onSelect: (mandalartId: string) => void;
+  onDelete: (mandalartId: string) => void;
+  onReset: (mandalartId: string) => void;
+  onRename: (mandalartId: string, name: string) => void;
 };
 
 const MandalartListItem = ({
@@ -24,6 +25,7 @@ const MandalartListItem = ({
   isSelected,
   onSelect,
   onDelete,
+  onReset,
   onRename,
 }: MandalartListItemProps) => {
   const [isShownMenu, { on: showMenu, off: closeMenu }] = useBoolean(false);
@@ -41,12 +43,15 @@ const MandalartListItem = ({
   };
 
   const handleMenuSelect = (value: string) => {
-    if (value === 'delete') {
-      onDelete();
-    } else if (value === 'rename') {
-      showEditor();
-    } else {
-      throw new Error(`${value} is not supported.`);
+    switch (value) {
+      case 'delete':
+        return onDelete(mandalartId);
+      case 'reset':
+        return onReset(mandalartId);
+      case 'rename':
+        return showEditor();
+      default:
+        throw new Error(`${value} is not supported.`);
     }
   };
 
@@ -55,6 +60,7 @@ const MandalartListItem = ({
     if (mandalartId !== TMP_MANDALART_ID) {
       options.push({ value: 'delete', name: 'Delete' });
     }
+    options.push({ value: 'reset', name: 'Reset' });
     options.push({ value: 'rename', name: 'Rename' });
     return options;
   }, [mandalartId]);
@@ -62,7 +68,7 @@ const MandalartListItem = ({
   return (
     <li
       className={`${styles.item} ${isSelected && styles.selected}`}
-      onClick={onSelect}
+      onClick={() => onSelect(mandalartId)}
       onContextMenu={handleShowMenu}
     >
       <BsGrid3X3 className={styles.icon} />
@@ -83,7 +89,7 @@ const MandalartListItem = ({
         value={snippet.title}
         onClose={closeEditor}
         onEnter={(name) => {
-          onRename(name);
+          onRename(mandalartId, name);
           closeEditor();
         }}
       />
