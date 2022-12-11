@@ -6,8 +6,11 @@ import styles from './MandalartListItem.module.css';
 import Menu from 'components/Menu/Menu';
 import TextEditor from 'components/TextEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
+import { TMP_MANDALART_ID } from 'constants/constants';
+import { useMemo } from 'react';
 
 type MandalartListItemProps = {
+  mandalartId: string;
   snippet: Snippet;
   isSelected: boolean;
   onSelect: () => void;
@@ -16,6 +19,7 @@ type MandalartListItemProps = {
 };
 
 const MandalartListItem = ({
+  mandalartId,
   snippet,
   isSelected,
   onSelect,
@@ -42,14 +46,18 @@ const MandalartListItem = ({
     } else if (value === 'rename') {
       showEditor();
     } else {
-      throw new Error('not support value');
+      throw new Error(`${value} is not supported.`);
     }
   };
 
-  const menuOptions = [
-    { value: 'delete', name: 'Delete' },
-    { value: 'rename', name: 'Rename' },
-  ];
+  const options = useMemo(() => {
+    const options: { value: string; name: string }[] = [];
+    if (mandalartId !== TMP_MANDALART_ID) {
+      options.push({ value: 'delete', name: 'Delete' });
+    }
+    options.push({ value: 'rename', name: 'Rename' });
+    return options;
+  }, [mandalartId]);
 
   return (
     <li
@@ -66,7 +74,7 @@ const MandalartListItem = ({
         isShown={isShownMenu}
         yPos={menuY}
         xPos={menuX}
-        options={menuOptions}
+        options={options}
         onSelect={handleMenuSelect}
         onClose={closeMenu}
       />

@@ -23,6 +23,7 @@ const MandalartList = ({
     .map(([mandalartId, snippet]) => (
       <MandalartListItem
         key={mandalartId}
+        mandalartId={mandalartId}
         snippet={snippet}
         isSelected={selectedId === mandalartId}
         onSelect={() => onSelect(mandalartId)}
