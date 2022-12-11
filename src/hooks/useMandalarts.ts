@@ -138,8 +138,8 @@ const useMandalarts = (
 
   useEffect(() => {
     if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
-    const lastMandalartId = Array.from(snippetMap.keys()).pop();
-    updateMandalartId(lastMandalartId ? lastMandalartId : null);
+    const last = Array.from(snippetMap.keys()).pop();
+    updateMandalartId(last ? last : null);
   }, [snippetMap, currentMandalartId]);
 
   return [
