@@ -82,6 +82,7 @@
   color: var(--color-font-1);
   font-size: 2rem;
   margin: 0;
+  min-width: 20%;
 }
 
 .draft {

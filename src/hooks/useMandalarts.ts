@@ -80,6 +80,9 @@ const useMandalarts = (
   const saveSnippet = useCallback(
     async (user: User | null, mandalartId: string | null, snippet: Snippet) => {
       if (!mandalartId) return;
+      if (snippet.title === '') {
+        snippet = DEFAULT_SNIPPET;
+      }
       updateSnippetMap((snippetMap) =>
         new Map(snippetMap).set(mandalartId, snippet)
       );
