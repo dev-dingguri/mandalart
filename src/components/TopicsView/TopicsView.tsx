@@ -3,10 +3,11 @@ import PartTopicTables from 'components/PartTopicTables/PartTopicTables';
 import TopicTables, {
   TopicTablesProps,
 } from 'components/TopicTables/TopicTables';
-import { TopicNode, cloneTopicNode } from 'types/TopicNode';
+import { TopicNode } from 'types/TopicNode';
 import styles from './TopicsView.module.css';
 import { TABLE_CENTER_IDX } from 'constants/constants';
 import TextEditor from 'components/TextEditor/TextEditor';
+import { cloneDeep } from 'lodash';
 
 const getTopicNode = (
   topicTree: TopicNode,
@@ -42,7 +43,7 @@ const TopicsView = ({
   } | null>(null);
 
   const updateItem = (tableIdx: number, tableItemIdx: number, text: string) => {
-    const newTopicTree = cloneTopicNode(topicTree);
+    const newTopicTree = cloneDeep(topicTree);
     const newTopic = getTopicNode(newTopicTree, tableIdx, tableItemIdx);
     newTopic.text = text;
     onTopicTreeChange(newTopicTree);
