@@ -15,6 +15,7 @@ import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
 import useMandalarts from '../../hooks/useMandalarts';
 import { Snippet } from '../../types/Snippet';
+import { TMP_MANDALART_ID } from '../../constants/constants';
 
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
@@ -80,9 +81,14 @@ const Mandalart = () => {
                 />
               ) : currentTopicTree ? (
                 <div className={styles.container}>
-                  <h1 className={styles.title} onClick={showTitleEditor}>
-                    {title}
-                  </h1>
+                  <div className={styles.titleBar}>
+                    <p className={styles.draft}>
+                      {currentMandalartId === TMP_MANDALART_ID && '(Draft)'}
+                    </p>
+                    <h1 className={styles.title} onClick={showTitleEditor}>
+                      {title}
+                    </h1>
+                  </div>
                   <TopicsView
                     isAllView={isAllView}
                     topicTree={currentTopicTree}
