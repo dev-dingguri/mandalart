@@ -16,6 +16,7 @@ import { useAlert } from 'contexts/AlertContext';
 import useMandalarts from '../../hooks/useMandalarts';
 import { Snippet } from '../../types/Snippet';
 import { TMP_MANDALART_ID } from '../../constants/constants';
+import Spinner from 'components/Spinner/Spinner';
 
 const Mandalart = () => {
   const [user, isLoading] = useUser(null);
@@ -51,92 +52,86 @@ const Mandalart = () => {
   }, [snippetMap, currentMandalartId]);
 
   return (
-    <>
+    <section className={styles.mandalart}>
       {isLoading ? (
-        <h1 className={styles.loading}>Loading...</h1>
+        <Spinner className={styles.spinner} />
       ) : (
         <>
-          <section className={styles.mandalart}>
-            <div className={styles.header}>
-              <Header
-                isSignedIn={user !== null}
-                onShowSignInUI={showSignInModal}
-                onSignOut={handleSignOut}
-                onShowLeftAside={showLeftAside}
-                onShowRightAside={showRightAside}
+          <div className={styles.header}>
+            <Header
+              isSignedIn={user !== null}
+              onShowSignInUI={showSignInModal}
+              onSignOut={handleSignOut}
+              onShowLeftAside={showLeftAside}
+              onShowRightAside={showRightAside}
+            />
+          </div>
+          <div className={styles.scrollArea}>
+            {snippetMap.size === 0 ? (
+              <NoMandalartNotice
+                onCreateMandalart={() => {
+                  createMandalart(
+                    user,
+                    DEFAULT_SNIPPET,
+                    DEFAULT_TOPIC_TREE
+                  ).catch((e: Error) => {
+                    showAlert(e.message);
+                  });
+                }}
               />
-            </div>
-            <div className={styles.scrollArea}>
-              {snippetMap.size === 0 ? (
-                <NoMandalartNotice
-                  onCreateMandalart={() => {
-                    createMandalart(
-                      user,
-                      DEFAULT_SNIPPET,
-                      DEFAULT_TOPIC_TREE
-                    ).catch((e: Error) => {
-                      showAlert(e.message);
-                    });
+            ) : currentTopicTree ? (
+              <div className={styles.container}>
+                <div className={styles.titleBar}>
+                  <p className={styles.draft}>
+                    {currentMandalartId === TMP_MANDALART_ID && '(Draft)'}
+                  </p>
+                  <h1 className={styles.title} onClick={showTitleEditor}>
+                    {title}
+                  </h1>
+                </div>
+                <TopicsView
+                  isAllView={isAllView}
+                  topicTree={currentTopicTree}
+                  onTopicTreeChange={(topicTree) => {
+                    saveTopics(user, currentMandalartId, topicTree);
                   }}
                 />
-              ) : currentTopicTree ? (
-                <div className={styles.container}>
-                  <div className={styles.titleBar}>
-                    <p className={styles.draft}>
-                      {currentMandalartId === TMP_MANDALART_ID && '(Draft)'}
-                    </p>
-                    <h1 className={styles.title} onClick={showTitleEditor}>
-                      {title}
-                    </h1>
-                  </div>
-                  <TopicsView
+                <div className={styles.bottom}>
+                  <TopicsViewTypeToggle
                     isAllView={isAllView}
-                    topicTree={currentTopicTree}
-                    onTopicTreeChange={(topicTree) => {
-                      saveTopics(user, currentMandalartId, topicTree);
-                    }}
+                    onToggle={(isAllView) => setIsAllView(isAllView)}
                   />
-                  <div className={styles.bottom}>
-                    <TopicsViewTypeToggle
-                      isAllView={isAllView}
-                      onToggle={(isAllView) => setIsAllView(isAllView)}
-                    />
-                  </div>
                 </div>
-              ) : null}
-            </div>
-            <LeftAside
-              isShown={isShownLeftAside}
-              snippetMap={snippetMap}
-              selectedMandalartId={currentMandalartId}
-              onSelectMandalart={(mandalartId) =>
-                updateMandalartId(mandalartId)
-              }
-              onDeleteMandalart={(mandalartId) => {
-                deleteMandalart(user, mandalartId);
-              }}
-              onRenameMandalart={(mandalartId, name) => {
-                saveSnippet(user, mandalartId, {
-                  title: name,
-                });
-              }}
-              onResetMandalart={(mandalartId) => {
-                saveSnippet(user, mandalartId, DEFAULT_SNIPPET);
-                saveTopics(user, mandalartId, DEFAULT_TOPIC_TREE);
-              }}
-              onCreateMandalart={() => {
-                createMandalart(
-                  user,
-                  DEFAULT_SNIPPET,
-                  DEFAULT_TOPIC_TREE
-                ).catch((e: Error) => {
+              </div>
+            ) : null}
+          </div>
+          <LeftAside
+            isShown={isShownLeftAside}
+            snippetMap={snippetMap}
+            selectedMandalartId={currentMandalartId}
+            onSelectMandalart={(mandalartId) => updateMandalartId(mandalartId)}
+            onDeleteMandalart={(mandalartId) => {
+              deleteMandalart(user, mandalartId);
+            }}
+            onRenameMandalart={(mandalartId, name) => {
+              saveSnippet(user, mandalartId, {
+                title: name,
+              });
+            }}
+            onResetMandalart={(mandalartId) => {
+              saveSnippet(user, mandalartId, DEFAULT_SNIPPET);
+              saveTopics(user, mandalartId, DEFAULT_TOPIC_TREE);
+            }}
+            onCreateMandalart={() => {
+              createMandalart(user, DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE).catch(
+                (e: Error) => {
                   showAlert(e.message);
-                });
-              }}
-              onClose={closeLeftAside}
-            />
-            <RightAside isShown={isShownRightAside} onClose={closeRightAside} />
-          </section>
+                }
+              );
+            }}
+            onClose={closeLeftAside}
+          />
+          <RightAside isShown={isShownRightAside} onClose={closeRightAside} />
           <SignInModal
             isShown={isShownSignInModal}
             onClose={closeSignInModal}
@@ -156,7 +151,7 @@ const Mandalart = () => {
           <Alert />
         </>
       )}
-    </>
+    </section>
   );
 };
 
