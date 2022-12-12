@@ -11,7 +11,7 @@ import {
   DEFAULT_TOPIC_TREE,
 } from 'constants/constants';
 import mandalartsStorage from '../services/mandalartsStorage';
-import useStorageUpload from './useStorageUpload';
+import useStorageUploader from './useStorageUploader';
 
 const TMP_SNIPPET_MAP = new Map<string, Snippet>([
   [TMP_MANDALART_ID, DEFAULT_SNIPPET],
@@ -109,9 +109,13 @@ const useMandalarts = (
     [currentMandalartId, updateTopicTree]
   );
 
-  const [isUploading] = useStorageUpload(user, createMandalart);
+  const [upload, isUploading] = useStorageUploader(createMandalart);
 
   const isLoading = isSnippetMapLoading || isTopicTreeLoading || isUploading;
+
+  useEffect(() => {
+    user && upload(user);
+  }, [user, upload]);
 
   useEffect(() => {
     if (user) return;
