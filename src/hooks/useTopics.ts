@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import repository from 'services/mandalartsRepository';
 import { TopicNode } from 'types/TopicNode';
@@ -12,28 +12,28 @@ const useTopics = (
   const [topicTree, setTopicTree] = useState<TopicNode | null>(
     initialTopicTree
   );
-  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(true);
+  const [isSyncing, { on: startSyncing, off: stopSyncing }] = useBoolean(false);
   const [error, setError] = useState<Error | null>(null);
+  const isLoading = user && !isSyncing;
 
   useEffect(() => {
-    if (!user || !mandalartId) return;
-
-    startLoading();
+    stopSyncing();
     setError(null);
-    const stopSync = repository.syncTopics(
+
+    if (!user || !mandalartId) return;
+    return repository.syncTopics(
       user.uid,
       mandalartId,
       (topicTree: TopicNode) => {
         setTopicTree(topicTree);
-        endLoading();
+        startSyncing();
       },
       (e) => {
         setError(e);
-        endLoading();
+        startSyncing();
       }
     );
-    return () => stopSync();
-  }, [user, mandalartId, startLoading, endLoading]);
+  }, [user, mandalartId, startSyncing, stopSyncing]);
 
   return [topicTree, setTopicTree, isLoading, error] as const;
 };

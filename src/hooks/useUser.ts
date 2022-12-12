@@ -5,15 +5,8 @@ import authService from 'services/authService';
 
 const useUser = (initialUser: User | null) => {
   const [user, setUser] = useState<User | null>(initialUser);
-  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(true);
+  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(false);
   const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    return authService.onAuthStateChanged((user) => {
-      console.log(`AuthStateChange user=${user ? user.email : 'none'}`);
-      setUser(user);
-    });
-  }, []);
 
   useEffect(() => {
     startLoading();
@@ -28,6 +21,13 @@ const useUser = (initialUser: User | null) => {
         endLoading();
       });
   }, [startLoading, endLoading]);
+
+  useEffect(() => {
+    return authService.onAuthStateChanged((user) => {
+      console.log(`AuthStateChange user=${user ? user.email : 'none'}`);
+      setUser(user);
+    });
+  }, []);
 
   return [user, isLoading, error] as const;
 };

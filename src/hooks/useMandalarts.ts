@@ -10,8 +10,8 @@ import {
   DEFAULT_SNIPPET,
   DEFAULT_TOPIC_TREE,
 } from 'constants/constants';
-import { isEqual } from 'lodash';
 import mandalartsStorage from '../services/mandalartsStorage';
+import useStorageUpload from './useStorageUpload';
 
 const TMP_SNIPPET_MAP = new Map<string, Snippet>([
   [TMP_MANDALART_ID, DEFAULT_SNIPPET],
@@ -30,7 +30,7 @@ const useMandalarts = (
   const [currentMandalartId, updateMandalartId] = useState<string | null>(
     initialMandalartId
   );
-  const [currentTopicTree, updateTopicTree] = useTopics(
+  const [currentTopicTree, updateTopicTree, isTopicTreeLoading] = useTopics(
     initialTopicTree,
     user,
     currentMandalartId
@@ -109,20 +109,9 @@ const useMandalarts = (
     [currentMandalartId, updateTopicTree]
   );
 
-  useEffect(() => {
-    if (!user || isSnippetMapLoading) return;
+  const [isUploading] = useStorageUpload(user, createMandalart);
 
-    const savedSnippet = mandalartsStorage.readSnippets().get(TMP_MANDALART_ID);
-    const snippet = savedSnippet ? savedSnippet : DEFAULT_SNIPPET;
-    const savedTopicTree = mandalartsStorage.readTopics().get(TMP_MANDALART_ID);
-    const topicTree = savedTopicTree ? savedTopicTree : DEFAULT_TOPIC_TREE;
-
-    if (!isAnyChanged(snippet, topicTree)) return;
-    createMandalart(user, snippet, topicTree).then(() => {
-      mandalartsStorage.deleteSnippets();
-      mandalartsStorage.deleteTopics();
-    });
-  }, [user, isSnippetMapLoading, createMandalart]);
+  const isLoading = isSnippetMapLoading || isTopicTreeLoading || isUploading;
 
   useEffect(() => {
     if (user) return;
@@ -149,19 +138,13 @@ const useMandalarts = (
     snippetMap,
     currentMandalartId,
     currentTopicTree,
+    isLoading,
     updateMandalartId,
     createMandalart,
     deleteMandalart,
     saveSnippet,
     saveTopics,
   ] as const;
-};
-
-const isAnyChanged = (snippet: Snippet, topicTree: TopicNode) => {
-  return (
-    !isEqual(snippet, DEFAULT_SNIPPET) || //
-    !isEqual(topicTree, DEFAULT_TOPIC_TREE)
-  );
 };
 
 export default useMandalarts;

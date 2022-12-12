@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Snippet } from 'types/Snippet';
 import { User } from 'firebase/auth';
 import repository from 'services/mandalartsRepository';
@@ -9,27 +9,27 @@ const useSnippets = (
   user: User | null
 ) => {
   const [snippetMap, setSnippetMap] = useState(initialSnippetMap);
-  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(true);
+  const [isSyncing, { on: startSyncing, off: stopSyncing }] = useBoolean(false);
   const [error, setError] = useState<Error | null>(null);
+  const isLoading = user && !isSyncing;
 
   useEffect(() => {
-    if (!user) return;
-
-    startLoading();
+    stopSyncing();
     setError(null);
-    const stopSync = repository.syncSnippets(
+
+    if (!user) return;
+    return repository.syncSnippets(
       user.uid,
       (snippetMap) => {
         setSnippetMap(snippetMap);
-        endLoading();
+        startSyncing();
       },
       (e) => {
         setError(e);
-        endLoading();
+        startSyncing();
       }
     );
-    return () => stopSync();
-  }, [user, startLoading, endLoading]);
+  }, [user, startSyncing, stopSyncing]);
 
   return [snippetMap, setSnippetMap, isLoading, error] as const;
 };

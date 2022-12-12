@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import styles from './Mandalart.module.css';
 import authService from 'services/authService';
 import Header from 'components/Header/Header';
@@ -19,11 +19,12 @@ import { TMP_MANDALART_ID } from '../../constants/constants';
 import Spinner from 'components/Spinner/Spinner';
 
 const Mandalart = () => {
-  const [user, isLoading] = useUser(null);
+  const [user, isUserLoading] = useUser(null);
   const [
     snippetMap,
     currentMandalartId,
     currentTopicTree,
+    isMandalartsLoading,
     updateMandalartId,
     createMandalart,
     deleteMandalart,
@@ -44,6 +45,8 @@ const Mandalart = () => {
 
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => authService.signOut();
+
+  const isLoading = isUserLoading || isMandalartsLoading;
 
   const title = useMemo(() => {
     if (!currentMandalartId) return '';
