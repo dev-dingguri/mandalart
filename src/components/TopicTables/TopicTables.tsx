@@ -22,9 +22,8 @@ const TopicTables = ({
     <Table
       rowSize={TABLE_ROW_SIZE}
       colSize={TABLE_COL_SIZE}
-      cell={({ idx: tableIdx }) => (
+      cellGenerater={(tableIdx) => (
         <TopicTable
-          key={tableIdx}
           tableIdx={tableIdx}
           isFocused={isFocused(tableIdx)}
           getTopicNode={(tableItemIdx) => getTopicNode(tableIdx, tableItemIdx)}

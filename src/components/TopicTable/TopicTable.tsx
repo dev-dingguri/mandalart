@@ -60,7 +60,7 @@ const TopicTable = ({
       <Table
         rowSize={TABLE_ROW_SIZE}
         colSize={TABLE_COL_SIZE}
-        cell={({ idx }) => (
+        cellGenerater={(idx) => (
           <TopicItem
             key={idx}
             topic={getTopicNode(idx).text}

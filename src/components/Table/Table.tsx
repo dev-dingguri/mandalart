@@ -4,11 +4,16 @@ import styles from './Table.module.css';
 type TableProps = {
   rowSize: number;
   colSize: number;
-  cell: ({ idx }: { idx: number }) => JSX.Element;
+  cellGenerater: (idx: number) => JSX.Element;
   space?: string;
 };
 
-const Table = ({ rowSize, colSize, cell: Cell, space = '0' }: TableProps) => {
+const Table = ({
+  rowSize,
+  colSize,
+  cellGenerater,
+  space = '0',
+}: TableProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -21,7 +26,7 @@ const Table = ({ rowSize, colSize, cell: Cell, space = '0' }: TableProps) => {
       const idx = row * rowSize + col;
       return (
         <div key={idx} className={styles.item}>
-          <Cell idx={idx} />
+          {cellGenerater(idx)}
         </div>
       );
     });
