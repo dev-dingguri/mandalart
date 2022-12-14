@@ -2,6 +2,7 @@ import useBoolean from 'hooks/useBoolean';
 import { useEffect, useState } from 'react';
 import { User } from 'firebase/auth';
 import authService from 'services/authService';
+import signInSessionStorage from '../services/signInSessionStorage';
 
 const useUser = (initialUser: User | null) => {
   const [user, setUser] = useState<User | null>(initialUser);
@@ -13,6 +14,10 @@ const useUser = (initialUser: User | null) => {
     setError(null);
     authService
       .getRedirectResult()
+      .then((userCred) => {
+        if (!userCred) return;
+        signInSessionStorage.initial(userCred.user);
+      })
       .catch((e) => {
         console.log(`errorCode=${e.code} errorMessage=${e.message}`);
         setError(e);

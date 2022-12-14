@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { User } from 'firebase/auth';
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
@@ -6,12 +6,13 @@ import useSnippets from 'hooks/useSnippets';
 import useTopics from 'hooks/useTopics';
 import repository from 'services/mandalartsRepository';
 import {
+  MAX_UPLOAD_MANDALARTS_SIZE,
   TMP_MANDALART_ID,
   DEFAULT_SNIPPET,
   DEFAULT_TOPIC_TREE,
 } from 'constants/constants';
 import mandalartsStorage from '../services/mandalartsStorage';
-import useStorageUploader from './useStorageUploader';
+import { isEqual } from 'lodash';
 
 const TMP_SNIPPET_MAP = new Map<string, Snippet>([
   [TMP_MANDALART_ID, DEFAULT_SNIPPET],
@@ -35,17 +36,25 @@ const useMandalarts = (
     user,
     currentMandalartId
   );
+  const isLoading = isSnippetMapLoading || isTopicTreeLoading;
 
   const createMandalart = useCallback(
     async (user: User | null, snippet: Snippet, topicTree: TopicNode) => {
       if (!user) {
         throw new Error('Sign in is required to add a new Mandalart.');
       }
+      if (!canUpload(snippetMap.size, 1)) {
+        // todo: 커스텀 에러 검토
+        throw new Error(
+          `The Mandalart could not be created.😥 The Mandalarts size cannot exceed ${MAX_UPLOAD_MANDALARTS_SIZE}.
+          Please delete the saved Mandalart and try again.`
+        );
+      }
       return repository
         .createSnippet(user.uid, snippet)
         .then(({ key: mandalartId }) => {
           if (!mandalartId) {
-            throw new Error('snippet creation failed.');
+            throw new Error('Mandalart creation failed.');
           }
           updateSnippetMap((snippetMap) =>
             new Map(snippetMap).set(mandalartId, snippet)
@@ -55,7 +64,7 @@ const useMandalarts = (
           return repository.saveTopics(user.uid, mandalartId, topicTree);
         });
     },
-    [updateSnippetMap, updateTopicTree]
+    [snippetMap.size, updateSnippetMap, updateTopicTree]
   );
 
   const deleteMandalart = useCallback(
@@ -96,7 +105,11 @@ const useMandalarts = (
   );
 
   const saveTopics = useCallback(
-    (user: User | null, mandalartId: string | null, topicTree: TopicNode) => {
+    async (
+      user: User | null,
+      mandalartId: string | null,
+      topicTree: TopicNode
+    ) => {
       if (mandalartId === currentMandalartId) {
         updateTopicTree(topicTree);
       }
@@ -109,13 +122,36 @@ const useMandalarts = (
     [currentMandalartId, updateTopicTree]
   );
 
-  const [upload, isUploading] = useStorageUploader(createMandalart);
+  const uploadDraft = useCallback(
+    async (user: User | null) => {
+      if (!user) return;
 
-  const isLoading = isSnippetMapLoading || isTopicTreeLoading || isUploading;
+      const savedSnippet = mandalartsStorage
+        .readSnippets()
+        .get(TMP_MANDALART_ID);
+      const snippet = savedSnippet ? savedSnippet : DEFAULT_SNIPPET;
+      const savedTopicTree = mandalartsStorage
+        .readTopics()
+        .get(TMP_MANDALART_ID);
+      const topicTree = savedTopicTree ? savedTopicTree : DEFAULT_TOPIC_TREE;
 
-  useEffect(() => {
-    user && upload(user);
-  }, [user, upload]);
+      if (!isAnyChanged(snippet, topicTree)) return;
+
+      return createMandalart(user, snippet, topicTree)
+        .then(() => {
+          mandalartsStorage.deleteSnippets();
+          mandalartsStorage.deleteTopics();
+        })
+        .catch((e: Error) => {
+          // todo: e가 'The Mandalart could not be created. ~~'에러인 경우에만
+          throw new Error(
+            `The draft Mandalart could not be saved.😥 The Mandalarts size cannot exceed ${MAX_UPLOAD_MANDALARTS_SIZE}.
+            Please delete the saved Mandalart and sign in again.`
+          );
+        });
+    },
+    [createMandalart]
+  );
 
   useEffect(() => {
     if (user) return;
@@ -148,7 +184,20 @@ const useMandalarts = (
     deleteMandalart,
     saveSnippet,
     saveTopics,
+    uploadDraft,
   ] as const;
+};
+
+const canUpload = (currentSize: number, uploadSize: number) => {
+  // todo: snippet에 isLocal만들고 필터링 필요
+  return currentSize + uploadSize <= MAX_UPLOAD_MANDALARTS_SIZE;
+};
+
+const isAnyChanged = (snippet: Snippet, topicTree: TopicNode) => {
+  return (
+    !isEqual(snippet, DEFAULT_SNIPPET) || //
+    !isEqual(topicTree, DEFAULT_TOPIC_TREE)
+  );
 };
 
 export default useMandalarts;

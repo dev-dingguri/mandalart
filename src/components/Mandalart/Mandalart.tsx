@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import styles from './Mandalart.module.css';
 import authService from 'services/authService';
 import Header from 'components/Header/Header';
@@ -17,6 +17,7 @@ import useMandalarts from '../../hooks/useMandalarts';
 import { Snippet } from '../../types/Snippet';
 import { TMP_MANDALART_ID } from '../../constants/constants';
 import Spinner from 'components/Spinner/Spinner';
+import signInSessionStorage from '../../services/signInSessionStorage';
 
 const Mandalart = () => {
   const [user, isUserLoading] = useUser(null);
@@ -30,6 +31,7 @@ const Mandalart = () => {
     deleteMandalart,
     saveSnippet,
     saveTopics,
+    uploadDraft,
   ] = useMandalarts(user, new Map<string, Snippet>(), null, null);
 
   const [isAllView, setIsAllView] = useState(true);
@@ -53,6 +55,18 @@ const Mandalart = () => {
     const title = snippetMap.get(currentMandalartId)?.title;
     return title ? title : '';
   }, [snippetMap, currentMandalartId]);
+
+  useEffect(() => {
+    if (!user || isLoading) return;
+    const data = signInSessionStorage.read(user);
+    if (!data || data.isTriedUploadDraft) return;
+
+    uploadDraft(user).catch((e: Error) => {
+      e && showAlert(e.message);
+    });
+    data.isTriedUploadDraft = true;
+    signInSessionStorage.save(user, data);
+  }, [user, isLoading, uploadDraft, showAlert]);
 
   return (
     <section className={styles.mandalart}>

@@ -1,5 +1,11 @@
 import Alert from 'components/Alert/Alert';
-import { createContext, useContext, useState, useMemo } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
 
 type ContextValue = {
   isShown: boolean;
@@ -13,14 +19,21 @@ const AlertContext = createContext<ContextValue | null>(null);
 export const AlertProvider = ({ children }: { children?: React.ReactNode }) => {
   const [message, setMessage] = useState<string | null>(null);
 
+  const handlers = useMemo(
+    () => ({
+      onShow: (message: string) => setMessage(message),
+      onClose: () => setMessage(null),
+    }),
+    [setMessage]
+  );
+
   const value = useMemo(
     () => ({
       isShown: message !== null,
       message: message ? message : '',
-      onShow: (message: string) => setMessage(message),
-      onClose: () => setMessage(null),
+      ...handlers,
     }),
-    [message]
+    [message, handlers]
   );
 
   return (
