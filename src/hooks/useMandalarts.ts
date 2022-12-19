@@ -24,19 +24,18 @@ const useMandalarts = (
   initialMandalartId: string | null,
   initialTopicTree: TopicNode | null
 ) => {
-  const [snippetMap, updateSnippetMap, isSnippetMapLoading] = useSnippets(
-    initialSnippetMap,
-    user
-  );
+  const [snippetMap, updateSnippetMap, isSnippetMapLoading, snippetMapError] =
+    useSnippets(initialSnippetMap, user);
   const [currentMandalartId, updateMandalartId] = useState<string | null>(
     initialMandalartId
   );
-  const [currentTopicTree, updateTopicTree, isTopicTreeLoading] = useTopics(
-    initialTopicTree,
-    user,
-    currentMandalartId
-  );
+  const [currentTopicTree, updateTopicTree, isTopicTreeLoading, topicsError] =
+    useTopics(initialTopicTree, user, currentMandalartId);
   const isLoading = isSnippetMapLoading || isTopicTreeLoading;
+  const error = useMemo(
+    () => (snippetMapError ? snippetMapError : topicsError),
+    [snippetMapError, topicsError]
+  );
 
   const createMandalart = useCallback(
     async (user: User | null, snippet: Snippet, topicTree: TopicNode) => {
@@ -179,6 +178,7 @@ const useMandalarts = (
     currentMandalartId,
     currentTopicTree,
     isLoading,
+    error,
     updateMandalartId,
     createMandalart,
     deleteMandalart,

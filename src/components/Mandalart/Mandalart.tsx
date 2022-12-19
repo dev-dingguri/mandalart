@@ -20,12 +20,13 @@ import Spinner from 'components/Spinner/Spinner';
 import signInSessionStorage from '../../services/signInSessionStorage';
 
 const Mandalart = () => {
-  const [user, isUserLoading] = useUser(null);
+  const [user, isUserLoading, userError] = useUser(null);
   const [
     snippetMap,
     currentMandalartId,
     currentTopicTree,
     isMandalartsLoading,
+    mandalartsError,
     updateMandalartId,
     createMandalart,
     deleteMandalart,
@@ -55,6 +56,19 @@ const Mandalart = () => {
     const title = snippetMap.get(currentMandalartId)?.title;
     return title ? title : '';
   }, [snippetMap, currentMandalartId]);
+
+  useEffect(() => {
+    if (!userError) return;
+
+    showAlert(`Couldn't sign in. Error: ${userError.message}`);
+  }, [userError, showAlert]);
+
+  useEffect(() => {
+    if (!mandalartsError) return;
+
+    showAlert('Failed Syncing cloud storage. You will be signed out');
+    authService.signOut();
+  }, [mandalartsError, showAlert]);
 
   useEffect(() => {
     if (!user || isLoading) return;
