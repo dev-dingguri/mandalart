@@ -43,6 +43,11 @@ a {
   color: black;
 }
 
+:disabled {
+  pointer-events: none;
+  opacity: var(--disabled-opacity);
+}
+
 .react-icons {
   font-size: inherit;
 }

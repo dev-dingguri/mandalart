@@ -9,8 +9,10 @@
   --color-font-2: #BCBEBF;
   --color-accent-1: #1670FC;
   --color-accent-2: #0046C8;
+  --color-warning-1: #b84c4b;
   --color-hover-effect: rgba(181, 181, 181, 0.1);
   --color-active-effect: rgba(181, 181, 181, 0.15);
+  --color-disabled-effect: rgba(0, 0, 0, 1);
   
   /* etc */
   --shadow-popup: rgba(10, 10, 10, 0.5) 0px 0px 12px;
@@ -35,6 +37,7 @@ html.light {
   --color-font-2: #4e4e4e;
   --color-accent-1: #5796F8;
   --color-accent-2: #90C6FF;
+  --color-warning-1: #cc3300;
   --color-hover-effect: rgba(112, 112, 112, 0.17);
   --color-active-effect: rgba(112, 112, 112, 0.23);
 
@@ -53,4 +56,8 @@ dialog.light::backdrop {
 :root {  
   /* sizes */
   --size-scrollbar-width: 6px;
+
+  /* etc*/
+  --disabled-opacity: 0.5;
 }
+/* !common */

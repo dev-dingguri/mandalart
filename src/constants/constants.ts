@@ -3,16 +3,18 @@ import { TopicNode } from 'types/TopicNode';
 
 // common constants
 
-// ui
+// mandalart ui
 export const TABLE_ROW_SIZE = 3;
 export const TABLE_COL_SIZE = 3;
 export const TABLE_SIZE = TABLE_ROW_SIZE * TABLE_COL_SIZE;
 export const TABLE_CENTER_IDX = 4;
 
-// db constraint
+// mandalart constraint
 export const MAX_UPLOAD_MANDALARTS_SIZE = 20;
+export const MAX_MANDALART_TITLE_SIZE = 30;
+export const MAX_TOPIC_TEXT_SIZE = 50;
 
-// data
+// mandalart data
 export const TMP_MANDALART_ID = 'tmp_mandalart_id';
 
 export const DEFAULT_SNIPPET: Snippet = {

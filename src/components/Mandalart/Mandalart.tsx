@@ -15,7 +15,10 @@ import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
 import useMandalarts from '../../hooks/useMandalarts';
 import { Snippet } from '../../types/Snippet';
-import { TMP_MANDALART_ID } from '../../constants/constants';
+import {
+  TMP_MANDALART_ID,
+  MAX_MANDALART_TITLE_SIZE,
+} from '../../constants/constants';
 import Spinner from 'components/Spinner/Spinner';
 import signInSessionStorage from '../../services/signInSessionStorage';
 
@@ -171,6 +174,7 @@ const Mandalart = () => {
           <TextEditor
             isShown={isShownTitleEditor}
             value={title}
+            maxText={MAX_MANDALART_TITLE_SIZE}
             onClose={closeTitleEditor}
             onEnter={(name) => {
               saveSnippet(user, currentMandalartId, {

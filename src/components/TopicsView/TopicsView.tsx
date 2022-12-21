@@ -8,6 +8,7 @@ import styles from './TopicsView.module.css';
 import { TABLE_CENTER_IDX } from 'constants/constants';
 import TextEditor from 'components/TextEditor/TextEditor';
 import { cloneDeep } from 'lodash';
+import { MAX_TOPIC_TEXT_SIZE } from '../../constants/constants';
 
 const getTopicNode = (
   topicTree: TopicNode,
@@ -98,6 +99,7 @@ const TopicsView = ({
         title={'Topic'}
         value={getEditingTopicText()}
         placeholder={'Please enter your content.'}
+        maxText={MAX_TOPIC_TEXT_SIZE}
         onClose={handleCloseTopicEditor}
         onEnter={handleTopicEditorEnter}
       />

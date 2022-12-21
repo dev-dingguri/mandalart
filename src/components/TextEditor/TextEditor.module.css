@@ -20,13 +20,33 @@
 .input {
   height: 2em;
   margin-top: 1em;
-  margin-bottom: 0.5em;
   outline: none;
   border: 1px solid var(--color-border-1);
   background-color: var(--color-bg-1);
   color: var(--color-font-1);
   border-radius: 5px;
   padding-left: calc(0.25em - 1px);
+}
+
+.input.warning {
+  border-color: var(--color-warning-1);
+}
+
+.validations {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.1em;
+}
+
+.validations p {
+  color: var(--color-font-2);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.validations.warning p{
+  color: var(--color-warning-1);
+  font-weight: 600;
 }
 
 .buttons {
