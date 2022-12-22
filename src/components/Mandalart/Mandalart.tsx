@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import styles from './Mandalart.module.css';
 import authService from 'services/authService';
 import Header from 'components/Header/Header';
@@ -21,6 +21,7 @@ import {
 } from '../../constants/constants';
 import Spinner from 'components/Spinner/Spinner';
 import signInSessionStorage from '../../services/signInSessionStorage';
+import { TopicNode } from '../../types/TopicNode';
 
 const Mandalart = () => {
   const [user, isUserLoading, userError] = useUser(null);
@@ -51,6 +52,13 @@ const Mandalart = () => {
 
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => authService.signOut();
+
+  const handleTopicTreeChange = useCallback(
+    (topicTree: TopicNode) => {
+      saveTopics(user, currentMandalartId, topicTree);
+    },
+    [user, currentMandalartId, saveTopics]
+  );
 
   const isLoading = isUserLoading || isMandalartsLoading;
 
@@ -126,9 +134,7 @@ const Mandalart = () => {
                 <TopicsView
                   isAllView={isAllView}
                   topicTree={currentTopicTree}
-                  onTopicTreeChange={(topicTree) => {
-                    saveTopics(user, currentMandalartId, topicTree);
-                  }}
+                  onTopicTreeChange={handleTopicTreeChange}
                 />
                 <div className={styles.bottom}>
                   <TopicsViewTypeToggle
