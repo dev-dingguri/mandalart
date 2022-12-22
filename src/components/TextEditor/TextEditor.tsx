@@ -6,29 +6,30 @@ import styles from './TextEditor.module.css';
 type TextEditorProps = {
   isShown: boolean;
   title?: string;
-  value: string;
+  initialText: string;
   placeholder?: string;
   maxText?: number;
   onClose: () => void;
-  onEnter: (value: string) => void;
+  onSubmit: (text: string) => void;
 };
 
 const TextEditor = ({
   isShown,
   title = 'Mandalart',
-  value = '',
+  initialText = '',
   placeholder,
   maxText,
   onClose,
-  onEnter,
+  onSubmit,
 }: TextEditorProps) => {
-  const [text, setText] = useState(value);
+  const [text, setText] = useState(initialText);
   const shouldValidations = maxText !== undefined;
   const isLimitReached = shouldValidations && maxText < text.length;
 
-  const handleEnter = () => {
+  const handleSubmit = () => {
     if (isLimitReached) return;
-    onEnter(text);
+    onSubmit(text);
+    onClose();
   };
 
   const handleInputChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,15 +37,15 @@ const TextEditor = ({
   };
 
   useEffect(() => {
-    setText(value);
-  }, [isShown, value]);
+    setText(initialText);
+  }, [isShown, initialText]);
 
   return (
     <Dialog
       isShown={isShown}
       className={styles.dialog}
       onClose={onClose}
-      onEnter={handleEnter}
+      onSubmit={handleSubmit}
     >
       <h1 className={styles.title}>{title}</h1>
       <input
@@ -70,7 +71,7 @@ const TextEditor = ({
         </Button>
         <Button
           className={styles.button}
-          onClick={handleEnter}
+          onClick={handleSubmit}
           disabled={isLimitReached}
         >
           Save

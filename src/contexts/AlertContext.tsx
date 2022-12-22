@@ -19,21 +19,17 @@ const AlertContext = createContext<ContextValue | null>(null);
 export const AlertProvider = ({ children }: { children?: React.ReactNode }) => {
   const [message, setMessage] = useState<string | null>(null);
 
-  const handlers = useMemo(
-    () => ({
-      onShow: (message: string) => setMessage(message),
-      onClose: () => setMessage(null),
-    }),
-    [setMessage]
-  );
+  const onShow = useCallback((message: string) => setMessage(message), []);
+  const onClose = useCallback(() => setMessage(null), []);
 
   const value = useMemo(
     () => ({
       isShown: message !== null,
       message: message ? message : '',
-      ...handlers,
+      onShow,
+      onClose,
     }),
-    [message, handlers]
+    [message, onShow, onClose]
   );
 
   return (

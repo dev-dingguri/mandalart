@@ -11,12 +11,7 @@ type AlertProps = {
 
 const Alert = ({ isShown, message, onClose }: AlertProps) => {
   return (
-    <Dialog
-      className={styles.alert}
-      isShown={isShown}
-      onClose={onClose}
-      onEnter={onClose}
-    >
+    <Dialog className={styles.alert} isShown={isShown} onClose={onClose}>
       <h1 className={styles.title}>Mandalart</h1>
       <p>{message}</p>
       <Button className={styles.okButton} onClick={onClose}>

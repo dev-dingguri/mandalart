@@ -42,12 +42,11 @@ const TopicsView = memo(
       setEditingTopicPos(null);
     };
 
-    const handleTopicEditorEnter = (text: string) => {
+    const handleTopicEditorSubmit = (text: string) => {
       if (!editingTopicPos) return;
 
       const { tableIdx, tableItemIdx } = editingTopicPos;
       updateItem(tableIdx, tableItemIdx, text);
-      handleCloseTopicEditor();
     };
 
     const isShownTopicEditor = editingTopicPos !== null;
@@ -79,11 +78,11 @@ const TopicsView = memo(
         <TextEditor
           isShown={isShownTopicEditor}
           title={'Topic'}
-          value={editingTopicText}
+          initialText={editingTopicText}
           placeholder={'Please enter your content.'}
           maxText={MAX_TOPIC_TEXT_SIZE}
           onClose={handleCloseTopicEditor}
-          onEnter={handleTopicEditorEnter}
+          onSubmit={handleTopicEditorSubmit}
         />
       </>
     );

@@ -8,7 +8,7 @@ type DialogProps = {
   className?: string;
   children?: React.ReactNode;
   onClose: () => void;
-  onEnter?: (ev: KeyboardEvent) => void;
+  onSubmit?: () => void;
 };
 
 const Dialog = ({
@@ -17,7 +17,7 @@ const Dialog = ({
   className,
   children,
   onClose,
-  onEnter,
+  onSubmit,
 }: DialogProps) => {
   const ref = useRef<HTMLDialogElement>(null);
   const { isDisplayLightTheme } = useTheme();
@@ -51,10 +51,11 @@ const Dialog = ({
         ev.preventDefault();
         onClose();
       } else if (ev.key === 'Enter') {
-        onEnter && onEnter(ev);
+        onSubmit && onSubmit();
+        onClose();
       }
     },
-    [onClose, onEnter]
+    [onClose, onSubmit]
   );
 
   useEffect(() => {

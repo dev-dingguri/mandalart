@@ -179,14 +179,13 @@ const Mandalart = () => {
           />
           <TextEditor
             isShown={isShownTitleEditor}
-            value={title}
+            initialText={title}
             maxText={MAX_MANDALART_TITLE_SIZE}
             onClose={closeTitleEditor}
-            onEnter={(name) => {
+            onSubmit={(name) => {
               saveSnippet(user, currentMandalartId, {
                 title: name,
               });
-              closeTitleEditor();
             }}
           />
           <Alert />

@@ -86,11 +86,10 @@ const MandalartListItem = ({
       />
       <TextEditor
         isShown={isShownEditor}
-        value={snippet.title}
+        initialText={snippet.title}
         onClose={closeEditor}
-        onEnter={(name) => {
+        onSubmit={(name) => {
           onRename(mandalartId, name);
-          closeEditor();
         }}
       />
     </li>
