@@ -48,7 +48,7 @@ const Mandalart = () => {
     useBoolean(false);
   const [isShownTitleEditor, { on: showTitleEditor, off: closeTitleEditor }] =
     useBoolean(false);
-  const { Alert, showAlert } = useAlert();
+  const { Alert, show: showAlert } = useAlert();
 
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => authService.signOut();

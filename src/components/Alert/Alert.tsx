@@ -3,7 +3,7 @@ import Button from 'components/Button/Button';
 import Dialog from 'components/Dialog/Dialog';
 import styles from './Alert.module.css';
 
-type AlertProps = {
+export type AlertProps = {
   isShown: boolean;
   message: string;
   onClose: () => void;

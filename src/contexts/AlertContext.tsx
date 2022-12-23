@@ -1,53 +1,53 @@
-import Alert from 'components/Alert/Alert';
-import {
-  createContext,
-  useContext,
-  useState,
-  useMemo,
-  useCallback,
-} from 'react';
+import Alert, { AlertProps } from 'components/Alert/Alert';
+import useBoolean from 'hooks/useBoolean';
+import { createContext, useContext, useState, useCallback } from 'react';
 
 type ContextValue = {
-  isShown: boolean;
-  message: string;
-  onShow: (message: string) => void;
-  onClose: () => void;
+  alertProps: AlertProps;
+  show: (message: string) => void;
 };
 
 const AlertContext = createContext<ContextValue | null>(null);
 
 export const AlertProvider = ({ children }: { children?: React.ReactNode }) => {
-  const [message, setMessage] = useState<string | null>(null);
+  const [isShown, { on: show, off: close }] = useBoolean(false);
+  const [message, setMessage] = useState('');
 
-  const onShow = useCallback((message: string) => setMessage(message), []);
-  const onClose = useCallback(() => setMessage(null), []);
-
-  const value = useMemo(
-    () => ({
-      isShown: message !== null,
-      message: message ? message : '',
-      onShow,
-      onClose,
-    }),
-    [message, onShow, onClose]
+  const showWithMessage = useCallback(
+    (message: string) => {
+      setMessage(message);
+      show();
+    },
+    [show]
   );
 
   return (
-    <AlertContext.Provider value={value}>{children}</AlertContext.Provider>
+    <AlertContext.Provider
+      value={{
+        alertProps: {
+          isShown,
+          message,
+          onClose: close,
+        },
+        show: showWithMessage,
+      }}
+    >
+      {children}
+    </AlertContext.Provider>
   );
 };
 
 export const useAlert = () => {
-  const { onShow } = useContext(AlertContext)!;
+  const { show } = useContext(AlertContext)!;
 
   return {
     Alert: AlertUI,
-    showAlert: onShow,
+    show,
   };
 };
 
 const AlertUI = () => {
-  const { isShown, message, onClose } = useContext(AlertContext)!;
+  const { alertProps } = useContext(AlertContext)!;
 
-  return <Alert isShown={isShown} message={message} onClose={onClose} />;
+  return <Alert {...alertProps} />;
 };
