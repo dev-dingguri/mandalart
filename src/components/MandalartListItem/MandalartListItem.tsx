@@ -88,7 +88,7 @@ const MandalartListItem = ({
         isShown={isShownEditor}
         initialText={snippet.title}
         onClose={closeEditor}
-        onSubmit={(name) => {
+        onConfirm={(name) => {
           onRename(mandalartId, name);
         }}
       />

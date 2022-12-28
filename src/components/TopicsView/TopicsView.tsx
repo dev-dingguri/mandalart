@@ -42,7 +42,7 @@ const TopicsView = memo(
       setEditingTopicPos(null);
     };
 
-    const handleTopicEditorSubmit = (text: string) => {
+    const handleTopicEditorConfirm = (text: string) => {
       if (!editingTopicPos) return;
 
       const { tableIdx, tableItemIdx } = editingTopicPos;
@@ -82,7 +82,7 @@ const TopicsView = memo(
           placeholder={'Please enter your content.'}
           maxText={MAX_TOPIC_TEXT_SIZE}
           onClose={handleCloseTopicEditor}
-          onSubmit={handleTopicEditorSubmit}
+          onConfirm={handleTopicEditorConfirm}
         />
       </>
     );

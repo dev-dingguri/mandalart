@@ -182,7 +182,7 @@ const Mandalart = () => {
             initialText={title}
             maxText={MAX_MANDALART_TITLE_SIZE}
             onClose={closeTitleEditor}
-            onSubmit={(name) => {
+            onConfirm={(name) => {
               saveSnippet(user, currentMandalartId, {
                 title: name,
               });

@@ -10,7 +10,7 @@ type TextEditorProps = {
   placeholder?: string;
   maxText?: number;
   onClose: () => void;
-  onSubmit: (text: string) => void;
+  onConfirm: (text: string) => void;
 };
 
 const TextEditor = ({
@@ -20,15 +20,15 @@ const TextEditor = ({
   placeholder,
   maxText,
   onClose,
-  onSubmit,
+  onConfirm,
 }: TextEditorProps) => {
   const [text, setText] = useState(initialText);
   const shouldValidations = maxText !== undefined;
   const isLimitReached = shouldValidations && maxText < text.length;
 
-  const handleSubmit = () => {
+  const handleConfirm = () => {
     if (isLimitReached) return;
-    onSubmit(text);
+    onConfirm(text);
     onClose();
   };
 
@@ -45,7 +45,7 @@ const TextEditor = ({
       isShown={isShown}
       className={styles.dialog}
       onClose={onClose}
-      onSubmit={handleSubmit}
+      onConfirm={handleConfirm}
     >
       <h1 className={styles.title}>{title}</h1>
       <input
@@ -71,7 +71,7 @@ const TextEditor = ({
         </Button>
         <Button
           className={styles.button}
-          onClick={handleSubmit}
+          onClick={handleConfirm}
           disabled={isLimitReached}
         >
           Save
