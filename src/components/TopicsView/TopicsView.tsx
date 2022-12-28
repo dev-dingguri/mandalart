@@ -1,4 +1,4 @@
-import { useState, useMemo, memo } from 'react';
+import { memo } from 'react';
 import PartTopicTables from 'components/PartTopicTables/PartTopicTables';
 import TopicTables, {
   TopicTablesProps,
@@ -6,9 +6,7 @@ import TopicTables, {
 import { TopicNode } from 'types/TopicNode';
 import styles from './TopicsView.module.css';
 import { TABLE_CENTER_IDX } from 'constants/constants';
-import TextEditor from 'components/TextEditor/TextEditor';
 import { cloneDeep } from 'lodash';
-import { MAX_TOPIC_TEXT_SIZE } from '../../constants/constants';
 
 type TopicsViewProps = {
   isAllView: boolean;
@@ -18,78 +16,38 @@ type TopicsViewProps = {
 
 const TopicsView = memo(
   ({ isAllView, topicTree, onTopicTreeChange }: TopicsViewProps) => {
-    const [editingTopicPos, setEditingTopicPos] = useState<{
-      tableIdx: number;
-      tableItemIdx: number;
-    } | null>(null);
-
-    const updateItem = (
+    const handleUpdateTopic = (
       tableIdx: number,
       tableItemIdx: number,
       text: string
     ) => {
       const newTopicTree = cloneDeep(topicTree);
-      const newTopic = getTopicNode(newTopicTree, tableIdx, tableItemIdx);
+      const newTopic = getTopic(newTopicTree, tableIdx, tableItemIdx);
       newTopic.text = text;
       onTopicTreeChange(newTopicTree);
     };
 
-    const handleShowTopicEditor = (tableIdx: number, tableItemIdx: number) => {
-      setEditingTopicPos({ tableIdx, tableItemIdx });
-    };
-
-    const handleCloseTopicEditor = () => {
-      setEditingTopicPos(null);
-    };
-
-    const handleTopicEditorConfirm = (text: string) => {
-      if (!editingTopicPos) return;
-
-      const { tableIdx, tableItemIdx } = editingTopicPos;
-      updateItem(tableIdx, tableItemIdx, text);
-    };
-
-    const isShownTopicEditor = editingTopicPos !== null;
-
-    const editingTopicText = useMemo(() => {
-      if (!editingTopicPos) return '';
-
-      const { tableIdx, tableItemIdx } = editingTopicPos;
-      return getTopicNode(topicTree, tableIdx, tableItemIdx).text;
-    }, [topicTree, editingTopicPos]);
-
     const topicTablesProps: TopicTablesProps = {
-      getTopicNode: (tableIdx, tableItemIdx) =>
-        getTopicNode(topicTree, tableIdx, tableItemIdx),
-      onShowTopicEditor: handleShowTopicEditor,
+      onGetTopic: (tableIdx, tableItemIdx) =>
+        getTopic(topicTree, tableIdx, tableItemIdx),
+      onUpdateTopic: handleUpdateTopic,
     };
 
     return (
-      <>
-        <section className={styles.topicsView}>
-          <div className={styles.container}>
-            {isAllView ? (
-              <TopicTables {...topicTablesProps} />
-            ) : (
-              <PartTopicTables {...topicTablesProps} />
-            )}
-          </div>
-        </section>
-        <TextEditor
-          isShown={isShownTopicEditor}
-          title={'Topic'}
-          initialText={editingTopicText}
-          placeholder={'Please enter your content.'}
-          maxText={MAX_TOPIC_TEXT_SIZE}
-          onClose={handleCloseTopicEditor}
-          onConfirm={handleTopicEditorConfirm}
-        />
-      </>
+      <section className={styles.topicsView}>
+        <div className={styles.container}>
+          {isAllView ? (
+            <TopicTables {...topicTablesProps} />
+          ) : (
+            <PartTopicTables {...topicTablesProps} />
+          )}
+        </div>
+      </section>
     );
   }
 );
 
-const getTopicNode = (
+const getTopic = (
   topicTree: TopicNode,
   tableIdx: number,
   tableItemIdx: number

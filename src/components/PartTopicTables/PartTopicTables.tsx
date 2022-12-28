@@ -3,16 +3,17 @@ import TopicTables, {
   TopicTablesProps,
 } from 'components/TopicTables/TopicTables';
 import styles from './PartTopicTables.module.css';
+import { useCallback } from 'react';
 import {
   TABLE_COL_SIZE,
   TABLE_SIZE,
   TABLE_CENTER_IDX,
 } from 'constants/constants';
 
-type PartTopicTablesProps = Omit<TopicTablesProps, 'focusedIdx'>;
-
-const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
+const PartTopicTables = ({ ...props }: TopicTablesProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
+  const isSyncedFocuseRef = useRef(false);
+
   const tablesRef = useRef<HTMLDivElement>(null);
   // 스와이프 시작시 상태를 저장하기 위한 useRef들
   const startYRef = useRef(0);
@@ -58,14 +59,6 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
     return movedIdx;
   };
 
-  const handleShowTopicEditor = (tableIdx: number, tableItemIdx: number) => {
-    if (tableIdx !== focusedIdx) {
-      setFocusedIdx(tableIdx);
-    } else {
-      props.onShowTopicEditor(tableIdx, tableItemIdx);
-    }
-  };
-
   const handleTouchStart = (ev: TouchEvent) => {
     const tables = tablesRef.current!;
     startYRef.current = ev.changedTouches[0].pageY;
@@ -104,6 +97,38 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
     });
   };
 
+  /**
+   * return stopSyncFocuse
+   */
+  const handleSyncFocuse = useCallback(
+    (
+      tableIdx: number,
+      scrollInto: (options?: ScrollIntoViewOptions) => void
+    ) => {
+      if (focusedIdx !== tableIdx) return;
+
+      const scrollCenter = (behavior: ScrollBehavior) => {
+        scrollInto({
+          behavior: behavior,
+          block: 'center',
+          inline: 'center',
+        });
+      };
+
+      scrollCenter(isSyncedFocuseRef.current ? 'smooth' : 'auto');
+      isSyncedFocuseRef.current = true;
+
+      const handleResize = () => scrollCenter('auto');
+      window.addEventListener('resize', handleResize);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    },
+    [focusedIdx]
+  );
+
+  const handleCanEdit = (tableIdx: number) => focusedIdx === tableIdx;
+
   return (
     <div
       ref={tablesRef}
@@ -116,8 +141,9 @@ const PartTopicTables = ({ ...props }: PartTopicTablesProps) => {
       <div className={styles.container}>
         <TopicTables
           {...props}
-          focusedIdx={focusedIdx}
-          onShowTopicEditor={handleShowTopicEditor}
+          onSyncFocuse={handleSyncFocuse}
+          onUpdateFocuse={setFocusedIdx}
+          onCanEdit={handleCanEdit}
         />
       </div>
     </div>

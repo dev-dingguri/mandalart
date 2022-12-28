@@ -4,72 +4,55 @@ import TopicItem from 'components/TopicItem/TopicItem';
 import { TopicNode } from 'types/TopicNode';
 import styles from './TopicTable.module.css';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
-import {
-  TABLE_ROW_SIZE,
-  TABLE_COL_SIZE,
-  TABLE_CENTER_IDX,
-} from 'constants/constants';
+import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';
 
 type TopicTableProps = {
-  tableIdx: number;
-  isFocused?: boolean;
-  getTopicNode: (idx: number) => TopicNode;
-  onShowTopicEditor: (idx: number) => void;
+  onIsAccented: (tableItemIdx: number) => boolean;
+  onGetTopic: (tableItemIdx: number) => TopicNode;
+  onUpdateTopic: (tableItemIdx: number, text: string) => void;
+  onCanEdit?: () => boolean;
+  onSyncFocuse?: (
+    scrollInto: (options?: ScrollIntoViewOptions) => void
+  ) => void;
+  onUpdateFocuse?: () => void;
 };
 
 const TopicTable = ({
-  tableIdx,
-  isFocused = false,
-  getTopicNode,
-  onShowTopicEditor: onTopicClick,
+  onIsAccented,
+  onGetTopic,
+  onUpdateTopic,
+  onCanEdit = () => true,
+  onSyncFocuse,
+  onUpdateFocuse,
 }: TopicTableProps) => {
   const tableRef = useRef<HTMLDivElement>(null);
-  const isLoadedRef = useRef(false);
-
-  const isAccent = (tableItemIdx: number) => {
-    if (tableIdx === TABLE_CENTER_IDX) {
-      return tableItemIdx !== TABLE_CENTER_IDX;
-    } else {
-      return tableItemIdx === TABLE_CENTER_IDX;
-    }
-  };
 
   useEffect(() => {
-    const scrollCenterIfFocus = (behavior: ScrollBehavior) => {
-      if (isFocused) {
-        const topicTable = tableRef.current!;
-        scrollIntoView(topicTable, {
-          behavior: behavior,
-          block: 'center',
-          inline: 'center',
-        });
-      }
-    };
-    scrollCenterIfFocus(isLoadedRef.current ? 'smooth' : 'auto');
-    isLoadedRef.current = true;
+    if (!onSyncFocuse) return;
 
-    const handleResize = () => scrollCenterIfFocus('auto');
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isFocused]);
+    return onSyncFocuse((options) => {
+      const topicTable = tableRef.current!;
+      scrollIntoView(topicTable, options);
+    });
+  }, [onSyncFocuse]);
 
   return (
     <div ref={tableRef} className={styles.topicTable}>
       <Table
         rowSize={TABLE_ROW_SIZE}
         colSize={TABLE_COL_SIZE}
-        cellGenerater={(idx) => (
+        cellGenerater={(tableItemIdx) => (
           <TopicItem
-            key={idx}
-            topic={getTopicNode(idx).text}
-            isAccented={isAccent(idx)}
-            onShowTopicEditor={() => onTopicClick(idx)}
+            key={tableItemIdx}
+            topic={onGetTopic(tableItemIdx).text}
+            isAccented={onIsAccented(tableItemIdx)}
+            canEdit={onCanEdit()}
+            onUpdateTopic={(text) => onUpdateTopic(tableItemIdx, text)}
+            onUpdateFocuse={onUpdateFocuse}
           />
         )}
         space="2px"
-      ></Table>
+      />
     </div>
   );
 };
