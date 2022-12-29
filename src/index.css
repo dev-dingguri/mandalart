@@ -43,6 +43,11 @@ a {
   color: black;
 }
 
+p,
+span {
+  white-space: pre-line;
+}
+
 :disabled {
   pointer-events: none;
   opacity: var(--disabled-opacity);

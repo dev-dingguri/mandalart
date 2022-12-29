@@ -22,6 +22,7 @@ import {
 import Spinner from 'components/Spinner/Spinner';
 import signInSessionStorage from '../../services/signInSessionStorage';
 import { TopicNode } from '../../types/TopicNode';
+import { useTranslation } from 'react-i18next';
 
 const Mandalart = () => {
   const [user, isUserLoading, userError] = useUser(null);
@@ -49,6 +50,7 @@ const Mandalart = () => {
   const [isShownTitleEditor, { on: showTitleEditor, off: closeTitleEditor }] =
     useBoolean(false);
   const { Alert, show: showAlert } = useAlert();
+  const { t } = useTranslation();
 
   const handleSignIn = (providerid: string) => authService.signIn(providerid);
   const handleSignOut = () => authService.signOut();
@@ -71,15 +73,15 @@ const Mandalart = () => {
   useEffect(() => {
     if (!userError) return;
 
-    showAlert(`Couldn't sign in. Error: ${userError.message}`);
-  }, [userError, showAlert]);
+    showAlert(t('auth.errors.signIn.default', { detail: userError.message }));
+  }, [userError, showAlert, t]);
 
   useEffect(() => {
     if (!mandalartsError) return;
 
-    showAlert('Failed Syncing cloud storage. You will be signed out');
+    showAlert(t('mandalart.errors.sync.default'));
     authService.signOut();
-  }, [mandalartsError, showAlert]);
+  }, [mandalartsError, showAlert, t]);
 
   useEffect(() => {
     if (!user || isLoading) return;
@@ -125,7 +127,8 @@ const Mandalart = () => {
               <div className={styles.container}>
                 <div className={styles.titleBar}>
                   <p className={styles.draft}>
-                    {currentMandalartId === TMP_MANDALART_ID && '(Draft)'}
+                    {currentMandalartId === TMP_MANDALART_ID &&
+                      `(${t('mandalart.draft')})`}
                   </p>
                   <h1 className={styles.title} onClick={showTitleEditor}>
                     {title}

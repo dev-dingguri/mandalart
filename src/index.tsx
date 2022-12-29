@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { IconContext } from 'react-icons/lib';
 import { ThemeProvider } from 'contexts/ThemeContext';
 import { AlertProvider } from 'contexts/AlertContext';
+import 'locales/i18n';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

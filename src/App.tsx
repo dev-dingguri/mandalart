@@ -3,9 +3,15 @@ import styles from './App.module.css';
 import Mandalart from 'components/Mandalart/Mandalart';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import OpenSourceLicenses from 'components/OpenSourceLicenses/OpenSourceLicenses';
+import { useTranslation } from 'react-i18next';
 
 const App = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    document.title = t('global.app');
+  }, [t]);
 
   /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 크기 계산 */
   useEffect(() => {

@@ -5,6 +5,7 @@ import { ProviderId } from 'firebase/auth';
 import googleIco from 'assets/images/google.svg';
 import Button from 'components/Button/Button';
 import { BsXLg } from 'react-icons/bs';
+import { useTranslation } from 'react-i18next';
 
 type SignInModalProps = {
   isShown: boolean;
@@ -13,23 +14,22 @@ type SignInModalProps = {
 };
 
 const SignInModal = ({ isShown, onClose, onSignIn }: SignInModalProps) => {
+  const { t } = useTranslation();
+
   return (
     <Dialog className={styles.dialog} isShown={isShown} onClose={onClose}>
       <Button className={styles.closeButton} onClick={onClose}>
         <BsXLg />
       </Button>
       <div className={styles.container}>
-        <h1 className={styles.title}>Mandalart</h1>
-        <p className={styles.message}>
-          With sign in, you can now access your Mandalart, from wherever you
-          are.
-        </p>
+        <h1 className={styles.title}>{t('global.app')}</h1>
+        <p className={styles.message}>{t('signInModal.message')}</p>
         <Button
           className={styles.signInButton}
           onClick={() => onSignIn(ProviderId.GOOGLE)}
         >
           <img className={styles.logo} src={googleIco} alt="google" />
-          <span>Sign in with Google</span>
+          <span>{t('signInModal.signIn.google')}</span>
         </Button>
       </div>
     </Dialog>

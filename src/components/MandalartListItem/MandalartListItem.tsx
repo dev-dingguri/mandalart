@@ -8,6 +8,7 @@ import TextEditor from 'components/TextEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
 import { TMP_MANDALART_ID } from 'constants/constants';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type MandalartListItemProps = {
   mandalartId: string;
@@ -33,6 +34,7 @@ const MandalartListItem = ({
     useBoolean(false);
   const [menuY, setMenuY] = useState(0);
   const [menuX, setMenuX] = useState(0);
+  const { t } = useTranslation();
 
   const handleShowMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
     ev.preventDefault();
@@ -51,17 +53,17 @@ const MandalartListItem = ({
       case 'rename':
         return showEditor();
       default:
-        throw new Error(`${value} is not supported.`);
+        throw new Error(`Not supported menu option. option=${value}`);
     }
   };
 
   const options = useMemo(() => {
     const options: { value: string; name: string }[] = [];
     if (mandalartId !== TMP_MANDALART_ID) {
-      options.push({ value: 'delete', name: 'Delete' });
+      options.push({ value: 'delete', name: t('mandalart.delete') });
     }
-    options.push({ value: 'reset', name: 'Reset' });
-    options.push({ value: 'rename', name: 'Rename' });
+    options.push({ value: 'reset', name: t('mandalart.reset') });
+    options.push({ value: 'rename', name: t('mandalart.rename') });
     return options;
   }, [mandalartId]);
 

@@ -29,7 +29,7 @@ const Menu = ({
     if (value) {
       onSelect(value);
     } else {
-      throw new Error('no value');
+      throw new Error('Menu option is null.');
     }
     onClose();
   };

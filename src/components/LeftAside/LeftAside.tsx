@@ -5,6 +5,7 @@ import Button from 'components/Button/Button';
 import MandalartList from 'components/MandalartList/MandalartList';
 import OutsideClickDetector from 'components/OutsideClickDetector/OutsideClickDetector';
 import { Snippet } from 'types/Snippet';
+import { useTranslation } from 'react-i18next';
 
 type LeftAsideProps = {
   isShown: boolean;
@@ -29,6 +30,8 @@ const LeftAside = ({
   onCreateMandalart,
   onClose,
 }: LeftAsideProps) => {
+  const { t } = useTranslation();
+
   const handleSelectMandalart = (mandalartId: string) => {
     onSelectMandalart(mandalartId);
     onClose();
@@ -56,7 +59,7 @@ const LeftAside = ({
         <div className={styles.bottom}>
           <Button className={styles.newButton} onClick={handleNewClick}>
             <BsPlus />
-            <p>New</p>
+            <p>{t('mandalart.new')}</p>
           </Button>
         </div>
       </div>

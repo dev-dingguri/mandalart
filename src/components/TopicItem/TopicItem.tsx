@@ -2,6 +2,7 @@ import styles from './TopicItem.module.css';
 import TextEditor from 'components/TextEditor/TextEditor';
 import { MAX_TOPIC_TEXT_SIZE } from 'constants/constants';
 import useBoolean from 'hooks/useBoolean';
+import { useTranslation } from 'react-i18next';
 
 type TopicItemProps = {
   topic: string;
@@ -20,6 +21,8 @@ const TopicItem = ({
 }: TopicItemProps) => {
   const [isShownEditor, { on: showEditor, off: closeEditor }] =
     useBoolean(false);
+  const { t } = useTranslation();
+
   return (
     <>
       <div
@@ -33,9 +36,9 @@ const TopicItem = ({
       </div>
       <TextEditor
         isShown={isShownEditor}
-        title={'Topic'}
+        title={`${t('global.topic')}`}
         initialText={topic}
-        placeholder={'Please enter your content.'}
+        placeholder={`${t('textEditor.placeholder')}`}
         maxText={MAX_TOPIC_TEXT_SIZE}
         onClose={closeEditor}
         onConfirm={onUpdateTopic}

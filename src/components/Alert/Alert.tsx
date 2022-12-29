@@ -2,6 +2,7 @@ import React from 'react';
 import Button from 'components/Button/Button';
 import Dialog from 'components/Dialog/Dialog';
 import styles from './Alert.module.css';
+import { useTranslation } from 'react-i18next';
 
 export type AlertProps = {
   isShown: boolean;
@@ -10,12 +11,14 @@ export type AlertProps = {
 };
 
 const Alert = ({ isShown, message, onClose }: AlertProps) => {
+  const { t } = useTranslation();
+
   return (
     <Dialog className={styles.alert} isShown={isShown} onClose={onClose}>
-      <h1 className={styles.title}>Mandalart</h1>
+      <h1 className={styles.title}>{t('global.app')}</h1>
       <p>{message}</p>
       <Button className={styles.okButton} onClick={onClose}>
-        OK
+        {t('global.ok')}
       </Button>
     </Dialog>
   );

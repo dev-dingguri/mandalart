@@ -42,10 +42,10 @@ const Select = ({
     const selectedOption = options.find(
       (option) => option.value === selectedValue
     );
-    if (selectedOption) {
-      return selectedOption.name;
+    if (!selectedOption) {
+      throw new Error('No matching options.');
     }
-    throw new Error('no matching options');
+    return selectedOption.name;
   })();
 
   return (

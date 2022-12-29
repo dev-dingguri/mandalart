@@ -59,7 +59,7 @@ const getTopic = (
     }
   });
   if (!node) {
-    throw new Error('cannot get node');
+    throw new Error('Cannot get topicNode.');
   }
   return node;
 };

@@ -34,7 +34,7 @@ class AuthService {
       case this.googleProvider.providerId:
         return this.googleProvider;
       default:
-        throw new Error('not support provider');
+        throw new Error(`Not supported provider. providerId=${providerId}`);
     }
   }
 }

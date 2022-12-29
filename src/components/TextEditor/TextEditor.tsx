@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import Dialog from 'components/Dialog/Dialog';
 import Button from 'components/Button/Button';
 import styles from './TextEditor.module.css';
+import { useTranslation } from 'react-i18next';
+import i18n from 'locales/i18n';
 
 type TextEditorProps = {
   isShown: boolean;
@@ -15,7 +17,7 @@ type TextEditorProps = {
 
 const TextEditor = ({
   isShown,
-  title = 'Mandalart',
+  title = `${i18n.t('global.app')}`,
   initialText = '',
   placeholder,
   maxText,
@@ -25,6 +27,7 @@ const TextEditor = ({
   const [text, setText] = useState(initialText);
   const shouldValidations = maxText !== undefined;
   const isLimitReached = shouldValidations && maxText < text.length;
+  const { t } = useTranslation();
 
   const handleConfirm = () => {
     if (isLimitReached) return;
@@ -61,20 +64,20 @@ const TextEditor = ({
             isLimitReached && styles.warning
           }`}
         >
-          <p>{isLimitReached && 'Character limit reached'}</p>
+          <p>{isLimitReached && t('textEditor.maxTextReached')}</p>
           <p>{`${text.length}/${maxText}`}</p>
         </div>
       )}
       <div className={styles.buttons}>
         <Button className={styles.button} onClick={onClose}>
-          Cancel
+          {t('global.cancel')}
         </Button>
         <Button
           className={styles.button}
           onClick={handleConfirm}
           disabled={isLimitReached}
         >
-          Save
+          {t('global.save')}
         </Button>
       </div>
     </Dialog>

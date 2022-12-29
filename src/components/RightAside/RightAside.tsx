@@ -4,6 +4,7 @@ import OutsideClickDetector from 'components/OutsideClickDetector/OutsideClickDe
 import Select from 'components/Select/Select';
 import { useNavigate } from 'react-router-dom';
 import { Theme, useTheme } from 'contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 type ItemProps = {
   text: string;
@@ -32,11 +33,12 @@ type RightAsideProps = {
 
 const RightAside = ({ isShown, onClose }: RightAsideProps) => {
   const { theme, selectTheme } = useTheme();
+  const { t } = useTranslation();
 
   const themeOptions: ThemeOption[] = [
-    { value: 'system', name: 'Use System setting' },
-    { value: 'light', name: 'Light' },
-    { value: 'dark', name: 'Dark' },
+    { value: 'system', name: t('theme.options.system') },
+    { value: 'light', name: t('theme.options.light') },
+    { value: 'dark', name: t('theme.options.dark') },
   ];
   const handleThemeSelect = (value: string) => {
     selectTheme(value as Theme);
@@ -54,7 +56,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
     >
       <div className={`${styles.aside} ${isShown && styles.shown}`}>
         <ul className={styles.list}>
-          <Item text="Theme">
+          <Item text={t('theme.label')}>
             <Select
               className={styles.themeSelect}
               options={themeOptions}
@@ -62,7 +64,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
               onSelect={handleThemeSelect}
             />
           </Item>
-          <Item text="Open source license" onClick={goToOpenSourceLicense} />
+          <Item text={t('oss.label')} onClick={goToOpenSourceLicense} />
         </ul>
       </div>
     </OutsideClickDetector>

@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Header.module.css';
 import Button from 'components/Button/Button';
 import { BsList, BsThreeDots } from 'react-icons/bs';
+import { useTranslation } from 'react-i18next';
 
 type HeaderProps = {
   isSignedIn: boolean;
@@ -18,13 +19,15 @@ const Header = ({
   onShowLeftAside,
   onShowRightAside,
 }: HeaderProps) => {
+  const { t } = useTranslation();
+
   const signButton = isSignedIn ? (
     <Button className={styles.signButton} onClick={onSignOut}>
-      Sign out
+      {t('auth.signOut')}
     </Button>
   ) : (
     <Button className={styles.signButton} onClick={onShowSignInUI}>
-      Sign in
+      {t('auth.signIn')}
     </Button>
   );
   return (
@@ -33,7 +36,7 @@ const Header = ({
         <Button className={styles.asideButton} onClick={onShowLeftAside}>
           <BsList />
         </Button>
-        <h1 className={styles.title}>Mandalart</h1>
+        <h1 className={styles.title}>{t('global.app')}</h1>
       </div>
       <div className={styles.right}>
         {signButton}

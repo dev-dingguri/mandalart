@@ -28,7 +28,7 @@
 }
 
 .signButton {
-  width: 5em;
+  min-width: 5em;
   border-radius: 5px;
   background-color: var(--color-bg-3);
   color: var(--color-font-1);

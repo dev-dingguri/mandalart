@@ -13,6 +13,7 @@ import {
 } from 'constants/constants';
 import mandalartsStorage from '../services/mandalartsStorage';
 import { isEqual } from 'lodash';
+import { useTranslation } from 'react-i18next';
 
 const TMP_SNIPPET_MAP = new Map<string, Snippet>([
   [TMP_MANDALART_ID, DEFAULT_SNIPPET],
@@ -37,23 +38,26 @@ const useMandalarts = (
     [snippetMapError, topicsError]
   );
 
+  const { t } = useTranslation();
+
   const createMandalart = useCallback(
     async (user: User | null, snippet: Snippet, topicTree: TopicNode) => {
       if (!user) {
-        throw new Error('Sign in is required to add a new Mandalart.');
+        throw new Error(`${t('mandalart.errors.create.signInRequired')}`);
       }
       if (!canUpload(snippetMap.size, 1)) {
         // todo: 커스텀 에러 검토
         throw new Error(
-          `The Mandalart could not be created.😥 The Mandalarts size cannot exceed ${MAX_UPLOAD_MANDALARTS_SIZE}.
-          Please delete the saved Mandalart and try again.`
+          `${t('mandalart.errors.create.maxUploaded', {
+            maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
+          })}`
         );
       }
       return repository
         .createSnippet(user.uid, snippet)
         .then(({ key: mandalartId }) => {
           if (!mandalartId) {
-            throw new Error('Mandalart creation failed.');
+            throw new Error(`${t('mandalart.errors.create.default')}`);
           }
           updateSnippetMap((snippetMap) =>
             new Map(snippetMap).set(mandalartId, snippet)
@@ -63,7 +67,7 @@ const useMandalarts = (
           return repository.saveTopics(user.uid, mandalartId, topicTree);
         });
     },
-    [snippetMap.size, updateSnippetMap, updateTopicTree]
+    [snippetMap.size, t, updateSnippetMap, updateTopicTree]
   );
 
   const deleteMandalart = useCallback(
@@ -144,12 +148,13 @@ const useMandalarts = (
         .catch((e: Error) => {
           // todo: e가 'The Mandalart could not be created. ~~'에러인 경우에만
           throw new Error(
-            `The draft Mandalart could not be saved.😥 The Mandalarts size cannot exceed ${MAX_UPLOAD_MANDALARTS_SIZE}.
-            Please delete the saved Mandalart and sign in again.`
+            `${t('mandalart.errors.uploadDraft.maxUploaded', {
+              maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
+            })}`
           );
         });
     },
-    [createMandalart]
+    [createMandalart, t]
   );
 
   useEffect(() => {

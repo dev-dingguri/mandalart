@@ -4,6 +4,7 @@ import { BsChevronLeft } from 'react-icons/bs';
 import styles from './OpenSourceLicenses.module.css';
 import Button from 'components/Button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 /*
  * licensesDataFile
@@ -57,6 +58,8 @@ const parseLicensesData = (licensesData: LicensesData) => {
 
 const OpenSourceLicenses = () => {
   const [licensesData, setLicensesData] = useState<LicenseData[]>([]);
+  const { t } = useTranslation();
+
   useEffect(() => {
     setLicensesData(parseLicensesData(licensesDataFile));
   }, []);
@@ -77,7 +80,7 @@ const OpenSourceLicenses = () => {
         <Button className={styles.goBackButton} onClick={goToBack}>
           <BsChevronLeft />
         </Button>
-        <h1 className={styles.title}>Open Source Licenses</h1>
+        <h1 className={styles.title}>{t('oss.label')}</h1>
       </header>
       <ul className={styles.list}>
         {licensesData.map((data, idx) => (
