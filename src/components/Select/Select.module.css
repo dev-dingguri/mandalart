@@ -16,7 +16,6 @@
   /* 가로 */
   word-break: break-all;
   /* 세로 */
-  line-height: 1em;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;

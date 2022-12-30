@@ -40,12 +40,12 @@
     },
     "errors": {
       "create": {
-        "default": "Couldn't add mandalart.😥",
-        "signInRequired": "Couldn't add mandalart.😥\nSign in is required to add a mandalart.",
-        "maxUploaded": "Couldn't add mandalart.😥\nThe mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and try again."
+        "default": "Couldn't add mandalart.😥 ",
+        "signInRequired": "Couldn't add mandalart.😥 Sign in is required to add a mandalart.",
+        "maxUploaded": "Couldn't add mandalart.😥 The mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and try again."
       },
       "uploadDraft": {
-        "maxUploaded": "Couldn't save draft mandalart.😥\nThe mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and sign in again."
+        "maxUploaded": "Couldn't save draft mandalart.😥 The mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and sign in again."
       },
       "sync": {
         "default": "Couldn't sync with cloud storage. You will be signed out."
