@@ -78,7 +78,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
             <Select
               className={styles.themeSelect}
               options={languageOptions}
-              selectedValue={i18n.language}
+              selectedValue={i18n.languages[0]}
               onSelect={handleSelectlanguage}
             />
           </Item>

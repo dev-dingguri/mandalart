@@ -10,6 +10,7 @@ i18n
     fallbackLng: 'en',
     detection: { order: ['localStorage', 'navigator'] },
     keySeparator: '.',
+    load: 'languageOnly',
     resources,
   });
 
