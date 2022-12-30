@@ -14,6 +14,4 @@ i18n
     resources,
   });
 
-i18n.changeLanguage();
-
 export default i18n;
