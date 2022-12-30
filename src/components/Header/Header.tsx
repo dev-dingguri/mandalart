@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './Header.module.css';
 import Button from 'components/Button/Button';
-import { BsList, BsThreeDots } from 'react-icons/bs';
+import { BsList, BsThreeDots, BsPersonCircle } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
+import { User } from 'firebase/auth';
 
 type HeaderProps = {
-  isSignedIn: boolean;
+  user: User | null;
   onShowSignInUI: () => void;
   onSignOut: () => void;
   onShowLeftAside: () => void;
@@ -13,7 +14,7 @@ type HeaderProps = {
 };
 
 const Header = ({
-  isSignedIn,
+  user,
   onShowSignInUI,
   onSignOut,
   onShowLeftAside,
@@ -21,7 +22,7 @@ const Header = ({
 }: HeaderProps) => {
   const { t } = useTranslation();
 
-  const signButton = isSignedIn ? (
+  const signButton = user ? (
     <Button className={styles.signButton} onClick={onSignOut}>
       {t('auth.signOut')}
     </Button>
@@ -39,6 +40,7 @@ const Header = ({
         <h1 className={styles.title}>{t('global.app')}</h1>
       </div>
       <div className={styles.right}>
+        <p className={styles.name}>{user && user.displayName}</p>
         {signButton}
         <Button className={styles.etcButton} onClick={onShowRightAside}>
           <BsThreeDots />

@@ -103,7 +103,7 @@ const Mandalart = () => {
         <>
           <div className={styles.header}>
             <Header
-              isSignedIn={user !== null}
+              user={user}
               onShowSignInUI={showSignInModal}
               onSignOut={handleSignOut}
               onShowLeftAside={showLeftAside}
