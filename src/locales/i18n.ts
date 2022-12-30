@@ -8,9 +8,11 @@ i18n
   .use(initReactI18next)
   .init({
     fallbackLng: 'en',
-    detection: { order: ['navigator'] },
+    detection: { order: ['localStorage', 'navigator'] },
     keySeparator: '.',
     resources,
   });
+
+i18n.changeLanguage();
 
 export default i18n;

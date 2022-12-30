@@ -32,10 +32,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/mandalart" element={<Mandalart />} />
-          <Route
-            path="/mandalart/open-source-license"
-            element={<OpenSourceLicenses />}
-          />
+          <Route path="/mandalart/oss" element={<OpenSourceLicenses />} />
         </Routes>
       </BrowserRouter>
     </div>

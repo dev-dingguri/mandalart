@@ -65,7 +65,7 @@ const MandalartListItem = ({
     options.push({ value: 'reset', name: t('mandalart.reset') });
     options.push({ value: 'rename', name: t('mandalart.rename') });
     return options;
-  }, [mandalartId]);
+  }, [mandalartId, t]);
 
   return (
     <li

@@ -33,20 +33,29 @@ type RightAsideProps = {
 
 const RightAside = ({ isShown, onClose }: RightAsideProps) => {
   const { theme, selectTheme } = useTheme();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const themeOptions: ThemeOption[] = [
     { value: 'system', name: t('theme.options.system') },
     { value: 'light', name: t('theme.options.light') },
     { value: 'dark', name: t('theme.options.dark') },
   ];
-  const handleThemeSelect = (value: string) => {
+  const handleSelectTheme = (value: string) => {
     selectTheme(value as Theme);
+  };
+
+  const languageOptions = [
+    { value: 'en', name: 'English' },
+    { value: 'ko', name: '한국어' },
+    { value: 'ja', name: '日本語' },
+  ];
+  const handleSelectlanguage = (value: string) => {
+    i18n.changeLanguage(value);
   };
 
   const navigate = useNavigate();
   const goToOpenSourceLicense = () => {
-    navigate('/mandalart/open-source-license');
+    navigate('/mandalart/oss');
   };
 
   return (
@@ -61,7 +70,15 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
               className={styles.themeSelect}
               options={themeOptions}
               selectedValue={theme}
-              onSelect={handleThemeSelect}
+              onSelect={handleSelectTheme}
+            />
+          </Item>
+          <Item text={t('language.label')}>
+            <Select
+              className={styles.themeSelect}
+              options={languageOptions}
+              selectedValue={i18n.language}
+              onSelect={handleSelectlanguage}
             />
           </Item>
           <Item text={t('oss.label')} onClick={goToOpenSourceLicense} />

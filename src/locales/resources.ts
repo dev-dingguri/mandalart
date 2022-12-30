@@ -1,7 +1,7 @@
-import localeEn from './resources/en.json';
-import localeJa from './resources/ja.json';
-import localeKo from './resources/ko.json';
+import resourceEn from './resources/en.json';
+import resourceKo from './resources/ko.json';
+import resourceJa from './resources/ja.json';
 
-export const en = { translation: localeEn };
-export const ja = { translation: localeJa };
-export const ko = { translation: localeKo };
+export const en = { translation: resourceEn };
+export const ko = { translation: resourceKo };
+export const ja = { translation: resourceJa };

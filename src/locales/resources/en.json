@@ -23,6 +23,9 @@
       "dark": "Dark"
     }
   },
+  "language": {
+    "label": "Language"
+  },
   "oss": {
     "label": "Open Source Licenses"
   },
