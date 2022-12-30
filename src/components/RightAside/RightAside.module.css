@@ -81,3 +81,33 @@
 .themeSelect {
   width: 12em;
 }
+
+/* .contact {
+  display: flex;
+  flex-direction: column;
+} */
+
+.contact {
+  padding: 0.3em 0.5em;
+}
+.contact p {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: var(--color-font-2);
+  font-size: 0.8rem;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3em;
+}
+
+.email {
+  margin-right: 0.5em;
+}
+
+.gitIcon {
+  cursor: pointer;
+  color: var(--color-font-2);
+}

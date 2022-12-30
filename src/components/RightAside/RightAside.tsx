@@ -5,6 +5,7 @@ import Select from 'components/Select/Select';
 import { useNavigate } from 'react-router-dom';
 import { Theme, useTheme } from 'contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { BsGithub } from 'react-icons/bs';
 
 type ItemProps = {
   text: string;
@@ -83,6 +84,18 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
           </Item>
           <Item text={t('oss.label')} onClick={goToOpenSourceLicense} />
         </ul>
+        <div className={styles.contact}>
+          <div className={styles.account}>
+            <p className={styles.email}>dingguri.lab@gmail.com</p>
+            <BsGithub
+              className={styles.gitIcon}
+              onClick={() => {
+                window.open('https://github.com/dev-dingguri/mandalart');
+              }}
+            />
+          </div>
+          <p>DINGGURI.LAB. ALL RIGHTS RESERVED</p>
+        </div>
       </div>
     </OutsideClickDetector>
   );
