@@ -23,12 +23,24 @@ const Dialog = ({
   const { isDisplayLightTheme } = useTheme();
 
   const show = useCallback(() => {
-    const modal = ref.current!;
-    if (!modal.open) {
+    const dialog = ref.current!;
+    if (!dialog.open) {
       if (isModal) {
-        modal.showModal();
+        dialog.showModal();
+        // mobile 환경에서 모달과 함께 키보드가 노출되었을 때
+        // 키보드 바로 위에 다이얼로그가 위치하게 처리
+        // 개선 필요. MutationObserver를 사용한 방법 시도하였으나 동작하지 않음
+        const intervalId = setInterval(() => {
+          dialog.scrollIntoView({
+            behavior: 'auto',
+            block: 'end',
+          });
+        }, 10);
+        setTimeout(() => {
+          clearInterval(intervalId);
+        }, 300);
       } else {
-        modal.show();
+        dialog.show();
       }
     }
   }, [isModal]);

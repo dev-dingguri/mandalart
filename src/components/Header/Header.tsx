@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Header.module.css';
 import Button from 'components/Button/Button';
-import { BsList, BsThreeDots, BsPersonCircle } from 'react-icons/bs';
+import { BsList, BsThreeDots } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 
