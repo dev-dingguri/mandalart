@@ -1,0 +1,68 @@
+{
+  "global": {
+    "app": "マンダラート",
+    "topic": "トピック",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "ok": "はい"
+  },
+  "auth": {
+    "signIn": "サインイン",
+    "signOut": "サインアウト",
+    "errors": {
+      "signIn": {
+        "default": "サインインできません。エラー: {{detail}}"
+      }
+    }
+  },
+  "theme": {
+    "label": "テーマ",
+    "options": {
+      "system": "システム設定を使用",
+      "light": "ライト",
+      "dark": "ダーク"
+    }
+  },
+  "language": {
+    "label": "言語"
+  },
+  "oss": {
+    "label": "オープンソースライセンス"
+  },
+  "version": {
+    "label": "バージョン"
+  },
+  "mandalart": {
+    "new": "新しいマンダラート",
+    "delete": "削除",
+    "reset": "リセット",
+    "rename": "名前を変更",
+    "draft": "下書き保存",
+    "snippet": {
+      "untitled": "無題"
+    },
+    "errors": {
+      "create": {
+        "default": "マンダラートを追加できません。😥 ",
+        "signInRequired": "マンダラートを追加できません。😥 マンダラアートを追加するにはサインインが必要です。",
+        "maxUploaded": "マンダラートを追加できません。😥 アイテムのサイズは {{maxSize}} を超えることはできません。\n保存した曼荼羅を削除してから、やり直してください。"
+      },
+      "uploadDraft": {
+        "maxUploaded": "マンダラートを保存できません。😥 アイテムのサイズは {{maxSize}} を超えることはできません。\n保存した曼荼羅を削除し、再度サインインしてください。"
+      },
+      "sync": {
+        "default": "クラウド ストレージと同期できませんでした。サインアウトされます。"
+      }
+    }
+  },
+  "signInModal": {
+    "message": "サインインすると、どこからでもマンダラートにアクセスできます。",
+    "signIn": {
+      "google": "Google でログイン"
+    }
+  },
+  "textEditor": {
+    "placeholder": "入力してください",
+    "maxTextReached": "文字数制限に達しました"
+  }
+}

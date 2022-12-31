@@ -1,0 +1,68 @@
+{
+  "global": {
+    "app": "Mandalart",
+    "topic": "Topic",
+    "save": "Save",
+    "cancel": "Cancel",
+    "ok": "OK"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "errors": {
+      "signIn": {
+        "default": "Couldn't sign in. Error: {{detail}}"
+      }
+    }
+  },
+  "theme": {
+    "label": "Theme",
+    "options": {
+      "system": "Use system setting",
+      "light": "Light",
+      "dark": "Dark"
+    }
+  },
+  "language": {
+    "label": "Language"
+  },
+  "oss": {
+    "label": "Open Source Licenses"
+  },
+  "version": {
+    "label": "Version"
+  },
+  "mandalart": {
+    "new": "New Mandalart",
+    "delete": "Delete",
+    "reset": "Reset",
+    "rename": "Rename",
+    "draft": "Draft",
+    "snippet": {
+      "untitled": "Untitled"
+    },
+    "errors": {
+      "create": {
+        "default": "Couldn't add mandalart.😥 ",
+        "signInRequired": "Couldn't add mandalart.😥 Sign in is required to add a mandalart.",
+        "maxUploaded": "Couldn't add mandalart.😥 The mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and try again."
+      },
+      "uploadDraft": {
+        "maxUploaded": "Couldn't save draft mandalart.😥 The mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and sign in again."
+      },
+      "sync": {
+        "default": "Couldn't sync with cloud storage. You will be signed out."
+      }
+    }
+  },
+  "signInModal": {
+    "message": "With sign in, you can access your mandalart, from wherever you are.",
+    "signIn": {
+      "google": "Sign in with Google"
+    }
+  },
+  "textEditor": {
+    "placeholder": "Please enter the content",
+    "maxTextReached": "Character limit reached"
+  }
+}
