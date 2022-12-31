@@ -589,6 +589,11 @@
     "repository": "https://github.com/babel/babel",
     "name": "@babel/runtime"
   },
+  "@babel/runtime@7.20.7": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "name": "@babel/runtime"
+  },
   "@babel/template@7.18.6": {
     "licenses": "MIT",
     "repository": "https://github.com/babel/babel",
@@ -1428,6 +1433,11 @@
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "name": "@types/json5"
+  },
+  "@types/lodash@4.14.190": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "name": "@types/lodash"
   },
   "@types/long@4.0.2": {
     "licenses": "MIT",
@@ -3354,6 +3364,11 @@
     "repository": "https://github.com/terser/html-minifier-terser",
     "name": "html-minifier-terser"
   },
+  "html-parse-stringify@3.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/henrikjoreteg/html-parse-stringify",
+    "name": "html-parse-stringify"
+  },
   "html-webpack-plugin@5.5.0": {
     "licenses": "MIT",
     "repository": "https://github.com/jantimon/html-webpack-plugin",
@@ -3408,6 +3423,16 @@
     "licenses": "Apache-2.0",
     "repository": "https://github.com/ehmicky/human-signals",
     "name": "human-signals"
+  },
+  "i18next-browser-languagedetector@7.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/i18next/i18next-browser-languageDetector",
+    "name": "i18next-browser-languagedetector"
+  },
+  "i18next@22.4.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/i18next/i18next",
+    "name": "i18next"
   },
   "iconv-lite@0.4.24": {
     "licenses": "MIT",
@@ -5099,6 +5124,11 @@
     "repository": "https://github.com/facebook/create-react-app",
     "name": "react-error-overlay"
   },
+  "react-i18next@12.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/i18next/react-i18next",
+    "name": "react-i18next"
+  },
   "react-icons@4.4.0": {
     "licenses": "MIT",
     "repository": "https://github.com/react-icons/react-icons",
@@ -5183,6 +5213,11 @@
     "licenses": "MIT",
     "repository": "https://github.com/mathiasbynens/regenerate",
     "name": "regenerate"
+  },
+  "regenerator-runtime@0.13.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/regenerator/tree/main/packages/runtime",
+    "name": "regenerator-runtime"
   },
   "regenerator-runtime@0.13.9": {
     "licenses": "MIT",
@@ -6014,6 +6049,11 @@
     "licenses": "MIT",
     "repository": "https://github.com/jshttp/vary",
     "name": "vary"
+  },
+  "void-elements@3.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/pugjs/void-elements",
+    "name": "void-elements"
   },
   "w3c-hr-time@1.0.2": {
     "licenses": "MIT",
