@@ -52,7 +52,6 @@
   width: 100%;
   line-height: 2em;
   padding: 0.5em 0;
-  cursor: pointer;
   border-bottom: 1px solid var(--color-border-1);
 }
 
@@ -61,6 +60,17 @@
     justify-content: space-between;
     flex-direction: row;
   }
+}
+
+.itemSub {
+  width: 12em;
+}
+
+.itemSubText {
+  padding-left: 0.5em;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: var(--color-font-2);
 }
 
 .text {
@@ -77,18 +87,14 @@
   font-weight: 600;
 }
 
-.themeSelect {
-  width: 12em;
+.oss {
+  cursor: pointer;
 }
-
-/* .contact {
-  display: flex;
-  flex-direction: column;
-} */
 
 .contact {
   padding: 0.3em 0.5em;
 }
+
 .contact p {
   margin-top: 0;
   margin-bottom: 0;

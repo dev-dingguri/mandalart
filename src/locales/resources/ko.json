@@ -29,6 +29,9 @@
   "oss": {
     "label": "오픈소스 라이선스"
   },
+  "version": {
+    "label": "버전"
+  },
   "mandalart": {
     "new": "새 만다라트",
     "delete": "삭제",

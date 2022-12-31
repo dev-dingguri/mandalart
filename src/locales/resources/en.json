@@ -29,6 +29,9 @@
   "oss": {
     "label": "Open Source Licenses"
   },
+  "version": {
+    "label": "Version"
+  },
   "mandalart": {
     "new": "New Mandalart",
     "delete": "Delete",

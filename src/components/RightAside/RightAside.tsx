@@ -6,16 +6,18 @@ import { useNavigate } from 'react-router-dom';
 import { Theme, useTheme } from 'contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { BsGithub } from 'react-icons/bs';
+import { APP_VERSION } from 'version';
 
 type ItemProps = {
+  className?: string;
   text: string;
   children?: React.ReactNode;
   onClick?: () => void;
 };
 
-const Item = ({ text, children, onClick }: ItemProps) => {
+const Item = ({ className, text, children, onClick }: ItemProps) => {
   return (
-    <li className={styles.item} onClick={onClick}>
+    <li className={`${styles.item} ${className}`} onClick={onClick}>
       <p className={styles.text}>{text}</p>
       {children}
     </li>
@@ -68,7 +70,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
         <ul className={styles.list}>
           <Item text={t('theme.label')}>
             <Select
-              className={styles.themeSelect}
+              className={styles.itemSub}
               options={themeOptions}
               selectedValue={theme}
               onSelect={handleSelectTheme}
@@ -76,13 +78,22 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
           </Item>
           <Item text={t('language.label')}>
             <Select
-              className={styles.themeSelect}
+              className={styles.itemSub}
               options={languageOptions}
               selectedValue={i18n.languages[0]}
               onSelect={handleSelectlanguage}
             />
           </Item>
-          <Item text={t('oss.label')} onClick={goToOpenSourceLicense} />
+          <Item
+            text={t('oss.label')}
+            className={styles.oss}
+            onClick={goToOpenSourceLicense}
+          />
+          <Item text={t('version.label')}>
+            <p className={`${styles.itemSub} ${styles.itemSubText}`}>
+              {APP_VERSION}
+            </p>
+          </Item>
         </ul>
         <div className={styles.contact}>
           <div className={styles.account}>
