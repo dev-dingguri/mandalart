@@ -31,8 +31,8 @@ const App = () => {
     <div ref={ref} className={styles.app}>
       <BrowserRouter>
         <Routes>
-          <Route path="/mandalart" element={<Mandalart />} />
-          <Route path="/mandalart/oss" element={<OpenSourceLicenses />} />
+          <Route path="/" element={<Mandalart />} />
+          <Route path="/oss" element={<OpenSourceLicenses />} />
         </Routes>
       </BrowserRouter>
     </div>

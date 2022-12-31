@@ -58,7 +58,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
 
   const navigate = useNavigate();
   const goToOpenSourceLicense = () => {
-    navigate('/mandalart/oss');
+    navigate('/oss');
   };
 
   return (

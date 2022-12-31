@@ -68,7 +68,7 @@ const OpenSourceLicenses = () => {
   const navigate = useNavigate();
   const goToBack = () => {
     if (location.key === 'default') {
-      navigate('/mandalart');
+      navigate('/');
     } else {
       navigate(-1);
     }

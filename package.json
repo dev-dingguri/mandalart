@@ -51,7 +51,6 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://dev-dingguri.github.io/mandalart",
   "devDependencies": {
     "craco-alias": "^3.0.1",
     "gh-pages": "^4.0.0"
