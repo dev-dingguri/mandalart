@@ -1,0 +1,63 @@
+.dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 20em;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background-color: var(--color-bg-1);
+  color: var(--color-font-1);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2em 1.5em;
+}
+
+.closeButton {  
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2em;
+  height: 2em;
+  padding: 0;
+  border-radius: 5px;
+  background-color: var(--color-bg-1);
+  color: var(--color-font-1);
+}
+
+.title {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.message {
+  text-align: center;
+  vertical-align: mandalartIddle;
+  margin-top: 0.75em;
+  margin-bottom: 1.25em;
+  color: var(--color-font-2);
+}
+
+.signInButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3em;
+  border-radius: 5px;
+  background-color: var(--color-bg-3);
+  color: var(--color-font-1);
+}
+
+.logo {
+  width: 1.1em;
+  margin-right: 0.5em;
+}
