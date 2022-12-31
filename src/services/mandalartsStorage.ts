@@ -1,6 +1,9 @@
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
-import { STORAGE_KEY_SNIPPETS, STORAGE_KEY_TOPICS } from 'constants/constants';
+import {
+  STORAGE_KEY_SNIPPETS,
+  STORAGE_KEY_TOPIC_TREES,
+} from 'constants/constants';
 
 type StorageSnippets = {
   [mandalartId: string]: Snippet;
@@ -32,7 +35,7 @@ class MandalartsStorage {
   }
 
   readTopics() {
-    const saved = this.storage.getItem(STORAGE_KEY_TOPICS);
+    const saved = this.storage.getItem(STORAGE_KEY_TOPIC_TREES);
     return saved
       ? new Map(Object.entries(JSON.parse(saved) as StorageTopics))
       : new Map<string, TopicNode>();
@@ -40,13 +43,13 @@ class MandalartsStorage {
 
   saveTopics(topicsMap: Map<string, TopicNode>) {
     this.storage.setItem(
-      STORAGE_KEY_TOPICS,
+      STORAGE_KEY_TOPIC_TREES,
       JSON.stringify(Object.fromEntries(topicsMap))
     );
   }
 
   deleteTopics() {
-    this.storage.removeItem(STORAGE_KEY_TOPICS);
+    this.storage.removeItem(STORAGE_KEY_TOPIC_TREES);
   }
 }
 
