@@ -34,4 +34,4 @@ export const DEFAULT_TOPIC_TREE: TopicNode = {
 
 // storage keys
 export const STORAGE_KEY_SNIPPETS = 'mandalarts__snippets';
-export const STORAGE_KEY_TOPICS = 'mandalarts__topics';
+export const STORAGE_KEY_TOPIC_TREES = 'mandalarts__topictrees';
