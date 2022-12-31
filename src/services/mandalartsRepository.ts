@@ -4,7 +4,7 @@ import { ref, set, remove, onValue, push } from 'firebase/database';
 import { TopicNode } from 'types/TopicNode';
 
 const SNIPPETS_PATH = '/mandalarts/snippets/';
-const TOPICS_PATH = '/mandalarts/topics/';
+const TOPIC_TREES_PATH = '/mandalarts/topictrees/';
 
 class MandalartsRepository {
   createSnippet(userId: string, snippet: Snippet) {
@@ -40,11 +40,14 @@ class MandalartsRepository {
   }
 
   saveTopics(userId: string, mandalartId: string, topicTree: TopicNode) {
-    return set(ref(db, `${userId}${TOPICS_PATH}${mandalartId}`), topicTree);
+    return set(
+      ref(db, `${userId}${TOPIC_TREES_PATH}${mandalartId}`),
+      topicTree
+    );
   }
 
   deleteTopics(userId: string, mandalartId: string) {
-    return remove(ref(db, `${userId}${TOPICS_PATH}${mandalartId}`));
+    return remove(ref(db, `${userId}${TOPIC_TREES_PATH}${mandalartId}`));
   }
 
   syncTopics(
@@ -54,7 +57,7 @@ class MandalartsRepository {
     onError?: (error: Error) => void
   ) {
     return onValue(
-      ref(db, `${userId}${TOPICS_PATH}${mandalartId}`),
+      ref(db, `${userId}${TOPIC_TREES_PATH}${mandalartId}`),
       (snapshot) => {
         const topicTree = snapshot.val();
         topicTree && onUpdate(topicTree);
