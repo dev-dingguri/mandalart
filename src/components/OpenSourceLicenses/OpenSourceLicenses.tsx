@@ -5,6 +5,7 @@ import styles from './OpenSourceLicenses.module.css';
 import Button from 'components/Button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { PATH_HOME } from 'constants/constants';
 
 /*
  * licensesDataFile
@@ -58,17 +59,19 @@ const parseLicensesData = (licensesData: LicensesData) => {
 
 const OpenSourceLicenses = () => {
   const [licensesData, setLicensesData] = useState<LicenseData[]>([]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.languages[0];
 
   useEffect(() => {
     setLicensesData(parseLicensesData(licensesDataFile));
   }, []);
 
   const location = useLocation();
+
   const navigate = useNavigate();
   const goToBack = () => {
     if (location.key === 'default') {
-      navigate('/');
+      navigate(`/${lang}${PATH_HOME}`);
     } else {
       navigate(-1);
     }

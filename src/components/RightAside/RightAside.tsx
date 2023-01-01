@@ -7,6 +7,7 @@ import { Theme, useTheme } from 'contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { BsGithub } from 'react-icons/bs';
 import { APP_VERSION } from 'version';
+import { PATH_OSS } from '../../constants/constants';
 
 type ItemProps = {
   className?: string;
@@ -37,6 +38,7 @@ type RightAsideProps = {
 const RightAside = ({ isShown, onClose }: RightAsideProps) => {
   const { theme, selectTheme } = useTheme();
   const { t, i18n } = useTranslation();
+  const lang = i18n.languages[0];
 
   const themeOptions: ThemeOption[] = [
     { value: 'system', name: t('theme.options.system') },
@@ -58,7 +60,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
 
   const navigate = useNavigate();
   const goToOpenSourceLicense = () => {
-    navigate('/oss');
+    navigate(`/${lang}${PATH_OSS}`);
   };
 
   return (
