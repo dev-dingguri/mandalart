@@ -56,7 +56,7 @@
     }
   },
   "signInModal": {
-    "message": "With sign in, you can access your mandalart, from wherever you are.",
+    "message": "When you're signed in you can access and edit your mandalart in wherever.",
     "signIn": {
       "google": "Sign in with Google"
     }
