@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './App.module.css';
 import Mandalart from 'components/Mandalart/Mandalart';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import OpenSourceLicenses from 'components/OpenSourceLicenses/OpenSourceLicenses';
 import { useTranslation } from 'react-i18next';
+import { PATH_HOME, PATH_OSS } from 'constants/constants';
 
 const App = () => {
   const ref = useRef<HTMLDivElement>(null);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.languages[0];
 
   useEffect(() => {
     document.title = t('global.app');
@@ -31,8 +33,15 @@ const App = () => {
     <div ref={ref} className={styles.app}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Mandalart />} />
-          <Route path="/oss" element={<OpenSourceLicenses />} />
+          <Route
+            path={`/${lang}${PATH_HOME}`} //
+            element={<Mandalart />}
+          />
+          <Route
+            path={`/${lang}${PATH_OSS}`}
+            element={<OpenSourceLicenses />}
+          />
+          <Route path="*" element={<Navigate to={`/${lang}${PATH_HOME}`} />} />
         </Routes>
       </BrowserRouter>
     </div>
