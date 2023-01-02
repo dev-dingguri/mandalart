@@ -1494,6 +1494,11 @@
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "name": "@types/react-dom"
   },
+  "@types/react-helmet@6.1.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "name": "@types/react-helmet"
+  },
   "@types/react@18.0.15": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
@@ -2726,8 +2731,8 @@
   },
   "dotenv-expand@5.1.0": {
     "licenses": "BSD-2-Clause",
-    "name": "dotenv-expand",
-    "repository": "https://github.com/motdotla/dotenv-expand"
+    "repository": "https://github.com/motdotla/dotenv-expand",
+    "name": "dotenv-expand"
   },
   "dotenv@10.0.0": {
     "licenses": "BSD-2-Clause",
@@ -5124,6 +5129,16 @@
     "repository": "https://github.com/facebook/create-react-app",
     "name": "react-error-overlay"
   },
+  "react-fast-compare@3.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/FormidableLabs/react-fast-compare",
+    "name": "react-fast-compare"
+  },
+  "react-helmet@6.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/nfl/react-helmet",
+    "name": "react-helmet"
+  },
   "react-i18next@12.1.1": {
     "licenses": "MIT",
     "repository": "https://github.com/i18next/react-i18next",
@@ -5168,6 +5183,11 @@
     "licenses": "MIT",
     "repository": "https://github.com/facebook/create-react-app",
     "name": "react-scripts"
+  },
+  "react-side-effect@2.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/gaearon/react-side-effect",
+    "name": "react-side-effect"
   },
   "react@18.2.0": {
     "licenses": "MIT",

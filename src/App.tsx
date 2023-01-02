@@ -5,15 +5,12 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import OpenSourceLicenses from 'components/OpenSourceLicenses/OpenSourceLicenses';
 import { useTranslation } from 'react-i18next';
 import { PATH_HOME, PATH_OSS } from 'constants/constants';
+import { Helmet } from 'react-helmet';
 
 const App = () => {
   const ref = useRef<HTMLDivElement>(null);
   const { t, i18n } = useTranslation();
   const lang = i18n.languages[0];
-
-  useEffect(() => {
-    document.title = t('global.app');
-  }, [t]);
 
   /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 크기 계산 */
   useEffect(() => {
@@ -31,6 +28,12 @@ const App = () => {
 
   return (
     <div ref={ref} className={styles.app}>
+      <Helmet>
+        <title>{t('tag.title')}</title>
+        <meta name="description" content={`${t('tag.description')}`} />
+        <meta property="og:title" content={`${t('tag.title')}`} />
+        <meta property="og:description" content={`${t('tag.description')}`} />
+      </Helmet>
       <BrowserRouter>
         <Routes>
           <Route
