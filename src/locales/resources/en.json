@@ -6,6 +6,10 @@
     "cancel": "Cancel",
     "ok": "OK"
   },
+  "tag": {
+    "title": "Mandalart | Organize and expand your thinking.",
+    "description": "You can access and edit your mandalart in wherever."
+  },
   "auth": {
     "signIn": "Sign in",
     "signOut": "Sign out",

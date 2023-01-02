@@ -6,6 +6,10 @@
     "cancel": "취소",
     "ok": "확인"
   },
+  "tag": {
+    "title": "Mandalart | 생각을 정리하고 넓히세요.",
+    "description": "어디에서나 만다라트에 액세스하고 편집할 수 있습니다."
+  },
   "auth": {
     "signIn": "로그인",
     "signOut": "로그아웃",
