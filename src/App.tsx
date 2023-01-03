@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import OpenSourceLicenses from 'components/OpenSourceLicenses/OpenSourceLicenses';
 import { useTranslation } from 'react-i18next';
 import { PATH_HOME, PATH_OSS } from 'constants/constants';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 
 const App = () => {
   const ref = useRef<HTMLDivElement>(null);

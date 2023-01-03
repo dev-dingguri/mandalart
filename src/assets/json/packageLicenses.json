@@ -1494,10 +1494,10 @@
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "name": "@types/react-dom"
   },
-  "@types/react-helmet@6.1.6": {
+  "@types/react-helmet-async@1.0.3": {
     "licenses": "MIT",
-    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
-    "name": "@types/react-helmet"
+    "repository": "https://github.com/staylor/react-helmet-async",
+    "name": "@types/react-helmet-async"
   },
   "@types/react@18.0.15": {
     "licenses": "MIT",
@@ -3529,6 +3529,11 @@
     "repository": "https://github.com/ljharb/internal-slot",
     "name": "internal-slot"
   },
+  "invariant@2.2.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zertosh/invariant",
+    "name": "invariant"
+  },
   "ipaddr.js@1.9.1": {
     "licenses": "MIT",
     "repository": "https://github.com/whitequark/ipaddr.js",
@@ -5134,10 +5139,10 @@
     "repository": "https://github.com/FormidableLabs/react-fast-compare",
     "name": "react-fast-compare"
   },
-  "react-helmet@6.1.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/nfl/react-helmet",
-    "name": "react-helmet"
+  "react-helmet-async@1.3.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/staylor/react-helmet-async",
+    "name": "react-helmet-async"
   },
   "react-i18next@12.1.1": {
     "licenses": "MIT",
@@ -5183,11 +5188,6 @@
     "licenses": "MIT",
     "repository": "https://github.com/facebook/create-react-app",
     "name": "react-scripts"
-  },
-  "react-side-effect@2.1.2": {
-    "licenses": "MIT",
-    "repository": "https://github.com/gaearon/react-side-effect",
-    "name": "react-side-effect"
   },
   "react@18.2.0": {
     "licenses": "MIT",
@@ -5504,6 +5504,11 @@
     "licenses": "ISC",
     "repository": "https://github.com/wesleytodd/setprototypeof",
     "name": "setprototypeof"
+  },
+  "shallowequal@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dashed/shallowequal",
+    "name": "shallowequal"
   },
   "shebang-command@2.0.0": {
     "licenses": "MIT",
