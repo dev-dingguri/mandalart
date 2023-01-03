@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { IconContext } from 'react-icons/lib';
 import { ThemeProvider } from 'contexts/ThemeContext';
 import { AlertProvider } from 'contexts/AlertContext';
+import { HelmetProvider } from 'react-helmet-async';
 import 'locales/i18n';
 
 const root = ReactDOM.createRoot(
@@ -13,15 +14,17 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  // <React.StrictMode>
-  <IconContext.Provider value={{ className: 'react-icons' }}>
-    <ThemeProvider>
-      <AlertProvider>
-        <App />
-      </AlertProvider>
-    </ThemeProvider>
-  </IconContext.Provider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <HelmetProvider>
+      <IconContext.Provider value={{ className: 'react-icons' }}>
+        <ThemeProvider>
+          <AlertProvider>
+            <App />
+          </AlertProvider>
+        </ThemeProvider>
+      </IconContext.Provider>
+    </HelmetProvider>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

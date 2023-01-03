@@ -1494,6 +1494,11 @@
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "name": "@types/react-dom"
   },
+  "@types/react-helmet-async@1.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/staylor/react-helmet-async",
+    "name": "@types/react-helmet-async"
+  },
   "@types/react@18.0.15": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
@@ -2726,8 +2731,8 @@
   },
   "dotenv-expand@5.1.0": {
     "licenses": "BSD-2-Clause",
-    "name": "dotenv-expand",
-    "repository": "https://github.com/motdotla/dotenv-expand"
+    "repository": "https://github.com/motdotla/dotenv-expand",
+    "name": "dotenv-expand"
   },
   "dotenv@10.0.0": {
     "licenses": "BSD-2-Clause",
@@ -3523,6 +3528,11 @@
     "licenses": "MIT",
     "repository": "https://github.com/ljharb/internal-slot",
     "name": "internal-slot"
+  },
+  "invariant@2.2.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/zertosh/invariant",
+    "name": "invariant"
   },
   "ipaddr.js@1.9.1": {
     "licenses": "MIT",
@@ -5124,6 +5134,16 @@
     "repository": "https://github.com/facebook/create-react-app",
     "name": "react-error-overlay"
   },
+  "react-fast-compare@3.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/FormidableLabs/react-fast-compare",
+    "name": "react-fast-compare"
+  },
+  "react-helmet-async@1.3.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/staylor/react-helmet-async",
+    "name": "react-helmet-async"
+  },
   "react-i18next@12.1.1": {
     "licenses": "MIT",
     "repository": "https://github.com/i18next/react-i18next",
@@ -5484,6 +5504,11 @@
     "licenses": "ISC",
     "repository": "https://github.com/wesleytodd/setprototypeof",
     "name": "setprototypeof"
+  },
+  "shallowequal@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dashed/shallowequal",
+    "name": "shallowequal"
   },
   "shebang-command@2.0.0": {
     "licenses": "MIT",
