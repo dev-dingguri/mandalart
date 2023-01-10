@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import licensesDataFile from 'assets/json/packageLicenses.json';
 import { BsChevronLeft } from 'react-icons/bs';
 import styles from './OpenSourceLicenses.module.css';
 import Button from 'components/Button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PATH_HOME } from 'constants/constants';
+import licenseMap from 'assets/json/openSourceLicenses.json';
 
 /*
- * licensesDataFile
- * Created with 'license-checker --production -excludePrivatePackages --customPath [customPath.json] --json'
+ * openSourceLicenses.json
+ * Created with 'license-checker --production -excludePrivatePackages --customPath [customPath.json] --json > openSourceLicenses.json'
  *
  * [customPath.json]
  * {
@@ -29,17 +29,13 @@ import { PATH_HOME } from 'constants/constants';
  *  }
  */
 
-type LicenseData = {
+type License = {
   name: string;
   licenses: string;
   repository: string;
 };
 
-type LicensesData = {
-  [packageName: string]: LicenseData;
-};
-
-const Item = ({ name, licenses, repository }: LicenseData) => {
+const Item = ({ name, licenses, repository }: License) => {
   return (
     <li className={styles.item}>
       <h3>{name}</h3>
@@ -53,21 +49,16 @@ const Item = ({ name, licenses, repository }: LicenseData) => {
   );
 };
 
-const parseLicensesData = (licensesData: LicensesData) => {
-  return Object.keys(licensesData).map((key) => licensesData[key]);
-};
-
 const OpenSourceLicenses = () => {
-  const [licensesData, setLicensesData] = useState<LicenseData[]>([]);
+  const [licenses, setLicenses] = useState<License[]>([]);
   const { t, i18n } = useTranslation();
   const lang = i18n.languages[0];
 
   useEffect(() => {
-    setLicensesData(parseLicensesData(licensesDataFile));
+    setLicenses(mapToArray(licenseMap));
   }, []);
 
   const location = useLocation();
-
   const navigate = useNavigate();
   const goToBack = () => {
     if (location.key === 'default') {
@@ -86,12 +77,16 @@ const OpenSourceLicenses = () => {
         <h1 className={styles.title}>{t('oss.label')}</h1>
       </header>
       <ul className={styles.list}>
-        {licensesData.map((data, idx) => (
+        {licenses.map((data, idx) => (
           <Item key={idx} {...data} />
         ))}
       </ul>
     </section>
   );
+};
+
+const mapToArray = (licenseMap: { [key: string]: License }) => {
+  return Object.keys(licenseMap).map((key) => licenseMap[key]);
 };
 
 export default OpenSourceLicenses;
