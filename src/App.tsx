@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './App.module.css';
-import Mandalart from 'components/Mandalart/Mandalart';
+import Main from 'components/Main/Main';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import OpenSourceLicenses from 'components/OpenSourceLicenses/OpenSourceLicenses';
 import { useTranslation } from 'react-i18next';
-import { PATH_HOME, PATH_OSS } from 'constants/constants';
+import { PATH_MAIN, PATH_OSS } from 'constants/constants';
 import { Helmet } from 'react-helmet-async';
 
 const App = () => {
@@ -37,14 +37,14 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route
-            path={`/${lang}${PATH_HOME}`} //
-            element={<Mandalart />}
+            path={`/${lang}${PATH_MAIN}`} //
+            element={<Main />}
           />
           <Route
             path={`/${lang}${PATH_OSS}`}
             element={<OpenSourceLicenses />}
           />
-          <Route path="*" element={<Navigate to={`/${lang}${PATH_HOME}`} />} />
+          <Route path="*" element={<Navigate to={`/${lang}${PATH_MAIN}`} />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,28 +1,25 @@
 import React from 'react';
-import styles from './TopicsViewTypeToggle.module.css';
+import styles from './MandalartViewType.module.css';
 import Button from 'components/Button/Button';
 import { BsGrid3X3 } from 'react-icons/bs';
 
-type TopicsViewTypeToggleProps = {
+type MandalartViewTypeProps = {
   isAllView: boolean;
-  onToggle: (isAllView: boolean) => void;
+  onChange: (isAllView: boolean) => void;
 };
 
-const TopicsViewTypeToggle = ({
-  isAllView,
-  onToggle,
-}: TopicsViewTypeToggleProps) => {
+const MandalartViewType = ({ isAllView, onChange }: MandalartViewTypeProps) => {
   return (
     <div className={styles.toggle}>
       <Button
         className={`${styles.allViewButton} ${isAllView && styles.selected}`}
-        onClick={() => onToggle(true)}
+        onClick={() => onChange(true)}
       >
         <BsGrid3X3 />
       </Button>
       <Button
         className={`${styles.partViewButton} ${!isAllView && styles.selected}`}
-        onClick={() => onToggle(false)}
+        onClick={() => onChange(false)}
       >
         <div className={styles.crop}>
           <BsGrid3X3 className={styles.partViewIco} />
@@ -32,4 +29,4 @@ const TopicsViewTypeToggle = ({
   );
 };
 
-export default TopicsViewTypeToggle;
+export default MandalartViewType;

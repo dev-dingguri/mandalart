@@ -1,0 +1,50 @@
+/* 반응형 정사각형 */
+.topicsView {
+  position: relative;
+  width: 100%;
+}
+
+.topicsView::after {
+  content: '';
+  display: block;
+  padding-bottom: 100%;
+}
+
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+/* !반응형 정사각형 */
+
+.topicsView {
+  margin: 0.5em 0;
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  /* 텍스트가 영역을 벗어나지 않도록 처리 */
+  /* 가로 */
+  word-break: break-all;
+  /* 세로 */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  /* !텍스트가 영역을 벗어나지 않도록 처리 */
+  color: var(--color-font-1);
+  font-size: 2rem;
+  margin: 0;
+  min-width: 20%;
+}
+
+.draft {
+  color: var(--color-font-2);
+  font-size: 2rem;
+  margin: 0;
+  margin-right: 0.1em;
+}

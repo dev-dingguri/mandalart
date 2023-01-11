@@ -4,7 +4,7 @@ import styles from './OpenSourceLicenses.module.css';
 import Button from 'components/Button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { PATH_HOME } from 'constants/constants';
+import { PATH_MAIN } from 'constants/constants';
 import licenseMap from 'assets/json/openSourceLicenses.json';
 
 /*
@@ -62,7 +62,7 @@ const OpenSourceLicenses = () => {
   const navigate = useNavigate();
   const goToBack = () => {
     if (location.key === 'default') {
-      navigate(`/${lang}${PATH_HOME}`);
+      navigate(`/${lang}${PATH_MAIN}`);
     } else {
       navigate(-1);
     }

@@ -2,7 +2,7 @@ import React, { useRef, useState, TouchEvent } from 'react';
 import TopicTables, {
   TopicTablesProps,
 } from 'components/TopicTables/TopicTables';
-import styles from './PartTopicTables.module.css';
+import styles from './ZoomInTopicTables.module.css';
 import { useCallback } from 'react';
 import {
   TABLE_COL_SIZE,
@@ -10,7 +10,7 @@ import {
   TABLE_CENTER_IDX,
 } from 'constants/constants';
 
-const PartTopicTables = ({ ...props }: TopicTablesProps) => {
+const ZoomInTopicTables = ({ ...props }: TopicTablesProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
   const isSyncedFocuseRef = useRef(false);
 
@@ -150,4 +150,4 @@ const PartTopicTables = ({ ...props }: TopicTablesProps) => {
   );
 };
 
-export default PartTopicTables;
+export default ZoomInTopicTables;
