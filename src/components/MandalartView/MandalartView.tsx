@@ -1,8 +1,6 @@
 import { memo, useState } from 'react';
-import ZoomInTopicTables from 'components/ZoomInTopicTables/ZoomInTopicTables';
-import TopicTables, {
-  TopicTablesProps,
-} from 'components/TopicTables/TopicTables';
+import ZoomInMandalart from 'components/ZoomInMandalart/ZoomInMandalart';
+import Mandalart, { MandalartProps } from 'components/Mandalart/Mandalart';
 import { TopicNode } from 'types/TopicNode';
 import styles from './MandalartView.module.css';
 import {
@@ -49,7 +47,7 @@ const MandalartView = memo(
       onTopicTreeChange(newTopicTree);
     };
 
-    const topicTablesProps: TopicTablesProps = {
+    const topicTablesProps: MandalartProps = {
       onGetTopic: (tableIdx, tableItemIdx) =>
         getTopic(topicTree, tableIdx, tableItemIdx),
       onUpdateTopic: handleUpdateTopic,
@@ -65,12 +63,12 @@ const MandalartView = memo(
             {snippet.title}
           </h1>
         </div>
-        <div className={styles.topicsView}>
+        <div className={styles.mandalart}>
           <div className={styles.container}>
             {isAllView ? (
-              <TopicTables {...topicTablesProps} />
+              <Mandalart {...topicTablesProps} />
             ) : (
-              <ZoomInTopicTables {...topicTablesProps} />
+              <ZoomInMandalart {...topicTablesProps} />
             )}
           </div>
         </div>

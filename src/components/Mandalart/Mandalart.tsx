@@ -7,7 +7,7 @@ import {
   TABLE_CENTER_IDX,
 } from 'constants/constants';
 
-export type TopicTablesProps = {
+export type MandalartProps = {
   onGetTopic: (tableIdx: number, tableItemIdx: number) => TopicNode;
   onUpdateTopic: (tableIdx: number, tableItemIdx: number, text: string) => void;
   onCanEdit?: (tableIdx: number) => boolean;
@@ -18,13 +18,13 @@ export type TopicTablesProps = {
   onUpdateFocuse?: (tableIdx: number) => void;
 };
 
-const TopicTables = ({
+const Mandalart = ({
   onGetTopic,
   onUpdateTopic,
   onCanEdit,
   onSyncFocuse,
   onUpdateFocuse,
-}: TopicTablesProps) => {
+}: MandalartProps) => {
   return (
     <Table
       rowSize={TABLE_ROW_SIZE}
@@ -57,4 +57,4 @@ const isAccented = (tableIdx: number, tableItemIdx: number) => {
   }
 };
 
-export default TopicTables;
+export default Mandalart;

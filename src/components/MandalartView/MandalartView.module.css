@@ -1,10 +1,10 @@
 /* 반응형 정사각형 */
-.topicsView {
+.mandalart {
   position: relative;
   width: 100%;
 }
 
-.topicsView::after {
+.mandalart::after {
   content: '';
   display: block;
   padding-bottom: 100%;
@@ -17,7 +17,7 @@
 }
 /* !반응형 정사각형 */
 
-.topicsView {
+.mandalart {
   margin: 0.5em 0;
 }
 
