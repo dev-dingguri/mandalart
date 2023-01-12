@@ -125,7 +125,10 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
     [focusedIdx]
   );
 
-  const handleCanEdit = (tableIdx: number) => focusedIdx === tableIdx;
+  const handleCanEdit = useCallback(
+    (tableIdx: number) => focusedIdx === tableIdx,
+    [focusedIdx]
+  );
 
   return (
     <div
