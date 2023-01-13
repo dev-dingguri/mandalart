@@ -1,201 +1,64 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
-import styles from './Mandalart.module.css';
-import authService from 'services/authService';
-import Header from 'components/Header/Header';
-import TopicsViewTypeToggle from 'components/TopicsViewTypeToggle/TopicsViewTypeToggle';
-import SignInModal from 'components/SignInModal/SignInModal';
-import TopicsView from 'components/TopicsView/TopicsView';
-import LeftAside from 'components/LeftAside/LeftAside';
-import { DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE } from 'constants/constants';
-import NoMandalartNotice from 'components/NoMandalartNotice/NoMandalartNotice';
-import TextEditor from 'components/TextEditor/TextEditor';
-import RightAside from 'components/RightAside/RightAside';
-import useUser from 'hooks/useUser';
-import useBoolean from 'hooks/useBoolean';
-import { useAlert } from 'contexts/AlertContext';
-import useMandalarts from '../../hooks/useMandalarts';
-import { Snippet } from '../../types/Snippet';
+import Table from 'components/Table/Table';
+import TopicTable from 'components/TopicTable/TopicTable';
+import { TopicNode } from 'types/TopicNode';
 import {
-  TMP_MANDALART_ID,
-  MAX_MANDALART_TITLE_SIZE,
-} from '../../constants/constants';
-import Spinner from 'components/Spinner/Spinner';
-import signInSessionStorage from '../../services/signInSessionStorage';
-import { TopicNode } from '../../types/TopicNode';
-import { useTranslation } from 'react-i18next';
+  TABLE_ROW_SIZE,
+  TABLE_COL_SIZE,
+  TABLE_CENTER_IDX,
+} from 'constants/constants';
+import { memo } from 'react';
 
-const Mandalart = () => {
-  const [user, isUserLoading, userError] = useUser(null);
-  const [
-    snippetMap,
-    currentMandalartId,
-    currentTopicTree,
-    isMandalartsLoading,
-    mandalartsError,
-    updateMandalartId,
-    createMandalart,
-    deleteMandalart,
-    saveSnippet,
-    saveTopics,
-    uploadDraft,
-  ] = useMandalarts(user, new Map<string, Snippet>(), null, null);
+export type MandalartProps = {
+  onGetTopic: (tableIdx: number, tableItemIdx: number) => TopicNode;
+  onUpdateTopic: (tableIdx: number, tableItemIdx: number, text: string) => void;
+  onCanEdit?: (tableIdx: number) => boolean;
+  onSyncFocuse?: (
+    tableIdx: number,
+    scrollInto: (options?: ScrollIntoViewOptions) => void
+  ) => void;
+  onUpdateFocuse?: (tableIdx: number) => void;
+};
 
-  const [isAllView, setIsAllView] = useState(true);
-  const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
-    useBoolean(false);
-  const [isShownRightAside, { on: showRightAside, off: closeRightAside }] =
-    useBoolean(false);
-  const [isShownSignInModal, { on: showSignInModal, off: closeSignInModal }] =
-    useBoolean(false);
-  const [isShownTitleEditor, { on: showTitleEditor, off: closeTitleEditor }] =
-    useBoolean(false);
-  const { Alert, show: showAlert } = useAlert();
-  const { t } = useTranslation();
-
-  const handleSignIn = (providerid: string) => authService.signIn(providerid);
-  const handleSignOut = () => authService.signOut();
-
-  const handleTopicTreeChange = useCallback(
-    (topicTree: TopicNode) => {
-      saveTopics(user, currentMandalartId, topicTree);
-    },
-    [user, currentMandalartId, saveTopics]
-  );
-
-  const isLoading = isUserLoading || isMandalartsLoading;
-
-  const title = useMemo(() => {
-    if (!currentMandalartId) return '';
-    const title = snippetMap.get(currentMandalartId)?.title;
-    return title ? title : '';
-  }, [snippetMap, currentMandalartId]);
-
-  useEffect(() => {
-    if (!userError) return;
-
-    showAlert(t('auth.errors.signIn.default', { detail: userError.message }));
-  }, [userError, showAlert, t]);
-
-  useEffect(() => {
-    if (!mandalartsError) return;
-
-    showAlert(t('mandalart.errors.sync.default'));
-    authService.signOut();
-  }, [mandalartsError, showAlert, t]);
-
-  useEffect(() => {
-    if (!user || isLoading) return;
-    const data = signInSessionStorage.read(user);
-    if (!data || data.isTriedUploadDraft) return;
-
-    uploadDraft(user).catch((e: Error) => {
-      e && showAlert(e.message);
-    });
-    data.isTriedUploadDraft = true;
-    signInSessionStorage.save(user, data);
-  }, [user, isLoading, uploadDraft, showAlert]);
-
-  return (
-    <section className={styles.mandalart}>
-      {isLoading ? (
-        <Spinner className={styles.spinner} />
-      ) : (
-        <>
-          <div className={styles.header}>
-            <Header
-              user={user}
-              onShowSignInUI={showSignInModal}
-              onSignOut={handleSignOut}
-              onShowLeftAside={showLeftAside}
-              onShowRightAside={showRightAside}
-            />
-          </div>
-          <div className={styles.scrollArea}>
-            {snippetMap.size === 0 ? (
-              <NoMandalartNotice
-                onCreateMandalart={() => {
-                  createMandalart(
-                    user,
-                    DEFAULT_SNIPPET,
-                    DEFAULT_TOPIC_TREE
-                  ).catch((e: Error) => {
-                    showAlert(e.message);
-                  });
-                }}
-              />
-            ) : currentTopicTree ? (
-              <div className={styles.container}>
-                <div className={styles.titleBar}>
-                  <p className={styles.draft}>
-                    {currentMandalartId === TMP_MANDALART_ID &&
-                      `(${t('mandalart.draft')})`}
-                  </p>
-                  <h1 className={styles.title} onClick={showTitleEditor}>
-                    {title}
-                  </h1>
-                </div>
-                <TopicsView
-                  isAllView={isAllView}
-                  topicTree={currentTopicTree}
-                  onTopicTreeChange={handleTopicTreeChange}
-                />
-                <div className={styles.bottom}>
-                  <TopicsViewTypeToggle
-                    isAllView={isAllView}
-                    onToggle={(isAllView) => setIsAllView(isAllView)}
-                  />
-                </div>
-              </div>
-            ) : null}
-          </div>
-          <LeftAside
-            isShown={isShownLeftAside}
-            snippetMap={snippetMap}
-            selectedMandalartId={currentMandalartId}
-            onSelectMandalart={(mandalartId) => updateMandalartId(mandalartId)}
-            onDeleteMandalart={(mandalartId) => {
-              deleteMandalart(user, mandalartId);
-            }}
-            onRenameMandalart={(mandalartId, name) => {
-              saveSnippet(user, mandalartId, {
-                title: name,
-              });
-            }}
-            onResetMandalart={(mandalartId) => {
-              saveSnippet(user, mandalartId, DEFAULT_SNIPPET);
-              saveTopics(user, mandalartId, DEFAULT_TOPIC_TREE);
-            }}
-            onCreateMandalart={() => {
-              createMandalart(user, DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE).catch(
-                (e: Error) => {
-                  showAlert(e.message);
-                }
-              );
-            }}
-            onClose={closeLeftAside}
+const Mandalart = memo(
+  ({
+    onGetTopic,
+    onUpdateTopic,
+    onCanEdit,
+    onSyncFocuse,
+    onUpdateFocuse,
+  }: MandalartProps) => {
+    return (
+      <Table
+        rowSize={TABLE_ROW_SIZE}
+        colSize={TABLE_COL_SIZE}
+        cellGenerater={(tableIdx) => (
+          // 다른 table의 값 읽기/쓰기를 제한하기 위해 아래와 같이 처리하였음
+          <TopicTable
+            onIsAccented={(tableItemIdx) => isAccented(tableIdx, tableItemIdx)}
+            onGetTopic={(tableItemIdx) => onGetTopic(tableIdx, tableItemIdx)}
+            onUpdateTopic={(tableItemIdx, text) =>
+              onUpdateTopic(tableIdx, tableItemIdx, text)
+            }
+            onCanEdit={onCanEdit && (() => onCanEdit(tableIdx))}
+            onSyncFocuse={
+              onSyncFocuse &&
+              ((scrollInto) => onSyncFocuse(tableIdx, scrollInto))
+            }
+            onUpdateFocuse={onUpdateFocuse && (() => onUpdateFocuse(tableIdx))}
           />
-          <RightAside isShown={isShownRightAside} onClose={closeRightAside} />
-          <SignInModal
-            isShown={isShownSignInModal}
-            onClose={closeSignInModal}
-            onSignIn={handleSignIn}
-          />
-          <TextEditor
-            isShown={isShownTitleEditor}
-            initialText={title}
-            maxText={MAX_MANDALART_TITLE_SIZE}
-            onClose={closeTitleEditor}
-            onConfirm={(name) => {
-              saveSnippet(user, currentMandalartId, {
-                title: name,
-              });
-            }}
-          />
-          <Alert />
-        </>
-      )}
-    </section>
-  );
+        )}
+        space="4px"
+      />
+    );
+  }
+);
+
+const isAccented = (tableIdx: number, tableItemIdx: number) => {
+  if (tableIdx === TABLE_CENTER_IDX) {
+    return tableItemIdx !== TABLE_CENTER_IDX;
+  } else {
+    return tableItemIdx === TABLE_CENTER_IDX;
+  }
 };
 
 export default Mandalart;

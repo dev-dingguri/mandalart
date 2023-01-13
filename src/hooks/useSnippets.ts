@@ -11,7 +11,7 @@ const useSnippets = (
   const [snippetMap, setSnippetMap] = useState(initialSnippetMap);
   const [isSyncing, { on: startSyncing, off: stopSyncing }] = useBoolean(false);
   const [error, setError] = useState<Error | null>(null);
-  const isLoading = user && !isSyncing;
+  const isLoading = user !== null && !isSyncing;
 
   useEffect(() => {
     stopSyncing();
