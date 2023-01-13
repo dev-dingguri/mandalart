@@ -59,9 +59,9 @@ const MandalartView = ({
   return (
     <section>
       <div className={styles.titleBar}>
-        {mandalartId === TMP_MANDALART_ID && (
-          <h1 className={styles.draft}>{`(${t('mandalart.draft')})`}</h1>
-        )}
+        <p className={styles.draft}>
+          {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.draft')})`}
+        </p>
         <h1 className={styles.title} onClick={showTitleEditor}>
           {snippet.title}
         </h1>
