@@ -5,7 +5,7 @@ import Button from 'components/Button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PATH_MAIN } from 'constants/constants';
-import licenseMap from 'assets/json/openSourceLicenses.json';
+import licenseMap from 'assets/data/openSourceLicenses.json';
 
 /*
  * openSourceLicenses.json
