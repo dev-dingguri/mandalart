@@ -37,5 +37,5 @@ export const STORAGE_KEY_SNIPPETS = 'mandalarts__snippets';
 export const STORAGE_KEY_TOPIC_TREES = 'mandalarts__topictrees';
 
 // url
-export const PATH_HOME = '';
+export const PATH_MAIN = '/';
 export const PATH_OSS = '/oss';

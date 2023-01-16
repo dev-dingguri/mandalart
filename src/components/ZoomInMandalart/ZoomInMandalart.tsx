@@ -1,8 +1,6 @@
 import React, { useRef, useState, TouchEvent } from 'react';
-import TopicTables, {
-  TopicTablesProps,
-} from 'components/TopicTables/TopicTables';
-import styles from './PartTopicTables.module.css';
+import Mandalart, { MandalartProps } from 'components/Mandalart/Mandalart';
+import styles from './ZoomInMandalart.module.css';
 import { useCallback } from 'react';
 import {
   TABLE_COL_SIZE,
@@ -10,11 +8,11 @@ import {
   TABLE_CENTER_IDX,
 } from 'constants/constants';
 
-const PartTopicTables = ({ ...props }: TopicTablesProps) => {
+const ZoomInMandalart = ({ ...props }: MandalartProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
   const isSyncedFocuseRef = useRef(false);
 
-  const tablesRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   // 스와이프 시작시 상태를 저장하기 위한 useRef들
   const startYRef = useRef(0);
   const startXRef = useRef(0);
@@ -24,8 +22,8 @@ const PartTopicTables = ({ ...props }: TopicTablesProps) => {
 
   const calculateMovedIdx = (endY: number, endX: number) => {
     let movedIdx = focusedIdx;
-    const tables = tablesRef.current!;
-    const baseline = tables.clientWidth * 0.35;
+    const mandalart = ref.current!;
+    const baseline = mandalart.clientWidth * 0.35;
     const period = Date.now() - startTimeRef.current.getTime();
     // 500ms안에 스와이프가 끝나면 가중치 적용
     const weight = Math.min(Math.max((500 - period) * 0.02, 1), 5);
@@ -60,11 +58,11 @@ const PartTopicTables = ({ ...props }: TopicTablesProps) => {
   };
 
   const handleTouchStart = (ev: TouchEvent) => {
-    const tables = tablesRef.current!;
+    const mandalart = ref.current!;
     startYRef.current = ev.changedTouches[0].pageY;
     startXRef.current = ev.changedTouches[0].pageX;
-    startTopRef.current = tables.scrollTop;
-    startLeftRef.current = tables.scrollLeft;
+    startTopRef.current = mandalart.scrollTop;
+    startLeftRef.current = mandalart.scrollLeft;
     startTimeRef.current = new Date();
   };
 
@@ -76,8 +74,8 @@ const PartTopicTables = ({ ...props }: TopicTablesProps) => {
     if (movedIdx !== focusedIdx) {
       setFocusedIdx(movedIdx);
     } else {
-      const tables = tablesRef.current!;
-      tables.scroll({
+      const mandalart = ref.current!;
+      mandalart.scroll({
         top: startTopRef.current,
         left: startLeftRef.current,
         behavior: 'smooth',
@@ -89,8 +87,8 @@ const PartTopicTables = ({ ...props }: TopicTablesProps) => {
     const moveY = -(ev.changedTouches[0].pageY - startYRef.current);
     const moveX = -(ev.changedTouches[0].pageX - startXRef.current);
 
-    const tables = tablesRef.current!;
-    tables.scroll({
+    const mandalart = ref.current!;
+    mandalart.scroll({
       top: startTopRef.current + moveY,
       left: startLeftRef.current + moveX,
       behavior: 'auto',
@@ -127,19 +125,22 @@ const PartTopicTables = ({ ...props }: TopicTablesProps) => {
     [focusedIdx]
   );
 
-  const handleCanEdit = (tableIdx: number) => focusedIdx === tableIdx;
+  const handleCanEdit = useCallback(
+    (tableIdx: number) => focusedIdx === tableIdx,
+    [focusedIdx]
+  );
 
   return (
     <div
-      ref={tablesRef}
-      className={styles.partTopicTables}
+      ref={ref}
+      className={styles.mandalart}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
       onTouchMove={handleTouchMove}
     >
       <div className={styles.container}>
-        <TopicTables
+        <Mandalart
           {...props}
           onSyncFocuse={handleSyncFocuse}
           onUpdateFocuse={setFocusedIdx}
@@ -150,4 +151,4 @@ const PartTopicTables = ({ ...props }: TopicTablesProps) => {
   );
 };
 
-export default PartTopicTables;
+export default ZoomInMandalart;

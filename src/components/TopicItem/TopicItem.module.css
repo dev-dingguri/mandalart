@@ -29,7 +29,7 @@
 
 @media screen and (min-width: 30rem) {
   .text {
-    font-size: 1rem;
+    font-size: 0.9rem;
     -webkit-line-clamp: 3;
   }
 }

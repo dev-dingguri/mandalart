@@ -1,14 +1,14 @@
 import React from 'react';
 import Button from 'components/Button/Button';
 import { BsPlus } from 'react-icons/bs';
-import styles from './NoMandalartNotice.module.css';
+import styles from './EmptyMandalarts.module.css';
 import { useTranslation } from 'react-i18next';
 
-type NoMandalartNoticeProps = {
+type EmptyMandalartsProps = {
   onCreateMandalart: () => void;
 };
 
-const NoMandalartNotice = ({ onCreateMandalart }: NoMandalartNoticeProps) => {
+const EmptyMandalarts = ({ onCreateMandalart }: EmptyMandalartsProps) => {
   const { t } = useTranslation();
 
   return (
@@ -21,4 +21,4 @@ const NoMandalartNotice = ({ onCreateMandalart }: NoMandalartNoticeProps) => {
   );
 };
 
-export default NoMandalartNotice;
+export default EmptyMandalarts;

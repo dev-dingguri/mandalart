@@ -14,7 +14,7 @@ const useTopics = (
   );
   const [isSyncing, { on: startSyncing, off: stopSyncing }] = useBoolean(false);
   const [error, setError] = useState<Error | null>(null);
-  const isLoading = user && mandalartId && !isSyncing;
+  const isLoading = user !== null && mandalartId !== null && !isSyncing;
 
   useEffect(() => {
     stopSyncing();
