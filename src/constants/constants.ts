@@ -12,7 +12,7 @@ export const TABLE_CENTER_IDX = 4;
 
 // mandalart constraint
 export const MAX_UPLOAD_MANDALARTS_SIZE = 20;
-export const MAX_MANDALART_TITLE_SIZE = 30;
+export const MAX_MANDALART_TITLE_SIZE = 50;
 export const MAX_TOPIC_TEXT_SIZE = 50;
 
 // mandalart data
