@@ -1,5 +1,5 @@
 .menu {
-  position: relative;
+  position: fixed;
   background-color: var(--color-bg-2);
   padding: 0.5em 0.3em;
   border-radius: 5px;

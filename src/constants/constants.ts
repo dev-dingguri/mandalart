@@ -1,6 +1,5 @@
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
-import i18n from 'locales/i18n';
 
 // common constants
 
@@ -12,14 +11,14 @@ export const TABLE_CENTER_IDX = 4;
 
 // mandalart constraint
 export const MAX_UPLOAD_MANDALARTS_SIZE = 20;
-export const MAX_MANDALART_TITLE_SIZE = 30;
+export const MAX_MANDALART_TITLE_SIZE = 50;
 export const MAX_TOPIC_TEXT_SIZE = 50;
 
 // mandalart data
 export const TMP_MANDALART_ID = 'tmp_mandalart_id';
 
 export const DEFAULT_SNIPPET: Snippet = {
-  title: i18n.t('mandalart.snippet.untitled'),
+  title: '',
 };
 export const DEFAULT_TOPIC_TREE: TopicNode = {
   text: '',
