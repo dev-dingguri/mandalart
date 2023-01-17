@@ -63,7 +63,7 @@ const MandalartView = ({
           {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.draft')})`}
         </p>
         <h1 className={styles.title} onClick={showTitleEditor}>
-          {snippet.title}
+          {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
         </h1>
       </div>
       <div className={styles.mandalart}>

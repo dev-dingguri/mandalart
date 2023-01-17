@@ -5,7 +5,7 @@ import Select from 'components/Select/Select';
 import { useNavigate } from 'react-router-dom';
 import { Theme, useTheme } from 'contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import { BsGithub } from 'react-icons/bs';
+import { BsGithub, BsYoutube } from 'react-icons/bs';
 import { APP_VERSION } from 'version';
 import { PATH_OSS } from '../../constants/constants';
 
@@ -98,10 +98,18 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
           </Item>
         </ul>
         <div className={styles.contact}>
-          <div className={styles.account}>
-            <p className={styles.email}>dingguri.lab@gmail.com</p>
+          <p>dingguri.lab@gmail.com</p>
+          <div className={styles.sites}>
+            <BsYoutube
+              className={styles.siteIcon}
+              onClick={() => {
+                window.open(
+                  'https://www.youtube.com/channel/UCoZkSE87r1jR1HasRJpPX3g'
+                );
+              }}
+            />
             <BsGithub
-              className={styles.gitIcon}
+              className={styles.siteIcon}
               onClick={() => {
                 window.open('https://github.com/dev-dingguri/mandalart');
               }}

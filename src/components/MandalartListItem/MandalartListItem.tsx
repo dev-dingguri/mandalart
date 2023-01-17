@@ -74,7 +74,7 @@ const MandalartListItem = ({
       onContextMenu={handleShowMenu}
     >
       <BsGrid3X3 className={styles.icon} />
-      <p>{snippet.title}</p>
+      <p> {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}</p>
       <Button className={styles.etcButton} onClick={handleShowMenu}>
         <BsThreeDots />
       </Button>
