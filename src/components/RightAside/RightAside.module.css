@@ -102,17 +102,15 @@
   font-size: 0.8rem;
 }
 
-.account {
+.sites {
   display: flex;
   align-items: center;
-  margin-bottom: 0.3em;
+  margin: 0.5em 0;
 }
 
-.email {
+.siteIcon {
+  font-size: 1.6rem;
   margin-right: 0.5em;
-}
-
-.gitIcon {
-  cursor: pointer;
   color: var(--color-font-2);
+  cursor: pointer;
 }
