@@ -25,8 +25,12 @@ const useMandalarts = (
   initialMandalartId: string | null,
   initialTopicTree: TopicNode | null
 ) => {
-  const [snippetMap, updateSnippetMap, isSnippetMapLoading, snippetMapError] =
-    useSnippets(initialSnippetMap, user);
+  const {
+    snippetMap,
+    updateSnippetMap,
+    isLoading: isSnippetMapLoading,
+    error: snippetMapError,
+  } = useSnippets(initialSnippetMap, user);
   const [currentMandalartId, updateMandalartId] = useState<string | null>(
     initialMandalartId
   );
