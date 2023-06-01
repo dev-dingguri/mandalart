@@ -19,7 +19,7 @@ import { TopicNode } from '../../types/TopicNode';
 import { useTranslation } from 'react-i18next';
 
 const Main = () => {
-  const [user, isUserLoading, userError] = useUser(null);
+  const { user, isLoading: isUserLoading, error: userError } = useUser(null);
   const [
     snippetMap,
     currentMandalartId,

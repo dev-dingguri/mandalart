@@ -8,6 +8,15 @@ import { ThemeProvider } from 'contexts/ThemeContext';
 import { AlertProvider } from 'contexts/AlertContext';
 import { HelmetProvider } from 'react-helmet-async';
 import 'locales/i18n';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,15 +24,17 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <HelmetProvider>
-      <IconContext.Provider value={{ className: 'react-icons' }}>
-        <ThemeProvider>
-          <AlertProvider>
-            <App />
-          </AlertProvider>
-        </ThemeProvider>
-      </IconContext.Provider>
-    </HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <HelmetProvider>
+        <IconContext.Provider value={{ className: 'react-icons' }}>
+          <ThemeProvider>
+            <AlertProvider>
+              <App />
+            </AlertProvider>
+          </ThemeProvider>
+        </IconContext.Provider>
+      </HelmetProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 
