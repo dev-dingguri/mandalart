@@ -34,8 +34,12 @@ const useMandalarts = (
   const [currentMandalartId, updateMandalartId] = useState<string | null>(
     initialMandalartId
   );
-  const [currentTopicTree, updateTopicTree, isTopicTreeLoading, topicsError] =
-    useTopics(initialTopicTree, user, currentMandalartId);
+  const {
+    topicTree: currentTopicTree,
+    updateTopicTree,
+    isLoading: isTopicTreeLoading,
+    error: topicsError,
+  } = useTopics(initialTopicTree, user, currentMandalartId);
   const isLoading = isSnippetMapLoading || isTopicTreeLoading;
   const error = useMemo(
     () => (snippetMapError ? snippetMapError : topicsError),
