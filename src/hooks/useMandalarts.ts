@@ -67,29 +67,25 @@ const useMandalarts = (
           if (!mandalartId) {
             throw new Error(`${t('mandalart.errors.create.default')}`);
           }
-          updateSnippetMap((snippetMap) =>
-            new Map(snippetMap).set(mandalartId, snippet)
-          );
-          updateTopicTree(topicTree);
           updateMandalartId(mandalartId);
           return repository.saveTopics(user.uid, mandalartId, topicTree);
         });
     },
-    [snippetMap.size, t, updateSnippetMap, updateTopicTree]
+    [snippetMap.size, t]
   );
 
   const deleteMandalart = useCallback(
     async (user: User | null, mandalartId: string | null) => {
       if (!mandalartId) return;
-      updateSnippetMap((snippetMap) => {
-        const deleted = new Map(snippetMap);
-        return deleted.delete(mandalartId) ? deleted : snippetMap;
-      });
       if (user) {
         return repository.deleteSnippet(user.uid, mandalartId).then(() => {
           return repository.deleteTopics(user.uid, mandalartId);
         });
       } else {
+        updateSnippetMap((snippetMap) => {
+          const deleted = new Map(snippetMap);
+          return deleted.delete(mandalartId) ? deleted : snippetMap;
+        });
         mandalartsStorage.deleteSnippets();
         mandalartsStorage.deleteTopics();
       }
@@ -100,12 +96,12 @@ const useMandalarts = (
   const saveSnippet = useCallback(
     async (user: User | null, mandalartId: string | null, snippet: Snippet) => {
       if (!mandalartId) return;
-      updateSnippetMap((snippetMap) =>
-        new Map(snippetMap).set(mandalartId, snippet)
-      );
       if (user) {
         return repository.saveSnippet(user.uid, mandalartId, snippet);
       } else {
+        updateSnippetMap((snippetMap) =>
+          new Map(snippetMap).set(mandalartId, snippet)
+        );
         mandalartsStorage.saveSnippets(new Map([[TMP_MANDALART_ID, snippet]]));
       }
     },
@@ -118,12 +114,12 @@ const useMandalarts = (
       mandalartId: string | null,
       topicTree: TopicNode
     ) => {
-      if (mandalartId === currentMandalartId) {
-        updateTopicTree(topicTree);
-      }
       if (user && mandalartId) {
         return repository.saveTopics(user.uid, mandalartId, topicTree);
       } else {
+        if (mandalartId === currentMandalartId) {
+          updateTopicTree(topicTree);
+        }
         mandalartsStorage.saveTopics(new Map([[TMP_MANDALART_ID, topicTree]]));
       }
     },
