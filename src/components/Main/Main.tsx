@@ -19,20 +19,20 @@ import { TopicNode } from '../../types/TopicNode';
 import { useTranslation } from 'react-i18next';
 
 const Main = () => {
-  const [user, isUserLoading, userError] = useUser(null);
-  const [
+  const { user, isLoading: isUserLoading, error: userError } = useUser(null);
+  const {
     snippetMap,
     currentMandalartId,
     currentTopicTree,
-    isMandalartsLoading,
-    mandalartsError,
+    isLoading: isMandalartsLoading,
+    error: mandalartsError,
     updateMandalartId,
     createMandalart,
     deleteMandalart,
     saveSnippet,
     saveTopics,
     uploadDraft,
-  ] = useMandalarts(user, new Map<string, Snippet>(), null, null);
+  } = useMandalarts(user, new Map<string, Snippet>(), null, null);
 
   const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
     useBoolean(false);

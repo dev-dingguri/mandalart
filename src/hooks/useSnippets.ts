@@ -31,7 +31,7 @@ const useSnippets = (
     );
   }, [user, startSyncing, stopSyncing]);
 
-  return [snippetMap, setSnippetMap, isLoading, error] as const;
+  return { snippetMap, setSnippetMap, isLoading, error };
 };
 
 export default useSnippets;

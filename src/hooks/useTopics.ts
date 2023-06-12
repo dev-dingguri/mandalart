@@ -35,7 +35,7 @@ const useTopics = (
     );
   }, [user, mandalartId, startSyncing, stopSyncing]);
 
-  return [topicTree, setTopicTree, isLoading, error] as const;
+  return { topicTree, setTopicTree, isLoading, error } as const;
 };
 
 export default useTopics;

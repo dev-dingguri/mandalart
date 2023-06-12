@@ -25,13 +25,21 @@ const useMandalarts = (
   initialMandalartId: string | null,
   initialTopicTree: TopicNode | null
 ) => {
-  const [snippetMap, updateSnippetMap, isSnippetMapLoading, snippetMapError] =
-    useSnippets(initialSnippetMap, user);
+  const {
+    snippetMap,
+    setSnippetMap: updateSnippetMap,
+    isLoading: isSnippetMapLoading,
+    error: snippetMapError,
+  } = useSnippets(initialSnippetMap, user);
   const [currentMandalartId, updateMandalartId] = useState<string | null>(
     initialMandalartId
   );
-  const [currentTopicTree, updateTopicTree, isTopicTreeLoading, topicsError] =
-    useTopics(initialTopicTree, user, currentMandalartId);
+  const {
+    topicTree: currentTopicTree,
+    setTopicTree: updateTopicTree,
+    isLoading: isTopicTreeLoading,
+    error: topicsError,
+  } = useTopics(initialTopicTree, user, currentMandalartId);
   const isLoading = isSnippetMapLoading || isTopicTreeLoading;
   const error = useMemo(
     () => (snippetMapError ? snippetMapError : topicsError),
@@ -175,7 +183,7 @@ const useMandalarts = (
     updateMandalartId(last ? last : null);
   }, [snippetMap, currentMandalartId]);
 
-  return [
+  return {
     snippetMap,
     currentMandalartId,
     currentTopicTree,
@@ -187,7 +195,7 @@ const useMandalarts = (
     saveSnippet,
     saveTopics,
     uploadDraft,
-  ] as const;
+  };
 };
 
 const canUpload = (currentSize: number, uploadSize: number) => {

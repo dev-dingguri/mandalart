@@ -34,7 +34,7 @@ const useUser = (initialUser: User | null) => {
     });
   }, []);
 
-  return [user, isLoading, error] as const;
+  return { user, isLoading, error };
 };
 
 export default useUser;
