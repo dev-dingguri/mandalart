@@ -4,7 +4,7 @@
 @value containerMinWidth: 27em;
 @value addHeaderWidth: 0.8em;
 
-.main {
+.mainCommon {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,21 +58,4 @@
     width: containerWidth;
     min-width: containerMinWidth;
   }
-}
-
-/* Loading */
-
-.loading {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.spinner {  
-  width: 4em;
-  height: 4em;
-  color: var(--color-font-1);
 }

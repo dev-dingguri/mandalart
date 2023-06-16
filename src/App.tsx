@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './App.module.css';
-import Main from 'components/Main/Main';
+import MainPage from 'components/MainPage/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import OpenSourceLicenses from 'components/OpenSourceLicenses/OpenSourceLicenses';
 import { useTranslation } from 'react-i18next';
@@ -38,7 +38,7 @@ const App = () => {
         <Routes>
           <Route
             path={`/${lang}${PATH_MAIN}`} //
-            element={<Main />}
+            element={<MainPage />}
           />
           <Route
             path={`/${lang}${PATH_OSS}`}

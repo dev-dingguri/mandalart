@@ -14,29 +14,24 @@ import {
 import mandalartsStorage from '../services/mandalartsStorage';
 import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
+import { MandalartsHandlers } from 'components/MainCommon/MainCommon';
 
-const TMP_SNIPPET_MAP = new Map<string, Snippet>([
-  [TMP_MANDALART_ID, DEFAULT_SNIPPET],
-]);
-
-const useMandalarts = (
-  user: User | null,
+const useUserMandalarts = (
+  user: User,
   initialSnippetMap: Map<string, Snippet>,
   initialMandalartId: string | null,
   initialTopicTree: TopicNode | null
-) => {
+): MandalartsHandlers & { isLoading: boolean } => {
   const {
     snippetMap,
-    setSnippetMap: updateSnippetMap,
     isLoading: isSnippetMapLoading,
     error: snippetMapError,
   } = useSnippets(initialSnippetMap, user);
-  const [currentMandalartId, updateMandalartId] = useState<string | null>(
+  const [currentMandalartId, selectMandalartId] = useState<string | null>(
     initialMandalartId
   );
   const {
     topicTree: currentTopicTree,
-    setTopicTree: updateTopicTree,
     isLoading: isTopicTreeLoading,
     error: topicsError,
   } = useTopics(initialTopicTree, user, currentMandalartId);
@@ -50,9 +45,7 @@ const useMandalarts = (
 
   const createMandalart = useCallback(
     async (user: User | null, snippet: Snippet, topicTree: TopicNode) => {
-      if (!user) {
-        throw new Error(`${t('mandalart.errors.create.signInRequired')}`);
-      }
+      if (!user) return;
       if (!canUpload(snippetMap.size, 1)) {
         // todo: 커스텀 에러 검토
         throw new Error(
@@ -67,7 +60,7 @@ const useMandalarts = (
           if (!mandalartId) {
             throw new Error(`${t('mandalart.errors.create.default')}`);
           }
-          updateMandalartId(mandalartId);
+          selectMandalartId(mandalartId);
           return repository.saveTopics(user.uid, mandalartId, topicTree);
         });
     },
@@ -76,36 +69,22 @@ const useMandalarts = (
 
   const deleteMandalart = useCallback(
     async (user: User | null, mandalartId: string | null) => {
+      if (!user) return;
       if (!mandalartId) return;
-      if (user) {
-        return repository.deleteSnippet(user.uid, mandalartId).then(() => {
-          return repository.deleteTopics(user.uid, mandalartId);
-        });
-      } else {
-        updateSnippetMap((snippetMap) => {
-          const deleted = new Map(snippetMap);
-          return deleted.delete(mandalartId) ? deleted : snippetMap;
-        });
-        mandalartsStorage.deleteSnippets();
-        mandalartsStorage.deleteTopics();
-      }
+      return repository.deleteSnippet(user.uid, mandalartId).then(() => {
+        return repository.deleteTopics(user.uid, mandalartId);
+      });
     },
-    [updateSnippetMap]
+    []
   );
 
   const saveSnippet = useCallback(
     async (user: User | null, mandalartId: string | null, snippet: Snippet) => {
+      if (!user) return;
       if (!mandalartId) return;
-      if (user) {
-        return repository.saveSnippet(user.uid, mandalartId, snippet);
-      } else {
-        updateSnippetMap((snippetMap) =>
-          new Map(snippetMap).set(mandalartId, snippet)
-        );
-        mandalartsStorage.saveSnippets(new Map([[TMP_MANDALART_ID, snippet]]));
-      }
+      return repository.saveSnippet(user.uid, mandalartId, snippet);
     },
-    [updateSnippetMap]
+    []
   );
 
   const saveTopics = useCallback(
@@ -114,22 +93,15 @@ const useMandalarts = (
       mandalartId: string | null,
       topicTree: TopicNode
     ) => {
-      if (user && mandalartId) {
-        return repository.saveTopics(user.uid, mandalartId, topicTree);
-      } else {
-        if (mandalartId === currentMandalartId) {
-          updateTopicTree(topicTree);
-        }
-        mandalartsStorage.saveTopics(new Map([[TMP_MANDALART_ID, topicTree]]));
-      }
+      if (!user) return;
+      if (!mandalartId) return;
+      return repository.saveTopics(user.uid, mandalartId, topicTree);
     },
-    [currentMandalartId, updateTopicTree]
+    []
   );
 
   const uploadDraft = useCallback(
     async (user: User | null) => {
-      if (!user) return;
-
       const savedSnippet = mandalartsStorage
         .readSnippets()
         .get(TMP_MANDALART_ID);
@@ -159,24 +131,9 @@ const useMandalarts = (
   );
 
   useEffect(() => {
-    if (user) return;
-
-    const savedSnippetMap = mandalartsStorage.readSnippets();
-    const snippetMap = savedSnippetMap.has(TMP_MANDALART_ID)
-      ? savedSnippetMap
-      : TMP_SNIPPET_MAP;
-    const savedTopicTree = mandalartsStorage.readTopics().get(TMP_MANDALART_ID);
-    const topicTree = savedTopicTree ? savedTopicTree : DEFAULT_TOPIC_TREE;
-
-    updateSnippetMap(snippetMap);
-    updateMandalartId(TMP_MANDALART_ID);
-    updateTopicTree(topicTree);
-  }, [user, updateSnippetMap, updateMandalartId, updateTopicTree]);
-
-  useEffect(() => {
     if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
     const last = Array.from(snippetMap.keys()).pop();
-    updateMandalartId(last ? last : null);
+    selectMandalartId(last ? last : null);
   }, [snippetMap, currentMandalartId]);
 
   return {
@@ -185,7 +142,7 @@ const useMandalarts = (
     currentTopicTree,
     isLoading,
     error,
-    updateMandalartId,
+    selectMandalartId,
     createMandalart,
     deleteMandalart,
     saveSnippet,
@@ -206,4 +163,4 @@ const isAnyChanged = (snippet: Snippet, topicTree: TopicNode) => {
   );
 };
 
-export default useMandalarts;
+export default useUserMandalarts;

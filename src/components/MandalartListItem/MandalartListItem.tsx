@@ -53,7 +53,7 @@ const MandalartListItem = ({
       case 'rename':
         return showEditor();
       default:
-        throw new Error(`Not supported menu option. option=${value}`);
+        throw new Error(`Unsupported menu option. option=${value}`);
     }
   };
 

@@ -1,0 +1,20 @@
+/* Loading */
+
+.loading {
+  display: none;
+}
+
+.loading.shown {  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.spinner {  
+  width: 4em;
+  height: 4em;
+  color: var(--color-font-1);
+}

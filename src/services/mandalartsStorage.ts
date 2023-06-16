@@ -23,6 +23,7 @@ class MandalartsStorage {
       : new Map<string, Snippet>();
   }
 
+  // todo: 단일 항목 저장 기능 추가
   saveSnippets(snippetMap: Map<string, Snippet>) {
     this.storage.setItem(
       STORAGE_KEY_SNIPPETS,
@@ -41,6 +42,7 @@ class MandalartsStorage {
       : new Map<string, TopicNode>();
   }
 
+  // todo: 단일 항목 저장 기능 추가
   saveTopics(topicsMap: Map<string, TopicNode>) {
     this.storage.setItem(
       STORAGE_KEY_TOPIC_TREES,
