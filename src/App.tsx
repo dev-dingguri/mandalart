@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import styles from './App.module.css';
 import MainPage from 'components/MainPage/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import OpenSourceLicenses from 'components/OpenSourceLicenses/OpenSourceLicenses';
+import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage/OpenSourceLicensesPage';
 import { useTranslation } from 'react-i18next';
 import { PATH_MAIN, PATH_OSS } from 'constants/constants';
 import { Helmet } from 'react-helmet-async';
@@ -42,7 +42,7 @@ const App = () => {
           />
           <Route
             path={`/${lang}${PATH_OSS}`}
-            element={<OpenSourceLicenses />}
+            element={<OpenSourceLicensesPage />}
           />
           <Route path="*" element={<Navigate to={`/${lang}${PATH_MAIN}`} />} />
         </Routes>

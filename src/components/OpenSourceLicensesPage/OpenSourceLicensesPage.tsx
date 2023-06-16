@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BsChevronLeft } from 'react-icons/bs';
-import styles from './OpenSourceLicenses.module.css';
+import styles from './OpenSourceLicensesPage.module.css';
 import Button from 'components/Button/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -49,7 +49,7 @@ const Item = ({ name, licenses, repository }: License) => {
   );
 };
 
-const OpenSourceLicenses = () => {
+const OpenSourceLicensesPage = () => {
   const [licenses, setLicenses] = useState<License[]>([]);
   const { t, i18n } = useTranslation();
   const lang = i18n.languages[0];
@@ -89,4 +89,4 @@ const mapToArray = (licenseMap: { [key: string]: License }) => {
   return Object.keys(licenseMap).map((key) => licenseMap[key]);
 };
 
-export default OpenSourceLicenses;
+export default OpenSourceLicensesPage;
