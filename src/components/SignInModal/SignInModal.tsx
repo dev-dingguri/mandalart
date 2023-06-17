@@ -6,14 +6,15 @@ import googleIco from 'assets/images/google.svg';
 import Button from 'components/Button/Button';
 import { BsXLg } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
+import useAuthWrapper from 'hooks/useAuthWrapper';
 
 type SignInModalProps = {
   isShown: boolean;
   onClose: () => void;
-  onSignIn: (providerId: string) => void;
 };
 
-const SignInModal = ({ isShown, onClose, onSignIn }: SignInModalProps) => {
+const SignInModal = ({ isShown, onClose }: SignInModalProps) => {
+  const { signIn } = useAuthWrapper();
   const { t } = useTranslation();
 
   return (
@@ -26,7 +27,7 @@ const SignInModal = ({ isShown, onClose, onSignIn }: SignInModalProps) => {
         <p className={styles.message}>{t('signInModal.message')}</p>
         <Button
           className={styles.signInButton}
-          onClick={() => onSignIn(ProviderId.GOOGLE)}
+          onClick={() => signIn(ProviderId.GOOGLE)}
         >
           <img className={styles.logo} src={googleIco} alt="google" />
           <span>{t('signInModal.signIn.google')}</span>

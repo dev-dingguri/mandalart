@@ -4,11 +4,11 @@ import Button from 'components/Button/Button';
 import { BsList, BsThreeDots } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
+import useAuthWrapper from 'hooks/useAuthWrapper';
 
 type HeaderProps = {
   user: User | null;
   onShowSignInUI: () => void;
-  onSignOut: () => void;
   onShowLeftAside: () => void;
   onShowRightAside: () => void;
 };
@@ -16,14 +16,14 @@ type HeaderProps = {
 const Header = ({
   user,
   onShowSignInUI,
-  onSignOut,
   onShowLeftAside,
   onShowRightAside,
 }: HeaderProps) => {
+  const { signOut } = useAuthWrapper();
   const { t } = useTranslation();
 
   const signButton = user ? (
-    <Button className={styles.signButton} onClick={onSignOut}>
+    <Button className={styles.signButton} onClick={signOut}>
       {t('auth.signOut')}
     </Button>
   ) : (

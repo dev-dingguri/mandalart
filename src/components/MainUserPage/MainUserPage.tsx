@@ -8,11 +8,15 @@ import { useEffect } from 'react';
 
 type MainUserPageProps = {
   user: User;
-  userError: Error | null;
-  setIsLoading: (isLoading: boolean) => void;
+  signinError?: Error;
+  toggleLoading: (isLoading: boolean) => void;
 };
 
-const MainUserPage = ({ user, userError, setIsLoading }: MainUserPageProps) => {
+const MainUserPage = ({
+  user,
+  signinError,
+  toggleLoading,
+}: MainUserPageProps) => {
   const { ...mandalartsHandlers } = useUserMandalarts(
     user,
     new Map<string, Snippet>(),
@@ -22,14 +26,14 @@ const MainUserPage = ({ user, userError, setIsLoading }: MainUserPageProps) => {
   const { isLoading } = mandalartsHandlers;
 
   useEffect(() => {
-    setIsLoading(isLoading);
-  }, [isLoading, setIsLoading]);
+    toggleLoading(isLoading);
+  }, [isLoading, toggleLoading]);
 
   if (isLoading) return null;
 
   return (
     <MainCommon
-      userHandlers={{ user, error: userError }}
+      userHandlers={{ user, error: signinError }}
       mandalartsHandlers={mandalartsHandlers}
     />
   );

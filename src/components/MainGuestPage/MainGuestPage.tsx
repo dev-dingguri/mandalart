@@ -3,10 +3,10 @@ import MainCommon from 'components/MainCommon/MainCommon';
 import useGuestMandalarts from 'hooks/useGuestMandalarts';
 
 type MainGuestPageProps = {
-  userError: Error | null;
+  signinError?: Error;
 };
 
-const MainGuestPage = ({ userError }: MainGuestPageProps) => {
+const MainGuestPage = ({ signinError }: MainGuestPageProps) => {
   const { ...mandalartsHandlers } = useGuestMandalarts(
     new Map<string, Snippet>(),
     null,
@@ -14,7 +14,10 @@ const MainGuestPage = ({ userError }: MainGuestPageProps) => {
   );
 
   return (
-    <MainCommon userHandlers={{}} mandalartsHandlers={mandalartsHandlers} />
+    <MainCommon
+      userHandlers={{ error: signinError }}
+      mandalartsHandlers={mandalartsHandlers}
+    />
   );
 };
 

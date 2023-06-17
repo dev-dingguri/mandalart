@@ -7,6 +7,8 @@ import { IconContext } from 'react-icons/lib';
 import { ThemeProvider } from 'contexts/ThemeContext';
 import { AlertProvider } from 'contexts/AlertContext';
 import { HelmetProvider } from 'react-helmet-async';
+import { FirebaseAppProvider } from 'reactfire';
+import { firebaseConfig } from 'services/firebase';
 import 'locales/i18n';
 
 const root = ReactDOM.createRoot(
@@ -17,11 +19,13 @@ root.render(
   <React.StrictMode>
     <HelmetProvider>
       <IconContext.Provider value={{ className: 'react-icons' }}>
-        <ThemeProvider>
-          <AlertProvider>
-            <App />
-          </AlertProvider>
-        </ThemeProvider>
+        <FirebaseAppProvider firebaseConfig={firebaseConfig}>
+          <ThemeProvider>
+            <AlertProvider>
+              <App />
+            </AlertProvider>
+          </ThemeProvider>
+        </FirebaseAppProvider>
       </IconContext.Provider>
     </HelmetProvider>
   </React.StrictMode>

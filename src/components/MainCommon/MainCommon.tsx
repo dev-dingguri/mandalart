@@ -6,7 +6,6 @@ import {
   Dispatch,
 } from 'react';
 import styles from './MainCommon.module.css';
-import authService from 'services/authService';
 import Header from 'components/Header/Header';
 import SignInModal from 'components/SignInModal/SignInModal';
 import MandalartView from 'components/MandalartView/MandalartView';
@@ -21,10 +20,11 @@ import signInSessionStorage from '../../services/signInSessionStorage';
 import { TopicNode } from '../../types/TopicNode';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
+import useAuthWrapper from 'hooks/useAuthWrapper';
 
 export type UserHandlers = {
   user?: User | null;
-  error?: Error | null;
+  error?: Error;
 };
 
 export type MandalartsHandlers = {
@@ -61,7 +61,7 @@ type MainCommonProps = {
 };
 
 const MainCommon = ({
-  userHandlers: { user = null, error: userError = null },
+  userHandlers: { user = null, error: signinError },
   mandalartsHandlers: {
     snippetMap,
     currentMandalartId,
@@ -75,6 +75,8 @@ const MainCommon = ({
     uploadDraft,
   },
 }: MainCommonProps) => {
+  const { signOut } = useAuthWrapper();
+
   const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
     useBoolean(false);
   const [isShownRightAside, { on: showRightAside, off: closeRightAside }] =
@@ -84,9 +86,6 @@ const MainCommon = ({
   const { Alert, show: showAlert } = useAlert();
 
   const { t } = useTranslation();
-
-  const handleSignIn = (providerid: string) => authService.signIn(providerid);
-  const handleSignOut = () => authService.signOut();
 
   const handleSnippetChange = useCallback(
     (snippet: Snippet) => {
@@ -115,17 +114,17 @@ const MainCommon = ({
     currentTopicTree !== null;
 
   useEffect(() => {
-    if (!userError) return;
+    if (!signinError) return;
 
-    showAlert(t('auth.errors.signIn.default', { detail: userError.message }));
-  }, [userError, showAlert, t]);
+    showAlert(t('auth.errors.signIn.default', { detail: signinError.message }));
+  }, [signinError, showAlert, t]);
 
   useEffect(() => {
     if (!mandalartsError) return;
 
     showAlert(t('mandalart.errors.sync.default'));
-    authService.signOut();
-  }, [mandalartsError, showAlert, t]);
+    signOut();
+  }, [mandalartsError, showAlert, signOut, t]);
 
   useEffect(() => {
     if (!user) return;
@@ -146,7 +145,6 @@ const MainCommon = ({
         <Header
           user={user}
           onShowSignInUI={showSignInModal}
-          onSignOut={handleSignOut}
           onShowLeftAside={showLeftAside}
           onShowRightAside={showRightAside}
         />
@@ -203,11 +201,7 @@ const MainCommon = ({
         onClose={closeLeftAside}
       />
       <RightAside isShown={isShownRightAside} onClose={closeRightAside} />
-      <SignInModal
-        isShown={isShownSignInModal}
-        onClose={closeSignInModal}
-        onSignIn={handleSignIn}
-      />
+      <SignInModal isShown={isShownSignInModal} onClose={closeSignInModal} />
       <Alert />
     </section>
   );
