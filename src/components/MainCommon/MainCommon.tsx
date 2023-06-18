@@ -28,7 +28,7 @@ export type UserHandlers = {
 };
 
 export type MandalartsHandlers = {
-  snippetMap: Map<string, Snippet>;
+  snippetMap: Map<string, Snippet> | null;
   currentMandalartId: string | null;
   currentTopicTree: TopicNode | null;
   error?: Error | null;
@@ -102,12 +102,14 @@ const MainCommon = ({
   );
 
   const currentSnippet = useMemo(() => {
+    if (!snippetMap) return null;
     if (!currentMandalartId) return null;
     const snippet = snippetMap.get(currentMandalartId);
     return snippet ? snippet : null;
   }, [snippetMap, currentMandalartId]);
 
   const hasMandalart =
+    snippetMap &&
     snippetMap.size > 0 &&
     currentMandalartId !== null &&
     currentSnippet !== null &&

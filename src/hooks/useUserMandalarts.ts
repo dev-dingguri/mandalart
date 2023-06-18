@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { User } from 'firebase/auth';
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
-import useSnippets from 'hooks/useSnippets';
+import useUserSnippets from 'hooks/useUserSnippets';
 import useUserTopics from 'hooks/useUserTopics';
 import repository from 'services/mandalartsRepository';
 import {
@@ -18,14 +18,13 @@ import { MandalartsHandlers } from 'components/MainCommon/MainCommon';
 
 const useUserMandalarts = (
   user: User,
-  initialSnippetMap: Map<string, Snippet>,
   initialMandalartId: string | null
 ): MandalartsHandlers & { isLoading: boolean } => {
   const {
     snippetMap,
     isLoading: isSnippetMapLoading,
     error: snippetMapError,
-  } = useSnippets(initialSnippetMap, user);
+  } = useUserSnippets(user);
   const [currentMandalartId, selectMandalartId] = useState<string | null>(
     initialMandalartId
   );
@@ -45,7 +44,7 @@ const useUserMandalarts = (
   const createMandalart = useCallback(
     async (user: User | null, snippet: Snippet, topicTree: TopicNode) => {
       if (!user) return;
-      if (!canUpload(snippetMap.size, 1)) {
+      if (snippetMap && !canUpload(snippetMap.size, 1)) {
         // todo: 커스텀 에러 검토
         throw new Error(
           `${t('mandalart.errors.create.maxUploaded', {
@@ -63,7 +62,7 @@ const useUserMandalarts = (
           return repository.saveTopics(user.uid, mandalartId, topicTree);
         });
     },
-    [snippetMap.size, t]
+    [snippetMap, t]
   );
 
   const deleteMandalart = useCallback(
@@ -130,6 +129,7 @@ const useUserMandalarts = (
   );
 
   useEffect(() => {
+    if (!snippetMap) return;
     if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
     const last = Array.from(snippetMap.keys()).pop();
     selectMandalartId(last ? last : null);

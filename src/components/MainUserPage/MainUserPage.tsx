@@ -17,11 +17,7 @@ const MainUserPage = ({
   signinError,
   toggleLoading,
 }: MainUserPageProps) => {
-  const { ...mandalartsHandlers } = useUserMandalarts(
-    user,
-    new Map<string, Snippet>(),
-    null
-  );
+  const { ...mandalartsHandlers } = useUserMandalarts(user, null);
   const { isLoading } = mandalartsHandlers;
 
   useEffect(() => {

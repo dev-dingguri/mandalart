@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 type LeftAsideProps = {
   isShown: boolean;
-  snippetMap: Map<string, Snippet>;
+  snippetMap: Map<string, Snippet> | null;
   selectedMandalartId: string | null;
   onSelectMandalart: (mandalartId: string) => void;
   onDeleteMandalart: (mandalartId: string) => void;
