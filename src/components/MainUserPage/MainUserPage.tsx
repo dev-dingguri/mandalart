@@ -20,7 +20,6 @@ const MainUserPage = ({
   const { ...mandalartsHandlers } = useUserMandalarts(
     user,
     new Map<string, Snippet>(),
-    null,
     null
   );
   const { isLoading } = mandalartsHandlers;

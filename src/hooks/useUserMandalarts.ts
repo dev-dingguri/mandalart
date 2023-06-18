@@ -3,7 +3,7 @@ import { User } from 'firebase/auth';
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
 import useSnippets from 'hooks/useSnippets';
-import useTopics from 'hooks/useTopics';
+import useUserTopics from 'hooks/useUserTopics';
 import repository from 'services/mandalartsRepository';
 import {
   MAX_UPLOAD_MANDALARTS_SIZE,
@@ -19,8 +19,7 @@ import { MandalartsHandlers } from 'components/MainCommon/MainCommon';
 const useUserMandalarts = (
   user: User,
   initialSnippetMap: Map<string, Snippet>,
-  initialMandalartId: string | null,
-  initialTopicTree: TopicNode | null
+  initialMandalartId: string | null
 ): MandalartsHandlers & { isLoading: boolean } => {
   const {
     snippetMap,
@@ -34,7 +33,7 @@ const useUserMandalarts = (
     topicTree: currentTopicTree,
     isLoading: isTopicTreeLoading,
     error: topicsError,
-  } = useTopics(initialTopicTree, user, currentMandalartId);
+  } = useUserTopics(user, currentMandalartId);
   const isLoading = isSnippetMapLoading || isTopicTreeLoading;
   const error = useMemo(
     () => (snippetMapError ? snippetMapError : topicsError),
