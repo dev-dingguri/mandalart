@@ -3,35 +3,33 @@ import Spinner from 'components/Spinner/Spinner';
 import MainUserPage from 'components/MainUserPage/MainUserPage';
 import MainGuestPage from 'components/MainGuestPage/MainGuestPage';
 import { useEffect, useMemo } from 'react';
-import { useSigninCheck } from 'reactfire';
 import useBoolean from 'hooks/useBoolean';
+import useSigninCheckWrapper from 'hooks/useSigninCheckWrapper';
 
 const MainPage = () => {
   const {
     status,
     data: signInCheckResult,
     error: signinError,
-  } = useSigninCheck();
-  const signinLoading = status === 'loading';
+  } = useSigninCheckWrapper();
   const [isShownLoading, { toggle: toggleLoading }] = useBoolean(true);
 
-  useEffect(() => {
-    toggleLoading(signinLoading);
-  }, [signinLoading, toggleLoading]);
-
   const MainCommon = useMemo(() => {
-    if (signinLoading) return null;
+    if (status === 'loading') return null;
     const { signedIn, user } = signInCheckResult;
-    return signedIn && user ? (
-      <MainUserPage
-        user={user}
-        signinError={signinError}
-        toggleLoading={toggleLoading}
-      />
-    ) : (
-      <MainGuestPage signinError={signinError} />
-    );
-  }, [signinLoading, signinError, signInCheckResult, toggleLoading]);
+    if (signedIn && user) {
+      return (
+        <MainUserPage
+          user={user}
+          signinError={signinError}
+          toggleLoading={toggleLoading}
+        />
+      );
+    } else {
+      toggleLoading(false);
+      return <MainGuestPage signinError={signinError} />;
+    }
+  }, [status, signinError, signInCheckResult, toggleLoading]);
 
   return (
     <>

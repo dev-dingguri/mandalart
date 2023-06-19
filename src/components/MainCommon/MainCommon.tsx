@@ -27,6 +27,7 @@ export type UserHandlers = {
   error?: Error;
 };
 
+// todo: 불필요한 파라미터 제거 검토(e.g. user)
 export type MandalartsHandlers = {
   snippetMap: Map<string, Snippet> | null;
   currentMandalartId: string | null;

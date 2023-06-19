@@ -16,6 +16,7 @@ const useAuthWrapper = () => {
 
   return { signIn, signOut };
 };
+
 const getProvider = (providerId: string) => {
   switch (providerId) {
     case GoogleAuthProvider.PROVIDER_ID:

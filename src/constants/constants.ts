@@ -35,6 +35,10 @@ export const DEFAULT_TOPIC_TREE: TopicNode = {
 export const STORAGE_KEY_SNIPPETS = 'mandalarts__snippets';
 export const STORAGE_KEY_TOPIC_TREES = 'mandalarts__topictrees';
 
+// database path
+export const DB_SNIPPETS_PATH = '/mandalarts/snippets/';
+export const DB_TOPIC_TREES_PATH = '/mandalarts/topictrees/';
+
 // url
 export const PATH_MAIN = '/';
 export const PATH_OSS = '/oss';

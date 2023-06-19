@@ -4,7 +4,6 @@ import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
 import useUserSnippets from 'hooks/useUserSnippets';
 import useUserTopics from 'hooks/useUserTopics';
-import repository from 'services/mandalartsRepository';
 import {
   MAX_UPLOAD_MANDALARTS_SIZE,
   TMP_MANDALART_ID,
@@ -24,16 +23,24 @@ const useUserMandalarts = (
     snippetMap,
     isLoading: isSnippetMapLoading,
     error: snippetMapError,
+    push: pushSnippet,
+    set: setSnippet,
+    remove: removeSnippet,
   } = useUserSnippets(user);
+
   const [currentMandalartId, selectMandalartId] = useState<string | null>(
     initialMandalartId
   );
+  // currentMandalartId가 null일 때 로딩이 끝나버리는 문제가 있음. 그래서 빈 만다라트가 보여질 가능성이 존재
   const {
     topicTree: currentTopicTree,
     isLoading: isTopicTreeLoading,
     error: topicsError,
+    set: setTopics,
+    remove: removeTopics,
   } = useUserTopics(user, currentMandalartId);
   const isLoading = isSnippetMapLoading || isTopicTreeLoading;
+
   const error = useMemo(
     () => (snippetMapError ? snippetMapError : topicsError),
     [snippetMapError, topicsError]
@@ -52,37 +59,35 @@ const useUserMandalarts = (
           })}`
         );
       }
-      return repository
-        .createSnippet(user.uid, snippet)
-        .then(({ key: mandalartId }) => {
-          if (!mandalartId) {
-            throw new Error(`${t('mandalart.errors.create.default')}`);
-          }
-          selectMandalartId(mandalartId);
-          return repository.saveTopics(user.uid, mandalartId, topicTree);
-        });
+      return pushSnippet(snippet).then(({ key: mandalartId }) => {
+        if (!mandalartId) {
+          throw new Error(`${t('mandalart.errors.create.default')}`);
+        }
+        selectMandalartId(mandalartId);
+        return setTopics(topicTree);
+      });
     },
-    [snippetMap, t]
+    [snippetMap, pushSnippet, setTopics, t]
   );
 
   const deleteMandalart = useCallback(
     async (user: User | null, mandalartId: string | null) => {
       if (!user) return;
       if (!mandalartId) return;
-      return repository.deleteSnippet(user.uid, mandalartId).then(() => {
-        return repository.deleteTopics(user.uid, mandalartId);
+      return removeSnippet(mandalartId).then(() => {
+        return removeTopics(mandalartId);
       });
     },
-    []
+    [removeSnippet, removeTopics]
   );
 
   const saveSnippet = useCallback(
     async (user: User | null, mandalartId: string | null, snippet: Snippet) => {
       if (!user) return;
       if (!mandalartId) return;
-      return repository.saveSnippet(user.uid, mandalartId, snippet);
+      return setSnippet(mandalartId, snippet);
     },
-    []
+    [setSnippet]
   );
 
   const saveTopics = useCallback(
@@ -93,9 +98,9 @@ const useUserMandalarts = (
     ) => {
       if (!user) return;
       if (!mandalartId) return;
-      return repository.saveTopics(user.uid, mandalartId, topicTree);
+      return setTopics(topicTree);
     },
-    []
+    [setTopics]
   );
 
   const uploadDraft = useCallback(
@@ -151,7 +156,6 @@ const useUserMandalarts = (
 };
 
 const canUpload = (currentSize: number, uploadSize: number) => {
-  // todo: snippet에 isLocal만들고 필터링 필요
   return currentSize + uploadSize <= MAX_UPLOAD_MANDALARTS_SIZE;
 };
 
