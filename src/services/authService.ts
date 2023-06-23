@@ -20,7 +20,9 @@ class AuthService {
   }
 
   getRedirectResult() {
-    return getRedirectResult(auth);
+    return getRedirectResult(auth).then((userCred) =>
+      userCred ? userCred.user : null
+    );
   }
 
   onAuthStateChanged(observer: (user: User | null) => void) {

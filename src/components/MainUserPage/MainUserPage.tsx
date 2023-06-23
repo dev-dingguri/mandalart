@@ -1,5 +1,4 @@
 import useUserMandalarts from '../../hooks/useUserMandalarts';
-import { Snippet } from '../../types/Snippet';
 import MainCommon from 'components/MainCommon/MainCommon';
 import { User } from 'firebase/auth';
 import { useEffect } from 'react';
@@ -13,12 +12,7 @@ type MainUserPageProps = {
 };
 
 const MainUserPage = ({ user, userError, setIsLoading }: MainUserPageProps) => {
-  const { ...mandalartsHandlers } = useUserMandalarts(
-    user,
-    new Map<string, Snippet>(),
-    null,
-    null
-  );
+  const { ...mandalartsHandlers } = useUserMandalarts(user);
   const { isLoading } = mandalartsHandlers;
 
   useEffect(() => {

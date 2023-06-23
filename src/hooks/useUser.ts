@@ -1,40 +1,32 @@
-import useBoolean from 'hooks/useBoolean';
-import { useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { User } from 'firebase/auth';
 import authService from 'services/authService';
 import signInSessionStorage from '../services/signInSessionStorage';
+import useSubscription from './useSubscription';
 
-const useUser = (initialUser: User | null) => {
-  const [user, setUser] = useState<User | null>(initialUser);
-  const [isLoading, { on: startLoading, off: endLoading }] = useBoolean(false);
-  const [error, setError] = useState<Error | null>(null);
-
-  useEffect(() => {
-    startLoading();
-    setError(null);
-    authService
-      .getRedirectResult()
-      .then((userCred) => {
-        if (!userCred) return;
-        signInSessionStorage.initial(userCred.user);
-      })
-      .catch((e) => {
-        console.log(`errorCode=${e.code} errorMessage=${e.message}`);
-        setError(e);
-      })
-      .finally(() => {
-        endLoading();
+const useUser = () => {
+  const subscribe = useCallback(
+    (
+      updateCallback: (data: User | null) => void,
+      cancelCallback: (error: Error) => void
+    ) => {
+      authService
+        .getRedirectResult()
+        .then((user) => {
+          if (!user) return; // 리디렉션 작업이 호출되지 않은 경우 user = null
+          signInSessionStorage.initial(user); // todo: 개선 검토
+        })
+        .catch(cancelCallback);
+      return authService.onAuthStateChanged((user) => {
+        updateCallback(user);
       });
-  }, [startLoading, endLoading]);
+    },
+    []
+  );
 
-  useEffect(() => {
-    return authService.onAuthStateChanged((user) => {
-      console.log(`AuthStateChange user=${user ? user.email : 'none'}`);
-      setUser(user);
-    });
-  }, []);
+  const { data, status, error } = useSubscription<User>(subscribe);
 
-  return { user, isLoading, error };
+  return { user: data, isLoading: status === 'loading', error };
 };
 
 export default useUser;

@@ -21,8 +21,8 @@ class MandalartsRepository {
 
   syncSnippets(
     userId: string,
-    onUpdate: (snippetMap: Map<string, Snippet>) => void,
-    onError?: (error: Error) => void
+    updateCallback: (snippetMap: Map<string, Snippet>) => void,
+    cancelCallback?: (error: Error) => void
   ) {
     return onValue(
       ref(db, `${userId}${SNIPPETS_PATH}`),
@@ -33,9 +33,9 @@ class MandalartsRepository {
           const val = childSnapshot.val();
           key && snippetMap.set(key, val);
         });
-        onUpdate(snippetMap);
+        updateCallback(snippetMap);
       },
-      onError
+      cancelCallback
     );
   }
 
@@ -53,16 +53,16 @@ class MandalartsRepository {
   syncTopics(
     userId: string,
     mandalartId: string,
-    onUpdate: (topicTree: TopicNode) => void,
-    onError?: (error: Error) => void
+    updateCallback: (topicTree: TopicNode) => void,
+    cancelCallback?: (error: Error) => void
   ) {
     return onValue(
       ref(db, `${userId}${TOPIC_TREES_PATH}${mandalartId}`),
       (snapshot) => {
         const topicTree = snapshot.val();
-        topicTree && onUpdate(topicTree);
+        topicTree && updateCallback(topicTree);
       },
-      onError
+      cancelCallback
     );
   }
 }

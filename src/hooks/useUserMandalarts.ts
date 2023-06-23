@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useLayoutEffect } from 'react';
 import { User } from 'firebase/auth';
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
-import useSnippets from 'hooks/useSnippets';
-import useTopics from 'hooks/useTopics';
+import useSnippets from 'hooks/useUserSnippets';
+import useTopics from 'hooks/useUserTopics';
 import repository from 'services/mandalartsRepository';
 import {
   MAX_UPLOAD_MANDALARTS_SIZE,
@@ -17,24 +17,20 @@ import { useTranslation } from 'react-i18next';
 import { MandalartsHandlers } from 'components/MainCommon/MainCommon';
 
 const useUserMandalarts = (
-  user: User,
-  initialSnippetMap: Map<string, Snippet>,
-  initialMandalartId: string | null,
-  initialTopicTree: TopicNode | null
+  user: User
 ): MandalartsHandlers & { isLoading: boolean } => {
   const {
     snippetMap,
     isLoading: isSnippetMapLoading,
     error: snippetMapError,
-  } = useSnippets(initialSnippetMap, user);
-  const [currentMandalartId, selectMandalartId] = useState<string | null>(
-    initialMandalartId
-  );
+  } = useSnippets(user);
+  // todo: 스니펫이 로딩된 후, 만다라트 id가 변경되기 전까지 토픽 로딩 상태가 false인 상황이 발생하고 있음
+  const [currentMandalartId, selectMandalartId] = useState<string | null>(null);
   const {
     topicTree: currentTopicTree,
     isLoading: isTopicTreeLoading,
     error: topicsError,
-  } = useTopics(initialTopicTree, user, currentMandalartId);
+  } = useTopics(user, currentMandalartId);
   const isLoading = isSnippetMapLoading || isTopicTreeLoading;
   const error = useMemo(
     () => (snippetMapError ? snippetMapError : topicsError),
@@ -130,7 +126,7 @@ const useUserMandalarts = (
     [createMandalart, t]
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
     const last = Array.from(snippetMap.keys()).pop();
     selectMandalartId(last ? last : null);

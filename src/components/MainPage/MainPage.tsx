@@ -6,7 +6,7 @@ import MainGuestPage from 'components/MainGuestPage/MainGuestPage';
 import { useEffect, useMemo, useState } from 'react';
 
 const MainPage = () => {
-  const { user, isLoading: isUserLoading, error: userError } = useUser(null);
+  const { user, isLoading: isUserLoading, error: userError } = useUser();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
