@@ -1,5 +1,5 @@
 import { Snippet } from '../../types/Snippet';
-import MainCommon from 'components/MainCommon/MainCommon';
+import MainContents from 'components/MainContents/MainContents';
 import useGuestMandalarts from 'hooks/useGuestMandalarts';
 
 type MainGuestPageProps = {
@@ -14,7 +14,7 @@ const MainGuestPage = ({ userError }: MainGuestPageProps) => {
   );
 
   return (
-    <MainCommon userHandlers={{}} mandalartsHandlers={mandalartsHandlers} />
+    <MainContents userHandlers={{}} mandalartsHandlers={mandalartsHandlers} />
   );
 };
 

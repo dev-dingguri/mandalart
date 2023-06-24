@@ -14,7 +14,7 @@ import {
 import mandalartsStorage from '../services/mandalartsStorage';
 import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { MandalartsHandlers } from 'components/MainCommon/MainCommon';
+import { MandalartsHandlers } from 'components/MainContents/MainContents';
 
 const useUserMandalarts = (
   user: User

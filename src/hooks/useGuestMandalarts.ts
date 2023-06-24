@@ -9,7 +9,7 @@ import {
 import mandalartsStorage from '../services/mandalartsStorage';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
-import { MandalartsHandlers } from 'components/MainCommon/MainCommon';
+import { MandalartsHandlers } from 'components/MainContents/MainContents';
 
 const TMP_SNIPPET_MAP = new Map<string, Snippet>([
   [TMP_MANDALART_ID, DEFAULT_SNIPPET],

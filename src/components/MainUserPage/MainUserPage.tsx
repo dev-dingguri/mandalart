@@ -1,5 +1,5 @@
 import useUserMandalarts from '../../hooks/useUserMandalarts';
-import MainCommon from 'components/MainCommon/MainCommon';
+import MainContents from 'components/MainContents/MainContents';
 import { User } from 'firebase/auth';
 import { useEffect } from 'react';
 
@@ -22,7 +22,7 @@ const MainUserPage = ({ user, userError, setIsLoading }: MainUserPageProps) => {
   if (isLoading) return null;
 
   return (
-    <MainCommon
+    <MainContents
       userHandlers={{ user, error: userError }}
       mandalartsHandlers={mandalartsHandlers}
     />

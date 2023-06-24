@@ -13,7 +13,7 @@ const MainPage = () => {
     setIsLoading(isUserLoading);
   }, [isUserLoading, setIsLoading]);
 
-  const Main2 = useMemo(() => {
+  const MainContents = useMemo(() => {
     if (isUserLoading) return null;
 
     return user ? (
@@ -32,7 +32,7 @@ const MainPage = () => {
       <div className={`${styles.loading} ${isLoading && styles.shown}`}>
         <Spinner className={styles.spinner} />
       </div>
-      {Main2}
+      {MainContents}
     </>
   );
 };

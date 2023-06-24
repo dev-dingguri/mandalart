@@ -5,7 +5,7 @@ import {
   SetStateAction,
   Dispatch,
 } from 'react';
-import styles from './MainCommon.module.css';
+import styles from './MainContents.module.css';
 import authService from 'services/authService';
 import Header from 'components/Header/Header';
 import SignInModal from 'components/SignInModal/SignInModal';
@@ -55,12 +55,12 @@ export type MandalartsHandlers = {
   uploadDraft?: (user: User | null) => Promise<void>;
 };
 
-type MainCommonProps = {
+type MainContentsProps = {
   userHandlers: UserHandlers;
   mandalartsHandlers: MandalartsHandlers;
 };
 
-const MainCommon = ({
+const MainContents = ({
   userHandlers: { user = null, error: userError = null },
   mandalartsHandlers: {
     snippetMap,
@@ -74,7 +74,7 @@ const MainCommon = ({
     saveTopics,
     uploadDraft,
   },
-}: MainCommonProps) => {
+}: MainContentsProps) => {
   const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
     useBoolean(false);
   const [isShownRightAside, { on: showRightAside, off: closeRightAside }] =
@@ -213,4 +213,4 @@ const MainCommon = ({
   );
 };
 
-export default MainCommon;
+export default MainContents;
