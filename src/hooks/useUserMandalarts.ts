@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useLayoutEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
@@ -24,14 +24,19 @@ const useUserMandalarts = (
     isLoading: isSnippetMapLoading,
     error: snippetMapError,
   } = useSnippets(user);
-  // todo: 스니펫이 로딩된 후, 만다라트 id가 변경되기 전까지 토픽 로딩 상태가 false인 상황이 발생하고 있음
   const [currentMandalartId, selectMandalartId] = useState<string | null>(null);
   const {
     topicTree: currentTopicTree,
     isLoading: isTopicTreeLoading,
     error: topicsError,
   } = useTopics(user, currentMandalartId);
-  const isLoading = isSnippetMapLoading || isTopicTreeLoading;
+  // 스니펫이 로딩된 후, 만다라트 id 선택 및 현재 토픽 트리 로딩전까지 로딩 상태가 false인 상황 방지
+  // todo: 개선 필요
+  const isLoading =
+    isSnippetMapLoading ||
+    isTopicTreeLoading ||
+    (snippetMap.size > 0 && (!currentMandalartId || !currentTopicTree));
+
   const error = useMemo(
     () => (snippetMapError ? snippetMapError : topicsError),
     [snippetMapError, topicsError]
@@ -126,7 +131,7 @@ const useUserMandalarts = (
     [createMandalart, t]
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
     const last = Array.from(snippetMap.keys()).pop();
     selectMandalartId(last ? last : null);
