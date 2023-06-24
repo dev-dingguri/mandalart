@@ -6,7 +6,6 @@ import {
   Dispatch,
 } from 'react';
 import styles from './MainContents.module.css';
-import authService from 'services/authService';
 import Header from 'components/Header/Header';
 import SignInModal from 'components/SignInModal/SignInModal';
 import MandalartView from 'components/MandalartView/MandalartView';
@@ -21,6 +20,7 @@ import signInSessionStorage from '../../services/signInSessionStorage';
 import { TopicNode } from '../../types/TopicNode';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
+import useAuth from 'hooks/useAuth';
 
 export type UserHandlers = {
   user?: User | null;
@@ -85,8 +85,7 @@ const MainContents = ({
 
   const { t } = useTranslation();
 
-  const handleSignIn = (providerid: string) => authService.signIn(providerid);
-  const handleSignOut = () => authService.signOut();
+  const { signIn, signOut } = useAuth();
 
   const handleSnippetChange = useCallback(
     (snippet: Snippet) => {
@@ -124,8 +123,8 @@ const MainContents = ({
     if (!mandalartsError) return;
 
     showAlert(t('mandalart.errors.sync.default'));
-    authService.signOut();
-  }, [mandalartsError, showAlert, t]);
+    signOut();
+  }, [mandalartsError, showAlert, signOut, t]);
 
   useEffect(() => {
     if (!user) return;
@@ -146,7 +145,7 @@ const MainContents = ({
         <Header
           user={user}
           onShowSignInUI={showSignInModal}
-          onSignOut={handleSignOut}
+          onSignOut={signOut}
           onShowLeftAside={showLeftAside}
           onShowRightAside={showRightAside}
         />
@@ -206,7 +205,7 @@ const MainContents = ({
       <SignInModal
         isShown={isShownSignInModal}
         onClose={closeSignInModal}
-        onSignIn={handleSignIn}
+        onSignIn={signIn}
       />
       <Alert />
     </section>
