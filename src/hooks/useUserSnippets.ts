@@ -1,19 +1,14 @@
 import { Snippet } from 'types/Snippet';
 import { User } from 'firebase/auth';
-import repository from 'services/mandalartsRepository';
 import useSubscription from './useSubscription';
-import { useCallback } from 'react';
+import useDatabase from './useDatabase';
+import { DB_SNIPPETS } from 'constants/constants';
 
 const useUserSnippets = (user: User) => {
-  const subscribe = useCallback(
-    (
-      updateCallback: (data: Map<string, Snippet> | null) => void,
-      cancelCallback: (error: Error) => void
-    ) => repository.syncSnippets(user.uid, updateCallback, cancelCallback),
-    [user.uid]
-  );
+  const { subscribeList } = useDatabase<Snippet>(`${user.uid}/${DB_SNIPPETS}`);
+
   const { data, status, error } =
-    useSubscription<Map<string, Snippet>>(subscribe);
+    useSubscription<Map<string, Snippet>>(subscribeList);
 
   return {
     snippetMap: data ? data : new Map<string, Snippet>(),

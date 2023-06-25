@@ -4,17 +4,20 @@ import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
 import useSnippets from 'hooks/useUserSnippets';
 import useTopics from 'hooks/useUserTopics';
-import repository from 'services/mandalartsRepository';
+//import repository from 'services/mandalartsRepository';
 import {
   MAX_UPLOAD_MANDALARTS_SIZE,
   TMP_MANDALART_ID,
   DEFAULT_SNIPPET,
   DEFAULT_TOPIC_TREE,
+  DB_SNIPPETS,
+  DB_TOPIC_TREES,
 } from 'constants/constants';
 import mandalartsStorage from '../services/mandalartsStorage';
 import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { MandalartsHandlers } from 'components/MainContents/MainContents';
+import useDatabase from './useDatabase';
 
 const useUserMandalarts = (
   user: User
@@ -24,12 +27,22 @@ const useUserMandalarts = (
     isLoading: isSnippetMapLoading,
     error: snippetMapError,
   } = useSnippets(user);
+  const {
+    push: pushSnippet,
+    set: setSnippet,
+    remove: removeSnippet,
+  } = useDatabase<Snippet>(`${user.uid}/${DB_SNIPPETS}`);
+
   const [currentMandalartId, selectMandalartId] = useState<string | null>(null);
   const {
     topicTree: currentTopicTree,
     isLoading: isTopicTreeLoading,
     error: topicsError,
   } = useTopics(user, currentMandalartId);
+  const { set: setTopics, remove: removeTopics } = useDatabase<TopicNode>(
+    `${user.uid}/${DB_TOPIC_TREES}`
+  );
+
   // 스니펫이 로딩된 후, 만다라트 id 선택 및 현재 토픽 트리 로딩전까지 로딩 상태가 false인 상황 방지
   // todo: 개선 필요
   const isLoading =
@@ -55,37 +68,35 @@ const useUserMandalarts = (
           })}`
         );
       }
-      return repository
-        .createSnippet(user.uid, snippet)
-        .then(({ key: mandalartId }) => {
-          if (!mandalartId) {
-            throw new Error(`${t('mandalart.errors.create.default')}`);
-          }
-          selectMandalartId(mandalartId);
-          return repository.saveTopics(user.uid, mandalartId, topicTree);
-        });
+      return pushSnippet(snippet).then(({ key: mandalartId }) => {
+        if (!mandalartId) {
+          throw new Error(`${t('mandalart.errors.create.default')}`);
+        }
+        selectMandalartId(mandalartId);
+        return setTopics(mandalartId, topicTree);
+      });
     },
-    [snippetMap.size, t]
+    [pushSnippet, setTopics, snippetMap.size, t]
   );
 
   const deleteMandalart = useCallback(
     async (user: User | null, mandalartId: string | null) => {
       if (!user) return;
       if (!mandalartId) return;
-      return repository.deleteSnippet(user.uid, mandalartId).then(() => {
-        return repository.deleteTopics(user.uid, mandalartId);
+      return removeSnippet(mandalartId).then(() => {
+        return removeTopics(mandalartId);
       });
     },
-    []
+    [removeSnippet, removeTopics]
   );
 
   const saveSnippet = useCallback(
     async (user: User | null, mandalartId: string | null, snippet: Snippet) => {
       if (!user) return;
       if (!mandalartId) return;
-      return repository.saveSnippet(user.uid, mandalartId, snippet);
+      return setSnippet(mandalartId, snippet);
     },
-    []
+    [setSnippet]
   );
 
   const saveTopics = useCallback(
@@ -96,9 +107,9 @@ const useUserMandalarts = (
     ) => {
       if (!user) return;
       if (!mandalartId) return;
-      return repository.saveTopics(user.uid, mandalartId, topicTree);
+      return setTopics(mandalartId, topicTree);
     },
-    []
+    [setTopics]
   );
 
   const uploadDraft = useCallback(
