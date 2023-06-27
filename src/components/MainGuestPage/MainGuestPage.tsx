@@ -14,7 +14,10 @@ const MainGuestPage = ({ userError }: MainGuestPageProps) => {
   );
 
   return (
-    <MainContents userHandlers={{}} mandalartsHandlers={mandalartsHandlers} />
+    <MainContents
+      userHandlers={{ error: userError }}
+      mandalartsHandlers={mandalartsHandlers}
+    />
   );
 };
 
