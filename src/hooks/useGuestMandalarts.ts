@@ -8,7 +8,6 @@ import {
 } from 'constants/constants';
 import mandalartsStorage from '../services/mandalartsStorage';
 import { useTranslation } from 'react-i18next';
-import { User } from 'firebase/auth';
 import { MandalartsHandlers } from 'components/MainContents/MainContents';
 
 const TMP_SNIPPET_MAP = new Map<string, Snippet>([
@@ -40,8 +39,7 @@ const useGuestMandalarts = (
   }, []);
 
   const saveSnippet = useCallback(
-    async (user: User | null, mandalartId: string | null, snippet: Snippet) => {
-      if (user) return;
+    async (mandalartId: string | null, snippet: Snippet) => {
       if (!mandalartId) return;
       updateSnippetMap((snippetMap) => {
         const newSnippetMap = new Map(snippetMap).set(mandalartId, snippet);
@@ -53,12 +51,7 @@ const useGuestMandalarts = (
   );
 
   const saveTopics = useCallback(
-    async (
-      user: User | null,
-      mandalartId: string | null,
-      topicTree: TopicNode
-    ) => {
-      if (user) return;
+    async (mandalartId: string | null, topicTree: TopicNode) => {
       if (!mandalartId) return;
       if (mandalartId === currentMandalartId) {
         updateTopicTree(topicTree);

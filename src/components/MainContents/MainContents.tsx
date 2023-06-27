@@ -16,7 +16,6 @@ import RightAside from 'components/RightAside/RightAside';
 import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
 import { Snippet } from '../../types/Snippet';
-import signInSessionStorage from '../../services/signInSessionStorage';
 import { TopicNode } from '../../types/TopicNode';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
@@ -33,26 +32,14 @@ export type MandalartsHandlers = {
   currentTopicTree: TopicNode | null;
   error?: Error | null;
   selectMandalartId: Dispatch<SetStateAction<string | null>>;
-  createMandalart: (
-    user: User | null,
-    snippet: Snippet,
-    topicTree: TopicNode
-  ) => Promise<void>;
-  deleteMandalart: (
-    user: User | null,
-    mandalartId: string | null
-  ) => Promise<void>;
-  saveSnippet: (
-    user: User | null,
-    mandalartId: string | null,
-    snippet: Snippet
-  ) => Promise<void>;
+  createMandalart: (snippet: Snippet, topicTree: TopicNode) => Promise<void>;
+  deleteMandalart: (mandalartId: string | null) => Promise<void>;
+  saveSnippet: (mandalartId: string | null, snippet: Snippet) => Promise<void>;
   saveTopics: (
-    user: User | null,
     mandalartId: string | null,
     topicTree: TopicNode
   ) => Promise<void>;
-  uploadDraft?: (user: User | null) => Promise<void>;
+  uploadDraft?: () => Promise<void>;
 };
 
 type MainContentsProps = {
@@ -89,16 +76,16 @@ const MainContents = ({
 
   const handleSnippetChange = useCallback(
     (snippet: Snippet) => {
-      saveSnippet(user, currentMandalartId, snippet);
+      saveSnippet(currentMandalartId, snippet);
     },
-    [user, currentMandalartId, saveSnippet]
+    [currentMandalartId, saveSnippet]
   );
 
   const handleTopicTreeChange = useCallback(
     (topicTree: TopicNode) => {
-      saveTopics(user, currentMandalartId, topicTree);
+      saveTopics(currentMandalartId, topicTree);
     },
-    [user, currentMandalartId, saveTopics]
+    [currentMandalartId, saveTopics]
   );
 
   const currentSnippet = useMemo(() => {
@@ -127,17 +114,11 @@ const MainContents = ({
   }, [mandalartsError, showAlert, signOut, t]);
 
   useEffect(() => {
-    if (!user) return;
     if (!uploadDraft) return;
-    const data = signInSessionStorage.read(user);
-    if (!data || data.isTriedUploadDraft) return;
-
-    uploadDraft(user).catch((e: Error) => {
+    uploadDraft().catch((e: Error) => {
       e && showAlert(e.message);
     });
-    data.isTriedUploadDraft = true;
-    signInSessionStorage.save(user, data);
-  }, [user, uploadDraft, showAlert]);
+  }, [uploadDraft, showAlert]);
 
   return (
     <section className={styles.mainCommon}>
@@ -163,13 +144,11 @@ const MainContents = ({
           ) : (
             <EmptyMandalarts
               onCreateMandalart={() => {
-                createMandalart(
-                  user,
-                  DEFAULT_SNIPPET,
-                  DEFAULT_TOPIC_TREE
-                ).catch((e: Error) => {
-                  showAlert(e.message);
-                });
+                createMandalart(DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE).catch(
+                  (e: Error) => {
+                    showAlert(e.message);
+                  }
+                );
               }}
             />
           )}
@@ -181,19 +160,19 @@ const MainContents = ({
         selectedMandalartId={currentMandalartId}
         onSelectMandalart={(mandalartId) => selectMandalartId(mandalartId)}
         onDeleteMandalart={(mandalartId) => {
-          deleteMandalart(user, mandalartId);
+          deleteMandalart(mandalartId);
         }}
         onRenameMandalart={(mandalartId, name) => {
-          saveSnippet(user, mandalartId, {
+          saveSnippet(mandalartId, {
             title: name,
           });
         }}
         onResetMandalart={(mandalartId) => {
-          saveSnippet(user, mandalartId, DEFAULT_SNIPPET);
-          saveTopics(user, mandalartId, DEFAULT_TOPIC_TREE);
+          saveSnippet(mandalartId, DEFAULT_SNIPPET);
+          saveTopics(mandalartId, DEFAULT_TOPIC_TREE);
         }}
         onCreateMandalart={() => {
-          createMandalart(user, DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE).catch(
+          createMandalart(DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE).catch(
             (e: Error) => {
               showAlert(e.message);
             }

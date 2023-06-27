@@ -18,6 +18,7 @@ import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { MandalartsHandlers } from 'components/MainContents/MainContents';
 import useDatabase from './useDatabase';
+import signInSessionStorage from 'services/signInSessionStorage';
 
 const useUserMandalarts = (
   user: User
@@ -58,8 +59,7 @@ const useUserMandalarts = (
   const { t } = useTranslation();
 
   const createMandalart = useCallback(
-    async (user: User | null, snippet: Snippet, topicTree: TopicNode) => {
-      if (!user) return;
+    async (snippet: Snippet, topicTree: TopicNode) => {
       if (!canUpload(snippetMap.size, 1)) {
         // todo: 커스텀 에러 검토
         throw new Error(
@@ -80,8 +80,7 @@ const useUserMandalarts = (
   );
 
   const deleteMandalart = useCallback(
-    async (user: User | null, mandalartId: string | null) => {
-      if (!user) return;
+    async (mandalartId: string | null) => {
       if (!mandalartId) return;
       return removeSnippet(mandalartId).then(() => {
         return removeTopics(mandalartId);
@@ -91,8 +90,7 @@ const useUserMandalarts = (
   );
 
   const saveSnippet = useCallback(
-    async (user: User | null, mandalartId: string | null, snippet: Snippet) => {
-      if (!user) return;
+    async (mandalartId: string | null, snippet: Snippet) => {
       if (!mandalartId) return;
       return setSnippet(mandalartId, snippet);
     },
@@ -100,47 +98,40 @@ const useUserMandalarts = (
   );
 
   const saveTopics = useCallback(
-    async (
-      user: User | null,
-      mandalartId: string | null,
-      topicTree: TopicNode
-    ) => {
-      if (!user) return;
+    async (mandalartId: string | null, topicTree: TopicNode) => {
       if (!mandalartId) return;
       return setTopics(mandalartId, topicTree);
     },
     [setTopics]
   );
 
-  const uploadDraft = useCallback(
-    async (user: User | null) => {
-      const savedSnippet = mandalartsStorage
-        .readSnippets()
-        .get(TMP_MANDALART_ID);
-      const snippet = savedSnippet ? savedSnippet : DEFAULT_SNIPPET;
-      const savedTopicTree = mandalartsStorage
-        .readTopics()
-        .get(TMP_MANDALART_ID);
-      const topicTree = savedTopicTree ? savedTopicTree : DEFAULT_TOPIC_TREE;
+  const uploadDraft = useCallback(async () => {
+    const data = signInSessionStorage.read(user);
+    if (!data || data.isTriedUploadDraft) return;
+    data.isTriedUploadDraft = true;
+    signInSessionStorage.save(user, data);
 
-      if (!isAnyChanged(snippet, topicTree)) return;
+    const savedSnippet = mandalartsStorage.readSnippets().get(TMP_MANDALART_ID);
+    const snippet = savedSnippet ? savedSnippet : DEFAULT_SNIPPET;
+    const savedTopicTree = mandalartsStorage.readTopics().get(TMP_MANDALART_ID);
+    const topicTree = savedTopicTree ? savedTopicTree : DEFAULT_TOPIC_TREE;
 
-      return createMandalart(user, snippet, topicTree)
-        .then(() => {
-          mandalartsStorage.deleteSnippets();
-          mandalartsStorage.deleteTopics();
-        })
-        .catch((e: Error) => {
-          // todo: e가 'The Mandalart could not be created. ~~'에러인 경우에만
-          throw new Error(
-            `${t('mandalart.errors.uploadDraft.maxUploaded', {
-              maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
-            })}`
-          );
-        });
-    },
-    [createMandalart, t]
-  );
+    if (!isAnyChanged(snippet, topicTree)) return;
+
+    return createMandalart(snippet, topicTree)
+      .then(() => {
+        mandalartsStorage.deleteSnippets();
+        mandalartsStorage.deleteTopics();
+      })
+      .catch((e: Error) => {
+        // todo: e가 'The Mandalart could not be created. ~~'에러인 경우에만
+        throw new Error(
+          `${t('mandalart.errors.uploadDraft.maxUploaded', {
+            maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
+          })}`
+        );
+      });
+  }, [user, createMandalart, t]);
 
   useEffect(() => {
     if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
