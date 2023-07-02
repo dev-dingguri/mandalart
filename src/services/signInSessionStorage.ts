@@ -3,7 +3,7 @@ import { User } from 'firebase/auth';
 const SIGN_IN_SESSION = 'sign_in_session';
 
 type SignInSessionData = {
-  isTriedUploadDraft: boolean;
+  isTriedUploadTemp: boolean;
 };
 
 type SignInSessionsData = {
@@ -11,7 +11,7 @@ type SignInSessionsData = {
 };
 
 const DEFAULT_SIGN_IN_SESSION_DATA: SignInSessionData = {
-  isTriedUploadDraft: false,
+  isTriedUploadTemp: false,
 };
 
 class SignInSessionStorage {

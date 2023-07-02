@@ -39,7 +39,7 @@ export type MandalartsHandlers = {
     mandalartId: string | null,
     topicTree: TopicNode
   ) => Promise<void>;
-  uploadDraft?: () => Promise<void>;
+  uploadTemp?: () => Promise<void>;
 };
 
 type MainContentsProps = {
@@ -59,7 +59,7 @@ const MainContents = ({
     deleteMandalart,
     saveSnippet,
     saveTopicTree,
-    uploadDraft,
+    uploadTemp,
   },
 }: MainContentsProps) => {
   const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
@@ -114,11 +114,11 @@ const MainContents = ({
   }, [mandalartsError, showAlert, signOut, t]);
 
   useEffect(() => {
-    if (!uploadDraft) return;
-    uploadDraft().catch((e: Error) => {
+    if (!uploadTemp) return;
+    uploadTemp().catch((e: Error) => {
       e && showAlert(e.message);
     });
-  }, [uploadDraft, showAlert]);
+  }, [uploadTemp, showAlert]);
 
   return (
     <section className={styles.mainCommon}>

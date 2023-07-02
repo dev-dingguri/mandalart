@@ -43,7 +43,7 @@
   width: 100%;
 }
 
-.draft {
+.temp {
   color: var(--color-font-2);
   font-size: 1.2rem;
   margin: 0;

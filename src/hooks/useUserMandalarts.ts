@@ -108,10 +108,10 @@ const useUserMandalarts = (
   );
 
   // todo: 임시 만다라트 업로드한 다음에 동기화 시작하거나 만다라트 업로드도 로딩에 포함시키기
-  const uploadDraft = useCallback(async () => {
+  const uploadTemp = useCallback(async () => {
     const data = signInSessionStorage.read(user);
-    if (!data || data.isTriedUploadDraft) return;
-    data.isTriedUploadDraft = true;
+    if (!data || data.isTriedUploadTemp) return;
+    data.isTriedUploadTemp = true;
     signInSessionStorage.save(user, data);
 
     const firstKey = Array.from(guestSnippets.keys()).shift();
@@ -130,7 +130,7 @@ const useUserMandalarts = (
       .catch((e: Error) => {
         // todo: e가 'The Mandalart could not be created. ~~'에러인 경우에만
         throw new Error(
-          `${t('mandalart.errors.uploadDraft.maxUploaded', {
+          `${t('mandalart.errors.uploadTemp.maxUploaded', {
             maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
           })}`
         );
@@ -162,7 +162,7 @@ const useUserMandalarts = (
     deleteMandalart,
     saveSnippet,
     saveTopicTree,
-    uploadDraft,
+    uploadTemp,
   };
 };
 
