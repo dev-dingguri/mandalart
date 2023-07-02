@@ -4,6 +4,7 @@ import {
   useCallback,
   SetStateAction,
   Dispatch,
+  useLayoutEffect,
 } from 'react';
 import styles from './MainContents.module.css';
 import Header from 'components/Header/Header';
@@ -20,6 +21,7 @@ import { TopicNode } from '../../types/TopicNode';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 import useAuth from 'hooks/useAuth';
+import useSignInSession from 'hooks/useSignInSession';
 
 export type UserHandlers = {
   user?: User | null;
@@ -62,6 +64,9 @@ const MainContents = ({
     uploadTemp,
   },
 }: MainContentsProps) => {
+  const { signIn, signOut } = useAuth();
+  const { getShouldUploadTemp, setShouldUploadTemp } = useSignInSession();
+
   const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
     useBoolean(false);
   const [isShownRightAside, { on: showRightAside, off: closeRightAside }] =
@@ -71,8 +76,6 @@ const MainContents = ({
   const { Alert, show: showAlert } = useAlert();
 
   const { t } = useTranslation();
-
-  const { signIn, signOut } = useAuth();
 
   const handleSnippetChange = useCallback(
     (snippet: Snippet) => {
@@ -113,12 +116,15 @@ const MainContents = ({
     signOut();
   }, [mandalartsError, showAlert, signOut, t]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const shouldUploadTemp = !!user && getShouldUploadTemp(user);
+    if (!shouldUploadTemp) return;
     if (!uploadTemp) return;
+    setShouldUploadTemp(user, false);
     uploadTemp().catch((e: Error) => {
       e && showAlert(e.message);
     });
-  }, [uploadTemp, showAlert]);
+  }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, showAlert]);
 
   return (
     <section className={styles.mainCommon}>
@@ -145,9 +151,7 @@ const MainContents = ({
             <EmptyMandalarts
               onCreateMandalart={() => {
                 createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch(
-                  (e: Error) => {
-                    showAlert(e.message);
-                  }
+                  (e: Error) => showAlert(e.message)
                 );
               }}
             />
@@ -163,18 +167,16 @@ const MainContents = ({
           deleteMandalart(mandalartId);
         }}
         onRenameMandalart={(mandalartId, name) => {
-          saveSnippet(mandalartId, {
-            title: name,
-          });
+          saveSnippet(mandalartId, { title: name });
         }}
         onResetMandalart={(mandalartId) => {
           saveSnippet(mandalartId, EMPTY_SNIPPET);
           saveTopicTree(mandalartId, EMPTY_TOPIC_TREE);
         }}
         onCreateMandalart={() => {
-          createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch((e: Error) => {
-            showAlert(e.message);
-          });
+          createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch((e: Error) =>
+            showAlert(e.message)
+          );
         }}
         onClose={closeLeftAside}
       />

@@ -15,7 +15,6 @@ import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { MandalartsHandlers } from 'components/MainContents/MainContents';
 import useDatabase from './useDatabase';
-import signInSessionStorage from 'services/signInSessionStorage';
 import useGuestSnippets from './useGuestSnippets';
 import useGuestTopicTrees from './useGuestTopicTrees';
 
@@ -109,11 +108,6 @@ const useUserMandalarts = (
 
   // todo: 임시 만다라트 업로드한 다음에 동기화 시작하거나 만다라트 업로드도 로딩에 포함시키기
   const uploadTemp = useCallback(async () => {
-    const data = signInSessionStorage.read(user);
-    if (!data || data.isTriedUploadTemp) return;
-    data.isTriedUploadTemp = true;
-    signInSessionStorage.save(user, data);
-
     const firstKey = Array.from(guestSnippets.keys()).shift();
     if (!firstKey) return;
     const guestSnippet = guestSnippets.get(firstKey);
@@ -136,7 +130,6 @@ const useUserMandalarts = (
         );
       });
   }, [
-    user,
     guestSnippets,
     setGuestSnippets,
     guestTopicTrees,
