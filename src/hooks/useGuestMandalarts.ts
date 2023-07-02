@@ -1,32 +1,37 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
 import {
   TMP_MANDALART_ID,
-  DEFAULT_SNIPPET,
-  DEFAULT_TOPIC_TREE,
+  EMPTY_SNIPPET,
+  EMPTY_TOPIC_TREE,
 } from 'constants/constants';
-import mandalartsStorage from '../services/mandalartsStorage';
 import { useTranslation } from 'react-i18next';
 import { MandalartsHandlers } from 'components/MainContents/MainContents';
+import useGuestSnippets from './useGuestSnippets';
+import useGuestTopicTrees from './useGuestTopicTrees';
 
 const TMP_SNIPPET_MAP = new Map<string, Snippet>([
-  [TMP_MANDALART_ID, DEFAULT_SNIPPET],
+  [TMP_MANDALART_ID, EMPTY_SNIPPET],
 ]);
 
-const useGuestMandalarts = (
-  initialSnippetMap: Map<string, Snippet>,
-  initialMandalartId: string | null,
-  initialTopicTree: TopicNode | null
-): MandalartsHandlers => {
-  const [snippetMap, updateSnippetMap] = useState(initialSnippetMap);
+const TMP_TOPICS_MAP = new Map<string, TopicNode>([
+  [TMP_MANDALART_ID, EMPTY_TOPIC_TREE],
+]);
 
-  const [currentMandalartId, selectMandalartId] = useState<string | null>(
-    initialMandalartId
+const useGuestMandalarts = (): MandalartsHandlers & { isLoading: boolean } => {
+  const [snippetMap, setSnippetMap] = useGuestSnippets();
+  const [currentMandalartId, selectMandalartId] = useState<string | null>(null);
+  const [topicTrees, setTopicTrees] = useGuestTopicTrees();
+  const currentTopicTree = useMemo(
+    () =>
+      currentMandalartId ? topicTrees.get(currentMandalartId) ?? null : null,
+    [currentMandalartId, topicTrees]
   );
-  const [currentTopicTree, updateTopicTree] = useState<TopicNode | null>(
-    initialTopicTree
-  );
+
+  // 스니펫이 로딩된 후, 만다라트 id 선택 및 현재 토픽 트리 로딩전까지 로딩 상태가 false인 상황 방지
+  // todo: 개선 필요
+  const isLoading = snippetMap.size > 0 && (!currentMandalartId || !topicTrees);
 
   const { t } = useTranslation();
 
@@ -41,25 +46,25 @@ const useGuestMandalarts = (
   const saveSnippet = useCallback(
     async (mandalartId: string | null, snippet: Snippet) => {
       if (!mandalartId) return;
-      updateSnippetMap((snippetMap) => {
-        const newSnippetMap = new Map(snippetMap).set(mandalartId, snippet);
-        mandalartsStorage.saveSnippets(newSnippetMap);
-        return newSnippetMap;
-      });
+      const newSnippetMap = new Map(snippetMap).set(mandalartId, snippet);
+      setSnippetMap(newSnippetMap);
     },
-    [updateSnippetMap]
+    [snippetMap, setSnippetMap]
   );
 
-  const saveTopics = useCallback(
+  const saveTopicTree = useCallback(
     async (mandalartId: string | null, topicTree: TopicNode) => {
       if (!mandalartId) return;
-      if (mandalartId === currentMandalartId) {
-        updateTopicTree(topicTree);
-        mandalartsStorage.saveTopics(new Map([[mandalartId, topicTree]]));
-      }
+      setTopicTrees(new Map(topicTrees).set(mandalartId, topicTree));
     },
-    [currentMandalartId, updateTopicTree]
+    [topicTrees, setTopicTrees]
   );
+
+  useEffect(() => {
+    if (snippetMap.size > 0 && topicTrees.size > 0) return;
+    setSnippetMap(TMP_SNIPPET_MAP);
+    setTopicTrees(TMP_TOPICS_MAP);
+  }, [snippetMap.size, topicTrees.size, setSnippetMap, setTopicTrees]);
 
   useEffect(() => {
     if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
@@ -67,28 +72,16 @@ const useGuestMandalarts = (
     selectMandalartId(last ? last : null);
   }, [snippetMap, currentMandalartId]);
 
-  useEffect(() => {
-    const savedSnippetMap = mandalartsStorage.readSnippets();
-    const snippetMap = savedSnippetMap.has(TMP_MANDALART_ID)
-      ? savedSnippetMap
-      : TMP_SNIPPET_MAP;
-    const savedTopicTree = mandalartsStorage.readTopics().get(TMP_MANDALART_ID);
-    const topicTree = savedTopicTree ? savedTopicTree : DEFAULT_TOPIC_TREE;
-
-    updateSnippetMap(snippetMap);
-    selectMandalartId(TMP_MANDALART_ID);
-    updateTopicTree(topicTree);
-  }, [updateSnippetMap, selectMandalartId, updateTopicTree]);
-
   return {
     snippetMap,
     currentMandalartId,
     currentTopicTree,
+    isLoading,
     selectMandalartId,
     createMandalart,
     deleteMandalart,
     saveSnippet,
-    saveTopics,
+    saveTopicTree,
   };
 };
 

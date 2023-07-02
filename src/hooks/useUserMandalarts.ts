@@ -2,23 +2,22 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 import { User } from 'firebase/auth';
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
-import useSnippets from 'hooks/useUserSnippets';
-import useTopics from 'hooks/useUserTopics';
-//import repository from 'services/mandalartsRepository';
+import useUserSnippets from 'hooks/useUserSnippets';
+import useUserTopicTree from 'hooks/useUserTopicTree';
 import {
   MAX_UPLOAD_MANDALARTS_SIZE,
-  TMP_MANDALART_ID,
-  DEFAULT_SNIPPET,
-  DEFAULT_TOPIC_TREE,
+  EMPTY_SNIPPET,
+  EMPTY_TOPIC_TREE,
   DB_SNIPPETS,
   DB_TOPIC_TREES,
 } from 'constants/constants';
-import mandalartsStorage from '../services/mandalartsStorage';
 import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { MandalartsHandlers } from 'components/MainContents/MainContents';
 import useDatabase from './useDatabase';
 import signInSessionStorage from 'services/signInSessionStorage';
+import useGuestSnippets from './useGuestSnippets';
+import useGuestTopicTrees from './useGuestTopicTrees';
 
 const useUserMandalarts = (
   user: User
@@ -27,7 +26,7 @@ const useUserMandalarts = (
     snippetMap,
     isLoading: isSnippetMapLoading,
     error: snippetMapError,
-  } = useSnippets(user);
+  } = useUserSnippets(user);
   const {
     push: pushSnippet,
     set: setSnippet,
@@ -38,11 +37,14 @@ const useUserMandalarts = (
   const {
     topicTree: currentTopicTree,
     isLoading: isTopicTreeLoading,
-    error: topicsError,
-  } = useTopics(user, currentMandalartId);
+    error: topicTreeError,
+  } = useUserTopicTree(user, currentMandalartId);
   const { set: setTopics, remove: removeTopics } = useDatabase<TopicNode>(
     `${user.uid}/${DB_TOPIC_TREES}`
   );
+
+  const [guestSnippets, setGuestSnippets] = useGuestSnippets();
+  const [guestTopicTrees, setGuestTopicTrees] = useGuestTopicTrees();
 
   // 스니펫이 로딩된 후, 만다라트 id 선택 및 현재 토픽 트리 로딩전까지 로딩 상태가 false인 상황 방지
   // todo: 개선 필요
@@ -52,8 +54,8 @@ const useUserMandalarts = (
     (snippetMap.size > 0 && (!currentMandalartId || !currentTopicTree));
 
   const error = useMemo(
-    () => (snippetMapError ? snippetMapError : topicsError),
-    [snippetMapError, topicsError]
+    () => (snippetMapError ? snippetMapError : topicTreeError),
+    [snippetMapError, topicTreeError]
   );
 
   const { t } = useTranslation();
@@ -97,7 +99,7 @@ const useUserMandalarts = (
     [setSnippet]
   );
 
-  const saveTopics = useCallback(
+  const saveTopicTree = useCallback(
     async (mandalartId: string | null, topicTree: TopicNode) => {
       if (!mandalartId) return;
       return setTopics(mandalartId, topicTree);
@@ -105,23 +107,25 @@ const useUserMandalarts = (
     [setTopics]
   );
 
+  // todo: 임시 만다라트 업로드한 다음에 동기화 시작하거나 만다라트 업로드도 로딩에 포함시키기
   const uploadDraft = useCallback(async () => {
     const data = signInSessionStorage.read(user);
     if (!data || data.isTriedUploadDraft) return;
     data.isTriedUploadDraft = true;
     signInSessionStorage.save(user, data);
 
-    const savedSnippet = mandalartsStorage.readSnippets().get(TMP_MANDALART_ID);
-    const snippet = savedSnippet ? savedSnippet : DEFAULT_SNIPPET;
-    const savedTopicTree = mandalartsStorage.readTopics().get(TMP_MANDALART_ID);
-    const topicTree = savedTopicTree ? savedTopicTree : DEFAULT_TOPIC_TREE;
+    const firstKey = Array.from(guestSnippets.keys()).shift();
+    if (!firstKey) return;
+    const guestSnippet = guestSnippets.get(firstKey);
+    const guestTopicTree = guestTopicTrees.get(firstKey);
+    if (!guestSnippet || !guestTopicTree) return;
 
-    if (!isAnyChanged(snippet, topicTree)) return;
+    if (!isAnyChanged(guestSnippet, guestTopicTree)) return;
 
-    return createMandalart(snippet, topicTree)
+    return createMandalart(guestSnippet, guestTopicTree)
       .then(() => {
-        mandalartsStorage.deleteSnippets();
-        mandalartsStorage.deleteTopics();
+        setGuestSnippets(new Map());
+        setGuestTopicTrees(new Map());
       })
       .catch((e: Error) => {
         // todo: e가 'The Mandalart could not be created. ~~'에러인 경우에만
@@ -131,7 +135,15 @@ const useUserMandalarts = (
           })}`
         );
       });
-  }, [user, createMandalart, t]);
+  }, [
+    user,
+    guestSnippets,
+    setGuestSnippets,
+    guestTopicTrees,
+    setGuestTopicTrees,
+    createMandalart,
+    t,
+  ]);
 
   useEffect(() => {
     if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
@@ -149,7 +161,7 @@ const useUserMandalarts = (
     createMandalart,
     deleteMandalart,
     saveSnippet,
-    saveTopics,
+    saveTopicTree,
     uploadDraft,
   };
 };
@@ -161,8 +173,8 @@ const canUpload = (currentSize: number, uploadSize: number) => {
 
 const isAnyChanged = (snippet: Snippet, topicTree: TopicNode) => {
   return (
-    !isEqual(snippet, DEFAULT_SNIPPET) || //
-    !isEqual(topicTree, DEFAULT_TOPIC_TREE)
+    !isEqual(snippet, EMPTY_SNIPPET) || //
+    !isEqual(topicTree, EMPTY_TOPIC_TREE)
   );
 };
 

@@ -10,7 +10,7 @@ import Header from 'components/Header/Header';
 import SignInModal from 'components/SignInModal/SignInModal';
 import MandalartView from 'components/MandalartView/MandalartView';
 import LeftAside from 'components/LeftAside/LeftAside';
-import { DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE } from 'constants/constants';
+import { EMPTY_SNIPPET, EMPTY_TOPIC_TREE } from 'constants/constants';
 import EmptyMandalarts from 'components/EmptyMandalarts/EmptyMandalarts';
 import RightAside from 'components/RightAside/RightAside';
 import useBoolean from 'hooks/useBoolean';
@@ -35,7 +35,7 @@ export type MandalartsHandlers = {
   createMandalart: (snippet: Snippet, topicTree: TopicNode) => Promise<void>;
   deleteMandalart: (mandalartId: string | null) => Promise<void>;
   saveSnippet: (mandalartId: string | null, snippet: Snippet) => Promise<void>;
-  saveTopics: (
+  saveTopicTree: (
     mandalartId: string | null,
     topicTree: TopicNode
   ) => Promise<void>;
@@ -58,7 +58,7 @@ const MainContents = ({
     createMandalart,
     deleteMandalart,
     saveSnippet,
-    saveTopics,
+    saveTopicTree,
     uploadDraft,
   },
 }: MainContentsProps) => {
@@ -83,9 +83,9 @@ const MainContents = ({
 
   const handleTopicTreeChange = useCallback(
     (topicTree: TopicNode) => {
-      saveTopics(currentMandalartId, topicTree);
+      saveTopicTree(currentMandalartId, topicTree);
     },
-    [currentMandalartId, saveTopics]
+    [currentMandalartId, saveTopicTree]
   );
 
   const currentSnippet = useMemo(() => {
@@ -144,7 +144,7 @@ const MainContents = ({
           ) : (
             <EmptyMandalarts
               onCreateMandalart={() => {
-                createMandalart(DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE).catch(
+                createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch(
                   (e: Error) => {
                     showAlert(e.message);
                   }
@@ -168,15 +168,13 @@ const MainContents = ({
           });
         }}
         onResetMandalart={(mandalartId) => {
-          saveSnippet(mandalartId, DEFAULT_SNIPPET);
-          saveTopics(mandalartId, DEFAULT_TOPIC_TREE);
+          saveSnippet(mandalartId, EMPTY_SNIPPET);
+          saveTopicTree(mandalartId, EMPTY_TOPIC_TREE);
         }}
         onCreateMandalart={() => {
-          createMandalart(DEFAULT_SNIPPET, DEFAULT_TOPIC_TREE).catch(
-            (e: Error) => {
-              showAlert(e.message);
-            }
-          );
+          createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch((e: Error) => {
+            showAlert(e.message);
+          });
         }}
         onClose={closeLeftAside}
       />

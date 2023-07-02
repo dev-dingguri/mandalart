@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import useDatabase from './useDatabase';
 import { DB_TOPIC_TREES } from 'constants/constants';
 
-const useUserTopics = (user: User, mandalartId: string | null) => {
+const useUserTopicTree = (user: User, mandalartId: string | null) => {
   const { subscribe } = useDatabase<TopicNode>(`${user.uid}/${DB_TOPIC_TREES}`);
 
   const subscribeWithKey = useCallback(
@@ -28,4 +28,4 @@ const useUserTopics = (user: User, mandalartId: string | null) => {
   return { topicTree: data, isLoading: status === 'loading', error };
 };
 
-export default useUserTopics;
+export default useUserTopicTree;

@@ -1,17 +1,21 @@
-import { Snippet } from '../../types/Snippet';
 import MainContents from 'components/MainContents/MainContents';
 import useGuestMandalarts from 'hooks/useGuestMandalarts';
+import { useEffect } from 'react';
 
 type MainGuestPageProps = {
   userError: Error | null;
+  setIsLoading: (isLoading: boolean) => void;
 };
 
-const MainGuestPage = ({ userError }: MainGuestPageProps) => {
-  const { ...mandalartsHandlers } = useGuestMandalarts(
-    new Map<string, Snippet>(),
-    null,
-    null
-  );
+const MainGuestPage = ({ userError, setIsLoading }: MainGuestPageProps) => {
+  const { ...mandalartsHandlers } = useGuestMandalarts();
+  const { isLoading } = mandalartsHandlers;
+
+  useEffect(() => {
+    setIsLoading(isLoading);
+  }, [isLoading, setIsLoading]);
+
+  if (isLoading) return null;
 
   return (
     <MainContents

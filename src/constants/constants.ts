@@ -17,10 +17,10 @@ export const MAX_TOPIC_TEXT_SIZE = 50;
 // mandalart data
 export const TMP_MANDALART_ID = 'tmp_mandalart_id';
 
-export const DEFAULT_SNIPPET: Snippet = {
+export const EMPTY_SNIPPET: Snippet = {
   title: '',
 };
-export const DEFAULT_TOPIC_TREE: TopicNode = {
+export const EMPTY_TOPIC_TREE: TopicNode = {
   text: '',
   children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
     text: '',

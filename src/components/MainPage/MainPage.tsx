@@ -23,7 +23,7 @@ const MainPage = () => {
         setIsLoading={setIsLoading}
       />
     ) : (
-      <MainGuestPage userError={userError} />
+      <MainGuestPage userError={userError} setIsLoading={setIsLoading} />
     );
   }, [isUserLoading, user, userError]);
 
