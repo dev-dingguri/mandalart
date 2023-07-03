@@ -13,11 +13,7 @@ const useUserTopicTree = (user: User, mandalartId: string | null) => {
       updateCallback: (data: TopicNode | null) => void,
       cancelCallback: (error: Error) => void
     ) => {
-      // todo: subscribe 내부에서 처리 검토
-      if (!mandalartId) {
-        updateCallback(null);
-        return;
-      }
+      if (!mandalartId) return;
       return subscribe(mandalartId, updateCallback, cancelCallback);
     },
     [mandalartId, subscribe]

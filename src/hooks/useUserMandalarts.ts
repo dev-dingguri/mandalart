@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 import { User } from 'firebase/auth';
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
@@ -17,6 +17,7 @@ import { MandalartsHandlers } from 'components/MainContents/MainContents';
 import useDatabase from './useDatabase';
 import useGuestSnippets from './useGuestSnippets';
 import useGuestTopicTrees from './useGuestTopicTrees';
+import useMandalartSelector from './useMandalartSelector';
 
 const useUserMandalarts = (
   user: User
@@ -31,8 +32,11 @@ const useUserMandalarts = (
     set: setSnippet,
     remove: removeSnippet,
   } = useDatabase<Snippet>(`${user.uid}/${DB_SNIPPETS}`);
-
-  const [currentMandalartId, selectMandalartId] = useState<string | null>(null);
+  const {
+    mandalartId: currentMandalartId,
+    isSelected,
+    selectMandalart: selectMandalartId,
+  } = useMandalartSelector(snippetMap);
   const {
     topicTree: currentTopicTree,
     isLoading: isTopicTreeLoading,
@@ -45,12 +49,7 @@ const useUserMandalarts = (
   const [guestSnippets, setGuestSnippets] = useGuestSnippets();
   const [guestTopicTrees, setGuestTopicTrees] = useGuestTopicTrees();
 
-  // 스니펫이 로딩된 후, 만다라트 id 선택 및 현재 토픽 트리 로딩전까지 로딩 상태가 false인 상황 방지
-  // todo: 개선 필요
-  const isLoading =
-    isSnippetMapLoading ||
-    isTopicTreeLoading ||
-    (snippetMap.size > 0 && (!currentMandalartId || !currentTopicTree));
+  const isLoading = isSnippetMapLoading || isTopicTreeLoading || !isSelected;
 
   const error = useMemo(
     () => (snippetMapError ? snippetMapError : topicTreeError),
@@ -77,7 +76,7 @@ const useUserMandalarts = (
         return setTopics(mandalartId, topicTree);
       });
     },
-    [pushSnippet, setTopics, snippetMap.size, t]
+    [pushSnippet, setTopics, selectMandalartId, snippetMap.size, t]
   );
 
   const deleteMandalart = useCallback(
@@ -137,12 +136,6 @@ const useUserMandalarts = (
     createMandalart,
     t,
   ]);
-
-  useEffect(() => {
-    if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
-    const last = Array.from(snippetMap.keys()).pop();
-    selectMandalartId(last ? last : null);
-  }, [snippetMap, currentMandalartId]);
 
   return {
     snippetMap,

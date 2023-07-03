@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useCallback, useMemo } from 'react';
 import { Snippet } from 'types/Snippet';
 import { TopicNode } from 'types/TopicNode';
 import {
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { MandalartsHandlers } from 'components/MainContents/MainContents';
 import useGuestSnippets from './useGuestSnippets';
 import useGuestTopicTrees from './useGuestTopicTrees';
+import useMandalartSelector from './useMandalartSelector';
 
 const TMP_SNIPPET_MAP = new Map<string, Snippet>([
   [TMP_MANDALART_ID, EMPTY_SNIPPET],
@@ -21,7 +22,11 @@ const TMP_TOPICS_MAP = new Map<string, TopicNode>([
 
 const useGuestMandalarts = (): MandalartsHandlers & { isLoading: boolean } => {
   const [snippetMap, setSnippetMap] = useGuestSnippets();
-  const [currentMandalartId, selectMandalartId] = useState<string | null>(null);
+  const {
+    mandalartId: currentMandalartId,
+    isSelected,
+    selectMandalart: selectMandalartId,
+  } = useMandalartSelector(snippetMap);
   const [topicTrees, setTopicTrees] = useGuestTopicTrees();
   const currentTopicTree = useMemo(
     () =>
@@ -29,9 +34,7 @@ const useGuestMandalarts = (): MandalartsHandlers & { isLoading: boolean } => {
     [currentMandalartId, topicTrees]
   );
 
-  // 스니펫이 로딩된 후, 만다라트 id 선택 및 현재 토픽 트리 로딩전까지 로딩 상태가 false인 상황 방지
-  // todo: 개선 필요
-  const isLoading = snippetMap.size > 0 && (!currentMandalartId || !topicTrees);
+  const isLoading = !isSelected;
 
   const { t } = useTranslation();
 
@@ -65,12 +68,6 @@ const useGuestMandalarts = (): MandalartsHandlers & { isLoading: boolean } => {
     setSnippetMap(TMP_SNIPPET_MAP);
     setTopicTrees(TMP_TOPICS_MAP);
   }, [snippetMap.size, topicTrees.size, setSnippetMap, setTopicTrees]);
-
-  useEffect(() => {
-    if (currentMandalartId && snippetMap.has(currentMandalartId)) return;
-    const last = Array.from(snippetMap.keys()).pop();
-    selectMandalartId(last ? last : null);
-  }, [snippetMap, currentMandalartId]);
 
   return {
     snippetMap,
