@@ -4,7 +4,7 @@ import { Snippet } from 'types/Snippet';
 const useMandalartSelector = (snippets: Map<string, Snippet>) => {
   const [mandalartId, setMandalartId] = useState<string | null>(null);
   const isSelected = useMemo(
-    () => !!mandalartId && snippets.has(mandalartId),
+    () => snippets.size === 0 || (!!mandalartId && snippets.has(mandalartId)),
     [snippets, mandalartId]
   );
 

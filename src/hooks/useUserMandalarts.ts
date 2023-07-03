@@ -49,7 +49,11 @@ const useUserMandalarts = (
   const [guestSnippets, setGuestSnippets] = useGuestSnippets();
   const [guestTopicTrees, setGuestTopicTrees] = useGuestTopicTrees();
 
-  const isLoading = isSnippetMapLoading || isTopicTreeLoading || !isSelected;
+  const isLoading =
+    isSnippetMapLoading ||
+    isTopicTreeLoading ||
+    !isSelected ||
+    (snippetMap.size > 0 && !currentTopicTree);
 
   const error = useMemo(
     () => (snippetMapError ? snippetMapError : topicTreeError),
