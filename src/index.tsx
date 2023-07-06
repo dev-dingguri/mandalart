@@ -9,6 +9,7 @@ import { AlertProvider } from 'contexts/AlertContext';
 import { HelmetProvider } from 'react-helmet-async';
 import { FirebaseSdksProvider } from 'contexts/FirebaseSdksContext';
 import 'locales/i18n';
+import { LoadingProvider } from 'contexts/LoadingContext';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -26,11 +27,13 @@ root.render(
     <HelmetProvider>
       <IconContext.Provider value={{ className: 'react-icons' }}>
         <FirebaseSdksProvider firebaseConfig={firebaseConfig}>
-          <ThemeProvider>
-            <AlertProvider>
-              <App />
-            </AlertProvider>
-          </ThemeProvider>
+          <LoadingProvider>
+            <ThemeProvider>
+              <AlertProvider>
+                <App />
+              </AlertProvider>
+            </ThemeProvider>
+          </LoadingProvider>
         </FirebaseSdksProvider>
       </IconContext.Provider>
     </HelmetProvider>

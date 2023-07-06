@@ -3,27 +3,21 @@ import useUser from 'hooks/useUser';
 import Spinner from 'components/Spinner/Spinner';
 import MainUserPage from 'components/MainUserPage/MainUserPage';
 import MainGuestPage from 'components/MainGuestPage/MainGuestPage';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import { useAddLoadingCondition, useIsLoading } from 'contexts/LoadingContext';
 
 const MainPage = () => {
   const { user, isLoading: isUserLoading, error: userError } = useUser();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(isUserLoading);
-  }, [isUserLoading, setIsLoading]);
+  const isLoading = useIsLoading();
+  useAddLoadingCondition('user', isUserLoading);
 
   const MainContents = useMemo(() => {
     if (isUserLoading) return null;
 
     return user ? (
-      <MainUserPage
-        user={user}
-        userError={userError}
-        setIsLoading={setIsLoading}
-      />
+      <MainUserPage user={user} userError={userError} />
     ) : (
-      <MainGuestPage userError={userError} setIsLoading={setIsLoading} />
+      <MainGuestPage userError={userError} />
     );
   }, [isUserLoading, user, userError]);
 

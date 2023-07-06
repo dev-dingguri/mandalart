@@ -157,7 +157,7 @@ const useUserMandalarts = (
 };
 
 const canUpload = (currentSize: number, uploadSize: number) => {
-  // todo: snippet에 isLocal만들고 필터링 필요
+  // todo: snippet 임시 저장된 만다라트가 있는 경우 필터링 필요
   return currentSize + uploadSize <= MAX_UPLOAD_MANDALARTS_SIZE;
 };
 

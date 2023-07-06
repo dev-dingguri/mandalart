@@ -1,19 +1,16 @@
 import MainContents from 'components/MainContents/MainContents';
+import { useAddLoadingCondition } from 'contexts/LoadingContext';
 import useGuestMandalarts from 'hooks/useGuestMandalarts';
-import { useEffect } from 'react';
 
 type MainGuestPageProps = {
   userError: Error | null;
-  setIsLoading: (isLoading: boolean) => void;
 };
 
-const MainGuestPage = ({ userError, setIsLoading }: MainGuestPageProps) => {
+const MainGuestPage = ({ userError }: MainGuestPageProps) => {
   const { ...mandalartsHandlers } = useGuestMandalarts();
   const { isLoading } = mandalartsHandlers;
 
-  useEffect(() => {
-    setIsLoading(isLoading);
-  }, [isLoading, setIsLoading]);
+  useAddLoadingCondition('guest-mandalarts', isLoading);
 
   if (isLoading) return null;
 
