@@ -2,13 +2,13 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export type Theme = 'system' | 'light' | 'dark';
 
-type ContextValue = {
+type ThemeContextType = {
   theme: Theme;
   selectTheme: (theme: Theme) => void;
   isDisplayLightTheme: () => boolean;
 };
 
-const ThemeContext = createContext<ContextValue | null>(null);
+const ThemeContext = createContext<ThemeContextType | null>(null);
 
 export const ThemeProvider = ({ children }: { children?: React.ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(initialTheme);
@@ -54,4 +54,10 @@ const isDisplayLightTheme = (theme: Theme) => {
   );
 };
 
-export const useTheme = () => useContext(ThemeContext)!;
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};

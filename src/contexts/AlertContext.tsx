@@ -1,15 +1,21 @@
 import Alert, { AlertProps } from 'components/Alert/Alert';
 import useBoolean from 'hooks/useBoolean';
-import { createContext, useContext, useState, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  PropsWithChildren,
+} from 'react';
 
-type ContextValue = {
+type AlertContextType = {
   alertProps: AlertProps;
   show: (message: string) => void;
 };
 
-const AlertContext = createContext<ContextValue | null>(null);
+const AlertContext = createContext<AlertContextType | null>(null);
 
-export const AlertProvider = ({ children }: { children?: React.ReactNode }) => {
+export const AlertProvider = ({ children }: PropsWithChildren) => {
   const [isShown, { on: show, off: close }] = useBoolean(false);
   const [message, setMessage] = useState('');
 
@@ -38,16 +44,13 @@ export const AlertProvider = ({ children }: { children?: React.ReactNode }) => {
 };
 
 export const useAlert = () => {
-  const { show } = useContext(AlertContext)!;
-
+  const context = useContext(AlertContext);
+  if (!context) {
+    throw new Error('useAlert must be used within a AlertProvider.');
+  }
+  const { alertProps, show } = context;
   return {
-    Alert: AlertUI,
+    Alert: () => <Alert {...alertProps} />,
     show,
   };
-};
-
-const AlertUI = () => {
-  const { alertProps } = useContext(AlertContext)!;
-
-  return <Alert {...alertProps} />;
 };

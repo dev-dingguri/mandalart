@@ -1,16 +1,21 @@
-import { createContext, useContext, useState, useMemo } from 'react';
-import { Children } from 'types/Children';
+import {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  PropsWithChildren,
+} from 'react';
 import { useEffect, useRef } from 'react';
 
-type LoadingProviderProps = {
+type LoadingContextType = {
   isLoading: boolean;
   addLoadingCondition: (key: string, condition: boolean) => void;
   deleteLoadingCondition: (key: string) => void;
 };
 
-const LoadingContext = createContext<LoadingProviderProps | null>(null);
+const LoadingContext = createContext<LoadingContextType | null>(null);
 
-export const LoadingProvider = ({ children }: Children) => {
+export const LoadingProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setLoading] = useState(false);
   const conditionsRef = useRef<Map<string, boolean>>(new Map());
 
@@ -42,7 +47,7 @@ export const LoadingProvider = ({ children }: Children) => {
 export const useIsLoading = () => {
   const context = useContext(LoadingContext);
   if (!context) {
-    throw new Error('useIsLoading must be used within a LoadingProvider');
+    throw new Error('useIsLoading must be used within a LoadingProvider.');
   }
   console.log(`isLoading=${context.isLoading}`);
   return context.isLoading;

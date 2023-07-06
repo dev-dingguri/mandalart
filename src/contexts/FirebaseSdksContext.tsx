@@ -3,12 +3,12 @@ import { Auth, getAuth } from 'firebase/auth';
 import { Database, getDatabase } from 'firebase/database';
 import { createContext, useContext, PropsWithChildren, useMemo } from 'react';
 
-type FirebaseSdks = {
+type FirebaseSdksContextType = {
   firebaseAuth: Auth;
   firebaseDatabase: Database;
 };
 
-const FirebaseSdksContext = createContext<FirebaseSdks | null>(null);
+const FirebaseSdksContext = createContext<FirebaseSdksContextType | null>(null);
 
 type FirebaseAppProviderProps = {
   firebaseConfig: FirebaseOptions;
@@ -18,17 +18,13 @@ export const FirebaseSdksProvider = ({
   firebaseConfig,
   children,
 }: PropsWithChildren<FirebaseAppProviderProps>) => {
-  const firebaseApp = useMemo(
-    () => initializeApp(firebaseConfig),
-    [firebaseConfig]
-  );
-  const sdks = useMemo(
-    () => ({
+  const sdks = useMemo(() => {
+    const firebaseApp = initializeApp(firebaseConfig);
+    return {
       firebaseAuth: getAuth(firebaseApp),
       firebaseDatabase: getDatabase(firebaseApp),
-    }),
-    [firebaseApp]
-  );
+    };
+  }, [firebaseConfig]);
 
   return (
     <FirebaseSdksContext.Provider value={{ ...sdks }}>
@@ -38,13 +34,13 @@ export const FirebaseSdksProvider = ({
 };
 
 const useFirebaseSdks = () => {
-  const firebaseSdks = useContext(FirebaseSdksContext);
-  if (!firebaseSdks) {
+  const context = useContext(FirebaseSdksContext);
+  if (!context) {
     throw new Error(
-      'Cannot use firebase SDK. Please ensure the component is wrapped in a FirebaseSdksProvider.'
+      'Cannot use firebase SDK. Must be used within a FirebaseSdksProvider.'
     );
   }
-  return { ...firebaseSdks };
+  return context;
 };
 
 export const useFirebaseAuth = () => useFirebaseSdks().firebaseAuth;
