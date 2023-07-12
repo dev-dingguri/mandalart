@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from 'components/Button/Button';
+import Button from '@mui/material/Button';
 import { BsPlus } from 'react-icons/bs';
 import styles from './EmptyMandalarts.module.css';
 import { useTranslation } from 'react-i18next';

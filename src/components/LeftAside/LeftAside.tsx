@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './LeftAside.module.css';
 import { BsPlus } from 'react-icons/bs';
-import Button from 'components/Button/Button';
+import Button from '@mui/material/Button';
 import MandalartList from 'components/MandalartList/MandalartList';
 import OutsideClickDetector from 'components/OutsideClickDetector/OutsideClickDetector';
 import { Snippet } from 'types/Snippet';
@@ -57,6 +57,7 @@ const LeftAside = ({
           onReset={onResetMandalart}
         />
         <div className={styles.bottom}>
+          {/* todo: 아이템 좌측 정렬*/}
           <Button className={styles.newButton} onClick={handleNewClick}>
             <BsPlus />
             <p>{t('mandalart.new')}</p>

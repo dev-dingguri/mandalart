@@ -4,12 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { IconContext } from 'react-icons/lib';
-import { ThemeProvider } from 'contexts/ThemeContext';
+import { ThemeProvider as ThemeSelectProvider } from 'contexts/ThemeContext';
 import { AlertProvider } from 'contexts/AlertContext';
 import { HelmetProvider } from 'react-helmet-async';
 import { FirebaseSdksProvider } from 'contexts/FirebaseSdksContext';
 import 'locales/i18n';
 import { LoadingProvider } from 'contexts/LoadingContext';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { StyledEngineProvider } from '@mui/material';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -18,6 +20,44 @@ const firebaseConfig = {
   projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
 };
 
+const theme = createTheme({
+  components: {
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          '&& .MuiTouchRipple-rippleVisible': {
+            animationDuration: '200ms',
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          '&:active': {
+            transform: 'scale(0.97)',
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '4px',
+          '&& .MuiTouchRipple-child': {
+            borderRadius: '4px',
+          },
+        },
+      },
+    },
+  },
+});
+// {
+//   borderRadius: '5px',
+//   '& .MuiTouchRipple-root .MuiTouchRipple-child': {
+//     borderRadius: '5px',
+//   },
+// }
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -28,11 +68,15 @@ root.render(
       <IconContext.Provider value={{ className: 'react-icons' }}>
         <FirebaseSdksProvider firebaseConfig={firebaseConfig}>
           <LoadingProvider>
-            <ThemeProvider>
-              <AlertProvider>
-                <App />
-              </AlertProvider>
-            </ThemeProvider>
+            <StyledEngineProvider injectFirst>
+              <ThemeProvider theme={theme}>
+                <ThemeSelectProvider>
+                  <AlertProvider>
+                    <App />
+                  </AlertProvider>
+                </ThemeSelectProvider>
+              </ThemeProvider>
+            </StyledEngineProvider>
           </LoadingProvider>
         </FirebaseSdksProvider>
       </IconContext.Provider>

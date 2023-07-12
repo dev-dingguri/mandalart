@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Snippet } from 'types/Snippet';
-import Button from 'components/Button/Button';
+import IconButton from '@mui/material/IconButton';
 import { BsGrid3X3, BsThreeDots } from 'react-icons/bs';
 import styles from './MandalartListItem.module.css';
 import Menu from 'components/Menu/Menu';
@@ -73,11 +73,16 @@ const MandalartListItem = ({
       onClick={() => onSelect(mandalartId)}
       onContextMenu={handleShowMenu}
     >
+      {/* todo: li 버튼이랑 효과 유사하게 하기 안에 버튼 넣을까? */}
       <BsGrid3X3 className={styles.icon} />
       <p> {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}</p>
-      <Button className={styles.etcButton} onClick={handleShowMenu}>
+      <IconButton
+        className={styles.etcButton}
+        size="small"
+        onClick={handleShowMenu}
+      >
         <BsThreeDots />
-      </Button>
+      </IconButton>
       <Menu
         isShown={isShownMenu}
         yPos={menuY}

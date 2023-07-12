@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './MandalartViewType.module.css';
-import Button from 'components/Button/Button';
+import Button from '@mui/material/Button';
 import { BsGrid3X3 } from 'react-icons/bs';
 
 type MandalartViewTypeProps = {

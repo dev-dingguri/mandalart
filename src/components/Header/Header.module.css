@@ -32,15 +32,15 @@
   margin-right: 0.5em;
 }
 
-.signButton {
+/* .signButton {
   height: 2em;
   min-width: 5em;
   border-radius: 5px;
   background-color: var(--color-bg-3);
   color: var(--color-font-1);
-}
+} */
 
-.asideButton,
+/* .asideButton,
 .etcButton {
   display: flex;
   justify-content: center;
@@ -59,4 +59,11 @@
 }
 .etcButton {
   margin-left: 0.16666666666666666em;
+} */
+
+.leftDrawerButton {
+  margin-right: 0.25em;
+}
+.rightDrawerButton {
+  margin-left: 0.25em;
 }

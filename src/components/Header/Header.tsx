@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './Header.module.css';
-import Button from 'components/Button/Button';
-import { BsList, BsThreeDots } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import { BsList, BsThreeDots } from 'react-icons/bs';
 
 type HeaderProps = {
   user: User | null;
@@ -23,28 +24,44 @@ const Header = ({
   const { t } = useTranslation();
 
   const signButton = user ? (
-    <Button className={styles.signButton} onClick={onSignOut}>
+    <Button
+      className={styles.signButton}
+      variant="outlined"
+      onClick={onSignOut}
+    >
       {t('auth.signOut')}
     </Button>
   ) : (
-    <Button className={styles.signButton} onClick={onShowSignInUI}>
+    <Button
+      className={styles.signButton}
+      variant="outlined"
+      onClick={onShowSignInUI}
+    >
       {t('auth.signIn')}
     </Button>
   );
   return (
     <header className={styles.header}>
       <div className={styles.left}>
-        <Button className={styles.asideButton} onClick={onShowLeftAside}>
+        <IconButton
+          className={styles.leftDrawerButton}
+          size="small"
+          onClick={onShowLeftAside}
+        >
           <BsList />
-        </Button>
+        </IconButton>
         <h1 className={styles.title}>{t('global.app')}</h1>
       </div>
       <div className={styles.right}>
         <p className={styles.name}>{user && user.displayName}</p>
         {signButton}
-        <Button className={styles.etcButton} onClick={onShowRightAside}>
+        <IconButton
+          className={styles.rightDrawerButton}
+          size="small"
+          onClick={onShowRightAside}
+        >
           <BsThreeDots />
-        </Button>
+        </IconButton>
       </div>
     </header>
   );

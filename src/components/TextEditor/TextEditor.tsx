@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Dialog from 'components/Dialog/Dialog';
-import Button from 'components/Button/Button';
+import Button from '@mui/material/Button';
 import styles from './TextEditor.module.css';
 import { useTranslation } from 'react-i18next';
 import i18n from 'locales/i18n';

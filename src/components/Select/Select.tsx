@@ -1,4 +1,4 @@
-import Button from 'components/Button/Button';
+import Button from '@mui/material/Button';
 import Menu from 'components/Menu/Menu';
 import useBoolean from 'hooks/useBoolean';
 import React, { useRef, useState } from 'react';

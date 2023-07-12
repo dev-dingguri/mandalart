@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BsChevronLeft } from 'react-icons/bs';
 import styles from './OpenSourceLicensesPage.module.css';
-import Button from 'components/Button/Button';
+import IconButton from '@mui/material/IconButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PATH_MAIN } from 'constants/constants';
@@ -71,9 +71,9 @@ const OpenSourceLicensesPage = () => {
   return (
     <section className={styles.license}>
       <header className={styles.header}>
-        <Button className={styles.goBackButton} onClick={goToBack}>
+        <IconButton className={styles.goBackButton} onClick={goToBack}>
           <BsChevronLeft />
-        </Button>
+        </IconButton>
         <h1 className={styles.title}>{t('oss.label')}</h1>
       </header>
       <ul className={styles.list}>
