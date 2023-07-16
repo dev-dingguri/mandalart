@@ -1,17 +1,20 @@
 import React from 'react';
 import styles from './RightDrawer.module.css';
-import Select from 'components/Select/Select';
 import { useNavigate } from 'react-router-dom';
 import { Theme, useTheme } from 'contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { BsGithub, BsYoutube } from 'react-icons/bs';
 import { APP_VERSION } from 'version';
 import { PATH_OSS } from '../../constants/constants';
-import { Drawer } from '@mui/material';
+import Drawer from '@mui/material/Drawer';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 type ItemProps = {
   className?: string;
-  text: string;
+  text?: string | null;
   children?: React.ReactNode;
   onClick?: () => void;
 };
@@ -19,7 +22,7 @@ type ItemProps = {
 const Item = ({ className, text, children, onClick }: ItemProps) => {
   return (
     <li className={`${styles.item} ${className}`} onClick={onClick}>
-      <p className={styles.text}>{text}</p>
+      {text && <p className={styles.text}>{text}</p>}
       {children}
     </li>
   );
@@ -38,15 +41,14 @@ type RightAsideProps = {
 const RightAside = ({ isShown, onClose }: RightAsideProps) => {
   const { theme, selectTheme } = useTheme();
   const { t, i18n } = useTranslation();
-  const lang = i18n.languages[0];
 
   const themeOptions: ThemeOption[] = [
     { value: 'system', name: t('theme.options.system') },
     { value: 'light', name: t('theme.options.light') },
     { value: 'dark', name: t('theme.options.dark') },
   ];
-  const handleSelectTheme = (value: string) => {
-    selectTheme(value as Theme);
+  const handleSelectTheme = (event: SelectChangeEvent) => {
+    selectTheme(event.target.value as Theme);
   };
 
   const languageOptions = [
@@ -54,34 +56,54 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
     { value: 'ko', name: '한국어' },
     { value: 'ja', name: '日本語' },
   ];
-  const handleSelectlanguage = (value: string) => {
-    i18n.changeLanguage(value);
+  const handleSelectlanguage = (event: SelectChangeEvent) => {
+    i18n.changeLanguage(event.target.value);
   };
 
   const navigate = useNavigate();
   const goToOpenSourceLicense = () => {
-    navigate(`/${lang}${PATH_OSS}`);
+    navigate(`/${i18n.language}${PATH_OSS}`);
   };
 
   return (
     <Drawer anchor="right" open={isShown} onClose={onClose}>
       <div className={`${styles.aside}`}>
         <ul className={styles.list}>
-          <Item text={t('theme.label')}>
-            <Select
-              className={styles.itemSub}
-              options={themeOptions}
-              selectedValue={theme}
-              onSelect={handleSelectTheme}
-            />
+          <Item>
+            <FormControl fullWidth>
+              <InputLabel id="theme-label">{t('theme.label')}</InputLabel>
+              <Select
+                labelId="theme-label"
+                id="theme-select"
+                value={theme}
+                label="Age"
+                onChange={handleSelectTheme}
+              >
+                {themeOptions.map(({ value, name }) => (
+                  <MenuItem key={value} value={value}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Item>
-          <Item text={t('language.label')}>
-            <Select
-              className={styles.itemSub}
-              options={languageOptions}
-              selectedValue={i18n.languages[0]}
-              onSelect={handleSelectlanguage}
-            />
+          <Item>
+            <FormControl fullWidth>
+              <InputLabel id="language-label">{t('language.label')}</InputLabel>
+              <Select
+                labelId="language-label"
+                id="language-select"
+                value={i18n.language}
+                label="language"
+                onChange={handleSelectlanguage}
+              >
+                {languageOptions.map(({ value, name }) => (
+                  <MenuItem key={value} value={value}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Item>
           <Item
             text={t('oss.label')}
