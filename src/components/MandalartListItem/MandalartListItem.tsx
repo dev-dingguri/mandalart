@@ -3,11 +3,11 @@ import { Snippet } from 'types/Snippet';
 import IconButton from '@mui/material/IconButton';
 import { BsGrid3X3, BsThreeDots } from 'react-icons/bs';
 import styles from './MandalartListItem.module.css';
-import Menu from 'components/Menu/Menu';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import TextEditor from 'components/TextEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
 import { TMP_MANDALART_ID } from 'constants/constants';
-import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type MandalartListItemProps = {
@@ -44,28 +44,10 @@ const MandalartListItem = ({
     showMenu();
   };
 
-  const handleMenuSelect = (value: string) => {
-    switch (value) {
-      case 'delete':
-        return onDelete(mandalartId);
-      case 'reset':
-        return onReset(mandalartId);
-      case 'rename':
-        return showEditor();
-      default:
-        throw new Error(`Unsupported menu option. option=${value}`);
-    }
+  const handleMenuClick = (ev: React.MouseEvent<Element, MouseEvent>) => {
+    ev.stopPropagation(); // 메뉴 클릭시 Drawer 닫힘 방지
+    closeMenu();
   };
-
-  const options = useMemo(() => {
-    const options: { value: string; name: string }[] = [];
-    if (mandalartId !== TMP_MANDALART_ID) {
-      options.push({ value: 'delete', name: t('mandalart.delete') });
-    }
-    options.push({ value: 'reset', name: t('mandalart.reset') });
-    options.push({ value: 'rename', name: t('mandalart.rename') });
-    return options;
-  }, [mandalartId, t]);
 
   return (
     <li
@@ -84,13 +66,23 @@ const MandalartListItem = ({
         <BsThreeDots />
       </IconButton>
       <Menu
-        isShown={isShownMenu}
-        yPos={menuY}
-        xPos={menuX}
-        options={options}
-        onSelect={handleMenuSelect}
+        open={isShownMenu}
+        onClick={handleMenuClick}
         onClose={closeMenu}
-      />
+        anchorReference="anchorPosition"
+        anchorPosition={isShownMenu ? { top: menuY, left: menuX } : undefined}
+      >
+        {mandalartId !== TMP_MANDALART_ID && (
+          <MenuItem onClick={() => onDelete(mandalartId)}>
+            {t('mandalart.delete')}
+          </MenuItem>
+        )}
+        <MenuItem onClick={() => onReset(mandalartId)}>
+          {t('mandalart.reset')}
+        </MenuItem>
+        <MenuItem onClick={showEditor}>{t('mandalart.rename')}</MenuItem>
+      </Menu>
+      {/* todo: 만다라트 제목 편집 후 Drawer 닫힘 방지 검토 */}
       <TextEditor
         isShown={isShownEditor}
         initialText={snippet.title}

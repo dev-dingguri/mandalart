@@ -50,10 +50,12 @@ const theme = createTheme({
         },
       },
     },
-    MuiBackdrop: {
+    MuiDrawer: {
       styleOverrides: {
         root: {
-          backdropFilter: 'blur(2px)',
+          '&& .MuiBackdrop-root': {
+            backdropFilter: 'blur(2px)',
+          },
         },
       },
     },
