@@ -10,16 +10,16 @@ type HeaderProps = {
   user: User | null;
   onShowSignInUI: () => void;
   onSignOut: () => void;
-  onShowLeftAside: () => void;
-  onShowRightAside: () => void;
+  onShowLeftDrawer: () => void;
+  onShowRightDrawer: () => void;
 };
 
 const Header = ({
   user,
   onShowSignInUI,
   onSignOut,
-  onShowLeftAside,
-  onShowRightAside,
+  onShowLeftDrawer,
+  onShowRightDrawer,
 }: HeaderProps) => {
   const { t } = useTranslation();
 
@@ -46,7 +46,7 @@ const Header = ({
         <IconButton
           className={styles.leftDrawerButton}
           size="small"
-          onClick={onShowLeftAside}
+          onClick={onShowLeftDrawer}
         >
           <BsList />
         </IconButton>
@@ -58,7 +58,7 @@ const Header = ({
         <IconButton
           className={styles.rightDrawerButton}
           size="small"
-          onClick={onShowRightAside}
+          onClick={onShowRightDrawer}
         >
           <BsThreeDots />
         </IconButton>

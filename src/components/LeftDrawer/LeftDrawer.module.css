@@ -9,11 +9,11 @@
   visibility: visible;
   backdrop-filter: var(--filter-backdrop);
 }
-
+/*
 .aside {
   position: fixed;
-  /* transform을 사용할 경우 position: fixed가 된 요소는 
-     transform가 있는 요소에 상대적이 되기 때문에 left 사용 */
+  // transform을 사용할 경우 position: fixed가 된 요소는 
+  //  transform가 있는 요소에 상대적이 되기 때문에 left 사용
   left: calc(mobileAsideWidth * -1);  
   display: flex;
   flex-direction: column;
@@ -28,12 +28,17 @@
 .aside.shown {
   left: 0;
 }
+*/
+
+.aside {
+  width: mobileAsideWidth;
+}
 
 @media screen and (min-width: 30rem) {
   /* 30 * 0.7 = 21*/
   @value asideWidth: 21rem;
   .aside {
-    left: calc(asideWidth * -1);  
+    /* left: calc(asideWidth * -1); */
     width: asideWidth;
   }
 }

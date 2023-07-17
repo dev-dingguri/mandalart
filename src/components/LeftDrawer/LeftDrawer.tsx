@@ -1,13 +1,13 @@
 import React from 'react';
-import styles from './LeftAside.module.css';
+import styles from './LeftDrawer.module.css';
 import { BsPlus } from 'react-icons/bs';
 import Button from '@mui/material/Button';
 import MandalartList from 'components/MandalartList/MandalartList';
-import OutsideClickDetector from 'components/OutsideClickDetector/OutsideClickDetector';
 import { Snippet } from 'types/Snippet';
 import { useTranslation } from 'react-i18next';
+import { Drawer } from '@mui/material';
 
-type LeftAsideProps = {
+type LeftDrawerProps = {
   isShown: boolean;
   snippetMap: Map<string, Snippet>;
   selectedMandalartId: string | null;
@@ -19,7 +19,7 @@ type LeftAsideProps = {
   onClose: () => void;
 };
 
-const LeftAside = ({
+const LeftDrawer = ({
   isShown,
   snippetMap,
   selectedMandalartId,
@@ -29,7 +29,7 @@ const LeftAside = ({
   onResetMandalart,
   onCreateMandalart,
   onClose,
-}: LeftAsideProps) => {
+}: LeftDrawerProps) => {
   const { t } = useTranslation();
 
   const handleSelectMandalart = (mandalartId: string) => {
@@ -43,11 +43,8 @@ const LeftAside = ({
   };
 
   return (
-    <OutsideClickDetector
-      className={`${styles.container} ${isShown && styles.shown}`}
-      onOutsideLClick={onClose}
-    >
-      <div className={`${styles.aside} ${isShown && styles.shown}`}>
+    <Drawer anchor="left" open={isShown} onClose={onClose}>
+      <div className={`${styles.aside}`}>
         <MandalartList
           snippetMap={snippetMap}
           selectedId={selectedMandalartId}
@@ -57,15 +54,15 @@ const LeftAside = ({
           onReset={onResetMandalart}
         />
         <div className={styles.bottom}>
-          {/* todo: 아이템 좌측 정렬*/}
+          {/* todo: 버튼 내부 좌측 정렬*/}
           <Button className={styles.newButton} onClick={handleNewClick}>
             <BsPlus />
             <p>{t('mandalart.new')}</p>
           </Button>
         </div>
       </div>
-    </OutsideClickDetector>
+    </Drawer>
   );
 };
 
-export default LeftAside;
+export default LeftDrawer;

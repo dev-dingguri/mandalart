@@ -1,6 +1,5 @@
 import React from 'react';
-import styles from './RightAside.module.css';
-import OutsideClickDetector from 'components/OutsideClickDetector/OutsideClickDetector';
+import styles from './RightDrawer.module.css';
 import Select from 'components/Select/Select';
 import { useNavigate } from 'react-router-dom';
 import { Theme, useTheme } from 'contexts/ThemeContext';
@@ -8,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { BsGithub, BsYoutube } from 'react-icons/bs';
 import { APP_VERSION } from 'version';
 import { PATH_OSS } from '../../constants/constants';
+import { Drawer } from '@mui/material';
 
 type ItemProps = {
   className?: string;
@@ -64,11 +64,8 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
   };
 
   return (
-    <OutsideClickDetector
-      className={`${styles.container} ${isShown && styles.shown}`}
-      onOutsideLClick={onClose}
-    >
-      <div className={`${styles.aside} ${isShown && styles.shown}`}>
+    <Drawer anchor="right" open={isShown} onClose={onClose}>
+      <div className={`${styles.aside}`}>
         <ul className={styles.list}>
           <Item text={t('theme.label')}>
             <Select
@@ -118,7 +115,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
           <p>DINGGURI.LAB. ALL RIGHTS RESERVED</p>
         </div>
       </div>
-    </OutsideClickDetector>
+    </Drawer>
   );
 };
 

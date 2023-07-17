@@ -10,10 +10,10 @@ import styles from './MainContents.module.css';
 import Header from 'components/Header/Header';
 import SignInModal from 'components/SignInModal/SignInModal';
 import MandalartView from 'components/MandalartView/MandalartView';
-import LeftAside from 'components/LeftAside/LeftAside';
+import LeftDrawer from 'components/LeftDrawer/LeftDrawer';
 import { EMPTY_SNIPPET, EMPTY_TOPIC_TREE } from 'constants/constants';
 import EmptyMandalarts from 'components/EmptyMandalarts/EmptyMandalarts';
-import RightAside from 'components/RightAside/RightAside';
+import RightDrawer from 'components/RightDrawer/RightDrawer';
 import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
 import { Snippet } from '../../types/Snippet';
@@ -67,9 +67,9 @@ const MainContents = ({
   const { signIn, signOut } = useAuth();
   const { getShouldUploadTemp, setShouldUploadTemp } = useSignInSession();
 
-  const [isShownLeftAside, { on: showLeftAside, off: closeLeftAside }] =
+  const [isShownLeftDrawer, { on: showLeftDrawer, off: closeLeftDrawer }] =
     useBoolean(false);
-  const [isShownRightAside, { on: showRightAside, off: closeRightAside }] =
+  const [isShownRightDrawer, { on: showRightDrawer, off: closeRightDrawer }] =
     useBoolean(false);
   const [isShownSignInModal, { on: showSignInModal, off: closeSignInModal }] =
     useBoolean(false);
@@ -133,8 +133,8 @@ const MainContents = ({
           user={user}
           onShowSignInUI={showSignInModal}
           onSignOut={signOut}
-          onShowLeftAside={showLeftAside}
-          onShowRightAside={showRightAside}
+          onShowLeftDrawer={showLeftDrawer}
+          onShowRightDrawer={showRightDrawer}
         />
       </div>
       <div className={styles.scrollArea}>
@@ -158,8 +158,8 @@ const MainContents = ({
           )}
         </div>
       </div>
-      <LeftAside
-        isShown={isShownLeftAside}
+      <LeftDrawer
+        isShown={isShownLeftDrawer}
         snippetMap={snippetMap}
         selectedMandalartId={currentMandalartId}
         onSelectMandalart={(mandalartId) => selectMandalartId(mandalartId)}
@@ -178,9 +178,9 @@ const MainContents = ({
             showAlert(e.message)
           );
         }}
-        onClose={closeLeftAside}
+        onClose={closeLeftDrawer}
       />
-      <RightAside isShown={isShownRightAside} onClose={closeRightAside} />
+      <RightDrawer isShown={isShownRightDrawer} onClose={closeRightDrawer} />
       <SignInModal
         isShown={isShownSignInModal}
         onClose={closeSignInModal}
