@@ -1,10 +1,30 @@
-.toggle {
-  display: flex;
+.toggleButtonGroup {
   width: 100%;
-  height: 2.5em;
 }
 
-.allViewButton,
+.toggleButton {
+  width: 50%;
+  padding: 0.5em;
+}
+
+.allViewIcon {
+  font-size: 1.5rem;
+}
+
+/* todo: 버튼 icon 사이즈 설정 방법 개선 */
+.partViewIconFrame {
+  max-width: 1.5rem;
+  max-height: 1.5rem;
+  overflow: hidden;
+}
+
+.partViewIcon {
+  font-size: 2.5rem;
+  /* (아이콘 사이즈 - frame 폭) / 2 */
+  transform: translate(-0.5rem, -0.5rem);
+}
+
+/* .allViewButton,
 .partViewButton {
   display: flex;
   justify-content: center;
@@ -12,11 +32,11 @@
   width: 50%;
   background-color: var(--color-bg-3);
   color: var(--color-font-1);
-}
+} */
 
 /* todo: 버튼 icon 사이즈 설정 방법 개선 */
 
-.allViewButton {
+/* .allViewButton {
   border-radius: 5px 0 0 5px;
   font-size: 1.5rem;
 }
@@ -39,4 +59,4 @@
 
 .selected {
   background-color: var(--color-accent-1);
-}
+} */

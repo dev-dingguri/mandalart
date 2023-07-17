@@ -9,7 +9,7 @@ import {
   TMP_MANDALART_ID,
 } from 'constants/constants';
 import { cloneDeep } from 'lodash';
-import MandalartViewType from 'components/MandalartViewType/MandalartViewType';
+import MandalartViewToggle from 'components/MandalartViewToggle/MandalartViewToggle';
 import { Snippet } from 'types/Snippet';
 import TextEditor from 'components/TextEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
@@ -75,7 +75,7 @@ const MandalartView = ({
           )}
         </div>
       </div>
-      <MandalartViewType isAllView={isAllView} onChange={setIsAllView} />
+      <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
       <TextEditor
         isShown={isShownTitleEditor}
         initialText={snippet.title}
