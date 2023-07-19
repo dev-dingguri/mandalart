@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import Dialog from 'components/Dialog/Dialog';
+import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
+import CenterBox from 'components/CenterBox/CenterBox';
 import styles from './TextEditor.module.css';
 import { useTranslation } from 'react-i18next';
 import i18n from 'locales/i18n';
@@ -44,43 +45,43 @@ const TextEditor = ({
   }, [isShown, initialText]);
 
   return (
-    <Dialog
-      isShown={isShown}
-      className={styles.dialog}
-      onClose={onClose}
-      onConfirm={handleConfirm}
-    >
-      <h1 className={styles.title}>{title}</h1>
-      <input
-        className={`${styles.input} ${isLimitReached && styles.warning}`}
-        type="text"
-        placeholder={placeholder}
-        onChange={handleInputChange}
-        value={text}
-      />
-      {shouldValidations && (
-        <div
-          className={`${styles.validations} ${
-            isLimitReached && styles.warning
-          }`}
-        >
-          <p>{isLimitReached && t('textEditor.maxTextReached')}</p>
-          <p>{`${text.length}/${maxText}`}</p>
-        </div>
-      )}
-      <div className={styles.buttons}>
-        <Button className={styles.button} onClick={onClose}>
-          {t('global.cancel')}
-        </Button>
-        <Button
-          className={styles.button}
-          onClick={handleConfirm}
-          disabled={isLimitReached}
-        >
-          {t('global.save')}
-        </Button>
-      </div>
-    </Dialog>
+    <Modal open={isShown} onClose={onClose}>
+      <CenterBox className={styles.dialog}>
+        <form onSubmit={handleConfirm}>
+          <h1 className={styles.title}>{title}</h1>
+          <input
+            autoFocus
+            className={`${styles.input} ${isLimitReached && styles.warning}`}
+            type="text"
+            placeholder={placeholder}
+            onChange={handleInputChange}
+            value={text}
+          />
+          {shouldValidations && (
+            <div
+              className={`${styles.validations} ${
+                isLimitReached && styles.warning
+              }`}
+            >
+              <p>{isLimitReached && t('textEditor.maxTextReached')}</p>
+              <p>{`${text.length}/${maxText}`}</p>
+            </div>
+          )}
+          <div className={styles.buttons}>
+            <Button className={styles.button} onClick={onClose}>
+              {t('global.cancel')}
+            </Button>
+            <Button
+              type="submit"
+              className={styles.button}
+              disabled={isLimitReached}
+            >
+              {t('global.save')}
+            </Button>
+          </div>
+        </form>
+      </CenterBox>
+    </Modal>
   );
 };
 

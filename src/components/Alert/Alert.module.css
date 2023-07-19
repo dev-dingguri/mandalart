@@ -1,6 +1,6 @@
 .alert {
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
   min-width: 20em;
   max-width: min(25em, 60%);
   min-height: 5em;

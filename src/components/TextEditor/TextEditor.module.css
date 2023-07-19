@@ -1,6 +1,6 @@
 .dialog { 
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
   width: 20em;
   padding: 1.5em;
   border: 0;

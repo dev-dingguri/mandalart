@@ -55,18 +55,24 @@ const theme = createTheme({
         root: {
           '&& .MuiBackdrop-root': {
             backdropFilter: 'blur(2px)',
+            backgroundColor: 'rgba(0, 0, 0, 0.1)',
+          },
+        },
+      },
+    },
+    MuiModal: {
+      styleOverrides: {
+        root: {
+          '&& .MuiBackdrop-root': {
+            backdropFilter: 'blur(2px)',
+            backgroundColor: 'rgba(0, 0, 0, 0.1)',
           },
         },
       },
     },
   },
 });
-// {
-//   borderRadius: '5px',
-//   '& .MuiTouchRipple-root .MuiTouchRipple-child': {
-//     borderRadius: '5px',
-//   },
-// }
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

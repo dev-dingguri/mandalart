@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-import Dialog from 'components/Dialog/Dialog';
+import Modal from '@mui/material/Modal';
+import CenterBox from 'components/CenterBox/CenterBox';
 import styles from './Alert.module.css';
 import { useTranslation } from 'react-i18next';
 
@@ -14,13 +15,15 @@ const Alert = ({ isShown, message, onClose }: AlertProps) => {
   const { t } = useTranslation();
 
   return (
-    <Dialog className={styles.alert} isShown={isShown} onClose={onClose}>
-      <h1 className={styles.title}>{t('global.app')}</h1>
-      <p>{message}</p>
-      <Button className={styles.okButton} onClick={onClose}>
-        {t('global.ok')}
-      </Button>
-    </Dialog>
+    <Modal open={isShown} onClose={onClose}>
+      <CenterBox className={styles.alert}>
+        <h1 className={styles.title}>{t('global.app')}</h1>
+        <p>{message}</p>
+        <Button className={styles.okButton} onClick={onClose}>
+          {t('global.ok')}
+        </Button>
+      </CenterBox>
+    </Modal>
   );
 };
 
