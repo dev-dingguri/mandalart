@@ -10,6 +10,7 @@ import Drawer from '@mui/material/Drawer';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 type ItemProps = {
@@ -22,7 +23,7 @@ type ItemProps = {
 const Item = ({ className, text, children, onClick }: ItemProps) => {
   return (
     <li className={`${styles.item} ${className}`} onClick={onClick}>
-      {text && <p className={styles.text}>{text}</p>}
+      {text && <Typography variant="subtitle1">{text}</Typography>}
       {children}
     </li>
   );
@@ -111,13 +112,13 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
             onClick={goToOpenSourceLicense}
           />
           <Item text={t('version.label')}>
-            <p className={`${styles.itemSub} ${styles.itemSubText}`}>
+            <Typography variant="body1" className={styles.itemSub}>
               {APP_VERSION}
-            </p>
+            </Typography>
           </Item>
         </ul>
         <div className={styles.contact}>
-          <p>dingguri.lab@gmail.com</p>
+          <Typography variant="body2">dingguri.lab@gmail.com</Typography>
           <div className={styles.sites}>
             <BsYoutube
               className={styles.siteIcon}
@@ -134,7 +135,9 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
               }}
             />
           </div>
-          <p>DINGGURI.LAB. ALL RIGHTS RESERVED</p>
+          <Typography variant="body2">
+            DINGGURI.LAB. ALL RIGHTS RESERVED
+          </Typography>
         </div>
       </div>
     </Drawer>

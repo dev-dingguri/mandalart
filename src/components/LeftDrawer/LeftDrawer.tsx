@@ -57,7 +57,7 @@ const LeftDrawer = ({
           {/* todo: 버튼 내부 좌측 정렬*/}
           <Button className={styles.newButton} onClick={handleNewClick}>
             <BsPlus />
-            <p>{t('mandalart.new')}</p>
+            {t('mandalart.new')}
           </Button>
         </div>
       </div>

@@ -9,6 +9,7 @@ import TextEditor from 'components/TextEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
 import { TMP_MANDALART_ID } from 'constants/constants';
 import { useTranslation } from 'react-i18next';
+import Typography from '@mui/material/Typography';
 
 type MandalartListItemProps = {
   mandalartId: string;
@@ -57,7 +58,10 @@ const MandalartListItem = ({
     >
       {/* todo: li 버튼이랑 효과 유사하게 하기 안에 버튼 넣을까? */}
       <BsGrid3X3 className={styles.icon} />
-      <p> {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}</p>
+      <Typography variant="body1">
+        {' '}
+        {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
+      </Typography>
       <IconButton
         className={styles.etcButton}
         size="small"

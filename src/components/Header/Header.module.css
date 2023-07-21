@@ -21,14 +21,14 @@
   margin-left: auto;
 }
 
-.title {
+/* .title {
   font-size: 1.3rem;
   font-weight: bold;
   margin: 0;
-}
+} */
 
 .name {
-  margin: 0;
+  /* margin: 0; */
   margin-right: 0.5em;
 }
 

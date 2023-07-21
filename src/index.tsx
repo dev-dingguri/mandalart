@@ -70,6 +70,50 @@ const theme = createTheme({
         },
       },
     },
+    MuiTypography: {
+      defaultProps: {
+        variantMapping: {
+          h1: 'h1',
+          h2: 'h2',
+          h3: 'h2',
+          h4: 'h2',
+          h5: 'h2',
+          h6: 'h2',
+          subtitle1: 'h2',
+          subtitle2: 'h2',
+        },
+      },
+    },
+  },
+  typography: {
+    h1: {
+      fontSize: '1.3rem',
+      fontWeight: 'bold',
+    },
+    h2: {
+      fontSize: '2rem',
+      fontWeight: 'bold',
+    },
+    h3: {
+      fontSize: '1.2rem',
+      fontWeight: 'bold',
+    },
+    subtitle1: {
+      fontSize: '1.1rem',
+      fontWeight: '500',
+    },
+    subtitle2: {
+      fontSize: '1.1rem',
+      fontWeight: '500',
+      color: '#4e4e4e',
+    },
+    body1: {
+      fontSize: '1rem',
+    },
+    body2: {
+      fontSize: '0.85rem',
+      color: '#4e4e4e',
+    },
   },
 });
 

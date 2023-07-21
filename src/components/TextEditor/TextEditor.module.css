@@ -9,12 +9,12 @@
   color: var(--color-font-1);
 }
 
-.title {
+/* .title {
   text-align: center;
   font-size: 1.3rem;
   font-weight: bold;
   margin: 0;
-}
+} */
 
 .input {
   height: 2em;

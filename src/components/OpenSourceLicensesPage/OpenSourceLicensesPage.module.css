@@ -28,14 +28,15 @@
   padding: 0;
   background-color: var(--color-bg-1);
   color: var(--color-font-1);
+  margin-right: 0.25em;
 }
 
-.title {
+/* .title {
   font-size: 1.3rem;
   font-weight: bold;
   margin: 0;
   margin-left: 0.25em;
-}
+} */
 
 .list {
   margin: 0;
@@ -47,11 +48,11 @@
 .item {
   display: flex;
   flex-direction: column;
-  padding: 0.5em 0;
+  padding: 0.25em 0;
   border-bottom: 1px solid var(--color-border-1);
 }
 
-.item h3 {
+/* .item h3 {
   font-size: 1.2rem;
   margin: 0;
   margin-bottom: 0.5em;
@@ -63,4 +64,4 @@
   margin-bottom: 0.25em;
   color: var(--color-font-1);
   word-wrap:break-word;
-}
+} */

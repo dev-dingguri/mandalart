@@ -1,3 +1,4 @@
+import Typography from '@mui/material/Typography';
 import styles from './TopicItem.module.css';
 import TextEditor from 'components/TextEditor/TextEditor';
 import { MAX_TOPIC_TEXT_SIZE } from 'constants/constants';
@@ -32,7 +33,9 @@ const TopicItem = ({
           canEdit && showEditor();
         }}
       >
-        <p className={styles.text}>{topic}</p>
+        <Typography variant="body1" className={styles.text}>
+          {topic}
+        </Typography>
       </div>
       <TextEditor
         isShown={isShownEditor}

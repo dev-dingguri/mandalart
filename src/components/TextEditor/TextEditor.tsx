@@ -5,6 +5,7 @@ import CenterBox from 'components/CenterBox/CenterBox';
 import styles from './TextEditor.module.css';
 import { useTranslation } from 'react-i18next';
 import i18n from 'locales/i18n';
+import Typography from '@mui/material/Typography';
 
 type TextEditorProps = {
   isShown: boolean;
@@ -48,7 +49,7 @@ const TextEditor = ({
     <Modal open={isShown} onClose={onClose}>
       <CenterBox className={styles.dialog}>
         <form onSubmit={handleConfirm}>
-          <h1 className={styles.title}>{title}</h1>
+          <Typography variant="h3">{title}</Typography>
           <input
             autoFocus
             className={`${styles.input} ${isLimitReached && styles.warning}`}
@@ -63,8 +64,10 @@ const TextEditor = ({
                 isLimitReached && styles.warning
               }`}
             >
-              <p>{isLimitReached && t('textEditor.maxTextReached')}</p>
-              <p>{`${text.length}/${maxText}`}</p>
+              <Typography variant="body2">
+                {isLimitReached && t('textEditor.maxTextReached')}
+              </Typography>
+              <Typography variant="body2">{`${text.length}/${maxText}`}</Typography>
             </div>
           )}
           <div className={styles.buttons}>

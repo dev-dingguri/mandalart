@@ -14,6 +14,7 @@ import { Snippet } from 'types/Snippet';
 import TextEditor from 'components/TextEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
 import { useTranslation } from 'react-i18next';
+import Typography from '@mui/material/Typography';
 
 type MandalartViewProps = {
   mandalartId: string;
@@ -59,12 +60,12 @@ const MandalartView = ({
   return (
     <section>
       <div className={styles.titleBar}>
-        <p className={styles.temp}>
+        <Typography variant="body2">
           {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.temp')})`}
-        </p>
-        <h1 className={styles.title} onClick={showTitleEditor}>
+        </Typography>
+        <Typography variant="h2" onClick={showTitleEditor}>
           {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
-        </h1>
+        </Typography>
       </div>
       <div className={styles.mandalart}>
         <div className={styles.container}>

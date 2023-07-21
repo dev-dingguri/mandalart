@@ -11,10 +11,10 @@
 }
 
 .text {
-  width: 100%;
+  /* width: 100%; */
   font-size: 0.8rem;
   text-align: center;
-  margin: 0;
+  /* margin: 0; */
   /* 텍스트가 영역을 벗어나지 않도록 처리 */
   /* 가로 */
   word-break: break-all;

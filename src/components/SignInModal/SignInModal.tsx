@@ -8,6 +8,7 @@ import CenterBox from 'components/CenterBox/CenterBox';
 import IconButton from '@mui/material/IconButton';
 import { BsXLg } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
+import Typography from '@mui/material/Typography';
 
 type SignInModalProps = {
   isShown: boolean;
@@ -25,8 +26,10 @@ const SignInModal = ({ isShown, onClose, onSignIn }: SignInModalProps) => {
           <BsXLg />
         </IconButton>
         <div className={styles.container}>
-          <h1 className={styles.title}>{t('global.app')}</h1>
-          <p className={styles.message}>{t('signInModal.message')}</p>
+          <Typography variant="h3">{t('global.app')}</Typography>
+          <Typography variant="body1" className={styles.message}>
+            {t('signInModal.message')}
+          </Typography>
           <Button
             className={styles.signInButton}
             onClick={() => onSignIn(ProviderId.GOOGLE)}

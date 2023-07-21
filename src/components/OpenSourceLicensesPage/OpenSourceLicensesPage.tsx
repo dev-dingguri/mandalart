@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BsChevronLeft } from 'react-icons/bs';
 import styles from './OpenSourceLicensesPage.module.css';
+import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -38,13 +39,11 @@ type License = {
 const Item = ({ name, licenses, repository }: License) => {
   return (
     <li className={styles.item}>
-      <h3>{name}</h3>
-      <p>{licenses}</p>
-      <p>
-        <a href={repository} target="blank">
-          {repository}
-        </a>
-      </p>
+      <Typography variant="subtitle1">{name}</Typography>
+      <Typography variant="body2">{licenses}</Typography>
+      <a href={repository} target="blank">
+        <Typography variant="body2">{repository}</Typography>
+      </a>
     </li>
   );
 };
@@ -74,7 +73,7 @@ const OpenSourceLicensesPage = () => {
         <IconButton className={styles.goBackButton} onClick={goToBack}>
           <BsChevronLeft />
         </IconButton>
-        <h1 className={styles.title}>{t('oss.label')}</h1>
+        <Typography variant="h1">{t('oss.label')}</Typography>
       </header>
       <ul className={styles.list}>
         {licenses.map((data, idx) => (

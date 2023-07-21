@@ -1,6 +1,6 @@
 @value mobileAsideWidth: 80vw;
 
-.container {
+/* .container {
   visibility: hidden;
   transition: backdrop-filter 200ms ease-out, visibility 200ms ease-out;
 }
@@ -8,7 +8,7 @@
 .container.shown {
   visibility: visible;
   backdrop-filter: var(--filter-backdrop);
-}
+} */
 
 /* .aside {
   position: fixed;
@@ -59,9 +59,9 @@
   border-bottom: 1px solid var(--color-border-1);
 }
 
-.item p {
+/* .item p {
   margin: 0;
-}
+} */
 
 @media screen and (min-width: 30rem) {
   .item {
@@ -74,12 +74,12 @@
   width: 12em;
 }
 
-.itemSubText {
+/* .itemSubText {
   padding-left: 0.5em;
   margin-top: 0;
   margin-bottom: 0;
   color: var(--color-font-2);
-}
+} */
 
 .text {
   /* 텍스트가 영역을 벗어나지 않도록 처리 */
@@ -103,12 +103,12 @@
   padding: 0.3em 0.5em;
 }
 
-.contact p {
+/* .contact p {
   margin-top: 0;
   margin-bottom: 0;
   color: var(--color-font-2);
   font-size: 0.8rem;
-}
+} */
 
 .sites {
   display: flex;

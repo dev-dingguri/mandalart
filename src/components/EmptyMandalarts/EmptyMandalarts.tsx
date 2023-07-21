@@ -15,7 +15,7 @@ const EmptyMandalarts = ({ onCreateMandalart }: EmptyMandalartsProps) => {
     <div className={styles.notice}>
       <Button className={styles.newButton} onClick={onCreateMandalart}>
         <BsPlus />
-        <p>{t('mandalart.new')}</p>
+        {t('mandalart.new')}
       </Button>
     </div>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Header.module.css';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
+import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { BsList, BsThreeDots } from 'react-icons/bs';
@@ -50,10 +51,12 @@ const Header = ({
         >
           <BsList />
         </IconButton>
-        <h1 className={styles.title}>{t('global.app')}</h1>
+        <Typography variant="h1">{t('global.app')}</Typography>
       </div>
       <div className={styles.right}>
-        <p className={styles.name}>{user && user.displayName}</p>
+        <Typography variant="body1" className={styles.name}>
+          {user && user.displayName}
+        </Typography>
         {signButton}
         <IconButton
           className={styles.rightDrawerButton}

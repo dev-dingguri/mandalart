@@ -32,19 +32,18 @@
   color: var(--color-font-1); */
 }
 
-.title {
+/* .title {
   text-align: center;
   font-size: 1.3rem;
   font-weight: bold;
   margin: 0;
-}
+} */
 
 .message {
   text-align: center;
-  vertical-align: mandalartIddle;
   margin-top: 0.75em;
   margin-bottom: 1.25em;
-  color: var(--color-font-2);
+  /* color: var(--color-font-2); */
 }
 
 .signInButton {
