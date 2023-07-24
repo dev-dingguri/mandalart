@@ -11,6 +11,9 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 type ItemProps = {
@@ -22,10 +25,10 @@ type ItemProps = {
 
 const Item = ({ className, text, children, onClick }: ItemProps) => {
   return (
-    <li className={`${styles.item} ${className}`} onClick={onClick}>
-      {text && <Typography variant="subtitle1">{text}</Typography>}
+    <ListItem className={`${styles.item} ${className}`} onClick={onClick}>
+      {text && <ListItemText primary={text} />}
       {children}
-    </li>
+    </ListItem>
   );
 };
 
@@ -69,7 +72,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
   return (
     <Drawer anchor="right" open={isShown} onClose={onClose}>
       <div className={`${styles.aside}`}>
-        <ul className={styles.list}>
+        <List className={styles.list}>
           <Item>
             <FormControl fullWidth>
               <InputLabel id="theme-label">{t('theme.label')}</InputLabel>
@@ -116,7 +119,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
               {APP_VERSION}
             </Typography>
           </Item>
-        </ul>
+        </List>
         <div className={styles.contact}>
           <Typography variant="body2">dingguri.lab@gmail.com</Typography>
           <div className={styles.sites}>

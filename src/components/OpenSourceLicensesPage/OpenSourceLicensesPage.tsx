@@ -3,6 +3,8 @@ import { BsChevronLeft } from 'react-icons/bs';
 import styles from './OpenSourceLicensesPage.module.css';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PATH_MAIN } from 'constants/constants';
@@ -38,13 +40,13 @@ type License = {
 
 const Item = ({ name, licenses, repository }: License) => {
   return (
-    <li className={styles.item}>
+    <ListItem className={styles.item}>
       <Typography variant="subtitle1">{name}</Typography>
       <Typography variant="body2">{licenses}</Typography>
       <a href={repository} target="blank">
         <Typography variant="body2">{repository}</Typography>
       </a>
-    </li>
+    </ListItem>
   );
 };
 
@@ -75,11 +77,11 @@ const OpenSourceLicensesPage = () => {
         </IconButton>
         <Typography variant="h1">{t('oss.label')}</Typography>
       </header>
-      <ul className={styles.list}>
+      <List className={styles.list}>
         {licenses.map((data, idx) => (
           <Item key={idx} {...data} />
         ))}
-      </ul>
+      </List>
     </section>
   );
 };

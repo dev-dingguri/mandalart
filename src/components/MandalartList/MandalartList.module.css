@@ -1,10 +1,15 @@
-.scrollArea {
+/* .scrollArea {
   overflow: auto;
   scrollbar-gutter: stable both-edges;
-}
+} */
 
 .list {
-  width: 100%;
+  /* 100vh - bottom height */
+  max-height: calc(100vh - 2em);
+  overflow: auto;
+  scrollbar-gutter: stable both-edges;
+
+  /* width: 100%;
   margin: 0;
-  padding: var(--size-scrollbar-width) 0;
+  padding: var(--size-scrollbar-width) 0; */
 }

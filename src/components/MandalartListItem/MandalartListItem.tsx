@@ -3,13 +3,15 @@ import { Snippet } from 'types/Snippet';
 import IconButton from '@mui/material/IconButton';
 import { BsGrid3X3, BsThreeDots } from 'react-icons/bs';
 import styles from './MandalartListItem.module.css';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import TextEditor from 'components/TextEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
 import { TMP_MANDALART_ID } from 'constants/constants';
 import { useTranslation } from 'react-i18next';
-import Typography from '@mui/material/Typography';
 
 type MandalartListItemProps = {
   mandalartId: string;
@@ -51,17 +53,19 @@ const MandalartListItem = ({
   };
 
   return (
-    <li
-      className={`${styles.item} ${isSelected && styles.selected}`}
+    <ListItemButton
+      selected={isSelected}
       onClick={() => onSelect(mandalartId)}
       onContextMenu={handleShowMenu}
     >
-      {/* todo: li 버튼이랑 효과 유사하게 하기 안에 버튼 넣을까? */}
-      <BsGrid3X3 className={styles.icon} />
-      <Typography variant="body1">
-        {' '}
-        {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
-      </Typography>
+      <ListItemIcon>
+        <BsGrid3X3 className={styles.icon} />
+      </ListItemIcon>
+      <ListItemText
+        primary={
+          snippet.title ? snippet.title : t('mandalart.snippet.untitled')
+        }
+      />
       <IconButton
         className={styles.etcButton}
         size="small"
@@ -95,7 +99,7 @@ const MandalartListItem = ({
           onRename(mandalartId, name);
         }}
       />
-    </li>
+    </ListItemButton>
   );
 };
 

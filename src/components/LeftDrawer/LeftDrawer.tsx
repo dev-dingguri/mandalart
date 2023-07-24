@@ -43,7 +43,16 @@ const LeftDrawer = ({
   };
 
   return (
-    <Drawer anchor="left" open={isShown} onClose={onClose}>
+    <Drawer
+      anchor="left"
+      open={isShown}
+      onClose={onClose}
+      sx={{
+        '&& .MuiPaper-root': {
+          overflow: 'hidden',
+        },
+      }}
+    >
       <div className={`${styles.aside}`}>
         <MandalartList
           snippetMap={snippetMap}
@@ -54,7 +63,7 @@ const LeftDrawer = ({
           onReset={onResetMandalart}
         />
         <div className={styles.bottom}>
-          {/* todo: 버튼 내부 좌측 정렬*/}
+          {/* todo: 버튼 내부 좌측 정렬 or list item*/}
           <Button className={styles.newButton} onClick={handleNewClick}>
             <BsPlus />
             {t('mandalart.new')}
