@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react';
-import Table from 'components/Table/Table';
+import ItemGrid from 'components/ItemGrid/ItemGrid';
 import TopicItem from 'components/TopicItem/TopicItem';
 import { TopicNode } from 'types/TopicNode';
-import styles from './TopicTable.module.css';
+import styles from './TopicGrid.module.css';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
 import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';
 
-type TopicTableProps = {
-  onIsAccented: (tableItemIdx: number) => boolean;
-  onGetTopic: (tableItemIdx: number) => TopicNode;
-  onUpdateTopic: (tableItemIdx: number, text: string) => void;
+type TopicGridProps = {
+  onIsAccented: (gridItemIdx: number) => boolean;
+  onGetTopic: (gridItemIdx: number) => TopicNode;
+  onUpdateTopic: (gridItemIdx: number, text: string) => void;
   onCanEdit?: () => boolean;
   onSyncFocuse?: (
     scrollInto: (options?: ScrollIntoViewOptions) => void
@@ -17,44 +17,44 @@ type TopicTableProps = {
   onUpdateFocuse?: () => void;
 };
 
-const TopicTable = ({
+const TopicGrid = ({
   onIsAccented,
   onGetTopic,
   onUpdateTopic,
   onCanEdit = () => true,
   onSyncFocuse,
   onUpdateFocuse,
-}: TopicTableProps) => {
-  const tableRef = useRef<HTMLDivElement>(null);
+}: TopicGridProps) => {
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!onSyncFocuse) return;
 
     return onSyncFocuse((options) => {
-      const topicTable = tableRef.current!;
-      scrollIntoView(topicTable, options);
+      const topicItemGrid = gridRef.current!;
+      scrollIntoView(topicItemGrid, options);
     });
   }, [onSyncFocuse]);
 
   return (
-    <div ref={tableRef} className={styles.topicTable}>
-      <Table
+    <div ref={gridRef} className={styles.topicItemGrid}>
+      <ItemGrid
         rowSize={TABLE_ROW_SIZE}
         colSize={TABLE_COL_SIZE}
-        cellGenerater={(tableItemIdx) => (
+        createItem={(gridItemIdx) => (
           <TopicItem
-            key={tableItemIdx}
-            topic={onGetTopic(tableItemIdx).text}
-            isAccented={onIsAccented(tableItemIdx)}
+            key={gridItemIdx}
+            topic={onGetTopic(gridItemIdx).text}
+            isAccented={onIsAccented(gridItemIdx)}
             canEdit={onCanEdit()}
-            onUpdateTopic={(text) => onUpdateTopic(tableItemIdx, text)}
+            onUpdateTopic={(text) => onUpdateTopic(gridItemIdx, text)}
             onUpdateFocuse={onUpdateFocuse}
           />
         )}
-        space="2px"
+        spacing="2px"
       />
     </div>
   );
 };
 
-export default TopicTable;
+export default TopicGrid;

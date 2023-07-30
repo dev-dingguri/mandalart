@@ -1,5 +1,5 @@
-import Table from 'components/Table/Table';
-import TopicTable from 'components/TopicTable/TopicTable';
+import ItemGrid from 'components/ItemGrid/ItemGrid';
+import TopicGrid from 'components/TopicGrid/TopicGrid';
 import { TopicNode } from 'types/TopicNode';
 import {
   TABLE_ROW_SIZE,
@@ -9,14 +9,14 @@ import {
 import { memo } from 'react';
 
 export type MandalartProps = {
-  onGetTopic: (tableIdx: number, tableItemIdx: number) => TopicNode;
-  onUpdateTopic: (tableIdx: number, tableItemIdx: number, text: string) => void;
-  onCanEdit?: (tableIdx: number) => boolean;
+  onGetTopic: (gridIdx: number, gridItemIdx: number) => TopicNode;
+  onUpdateTopic: (gridIdx: number, gridItemIdx: number, text: string) => void;
+  onCanEdit?: (gridIdx: number) => boolean;
   onSyncFocuse?: (
-    tableIdx: number,
+    gridIdx: number,
     scrollInto: (options?: ScrollIntoViewOptions) => void
   ) => void;
-  onUpdateFocuse?: (tableIdx: number) => void;
+  onUpdateFocuse?: (gridIdx: number) => void;
 };
 
 const Mandalart = memo(
@@ -28,36 +28,36 @@ const Mandalart = memo(
     onUpdateFocuse,
   }: MandalartProps) => {
     return (
-      <Table
+      <ItemGrid
         rowSize={TABLE_ROW_SIZE}
         colSize={TABLE_COL_SIZE}
-        cellGenerater={(tableIdx) => (
-          // 다른 table의 값 읽기/쓰기를 제한하기 위해 아래와 같이 처리하였음
-          <TopicTable
-            onIsAccented={(tableItemIdx) => isAccented(tableIdx, tableItemIdx)}
-            onGetTopic={(tableItemIdx) => onGetTopic(tableIdx, tableItemIdx)}
-            onUpdateTopic={(tableItemIdx, text) =>
-              onUpdateTopic(tableIdx, tableItemIdx, text)
+        createItem={(gridIdx) => (
+          // 다른 grid의 값 읽기/쓰기를 제한하기 위해 아래와 같이 처리하였음
+          <TopicGrid
+            onIsAccented={(gridItemIdx) => isAccented(gridIdx, gridItemIdx)}
+            onGetTopic={(gridItemIdx) => onGetTopic(gridIdx, gridItemIdx)}
+            onUpdateTopic={(gridItemIdx, text) =>
+              onUpdateTopic(gridIdx, gridItemIdx, text)
             }
-            onCanEdit={onCanEdit && (() => onCanEdit(tableIdx))}
+            onCanEdit={onCanEdit && (() => onCanEdit(gridIdx))}
             onSyncFocuse={
               onSyncFocuse &&
-              ((scrollInto) => onSyncFocuse(tableIdx, scrollInto))
+              ((scrollInto) => onSyncFocuse(gridIdx, scrollInto))
             }
-            onUpdateFocuse={onUpdateFocuse && (() => onUpdateFocuse(tableIdx))}
+            onUpdateFocuse={onUpdateFocuse && (() => onUpdateFocuse(gridIdx))}
           />
         )}
-        space="4px"
+        spacing="4px"
       />
     );
   }
 );
 
-const isAccented = (tableIdx: number, tableItemIdx: number) => {
-  if (tableIdx === TABLE_CENTER_IDX) {
-    return tableItemIdx !== TABLE_CENTER_IDX;
+const isAccented = (gridIdx: number, gridItemIdx: number) => {
+  if (gridIdx === TABLE_CENTER_IDX) {
+    return gridItemIdx !== TABLE_CENTER_IDX;
   } else {
-    return tableItemIdx === TABLE_CENTER_IDX;
+    return gridItemIdx === TABLE_CENTER_IDX;
   }
 };
 

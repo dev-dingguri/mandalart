@@ -100,10 +100,10 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
    */
   const handleSyncFocuse = useCallback(
     (
-      tableIdx: number,
+      gridIdx: number,
       scrollInto: (options?: ScrollIntoViewOptions) => void
     ) => {
-      if (focusedIdx !== tableIdx) return;
+      if (focusedIdx !== gridIdx) return;
 
       const scrollCenter = (behavior: ScrollBehavior) => {
         scrollInto({
@@ -126,7 +126,7 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
   );
 
   const handleCanEdit = useCallback(
-    (tableIdx: number) => focusedIdx === tableIdx,
+    (gridIdx: number) => focusedIdx === gridIdx,
     [focusedIdx]
   );
 

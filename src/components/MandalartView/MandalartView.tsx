@@ -37,15 +37,15 @@ const MandalartView = ({
   const { t } = useTranslation();
 
   const handleGetTopic = useCallback(
-    (tableIdx: number, tableItemIdx: number) =>
-      getTopic(topicTree, tableIdx, tableItemIdx),
+    (gridIdx: number, gridItemIdx: number) =>
+      getTopic(topicTree, gridIdx, gridItemIdx),
     [topicTree]
   );
 
   const handleUpdateTopic = useCallback(
-    (tableIdx: number, tableItemIdx: number, text: string) => {
+    (gridIdx: number, gridItemIdx: number, text: string) => {
       const newTopicTree = cloneDeep(topicTree);
-      const newTopic = getTopic(newTopicTree, tableIdx, tableItemIdx);
+      const newTopic = getTopic(newTopicTree, gridIdx, gridItemIdx);
       newTopic.text = text;
       onTopicTreeChange(newTopicTree);
     },
@@ -90,11 +90,11 @@ const MandalartView = ({
 
 const getTopic = (
   topicTree: TopicNode,
-  tableIdx: number,
-  tableItemIdx: number
+  gridIdx: number,
+  gridItemIdx: number
 ) => {
   let node = topicTree;
-  [tableIdx, tableItemIdx].forEach((idx) => {
+  [gridIdx, gridItemIdx].forEach((idx) => {
     if (idx !== TABLE_CENTER_IDX) {
       node = node.children[idx < TABLE_CENTER_IDX ? idx : idx - 1];
     }
