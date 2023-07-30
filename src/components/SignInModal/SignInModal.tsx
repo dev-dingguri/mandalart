@@ -4,7 +4,7 @@ import { ProviderId } from 'firebase/auth';
 import googleIco from 'assets/images/google.svg';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import CenterBox from 'components/CenterBox/CenterBox';
+import AbsoluteCenterBox from 'components/AbsoluteCenterBox/AbsoluteCenterBox';
 import IconButton from '@mui/material/IconButton';
 import { BsXLg } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +21,7 @@ const SignInModal = ({ isShown, onClose, onSignIn }: SignInModalProps) => {
 
   return (
     <Modal open={isShown} onClose={onClose}>
-      <CenterBox className={styles.dialog}>
+      <AbsoluteCenterBox className={styles.dialog}>
         <IconButton className={styles.closeButton} onClick={onClose}>
           <BsXLg />
         </IconButton>
@@ -38,7 +38,7 @@ const SignInModal = ({ isShown, onClose, onSignIn }: SignInModalProps) => {
             <span>{t('signInModal.signIn.google')}</span>
           </Button>
         </div>
-      </CenterBox>
+      </AbsoluteCenterBox>
     </Modal>
   );
 };

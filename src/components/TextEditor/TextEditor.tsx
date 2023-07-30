@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import CenterBox from 'components/CenterBox/CenterBox';
+import AbsoluteCenterBox from 'components/AbsoluteCenterBox/AbsoluteCenterBox';
 import styles from './TextEditor.module.css';
 import { useTranslation } from 'react-i18next';
 import i18n from 'locales/i18n';
@@ -47,7 +47,7 @@ const TextEditor = ({
 
   return (
     <Modal open={isShown} onClose={onClose}>
-      <CenterBox className={styles.dialog}>
+      <AbsoluteCenterBox className={styles.dialog}>
         <form onSubmit={handleConfirm}>
           <Typography variant="h3">{title}</Typography>
           <input
@@ -83,7 +83,7 @@ const TextEditor = ({
             </Button>
           </div>
         </form>
-      </CenterBox>
+      </AbsoluteCenterBox>
     </Modal>
   );
 };
