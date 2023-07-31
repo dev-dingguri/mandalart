@@ -4,6 +4,7 @@ import TextEditor from 'components/TextEditor/TextEditor';
 import { MAX_TOPIC_TEXT_SIZE } from 'constants/constants';
 import useBoolean from 'hooks/useBoolean';
 import { useTranslation } from 'react-i18next';
+import Square from 'components/Square/Square';
 
 type TopicItemProps = {
   topic: string;
@@ -26,17 +27,19 @@ const TopicItem = ({
 
   return (
     <>
-      <div
-        className={`${styles.topicItem} ${isAccented && styles.accented}`}
-        onClick={() => {
-          onUpdateFocuse && onUpdateFocuse();
-          canEdit && showEditor();
-        }}
-      >
-        <Typography variant="body1" className={styles.text}>
-          {topic}
-        </Typography>
-      </div>
+      <Square>
+        <div
+          className={`${styles.topicItem} ${isAccented && styles.accented}`}
+          onClick={() => {
+            onUpdateFocuse && onUpdateFocuse();
+            canEdit && showEditor();
+          }}
+        >
+          <Typography variant="body1" className={styles.text}>
+            {topic}
+          </Typography>
+        </div>
+      </Square>
       <TextEditor
         isShown={isShownEditor}
         title={`${t('global.topic')}`}

@@ -7,6 +7,7 @@ import {
   TABLE_SIZE,
   TABLE_CENTER_IDX,
 } from 'constants/constants';
+import Square from 'components/Square/Square';
 
 const ZoomInMandalart = ({ ...props }: MandalartProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
@@ -139,14 +140,16 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
       onTouchCancel={handleTouchEnd}
       onTouchMove={handleTouchMove}
     >
-      <div className={styles.container}>
-        <Mandalart
-          {...props}
-          onSyncFocuse={handleSyncFocuse}
-          onUpdateFocuse={setFocusedIdx}
-          onCanEdit={handleCanEdit}
-        />
-      </div>
+      <Square>
+        <div className={styles.container}>
+          <Mandalart
+            {...props}
+            onSyncFocuse={handleSyncFocuse}
+            onUpdateFocuse={setFocusedIdx}
+            onCanEdit={handleCanEdit}
+          />
+        </div>
+      </Square>
     </div>
   );
 };

@@ -68,13 +68,11 @@ const MandalartView = ({
         </Typography>
       </div>
       <div className={styles.mandalart}>
-        <div className={styles.container}>
-          {isAllView ? (
-            <Mandalart {...mandalartProps} />
-          ) : (
-            <ZoomInMandalart {...mandalartProps} />
-          )}
-        </div>
+        {isAllView ? (
+          <Mandalart {...mandalartProps} />
+        ) : (
+          <ZoomInMandalart {...mandalartProps} />
+        )}
       </div>
       <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
       <TextEditor
