@@ -1,11 +1,11 @@
-.header {
+/* .header {
   display: flex;
   align-items: center;
   width: 100%;
   min-height: 3em;
   padding: 0;
   color: var(--color-font-1);
-}
+} */
 
 .left {
   display: flex;
@@ -64,6 +64,7 @@
 .leftDrawerButton {
   margin-right: 0.25em;
 }
+
 .rightDrawerButton {
   margin-left: 0.25em;
 }

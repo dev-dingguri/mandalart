@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './Header.module.css';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -24,7 +26,7 @@ const Header = ({
 }: HeaderProps) => {
   const { t } = useTranslation();
 
-  const signButton = user ? (
+  const SignButton = useMemo(() => user ? (
     <Button
       className={styles.signButton}
       variant="outlined"
@@ -40,34 +42,31 @@ const Header = ({
     >
       {t('auth.signIn')}
     </Button>
-  );
-  return (
-    <header className={styles.header}>
-      <div className={styles.left}>
-        <IconButton
-          className={styles.leftDrawerButton}
-          size="small"
-          onClick={onShowLeftDrawer}
-        >
-          <BsList />
-        </IconButton>
-        <Typography variant="h1">{t('global.app')}</Typography>
-      </div>
-      <div className={styles.right}>
-        <Typography variant="body1" className={styles.name}>
-          {user && user.displayName}
-        </Typography>
-        {signButton}
-        <IconButton
-          className={styles.rightDrawerButton}
-          size="small"
-          onClick={onShowRightDrawer}
-        >
-          <BsThreeDots />
-        </IconButton>
-      </div>
-    </header>
-  );
+  ), [onShowSignInUI, onSignOut, t, user]);
+
+  return <AppBar position='static' elevation={0} sx={{ backgroundColor: 'lightgray' }}>
+    <Toolbar>
+      <IconButton
+        className={styles.leftDrawerButton}
+        size="small"
+        onClick={onShowLeftDrawer}
+      >
+        <BsList />
+      </IconButton>
+      <Typography variant="h1" sx={{ flexGrow: 1 }}>{t('global.app')}</Typography>
+      <Typography variant="body1" className={styles.name}>
+        {user && user.displayName}
+      </Typography>
+      {SignButton}
+      <IconButton
+        className={styles.rightDrawerButton}
+        size="small"
+        onClick={onShowRightDrawer}
+      >
+        <BsThreeDots />
+      </IconButton>
+    </Toolbar>
+  </AppBar>;
 };
 
 export default Header;

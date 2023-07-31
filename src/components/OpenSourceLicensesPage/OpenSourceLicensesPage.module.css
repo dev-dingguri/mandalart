@@ -7,7 +7,7 @@
   color: var(--color-font-1);
 }
 
-.header {
+/* .header {
   display: flex;
   align-items: center;
   width: 100%;
@@ -15,7 +15,7 @@
   padding: 0 sidePadding;
   color: var(--color-font-1);
   border-bottom: 1px solid var(--color-border-1);
-}
+} */
 
 .goBackButton {
   display: flex;

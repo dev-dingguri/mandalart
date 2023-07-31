@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { BsChevronLeft } from 'react-icons/bs';
 import styles from './OpenSourceLicensesPage.module.css';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -71,12 +73,14 @@ const OpenSourceLicensesPage = () => {
 
   return (
     <section className={styles.license}>
-      <header className={styles.header}>
-        <IconButton className={styles.goBackButton} onClick={goToBack}>
-          <BsChevronLeft />
-        </IconButton>
-        <Typography variant="h1">{t('oss.label')}</Typography>
-      </header>
+      <AppBar position='static' elevation={0}>
+        <Toolbar>
+          <IconButton className={styles.goBackButton} onClick={goToBack}>
+            <BsChevronLeft />
+          </IconButton>
+          <Typography variant="h1">{t('oss.label')}</Typography>
+        </Toolbar>
+      </AppBar>
       <List className={styles.list}>
         {licenses.map((data, idx) => (
           <Item key={idx} {...data} />
