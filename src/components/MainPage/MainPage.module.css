@@ -4,7 +4,7 @@
   display: none;
 }
 
-.loading.shown {  
+.loading.shown {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,8 +13,8 @@
   height: 100%;
 }
 
-.spinner {  
+/* .spinner {  
   width: 4em;
   height: 4em;
   color: var(--color-font-1);
-}
+} */

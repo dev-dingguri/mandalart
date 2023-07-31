@@ -1,6 +1,6 @@
 import styles from './MainPage.module.css';
+import CircularProgress from '@mui/material/CircularProgress';
 import useUser from 'hooks/useUser';
-import Spinner from 'components/Spinner/Spinner';
 import MainUserPage from 'components/MainUserPage/MainUserPage';
 import MainGuestPage from 'components/MainGuestPage/MainGuestPage';
 import { useMemo } from 'react';
@@ -24,7 +24,7 @@ const MainPage = () => {
   return (
     <>
       <div className={`${styles.loading} ${isLoading && styles.shown}`}>
-        <Spinner className={styles.spinner} />
+        <CircularProgress />
       </div>
       {MainContents}
     </>
