@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
+import Link from '@mui/material/Link';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PATH_MAIN } from 'constants/constants';
@@ -45,9 +46,9 @@ const Item = ({ name, licenses, repository }: License) => {
     <ListItem className={styles.item}>
       <Typography variant="subtitle1">{name}</Typography>
       <Typography variant="body2">{licenses}</Typography>
-      <a href={repository} target="blank">
-        <Typography variant="body2">{repository}</Typography>
-      </a>
+      <Link href={repository} target="blank" color="inherit" underline="none" variant="body2">
+        {repository}
+      </Link>
     </ListItem>
   );
 };
