@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react';
 import ItemGrid from 'components/ItemGrid/ItemGrid';
 import TopicItem from 'components/TopicItem/TopicItem';
 import { TopicNode } from 'types/TopicNode';
-import styles from './TopicGrid.module.css';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
 import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';
+import Box from '@mui/material/Box';
 
 type TopicGridProps = {
   onIsAccented: (gridItemIdx: number) => boolean;
@@ -37,7 +37,7 @@ const TopicGrid = ({
   }, [onSyncFocuse]);
 
   return (
-    <div ref={gridRef} className={styles.topicItemGrid}>
+    <Box ref={gridRef}>
       <ItemGrid
         rowSize={TABLE_ROW_SIZE}
         colSize={TABLE_COL_SIZE}
@@ -53,7 +53,7 @@ const TopicGrid = ({
         )}
         spacing="2px"
       />
-    </div>
+    </Box>
   );
 };
 

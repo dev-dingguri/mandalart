@@ -1,13 +1,13 @@
 import React, { useRef, useState, TouchEvent } from 'react';
 import Mandalart, { MandalartProps } from 'components/Mandalart/Mandalart';
-import styles from './ZoomInMandalart.module.css';
 import { useCallback } from 'react';
 import {
   TABLE_COL_SIZE,
   TABLE_SIZE,
   TABLE_CENTER_IDX,
 } from 'constants/constants';
-import Square from 'components/Square/Square';
+import SquareBox from 'components/SquareBox/SquareBox';
+import Box from '@mui/material/Box';
 
 const ZoomInMandalart = ({ ...props }: MandalartProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
@@ -132,25 +132,28 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
   );
 
   return (
-    <div
+    <Box
       ref={ref}
-      className={styles.mandalart}
+      sx={{ overflow: 'hidden' }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
       onTouchMove={handleTouchMove}
     >
-      <Square>
-        <div className={styles.container}>
-          <Mandalart
-            {...props}
-            onSyncFocuse={handleSyncFocuse}
-            onUpdateFocuse={setFocusedIdx}
-            onCanEdit={handleCanEdit}
-          />
-        </div>
-      </Square>
-    </div>
+      <SquareBox
+        sx={{
+          width: '240%',
+          height: '240%',
+        }}
+      >
+        <Mandalart
+          {...props}
+          onSyncFocuse={handleSyncFocuse}
+          onUpdateFocuse={setFocusedIdx}
+          onCanEdit={handleCanEdit}
+        />
+      </SquareBox>
+    </Box>
   );
 };
 

@@ -6,13 +6,11 @@ import {
   Dispatch,
   useLayoutEffect,
 } from 'react';
-import styles from './MainContents.module.css';
 import Header from 'components/Header/Header';
 import SignInModal from 'components/SignInModal/SignInModal';
 import MandalartView from 'components/MandalartView/MandalartView';
 import LeftDrawer from 'components/LeftDrawer/LeftDrawer';
 import { EMPTY_SNIPPET, EMPTY_TOPIC_TREE } from 'constants/constants';
-import EmptyMandalarts from 'components/EmptyMandalarts/EmptyMandalarts';
 import RightDrawer from 'components/RightDrawer/RightDrawer';
 import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
@@ -22,6 +20,10 @@ import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 import useAuth from 'hooks/useAuth';
 import useSignInSession from 'hooks/useSignInSession';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
+import { BsPlus } from 'react-icons/bs';
 
 export type UserHandlers = {
   user?: User | null;
@@ -44,12 +46,12 @@ export type MandalartsHandlers = {
   uploadTemp?: () => Promise<void>;
 };
 
-type MainContentsProps = {
+type MainContentProps = {
   userHandlers: UserHandlers;
   mandalartsHandlers: MandalartsHandlers;
 };
 
-const MainContents = ({
+const MainContent = ({
   userHandlers: { user = null, error: userError = null },
   mandalartsHandlers: {
     snippetMap,
@@ -63,7 +65,7 @@ const MainContents = ({
     saveTopicTree,
     uploadTemp,
   },
-}: MainContentsProps) => {
+}: MainContentProps) => {
   const { signIn, signOut } = useAuth();
   const { getShouldUploadTemp, setShouldUploadTemp } = useSignInSession();
 
@@ -127,37 +129,69 @@ const MainContents = ({
   }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, showAlert]);
 
   return (
-    <section className={styles.mainCommon}>
-      <div className={styles.header}>
-        <Header
-          user={user}
-          onShowSignInUI={showSignInModal}
-          onSignOut={signOut}
-          onShowLeftDrawer={showLeftDrawer}
-          onShowRightDrawer={showRightDrawer}
-        />
-      </div>
-      <div className={styles.scrollArea}>
-        <div className={styles.container}>
-          {hasMandalart ? (
-            <MandalartView
-              mandalartId={currentMandalartId}
-              snippet={currentSnippet}
-              topicTree={currentTopicTree}
-              onSnippetChange={handleSnippetChange}
-              onTopicTreeChange={handleTopicTreeChange}
-            />
-          ) : (
-            <EmptyMandalarts
-              onCreateMandalart={() => {
-                createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch(
-                  (e: Error) => showAlert(e.message)
-                );
-              }}
-            />
-          )}
-        </div>
-      </div>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+      }}
+    >
+      <Header
+        user={user}
+        onShowSignInUI={showSignInModal}
+        onSignOut={signOut}
+        onShowLeftDrawer={showLeftDrawer}
+        onShowRightDrawer={showRightDrawer}
+        sx={{
+          width: 'calc(var(--size-content-width) + 1em)',
+          minWidth: 'calc(var(--size-content-min-width) + 1em)',
+          '& .MuiToolbar-root': {
+            padding: '0',
+          },
+        }}
+      />
+      <Divider flexItem />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          height: '100%',
+          overflow: 'auto',
+          scrollbarGutter: 'stable both-edges',
+        }}
+      >
+        {hasMandalart ? (
+          <MandalartView
+            mandalartId={currentMandalartId}
+            snippet={currentSnippet}
+            topicTree={currentTopicTree}
+            onSnippetChange={handleSnippetChange}
+            onTopicTreeChange={handleTopicTreeChange}
+            sx={{
+              width: 'var(--size-content-width)',
+              minWidth: 'var(--size-content-min-width)',
+              m: 'auto',
+              p: '0.5em 0',
+            }}
+          />
+        ) : (
+          <Button
+            startIcon={<BsPlus size="2rem" />}
+            sx={{ fontSize: '1.5rem', m: 'auto' }}
+            onClick={() => {
+              createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch(
+                (e: Error) => showAlert(e.message)
+              );
+            }}
+          >
+            {t('mandalart.new')}
+          </Button>
+        )}
+        <Box sx={{ height: '4em' }} />
+      </Box>
       <LeftDrawer
         isShown={isShownLeftDrawer}
         snippetMap={snippetMap}
@@ -187,8 +221,8 @@ const MainContents = ({
         onSignIn={signIn}
       />
       <Alert />
-    </section>
+    </Box>
   );
 };
 
-export default MainContents;
+export default MainContent;

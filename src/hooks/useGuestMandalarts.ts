@@ -7,7 +7,7 @@ import {
   EMPTY_TOPIC_TREE,
 } from 'constants/constants';
 import { useTranslation } from 'react-i18next';
-import { MandalartsHandlers } from 'components/MainContents/MainContents';
+import { MandalartsHandlers } from 'components/MainContent/MainContent';
 import useGuestSnippets from './useGuestSnippets';
 import useGuestTopicTrees from './useGuestTopicTrees';
 import useMandalartSelector from './useMandalartSelector';

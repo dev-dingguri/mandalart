@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './MandalartViewToggle.module.css';
+import Box from '@mui/material/Box';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { BsGrid3X3 } from 'react-icons/bs';
@@ -14,26 +14,37 @@ const MandalartViewToggle = ({
   onChange,
 }: MandalartViewToggleProps) => {
   const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _: React.MouseEvent<HTMLElement>,
     value: boolean | null
   ) => value !== null && onChange(value);
 
   return (
     <ToggleButtonGroup
-      className={styles.toggleButtonGroup}
-      color="primary"
+      sx={{ display: 'flex' }}
+      color="secondary"
       value={isAllView}
       exclusive
       onChange={handleChange}
       aria-label="mandalart view type"
     >
-      <ToggleButton className={styles.toggleButton} value={true}>
-        <BsGrid3X3 className={styles.allViewIcon} />
+      <ToggleButton sx={{ flex: 1 }} value={true}>
+        <BsGrid3X3 style={{ fontSize: '1.5rem' }} />
       </ToggleButton>
-      <ToggleButton className={styles.toggleButton} value={false}>
-        <div className={styles.partViewIconFrame}>
-          <BsGrid3X3 className={styles.partViewIcon} />
-        </div>
+      <ToggleButton sx={{ flex: 1 }} value={false}>
+        <Box
+          sx={{
+            maxWidth: '1.5rem',
+            maxHeight: '1.5rem',
+            overflow: 'hidden',
+          }}
+        >
+          <BsGrid3X3
+            style={{
+              fontSize: '2.5rem',
+              transform: 'translate(-20%, -20%)',
+            }}
+          />
+        </Box>
       </ToggleButton>
     </ToggleButtonGroup>
   );

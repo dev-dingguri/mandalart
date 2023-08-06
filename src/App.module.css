@@ -1,6 +1,0 @@
-.app {
-  width: 100%;
-  /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 크기 계산 */
-  height: var(--vh, 100vh);
-  background-color: var(--color-bg-1);
-}

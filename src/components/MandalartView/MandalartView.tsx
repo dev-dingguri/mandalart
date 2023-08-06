@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import ZoomInMandalart from 'components/ZoomInMandalart/ZoomInMandalart';
 import Mandalart, { MandalartProps } from 'components/Mandalart/Mandalart';
 import { TopicNode } from 'types/TopicNode';
-import styles from './MandalartView.module.css';
 import {
   MAX_MANDALART_TITLE_SIZE,
   TABLE_CENTER_IDX,
@@ -15,6 +14,7 @@ import TextEditor from 'components/TextEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
+import Box, { BoxProps } from '@mui/material/Box';
 
 type MandalartViewProps = {
   mandalartId: string;
@@ -22,7 +22,7 @@ type MandalartViewProps = {
   topicTree: TopicNode;
   onSnippetChange: (snippet: Snippet) => void;
   onTopicTreeChange: (topicTree: TopicNode) => void;
-};
+} & BoxProps;
 
 const MandalartView = ({
   mandalartId,
@@ -30,6 +30,7 @@ const MandalartView = ({
   topicTree,
   onSnippetChange,
   onTopicTreeChange,
+  ...rest
 }: MandalartViewProps) => {
   const [isAllView, setIsAllView] = useState(true);
   const [isShownTitleEditor, { on: showTitleEditor, off: closeTitleEditor }] =
@@ -58,22 +59,20 @@ const MandalartView = ({
   };
 
   return (
-    <section>
-      <div className={styles.titleBar}>
-        <Typography variant="body2">
-          {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.temp')})`}
-        </Typography>
-        <Typography variant="h2" onClick={showTitleEditor}>
-          {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
-        </Typography>
-      </div>
-      <div className={styles.mandalart}>
+    <Box {...rest}>
+      <Typography variant="body2">
+        {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.temp')})`}
+      </Typography>
+      <Typography variant="h2" noWrap onClick={showTitleEditor}>
+        {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
+      </Typography>
+      <Box sx={{ mt: '0.2em', mb: '0.5em' }}>
         {isAllView ? (
           <Mandalart {...mandalartProps} />
         ) : (
           <ZoomInMandalart {...mandalartProps} />
         )}
-      </div>
+      </Box>
       <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
       <TextEditor
         isShown={isShownTitleEditor}
@@ -82,7 +81,7 @@ const MandalartView = ({
         onClose={closeTitleEditor}
         onConfirm={(title) => onSnippetChange({ title })}
       />
-    </section>
+    </Box>
   );
 };
 

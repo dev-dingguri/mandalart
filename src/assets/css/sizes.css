@@ -1,0 +1,12 @@
+:root {
+  --size-scrollbar-width: 6px;
+  --size-content-width: 90vw;
+  --size-content-min-width: 20em;
+}
+
+@media screen and (min-width: 30rem) {
+  :root {
+    --size-content-width: min(90vw, 80vh);
+    --size-content-min-width: 27em;
+  }
+}
