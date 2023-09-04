@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Theme, useTheme } from 'contexts/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { BsGithub, BsYoutube } from 'react-icons/bs';
 import { APP_VERSION } from 'version';
@@ -14,11 +13,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Divider from '@mui/material/Divider';
-
-type ThemeOption = {
-  value: Theme;
-  name: string;
-};
+import { useTernaryDarkMode } from 'usehooks-ts';
 
 type RightAsideProps = {
   isShown: boolean;
@@ -26,16 +21,22 @@ type RightAsideProps = {
 };
 
 const RightAside = ({ isShown, onClose }: RightAsideProps) => {
-  const { theme, selectTheme } = useTheme();
+  const { ternaryDarkMode, setTernaryDarkMode } = useTernaryDarkMode();
+  type TernaryDarkMode = typeof ternaryDarkMode;
+
   const { t, i18n } = useTranslation();
 
+  type ThemeOption = {
+    value: TernaryDarkMode;
+    name: string;
+  };
   const themeOptions: ThemeOption[] = [
     { value: 'system', name: t('theme.options.system') },
     { value: 'light', name: t('theme.options.light') },
     { value: 'dark', name: t('theme.options.dark') },
   ];
-  const handleSelectTheme = (event: SelectChangeEvent) => {
-    selectTheme(event.target.value as Theme);
+  const handleSelectTheme = (ev: SelectChangeEvent) => {
+    setTernaryDarkMode(ev.target.value as TernaryDarkMode);
   };
 
   const languageOptions = [
@@ -43,8 +44,8 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
     { value: 'ko', name: '한국어' },
     { value: 'ja', name: '日本語' },
   ];
-  const handleSelectlanguage = (event: SelectChangeEvent) => {
-    i18n.changeLanguage(event.target.value);
+  const handleSelectlanguage = (ev: SelectChangeEvent) => {
+    i18n.changeLanguage(ev.target.value);
   };
 
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
             <Select
               labelId="theme-label"
               id="theme-select"
-              value={theme}
+              value={ternaryDarkMode}
               label="Age"
               onChange={handleSelectTheme}
             >

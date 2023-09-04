@@ -7,11 +7,11 @@ import { PATH_MAIN, PATH_OSS } from 'constants/constants';
 import { Helmet } from 'react-helmet-async';
 import { ThemeProvider } from '@mui/material/styles';
 import { AlertProvider } from 'contexts/AlertContext';
-import { useTheme } from 'contexts/ThemeContext';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { throttle } from 'lodash';
 import theme from 'theme';
+import { useTernaryDarkMode } from 'usehooks-ts';
 
 const App = () => {
   const [height, setHeight] = useState(window.innerHeight);
@@ -28,10 +28,10 @@ const App = () => {
     };
   }, []);
 
-  const { isDisplayLightTheme } = useTheme();
+  const { isDarkMode } = useTernaryDarkMode();
 
   return (
-    <ThemeProvider theme={theme(isDisplayLightTheme() ? 'light' : 'dark')}>
+    <ThemeProvider theme={theme(isDarkMode ? 'dark' : 'light')}>
       <CssBaseline />
       <AlertProvider>
         <Box sx={{ height }}>
