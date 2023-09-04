@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react';
 import { BsChevronLeft } from 'react-icons/bs';
-import styles from './OpenSourceLicensesPage.module.css';
-import Button from 'components/Button/Button';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Link from '@mui/material/Link';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PATH_MAIN } from 'constants/constants';
 import licenseMap from 'assets/data/openSourceLicenses.json';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 
 /*
  * openSourceLicenses.json
@@ -37,15 +44,27 @@ type License = {
 
 const Item = ({ name, licenses, repository }: License) => {
   return (
-    <li className={styles.item}>
-      <h3>{name}</h3>
-      <p>{licenses}</p>
-      <p>
-        <a href={repository} target="blank">
-          {repository}
-        </a>
-      </p>
-    </li>
+    <ListItem
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        padding: '0.25em 0',
+      }}
+    >
+      <Typography variant="subtitle1">{name}</Typography>
+      <Typography variant="body2">{licenses}</Typography>
+      <Link
+        href={repository}
+        target="blank"
+        color="inherit"
+        underline="none"
+        variant="body2"
+      >
+        {repository}
+      </Link>
+      <Divider flexItem />
+    </ListItem>
   );
 };
 
@@ -69,19 +88,41 @@ const OpenSourceLicensesPage = () => {
   };
 
   return (
-    <section className={styles.license}>
-      <header className={styles.header}>
-        <Button className={styles.goBackButton} onClick={goToBack}>
-          <BsChevronLeft />
-        </Button>
-        <h1 className={styles.title}>{t('oss.label')}</h1>
-      </header>
-      <ul className={styles.list}>
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    >
+      <AppBar
+        position="static"
+        elevation={0}
+        sx={{
+          width: 'var(--size-content-width)',
+          minWidth: 'var(--size-content-min-width)',
+          '& .MuiToolbar-root': {
+            padding: '0',
+          },
+        }}
+      >
+        <Toolbar>
+          <IconButton onClick={goToBack} sx={{ marginRight: '0.25em' }}>
+            <BsChevronLeft />
+          </IconButton>
+          <Typography variant="h1">{t('oss.label')}</Typography>
+        </Toolbar>
+      </AppBar>
+      <Divider flexItem />
+      <List
+        sx={{
+          width: 'var(--size-content-width)',
+          minWidth: 'var(--size-content-min-width)',
+          overflow: 'auto',
+          scrollbarGutter: 'stable both-edges',
+        }}
+      >
         {licenses.map((data, idx) => (
           <Item key={idx} {...data} />
         ))}
-      </ul>
-    </section>
+      </List>
+    </Box>
   );
 };
 

@@ -1,11 +1,14 @@
 import React from 'react';
-import Dialog from 'components/Dialog/Dialog';
-import styles from './SignInModal.module.css';
 import { ProviderId } from 'firebase/auth';
 import googleIco from 'assets/images/google.svg';
-import Button from 'components/Button/Button';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import ModalContent from 'components/ModalContent/ModalContent';
 import { BsXLg } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
+import Typography from '@mui/material/Typography';
+import CenterModal from 'components/CenterModal/CenterModal';
+import { styled } from '@mui/material/styles';
 
 type SignInModalProps = {
   isShown: boolean;
@@ -17,23 +20,48 @@ const SignInModal = ({ isShown, onClose, onSignIn }: SignInModalProps) => {
   const { t } = useTranslation();
 
   return (
-    <Dialog className={styles.dialog} isShown={isShown} onClose={onClose}>
-      <Button className={styles.closeButton} onClick={onClose}>
-        <BsXLg />
-      </Button>
-      <div className={styles.container}>
-        <h1 className={styles.title}>{t('global.app')}</h1>
-        <p className={styles.message}>{t('signInModal.message')}</p>
+    <CenterModal open={isShown} onClose={onClose}>
+      <ModalContent
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: '18em',
+          position: 'relative',
+        }}
+      >
+        <IconButton
+          sx={{ position: 'absolute', top: '0.5em', right: '0.5em' }}
+          size="small"
+          onClick={onClose}
+        >
+          <BsXLg />
+        </IconButton>
+        <Typography variant="h3">{t('global.app')}</Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            textAlign: 'center',
+            marginTop: '0.5em',
+            marginBottom: '1em',
+          }}
+        >
+          {t('signInModal.message')}
+        </Typography>
         <Button
-          className={styles.signInButton}
+          startIcon={<SignInLogo src={googleIco} alt="google" />}
+          size="large"
           onClick={() => onSignIn(ProviderId.GOOGLE)}
         >
-          <img className={styles.logo} src={googleIco} alt="google" />
-          <span>{t('signInModal.signIn.google')}</span>
+          {t('signInModal.signIn.google')}
         </Button>
-      </div>
-    </Dialog>
+      </ModalContent>
+    </CenterModal>
   );
 };
+
+const SignInLogo = styled('img')({
+  width: '1em',
+});
 
 export default SignInModal;

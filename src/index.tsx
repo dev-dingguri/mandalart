@@ -4,8 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { IconContext } from 'react-icons/lib';
-import { ThemeProvider } from 'contexts/ThemeContext';
-import { AlertProvider } from 'contexts/AlertContext';
+import { ThemeProvider as ThemeSelectProvider } from 'contexts/ThemeContext';
 import { HelmetProvider } from 'react-helmet-async';
 import { FirebaseSdksProvider } from 'contexts/FirebaseSdksContext';
 import 'locales/i18n';
@@ -28,11 +27,9 @@ root.render(
       <IconContext.Provider value={{ className: 'react-icons' }}>
         <FirebaseSdksProvider firebaseConfig={firebaseConfig}>
           <LoadingProvider>
-            <ThemeProvider>
-              <AlertProvider>
-                <App />
-              </AlertProvider>
-            </ThemeProvider>
+            <ThemeSelectProvider>
+              <App />
+            </ThemeSelectProvider>
           </LoadingProvider>
         </FirebaseSdksProvider>
       </IconContext.Provider>

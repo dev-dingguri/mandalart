@@ -1,9 +1,14 @@
 import { useState, useEffect } from 'react';
-import Dialog from 'components/Dialog/Dialog';
-import Button from 'components/Button/Button';
-import styles from './TextEditor.module.css';
+import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import i18n from 'locales/i18n';
+import Typography, { TypographyProps } from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import ModalContent from 'components/ModalContent/ModalContent';
+import CenterModal from 'components/CenterModal/CenterModal';
+import { styled } from '@mui/material/styles';
 
 type TextEditorProps = {
   isShown: boolean;
@@ -44,44 +49,57 @@ const TextEditor = ({
   }, [isShown, initialText]);
 
   return (
-    <Dialog
-      isShown={isShown}
-      className={styles.dialog}
-      onClose={onClose}
-      onConfirm={handleConfirm}
-    >
-      <h1 className={styles.title}>{title}</h1>
-      <input
-        className={`${styles.input} ${isLimitReached && styles.warning}`}
-        type="text"
-        placeholder={placeholder}
-        onChange={handleInputChange}
-        value={text}
-      />
-      {shouldValidations && (
-        <div
-          className={`${styles.validations} ${
-            isLimitReached && styles.warning
-          }`}
-        >
-          <p>{isLimitReached && t('textEditor.maxTextReached')}</p>
-          <p>{`${text.length}/${maxText}`}</p>
-        </div>
-      )}
-      <div className={styles.buttons}>
-        <Button className={styles.button} onClick={onClose}>
-          {t('global.cancel')}
-        </Button>
-        <Button
-          className={styles.button}
-          onClick={handleConfirm}
-          disabled={isLimitReached}
-        >
-          {t('global.save')}
-        </Button>
-      </div>
-    </Dialog>
+    <CenterModal open={isShown} onClose={onClose}>
+      <ModalContent sx={{ width: '20em' }}>
+        <form onSubmit={handleConfirm}>
+          <Typography variant="h3">{title}</Typography>
+          <TextField
+            id={'mandalart-topic'}
+            autoFocus
+            autoComplete={'off'}
+            type="text"
+            placeholder={placeholder}
+            onChange={handleInputChange}
+            value={text}
+            error={isLimitReached}
+            sx={{ mt: 1, mb: 1, width: '100%' }}
+          />
+          {shouldValidations && (
+            <Stack direction="row">
+              <ErrorableTypography
+                variant="body2"
+                error={isLimitReached}
+                sx={{ flexGrow: 1 }}
+              >
+                {isLimitReached && t('textEditor.maxTextReached')}
+              </ErrorableTypography>
+              <ErrorableTypography
+                variant="body2"
+                error={isLimitReached}
+              >{`${text.length}/${maxText}`}</ErrorableTypography>
+            </Stack>
+          )}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button sx={{ mr: '0.5em' }} onClick={onClose}>
+              {t('global.cancel')}
+            </Button>
+            <Button type="submit" disabled={isLimitReached}>
+              {t('global.save')}
+            </Button>
+          </Box>
+        </form>
+      </ModalContent>
+    </CenterModal>
   );
 };
+
+const ErrorableTypography = styled(Typography, {
+  shouldForwardProp: (prop) => prop !== 'error',
+})<TypographyProps & { error?: boolean }>(
+  ({ theme, error }) =>
+    error && {
+      color: theme.palette.error.main,
+    }
+);
 
 export default TextEditor;

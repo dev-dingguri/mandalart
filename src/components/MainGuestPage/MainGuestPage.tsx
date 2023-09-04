@@ -1,4 +1,4 @@
-import MainContents from 'components/MainContents/MainContents';
+import MainContent from 'components/MainContent/MainContent';
 import { useAddLoadingCondition } from 'contexts/LoadingContext';
 import useGuestMandalarts from 'hooks/useGuestMandalarts';
 
@@ -15,7 +15,7 @@ const MainGuestPage = ({ userError }: MainGuestPageProps) => {
   if (isLoading) return null;
 
   return (
-    <MainContents
+    <MainContent
       userHandlers={{ error: userError }}
       mandalartsHandlers={mandalartsHandlers}
     />

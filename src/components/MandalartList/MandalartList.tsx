@@ -1,44 +1,43 @@
 import React from 'react';
+import List, { ListProps } from '@mui/material/List';
 import { Snippet } from 'types/Snippet';
-import styles from './MandalartList.module.css';
 import MandalartListItem from 'components/MandalartListItem/MandalartListItem';
 
 type MandalartListProps = {
   snippetMap: Map<string, Snippet>;
   selectedId: string | null;
-  onSelect: (mandalartId: string) => void;
-  onDelete: (mandalartId: string) => void;
-  onReset: (mandalartId: string) => void;
-  onRename: (mandalartId: string, name: string) => void;
-};
+  onItemSelect: (mandalartId: string) => void;
+  onItemDelete: (mandalartId: string) => void;
+  onItemReset: (mandalartId: string) => void;
+  onItemRename: (mandalartId: string, name: string) => void;
+} & Omit<ListProps, 'onSelect' | 'onReset'>;
 
 const MandalartList = ({
   snippetMap,
   selectedId,
-  onSelect,
-  onDelete,
-  onReset,
-  onRename,
+  onItemSelect,
+  onItemDelete,
+  onItemReset,
+  onItemRename,
+  ...listProps
 }: MandalartListProps) => {
-  const items = Array.from(snippetMap)
-    .reverse()
-    .map(([mandalartId, snippet]) => (
-      <MandalartListItem
-        key={mandalartId}
-        mandalartId={mandalartId}
-        snippet={snippet}
-        isSelected={selectedId === mandalartId}
-        onSelect={onSelect}
-        onDelete={onDelete}
-        onReset={onReset}
-        onRename={onRename}
-      />
-    ));
-
   return (
-    <div className={styles.scrollArea}>
-      <ul className={styles.list}>{items}</ul>
-    </div>
+    <List {...listProps} disablePadding>
+      {Array.from(snippetMap)
+        .reverse()
+        .map(([mandalartId, snippet]) => (
+          <MandalartListItem
+            key={mandalartId}
+            mandalartId={mandalartId}
+            snippet={snippet}
+            isSelected={selectedId === mandalartId}
+            onSelect={onItemSelect}
+            onDelete={onItemDelete}
+            onReset={onItemReset}
+            onRename={onItemRename}
+          />
+        ))}
+    </List>
   );
 };
 

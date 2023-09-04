@@ -2,18 +2,19 @@ import { useState, useCallback } from 'react';
 import ZoomInMandalart from 'components/ZoomInMandalart/ZoomInMandalart';
 import Mandalart, { MandalartProps } from 'components/Mandalart/Mandalart';
 import { TopicNode } from 'types/TopicNode';
-import styles from './MandalartView.module.css';
 import {
   MAX_MANDALART_TITLE_SIZE,
   TABLE_CENTER_IDX,
   TMP_MANDALART_ID,
 } from 'constants/constants';
 import { cloneDeep } from 'lodash';
-import MandalartViewType from 'components/MandalartViewType/MandalartViewType';
+import MandalartViewToggle from 'components/MandalartViewToggle/MandalartViewToggle';
 import { Snippet } from 'types/Snippet';
 import TextEditor from 'components/TextEditor/TextEditor';
 import useBoolean from 'hooks/useBoolean';
 import { useTranslation } from 'react-i18next';
+import Typography from '@mui/material/Typography';
+import Box, { BoxProps } from '@mui/material/Box';
 
 type MandalartViewProps = {
   mandalartId: string;
@@ -21,7 +22,7 @@ type MandalartViewProps = {
   topicTree: TopicNode;
   onSnippetChange: (snippet: Snippet) => void;
   onTopicTreeChange: (topicTree: TopicNode) => void;
-};
+} & BoxProps;
 
 const MandalartView = ({
   mandalartId,
@@ -29,6 +30,7 @@ const MandalartView = ({
   topicTree,
   onSnippetChange,
   onTopicTreeChange,
+  ...rest
 }: MandalartViewProps) => {
   const [isAllView, setIsAllView] = useState(true);
   const [isShownTitleEditor, { on: showTitleEditor, off: closeTitleEditor }] =
@@ -36,15 +38,15 @@ const MandalartView = ({
   const { t } = useTranslation();
 
   const handleGetTopic = useCallback(
-    (tableIdx: number, tableItemIdx: number) =>
-      getTopic(topicTree, tableIdx, tableItemIdx),
+    (gridIdx: number, gridItemIdx: number) =>
+      getTopic(topicTree, gridIdx, gridItemIdx),
     [topicTree]
   );
 
   const handleUpdateTopic = useCallback(
-    (tableIdx: number, tableItemIdx: number, text: string) => {
+    (gridIdx: number, gridItemIdx: number, text: string) => {
       const newTopicTree = cloneDeep(topicTree);
-      const newTopic = getTopic(newTopicTree, tableIdx, tableItemIdx);
+      const newTopic = getTopic(newTopicTree, gridIdx, gridItemIdx);
       newTopic.text = text;
       onTopicTreeChange(newTopicTree);
     },
@@ -57,25 +59,21 @@ const MandalartView = ({
   };
 
   return (
-    <section>
-      <div className={styles.titleBar}>
-        <p className={styles.temp}>
-          {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.temp')})`}
-        </p>
-        <h1 className={styles.title} onClick={showTitleEditor}>
-          {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
-        </h1>
-      </div>
-      <div className={styles.mandalart}>
-        <div className={styles.container}>
-          {isAllView ? (
-            <Mandalart {...mandalartProps} />
-          ) : (
-            <ZoomInMandalart {...mandalartProps} />
-          )}
-        </div>
-      </div>
-      <MandalartViewType isAllView={isAllView} onChange={setIsAllView} />
+    <Box {...rest}>
+      <Typography variant="body2">
+        {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.temp')})`}
+      </Typography>
+      <Typography variant="h2" noWrap onClick={showTitleEditor}>
+        {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
+      </Typography>
+      <Box sx={{ mt: '0.2em', mb: '0.5em' }}>
+        {isAllView ? (
+          <Mandalart {...mandalartProps} />
+        ) : (
+          <ZoomInMandalart {...mandalartProps} />
+        )}
+      </Box>
+      <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
       <TextEditor
         isShown={isShownTitleEditor}
         initialText={snippet.title}
@@ -83,17 +81,17 @@ const MandalartView = ({
         onClose={closeTitleEditor}
         onConfirm={(title) => onSnippetChange({ title })}
       />
-    </section>
+    </Box>
   );
 };
 
 const getTopic = (
   topicTree: TopicNode,
-  tableIdx: number,
-  tableItemIdx: number
+  gridIdx: number,
+  gridItemIdx: number
 ) => {
   let node = topicTree;
-  [tableIdx, tableItemIdx].forEach((idx) => {
+  [gridIdx, gridItemIdx].forEach((idx) => {
     if (idx !== TABLE_CENTER_IDX) {
       node = node.children[idx < TABLE_CENTER_IDX ? idx : idx - 1];
     }

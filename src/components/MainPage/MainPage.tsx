@@ -1,9 +1,8 @@
-import styles from './MainPage.module.css';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import useUser from 'hooks/useUser';
-import Spinner from 'components/Spinner/Spinner';
 import MainUserPage from 'components/MainUserPage/MainUserPage';
 import MainGuestPage from 'components/MainGuestPage/MainGuestPage';
-import { useMemo } from 'react';
 import { useAddLoadingCondition, useIsLoading } from 'contexts/LoadingContext';
 
 const MainPage = () => {
@@ -11,22 +10,25 @@ const MainPage = () => {
   const isLoading = useIsLoading();
   useAddLoadingCondition('user', isUserLoading);
 
-  const MainContents = useMemo(() => {
-    if (isUserLoading) return null;
-
-    return user ? (
-      <MainUserPage user={user} userError={userError} />
-    ) : (
-      <MainGuestPage userError={userError} />
-    );
-  }, [isUserLoading, user, userError]);
-
   return (
     <>
-      <div className={`${styles.loading} ${isLoading && styles.shown}`}>
-        <Spinner className={styles.spinner} />
-      </div>
-      {MainContents}
+      <Box
+        sx={
+          isLoading
+            ? {
+                display: 'flex',
+                height: '100%',
+              }
+            : { display: 'none' }
+        }
+      >
+        <CircularProgress size="4rem" thickness={4} sx={{ m: 'auto' }} />
+      </Box>
+      {user ? (
+        <MainUserPage user={user} userError={userError} />
+      ) : (
+        <MainGuestPage userError={userError} />
+      )}
     </>
   );
 };
