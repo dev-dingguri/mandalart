@@ -43,6 +43,7 @@ const App = () => {
               property="og:description"
               content={`${t('tag.description')}`}
             />
+            {isDarkMode && <meta name="theme-color" content="#000000" />}
           </Helmet>
           <BrowserRouter>
             <Routes>
