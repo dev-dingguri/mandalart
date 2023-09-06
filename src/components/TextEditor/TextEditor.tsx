@@ -11,7 +11,7 @@ import CenterModal from 'components/CenterModal/CenterModal';
 import { styled } from '@mui/material/styles';
 
 type TextEditorProps = {
-  isShown: boolean;
+  isOpen: boolean;
   title?: string;
   initialText: string;
   placeholder?: string;
@@ -21,7 +21,7 @@ type TextEditorProps = {
 };
 
 const TextEditor = ({
-  isShown,
+  isOpen,
   title = `${i18n.t('global.app')}`,
   initialText = '',
   placeholder,
@@ -46,10 +46,10 @@ const TextEditor = ({
 
   useEffect(() => {
     setText(initialText);
-  }, [isShown, initialText]);
+  }, [isOpen, initialText]);
 
   return (
-    <CenterModal open={isShown} onClose={onClose}>
+    <CenterModal open={isOpen} onClose={onClose}>
       <ModalContent sx={{ width: '20em' }}>
         <form onSubmit={handleConfirm}>
           <Typography variant="h3">{title}</Typography>

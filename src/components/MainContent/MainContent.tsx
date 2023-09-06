@@ -70,21 +70,21 @@ const MainContent = ({
   const { getShouldUploadTemp, setShouldUploadTemp } = useSignInSession();
 
   const {
-    value: isShownLeftDrawer,
-    setTrue: showLeftDrawer,
+    value: isOpenLeftDrawer,
+    setTrue: openLeftDrawer,
     setFalse: closeLeftDrawer,
   } = useBoolean(false);
   const {
-    value: isShownRightDrawer,
-    setTrue: showRightDrawer,
+    value: isOpenRightDrawer,
+    setTrue: openRightDrawer,
     setFalse: closeRightDrawer,
   } = useBoolean(false);
   const {
-    value: isShownSignInModal,
-    setTrue: showSignInModal,
+    value: isOpenSignInModal,
+    setTrue: openSignInModal,
     setFalse: closeSignInModal,
   } = useBoolean(false);
-  const { Alert, show: showAlert } = useAlert();
+  const { Alert, open: openAlert } = useAlert();
 
   const { t } = useTranslation();
 
@@ -117,15 +117,15 @@ const MainContent = ({
   useEffect(() => {
     if (!userError) return;
 
-    showAlert(t('auth.errors.signIn.default', { detail: userError.message }));
-  }, [userError, showAlert, t]);
+    openAlert(t('auth.errors.signIn.default', { detail: userError.message }));
+  }, [userError, openAlert, t]);
 
   useEffect(() => {
     if (!mandalartsError) return;
 
-    showAlert(t('mandalart.errors.sync.default'));
+    openAlert(t('mandalart.errors.sync.default'));
     signOut();
-  }, [mandalartsError, showAlert, signOut, t]);
+  }, [mandalartsError, openAlert, signOut, t]);
 
   useLayoutEffect(() => {
     const shouldUploadTemp = !!user && getShouldUploadTemp(user);
@@ -133,9 +133,9 @@ const MainContent = ({
     if (!uploadTemp) return;
     setShouldUploadTemp(user, false);
     uploadTemp().catch((e: Error) => {
-      e && showAlert(e.message);
+      e && openAlert(e.message);
     });
-  }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, showAlert]);
+  }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert]);
 
   return (
     <Box
@@ -149,10 +149,10 @@ const MainContent = ({
     >
       <Header
         user={user}
-        onShowSignInUI={showSignInModal}
+        onOpenSignInUI={openSignInModal}
         onSignOut={signOut}
-        onShowLeftDrawer={showLeftDrawer}
-        onShowRightDrawer={showRightDrawer}
+        onOpenLeftDrawer={openLeftDrawer}
+        onOpenRightDrawer={openRightDrawer}
         sx={{
           width: 'calc(var(--size-content-width) + 1em)',
           minWidth: 'calc(var(--size-content-min-width) + 1em)',
@@ -192,7 +192,7 @@ const MainContent = ({
             sx={{ fontSize: '1.5rem', m: 'auto' }}
             onClick={() => {
               createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch(
-                (e: Error) => showAlert(e.message)
+                (e: Error) => openAlert(e.message)
               );
             }}
           >
@@ -202,7 +202,7 @@ const MainContent = ({
         <Box sx={{ height: '4em' }} />
       </Box>
       <LeftDrawer
-        isShown={isShownLeftDrawer}
+        isOpen={isOpenLeftDrawer}
         snippetMap={snippetMap}
         selectedMandalartId={currentMandalartId}
         onSelectMandalart={(mandalartId) => selectMandalartId(mandalartId)}
@@ -218,14 +218,14 @@ const MainContent = ({
         }}
         onCreateMandalart={() => {
           createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch((e: Error) =>
-            showAlert(e.message)
+            openAlert(e.message)
           );
         }}
         onClose={closeLeftDrawer}
       />
-      <RightDrawer isShown={isShownRightDrawer} onClose={closeRightDrawer} />
+      <RightDrawer isOpen={isOpenRightDrawer} onClose={closeRightDrawer} />
       <SignInModal
-        isShown={isShownSignInModal}
+        isOpen={isOpenSignInModal}
         onClose={closeSignInModal}
         onSignIn={signIn}
       />

@@ -10,18 +10,18 @@ import { BsList, BsThreeDots } from 'react-icons/bs';
 
 type HeaderProps = AppBarProps & {
   user: User | null;
-  onShowSignInUI: () => void;
+  onOpenSignInUI: () => void;
   onSignOut: () => void;
-  onShowLeftDrawer: () => void;
-  onShowRightDrawer: () => void;
+  onOpenLeftDrawer: () => void;
+  onOpenRightDrawer: () => void;
 };
 
 const Header = ({
   user,
-  onShowSignInUI,
+  onOpenSignInUI,
   onSignOut,
-  onShowLeftDrawer,
-  onShowRightDrawer,
+  onOpenLeftDrawer,
+  onOpenRightDrawer,
   ...rest
 }: HeaderProps) => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ const Header = ({
   return (
     <AppBar position="static" elevation={0} {...rest}>
       <Toolbar>
-        <IconButton onClick={onShowLeftDrawer} sx={{ marginRight: '0.25em' }}>
+        <IconButton onClick={onOpenLeftDrawer} sx={{ marginRight: '0.25em' }}>
           <BsList />
         </IconButton>
         <Typography variant="h1" sx={{ flexGrow: 1 }}>
@@ -43,11 +43,11 @@ const Header = ({
             {t('auth.signOut')}
           </Button>
         ) : (
-          <Button sx={{ height: '2.63em' }} onClick={onShowSignInUI}>
+          <Button sx={{ height: '2.63em' }} onClick={onOpenSignInUI}>
             {t('auth.signIn')}
           </Button>
         )}
-        <IconButton onClick={onShowRightDrawer} sx={{ marginLeft: '0.25em' }}>
+        <IconButton onClick={onOpenRightDrawer} sx={{ marginLeft: '0.25em' }}>
           <BsThreeDots />
         </IconButton>
       </Toolbar>

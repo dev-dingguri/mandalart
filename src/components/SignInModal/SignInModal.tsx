@@ -11,16 +11,16 @@ import CenterModal from 'components/CenterModal/CenterModal';
 import { styled } from '@mui/material/styles';
 
 type SignInModalProps = {
-  isShown: boolean;
+  isOpen: boolean;
   onClose: () => void;
   onSignIn: (providerId: string) => void;
 };
 
-const SignInModal = ({ isShown, onClose, onSignIn }: SignInModalProps) => {
+const SignInModal = ({ isOpen, onClose, onSignIn }: SignInModalProps) => {
   const { t } = useTranslation();
 
   return (
-    <CenterModal open={isShown} onClose={onClose}>
+    <CenterModal open={isOpen} onClose={onClose}>
       <ModalContent
         sx={{
           display: 'flex',

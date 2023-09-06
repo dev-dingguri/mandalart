@@ -16,11 +16,11 @@ import Divider from '@mui/material/Divider';
 import { useTernaryDarkMode } from 'usehooks-ts';
 
 type RightAsideProps = {
-  isShown: boolean;
+  isOpen: boolean;
   onClose: () => void;
 };
 
-const RightAside = ({ isShown, onClose }: RightAsideProps) => {
+const RightAside = ({ isOpen, onClose }: RightAsideProps) => {
   const { ternaryDarkMode, setTernaryDarkMode } = useTernaryDarkMode();
   type TernaryDarkMode = typeof ternaryDarkMode;
 
@@ -56,7 +56,7 @@ const RightAside = ({ isShown, onClose }: RightAsideProps) => {
   return (
     <Drawer
       anchor="right"
-      open={isShown}
+      open={isOpen}
       onClose={onClose}
       sx={{
         '&& .MuiPaper-root': {

@@ -6,16 +6,16 @@ import { useTranslation } from 'react-i18next';
 import CenterModal from 'components/CenterModal/CenterModal';
 
 export type AlertProps = {
-  isShown: boolean;
+  isOpen: boolean;
   message: string;
   onClose: () => void;
 };
 
-const Alert = ({ isShown, message, onClose }: AlertProps) => {
+const Alert = ({ isOpen, message, onClose }: AlertProps) => {
   const { t } = useTranslation();
 
   return (
-    <CenterModal open={isShown} onClose={onClose}>
+    <CenterModal open={isOpen} onClose={onClose}>
       <ModalContent
         sx={{ display: 'flex', flexDirection: 'column', width: '20em' }}
       >

@@ -34,8 +34,8 @@ const TopicItem = ({
   onUpdateFocuse,
 }: TopicItemProps) => {
   const {
-    value: isShownEditor,
-    setTrue: showEditor,
+    value: isOpenEditor,
+    setTrue: openEditor,
     setFalse: closeEditor,
   } = useBoolean(false);
   const isMinWidthReached = useMediaQuery('screen and (min-width: 30rem)');
@@ -46,7 +46,7 @@ const TopicItem = ({
         accented={isAccented}
         onClick={() => {
           onUpdateFocuse && onUpdateFocuse();
-          canEdit && showEditor();
+          canEdit && openEditor();
         }}
       >
         <MaxLinesTypography
@@ -66,7 +66,7 @@ const TopicItem = ({
         </MaxLinesTypography>
       </TopicItemBox>
       <TextEditor
-        isShown={isShownEditor}
+        isOpen={isOpenEditor}
         title={`${t('global.topic')}`}
         initialText={topic}
         placeholder={`${t('textEditor.placeholder')}`}

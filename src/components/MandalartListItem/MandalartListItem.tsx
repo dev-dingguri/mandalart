@@ -36,25 +36,25 @@ const MandalartListItem = ({
   onRename,
 }: MandalartListItemProps) => {
   const {
-    value: isShownEditor,
-    setTrue: showEditor,
+    value: isOpenEditor,
+    setTrue: openEditor,
     setFalse: closeEditor,
   } = useBoolean(false);
   const {
-    value: isShownMenu,
-    setTrue: showMenu,
+    value: isOpenMenu,
+    setTrue: openMenu,
     setFalse: closeMenu,
   } = useBoolean(false);
   const [menuY, setMenuY] = useState(0);
   const [menuX, setMenuX] = useState(0);
   const { t } = useTranslation();
 
-  const handleShowMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
+  const handleOpenMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
     ev.preventDefault();
     ev.stopPropagation();
     setMenuY(ev.pageY);
     setMenuX(ev.pageX);
-    showMenu();
+    openMenu();
   };
 
   const handleMenuClick = (ev: React.MouseEvent<Element, MouseEvent>) => {
@@ -66,7 +66,7 @@ const MandalartListItem = ({
     <ListItemButton
       selected={isSelected}
       onClick={() => onSelect(mandalartId)}
-      onContextMenu={handleShowMenu}
+      onContextMenu={handleOpenMenu}
     >
       <ListItemIcon>
         <BsGrid3X3 />
@@ -78,15 +78,15 @@ const MandalartListItem = ({
           </Typography>
         }
       />
-      <IconButton size="small" onClick={handleShowMenu}>
+      <IconButton size="small" onClick={handleOpenMenu}>
         <BsThreeDots />
       </IconButton>
       <Menu
-        open={isShownMenu}
+        open={isOpenMenu}
         onClick={handleMenuClick}
         onClose={closeMenu}
         anchorReference="anchorPosition"
-        anchorPosition={isShownMenu ? { top: menuY, left: menuX } : undefined}
+        anchorPosition={isOpenMenu ? { top: menuY, left: menuX } : undefined}
       >
         {mandalartId !== TMP_MANDALART_ID && (
           <MenuItem onClick={() => onDelete(mandalartId)}>
@@ -96,11 +96,11 @@ const MandalartListItem = ({
         <MenuItem onClick={() => onReset(mandalartId)}>
           {t('mandalart.reset')}
         </MenuItem>
-        <MenuItem onClick={showEditor}>{t('mandalart.rename')}</MenuItem>
+        <MenuItem onClick={openEditor}>{t('mandalart.rename')}</MenuItem>
       </Menu>
       {/* todo: 만다라트 제목 편집 후 Drawer 닫힘 방지 검토 */}
       <TextEditor
-        isShown={isShownEditor}
+        isOpen={isOpenEditor}
         initialText={snippet.title}
         maxText={MAX_MANDALART_TITLE_SIZE}
         onClose={closeEditor}

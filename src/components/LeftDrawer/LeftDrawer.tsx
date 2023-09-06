@@ -9,7 +9,7 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 
 type LeftDrawerProps = {
-  isShown: boolean;
+  isOpen: boolean;
   snippetMap: Map<string, Snippet>;
   selectedMandalartId: string | null;
   onSelectMandalart: (mandalartId: string) => void;
@@ -21,7 +21,7 @@ type LeftDrawerProps = {
 };
 
 const LeftDrawer = ({
-  isShown,
+  isOpen,
   snippetMap,
   selectedMandalartId,
   onSelectMandalart,
@@ -46,7 +46,7 @@ const LeftDrawer = ({
   return (
     <Drawer
       anchor="left"
-      open={isShown}
+      open={isOpen}
       onClose={onClose}
       sx={{
         '&& .MuiPaper-root': {

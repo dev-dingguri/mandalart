@@ -34,8 +34,8 @@ const MandalartView = ({
 }: MandalartViewProps) => {
   const [isAllView, setIsAllView] = useState(true);
   const {
-    value: isShownTitleEditor,
-    setTrue: showTitleEditor,
+    value: isOpenTitleEditor,
+    setTrue: openTitleEditor,
     setFalse: closeTitleEditor,
   } = useBoolean(false);
 
@@ -67,7 +67,7 @@ const MandalartView = ({
       <Typography variant="body2">
         {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.temp')})`}
       </Typography>
-      <Typography variant="h2" noWrap onClick={showTitleEditor}>
+      <Typography variant="h2" noWrap onClick={openTitleEditor}>
         {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
       </Typography>
       <Box sx={{ mt: '0.2em', mb: '0.5em' }}>
@@ -79,7 +79,7 @@ const MandalartView = ({
       </Box>
       <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
       <TextEditor
-        isShown={isShownTitleEditor}
+        isOpen={isOpenTitleEditor}
         initialText={snippet.title}
         maxText={MAX_MANDALART_TITLE_SIZE}
         onClose={closeTitleEditor}
