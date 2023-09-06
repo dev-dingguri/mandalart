@@ -11,22 +11,18 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { throttle } from 'lodash';
 import theme from 'theme';
-import { useTernaryDarkMode } from 'usehooks-ts';
+import { useEventListener, useTernaryDarkMode } from 'usehooks-ts';
 
 const App = () => {
   const [height, setHeight] = useState(window.innerHeight);
   const { t, i18n } = useTranslation();
   const lang = i18n.languages[0];
 
-  /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 크기 계산 */
-  useEffect(() => {
-    const handleResize = throttle(() => setHeight(window.innerHeight), 33);
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 높이로 변경 */
+  useEventListener(
+    'resize',
+    throttle(() => setHeight(window.innerHeight), 33)
+  );
 
   const { isDarkMode } = useTernaryDarkMode();
 
