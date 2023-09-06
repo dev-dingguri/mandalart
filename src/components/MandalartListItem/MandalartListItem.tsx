@@ -8,13 +8,13 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import TextEditor from 'components/TextEditor/TextEditor';
-import useBoolean from 'hooks/useBoolean';
 import {
   MAX_MANDALART_TITLE_SIZE,
   TMP_MANDALART_ID,
 } from 'constants/constants';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
+import { useBoolean } from 'usehooks-ts';
 
 type MandalartListItemProps = {
   mandalartId: string;
@@ -35,9 +35,16 @@ const MandalartListItem = ({
   onReset,
   onRename,
 }: MandalartListItemProps) => {
-  const [isShownMenu, { on: showMenu, off: closeMenu }] = useBoolean(false);
-  const [isShownEditor, { on: showEditor, off: closeEditor }] =
-    useBoolean(false);
+  const {
+    value: isShownEditor,
+    setTrue: showEditor,
+    setFalse: closeEditor,
+  } = useBoolean(false);
+  const {
+    value: isShownMenu,
+    setTrue: showMenu,
+    setFalse: closeMenu,
+  } = useBoolean(false);
   const [menuY, setMenuY] = useState(0);
   const [menuX, setMenuX] = useState(0);
   const { t } = useTranslation();

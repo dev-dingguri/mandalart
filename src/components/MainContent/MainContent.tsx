@@ -12,7 +12,6 @@ import MandalartView from 'components/MandalartView/MandalartView';
 import LeftDrawer from 'components/LeftDrawer/LeftDrawer';
 import { EMPTY_SNIPPET, EMPTY_TOPIC_TREE } from 'constants/constants';
 import RightDrawer from 'components/RightDrawer/RightDrawer';
-import useBoolean from 'hooks/useBoolean';
 import { useAlert } from 'contexts/AlertContext';
 import { Snippet } from '../../types/Snippet';
 import { TopicNode } from '../../types/TopicNode';
@@ -24,6 +23,7 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import { BsPlus } from 'react-icons/bs';
+import { useBoolean } from 'usehooks-ts';
 
 export type UserHandlers = {
   user?: User | null;
@@ -69,12 +69,21 @@ const MainContent = ({
   const { signIn, signOut } = useAuth();
   const { getShouldUploadTemp, setShouldUploadTemp } = useSignInSession();
 
-  const [isShownLeftDrawer, { on: showLeftDrawer, off: closeLeftDrawer }] =
-    useBoolean(false);
-  const [isShownRightDrawer, { on: showRightDrawer, off: closeRightDrawer }] =
-    useBoolean(false);
-  const [isShownSignInModal, { on: showSignInModal, off: closeSignInModal }] =
-    useBoolean(false);
+  const {
+    value: isShownLeftDrawer,
+    setTrue: showLeftDrawer,
+    setFalse: closeLeftDrawer,
+  } = useBoolean(false);
+  const {
+    value: isShownRightDrawer,
+    setTrue: showRightDrawer,
+    setFalse: closeRightDrawer,
+  } = useBoolean(false);
+  const {
+    value: isShownSignInModal,
+    setTrue: showSignInModal,
+    setFalse: closeSignInModal,
+  } = useBoolean(false);
   const { Alert, show: showAlert } = useAlert();
 
   const { t } = useTranslation();

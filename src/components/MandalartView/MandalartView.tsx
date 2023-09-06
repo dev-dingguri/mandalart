@@ -11,10 +11,10 @@ import { cloneDeep } from 'lodash';
 import MandalartViewToggle from 'components/MandalartViewToggle/MandalartViewToggle';
 import { Snippet } from 'types/Snippet';
 import TextEditor from 'components/TextEditor/TextEditor';
-import useBoolean from 'hooks/useBoolean';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
 import Box, { BoxProps } from '@mui/material/Box';
+import { useBoolean } from 'usehooks-ts';
 
 type MandalartViewProps = {
   mandalartId: string;
@@ -33,8 +33,12 @@ const MandalartView = ({
   ...rest
 }: MandalartViewProps) => {
   const [isAllView, setIsAllView] = useState(true);
-  const [isShownTitleEditor, { on: showTitleEditor, off: closeTitleEditor }] =
-    useBoolean(false);
+  const {
+    value: isShownTitleEditor,
+    setTrue: showTitleEditor,
+    setFalse: closeTitleEditor,
+  } = useBoolean(false);
+
   const { t } = useTranslation();
 
   const handleGetTopic = useCallback(

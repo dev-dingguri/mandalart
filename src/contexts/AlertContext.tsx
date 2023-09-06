@@ -1,5 +1,4 @@
 import Alert, { AlertProps } from 'components/Alert/Alert';
-import useBoolean from 'hooks/useBoolean';
 import {
   createContext,
   useContext,
@@ -7,6 +6,7 @@ import {
   useCallback,
   PropsWithChildren,
 } from 'react';
+import { useBoolean } from 'usehooks-ts';
 
 type AlertContextType = {
   alertProps: AlertProps;
@@ -16,7 +16,7 @@ type AlertContextType = {
 const AlertContext = createContext<AlertContextType | null>(null);
 
 export const AlertProvider = ({ children }: PropsWithChildren) => {
-  const [isShown, { on: show, off: close }] = useBoolean(false);
+  const { value: isShown, setTrue: show, setFalse: close } = useBoolean(false);
   const [message, setMessage] = useState('');
 
   const showWithMessage = useCallback(

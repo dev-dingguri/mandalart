@@ -1,12 +1,11 @@
 import TextEditor from 'components/TextEditor/TextEditor';
 import { MAX_TOPIC_TEXT_SIZE } from 'constants/constants';
-import useBoolean from 'hooks/useBoolean';
 import { useTranslation } from 'react-i18next';
 import SquareBox from 'components/SquareBox/SquareBox';
 import { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import MaxLinesTypography from 'components/MaxLinesTypography/MaxLinesTypography';
-import { useMediaQuery } from 'usehooks-ts';
+import { useBoolean, useMediaQuery } from 'usehooks-ts';
 
 const TopicItemBox = styled(SquareBox, {
   shouldForwardProp: (prop) => prop !== 'accented',
@@ -34,8 +33,11 @@ const TopicItem = ({
   onUpdateTopic,
   onUpdateFocuse,
 }: TopicItemProps) => {
-  const [isShownEditor, { on: showEditor, off: closeEditor }] =
-    useBoolean(false);
+  const {
+    value: isShownEditor,
+    setTrue: showEditor,
+    setFalse: closeEditor,
+  } = useBoolean(false);
   const isMinWidthReached = useMediaQuery('screen and (min-width: 30rem)');
   const { t } = useTranslation();
   return (
