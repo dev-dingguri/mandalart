@@ -102,7 +102,7 @@ const MandalartListItem = ({
       <TextEditor
         isOpen={isOpenEditor}
         initialText={snippet.title}
-        maxText={MAX_MANDALART_TITLE_SIZE}
+        textLimit={MAX_MANDALART_TITLE_SIZE}
         onClose={closeEditor}
         onConfirm={(name) => {
           onRename(mandalartId, name);

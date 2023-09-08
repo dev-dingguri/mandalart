@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import MainPage from 'components/MainPage/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage/OpenSourceLicensesPage';

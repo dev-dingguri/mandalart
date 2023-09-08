@@ -81,7 +81,7 @@ const MandalartView = ({
       <TextEditor
         isOpen={isOpenTitleEditor}
         initialText={snippet.title}
-        maxText={MAX_MANDALART_TITLE_SIZE}
+        textLimit={MAX_MANDALART_TITLE_SIZE}
         onClose={closeTitleEditor}
         onConfirm={(title) => onSnippetChange({ title })}
       />

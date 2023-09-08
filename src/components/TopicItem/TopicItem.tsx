@@ -70,7 +70,7 @@ const TopicItem = ({
         title={`${t('global.topic')}`}
         initialText={topic}
         placeholder={`${t('textEditor.placeholder')}`}
-        maxText={MAX_TOPIC_TEXT_SIZE}
+        textLimit={MAX_TOPIC_TEXT_SIZE}
         onClose={closeEditor}
         onConfirm={onUpdateTopic}
       />

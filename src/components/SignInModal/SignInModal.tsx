@@ -3,12 +3,14 @@ import { ProviderId } from 'firebase/auth';
 import googleIco from 'assets/images/google.svg';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import ModalContent from 'components/ModalContent/ModalContent';
 import { BsXLg } from 'react-icons/bs';
 import { useTranslation } from 'react-i18next';
-import Typography from '@mui/material/Typography';
-import CenterModal from 'components/CenterModal/CenterModal';
 import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 type SignInModalProps = {
   isOpen: boolean;
@@ -20,43 +22,31 @@ const SignInModal = ({ isOpen, onClose, onSignIn }: SignInModalProps) => {
   const { t } = useTranslation();
 
   return (
-    <CenterModal open={isOpen} onClose={onClose}>
-      <ModalContent
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          width: '18em',
-          position: 'relative',
-        }}
+    <Dialog open={isOpen} onClose={onClose}>
+      <DialogTitle>{t('global.app')}</DialogTitle>
+      <IconButton
+        sx={{ position: 'absolute', top: '0.5em', right: '0.5em' }}
+        size="small"
+        onClick={onClose}
       >
-        <IconButton
-          sx={{ position: 'absolute', top: '0.5em', right: '0.5em' }}
-          size="small"
-          onClick={onClose}
-        >
-          <BsXLg />
-        </IconButton>
-        <Typography variant="h3">{t('global.app')}</Typography>
-        <Typography
-          variant="body2"
-          sx={{
-            textAlign: 'center',
-            marginTop: '0.5em',
-            marginBottom: '1em',
-          }}
-        >
+        <BsXLg />
+      </IconButton>
+      <DialogContent sx={{ width: '16em' }}>
+        <DialogContentText sx={{ textAlign: 'center' }}>
           {t('signInModal.message')}
-        </Typography>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions sx={{ justifyContent: 'center' }}>
         <Button
           startIcon={<SignInLogo src={googleIco} alt="google" />}
           size="large"
+          fullWidth
           onClick={() => onSignIn(ProviderId.GOOGLE)}
         >
           {t('signInModal.signIn.google')}
         </Button>
-      </ModalContent>
-    </CenterModal>
+      </DialogActions>
+    </Dialog>
   );
 };
 

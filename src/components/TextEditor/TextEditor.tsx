@@ -1,21 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import Button from '@mui/material/Button';
 import { useTranslation } from 'react-i18next';
 import i18n from 'locales/i18n';
-import Typography, { TypographyProps } from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import Box from '@mui/material/Box';
-import ModalContent from 'components/ModalContent/ModalContent';
-import CenterModal from 'components/CenterModal/CenterModal';
 import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText, {
+  DialogContentTextProps,
+} from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 type TextEditorProps = {
   isOpen: boolean;
   title?: string;
   initialText: string;
   placeholder?: string;
-  maxText?: number;
+  textLimit?: number;
   onClose: () => void;
   onConfirm: (text: string) => void;
 };
@@ -25,13 +28,13 @@ const TextEditor = ({
   title = `${i18n.t('global.app')}`,
   initialText = '',
   placeholder,
-  maxText,
+  textLimit,
   onClose,
   onConfirm,
 }: TextEditorProps) => {
   const [text, setText] = useState(initialText);
-  const shouldValidations = maxText !== undefined;
-  const isLimitReached = shouldValidations && maxText < text.length;
+  const hasLimit = textLimit !== undefined;
+  const isLimitReached = hasLimit && textLimit < text.length;
   const { t } = useTranslation();
 
   const handleConfirm = (ev: FormEvent<HTMLFormElement>) => {
@@ -41,7 +44,7 @@ const TextEditor = ({
     onClose();
   };
 
-  const handleInputChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
     setText(ev.target.value);
   };
 
@@ -50,10 +53,10 @@ const TextEditor = ({
   }, [isOpen, initialText]);
 
   return (
-    <CenterModal open={isOpen} onClose={onClose}>
-      <ModalContent sx={{ width: '20em' }}>
-        <form onSubmit={handleConfirm}>
-          <Typography variant="h3">{title}</Typography>
+    <Dialog open={isOpen} onClose={onClose}>
+      <form onSubmit={handleConfirm}>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogContent>
           <TextField
             id={'mandalart-topic'}
             autoFocus
@@ -63,40 +66,35 @@ const TextEditor = ({
             onChange={handleInputChange}
             value={text}
             error={isLimitReached}
-            sx={{ mt: 1, mb: 1, width: '100%' }}
           />
-          {shouldValidations && (
+          {hasLimit && (
             <Stack direction="row">
-              <ErrorableTypography
-                variant="body2"
+              <DialogContentErrorableText
                 error={isLimitReached}
                 sx={{ flexGrow: 1 }}
               >
                 {isLimitReached && t('textEditor.maxTextReached')}
-              </ErrorableTypography>
-              <ErrorableTypography
-                variant="body2"
+              </DialogContentErrorableText>
+              <DialogContentErrorableText
                 error={isLimitReached}
-              >{`${text.length}/${maxText}`}</ErrorableTypography>
+              >{`${text.length}/${textLimit}`}</DialogContentErrorableText>
             </Stack>
           )}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button sx={{ mr: '0.5em' }} onClick={onClose}>
-              {t('global.cancel')}
-            </Button>
-            <Button type="submit" disabled={isLimitReached}>
-              {t('global.save')}
-            </Button>
-          </Box>
-        </form>
-      </ModalContent>
-    </CenterModal>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>{t('global.cancel')}</Button>
+          <Button type="submit" disabled={isLimitReached}>
+            {t('global.save')}
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 };
 
-const ErrorableTypography = styled(Typography, {
+const DialogContentErrorableText = styled(DialogContentText, {
   shouldForwardProp: (prop) => prop !== 'error',
-})<TypographyProps & { error?: boolean }>(
+})<DialogContentTextProps & { error?: boolean }>(
   ({ theme, error }) =>
     error && {
       color: theme.palette.error.main,
