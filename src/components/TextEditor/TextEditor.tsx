@@ -34,7 +34,8 @@ const TextEditor = ({
   const isLimitReached = shouldValidations && maxText < text.length;
   const { t } = useTranslation();
 
-  const handleConfirm = () => {
+  const handleConfirm = (ev: FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
     if (isLimitReached) return;
     onConfirm(text);
     onClose();
