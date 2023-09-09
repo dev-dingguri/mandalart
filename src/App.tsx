@@ -6,7 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { PATH_MAIN, PATH_OSS } from 'constants/constants';
 import { Helmet } from 'react-helmet-async';
 import { ThemeProvider } from '@mui/material/styles';
-import { AlertProvider } from 'contexts/AlertContext';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import { throttle } from 'lodash';
@@ -29,36 +28,31 @@ const App = () => {
   return (
     <ThemeProvider theme={theme(isDarkMode ? 'dark' : 'light')}>
       <CssBaseline />
-      <AlertProvider>
-        <Box sx={{ height }}>
-          <Helmet>
-            <title>{t('tag.title')}</title>
-            <meta name="description" content={`${t('tag.description')}`} />
-            <meta property="og:title" content={`${t('tag.title')}`} />
-            <meta
-              property="og:description"
-              content={`${t('tag.description')}`}
+      <Box sx={{ height }}>
+        <Helmet>
+          <title>{t('tag.title')}</title>
+          <meta name="description" content={`${t('tag.description')}`} />
+          <meta property="og:title" content={`${t('tag.title')}`} />
+          <meta property="og:description" content={`${t('tag.description')}`} />
+          {isDarkMode && <meta name="theme-color" content="#000000" />}
+        </Helmet>
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path={`/${lang}${PATH_MAIN}`} //
+              element={<MainPage />}
             />
-            {isDarkMode && <meta name="theme-color" content="#000000" />}
-          </Helmet>
-          <BrowserRouter>
-            <Routes>
-              <Route
-                path={`/${lang}${PATH_MAIN}`} //
-                element={<MainPage />}
-              />
-              <Route
-                path={`/${lang}${PATH_OSS}`}
-                element={<OpenSourceLicensesPage />}
-              />
-              <Route
-                path="*"
-                element={<Navigate to={`/${lang}${PATH_MAIN}`} />}
-              />
-            </Routes>
-          </BrowserRouter>
-        </Box>
-      </AlertProvider>
+            <Route
+              path={`/${lang}${PATH_OSS}`}
+              element={<OpenSourceLicensesPage />}
+            />
+            <Route
+              path="*"
+              element={<Navigate to={`/${lang}${PATH_MAIN}`} />}
+            />
+          </Routes>
+        </BrowserRouter>
+      </Box>
     </ThemeProvider>
   );
 };

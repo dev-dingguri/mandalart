@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 export type AlertProps = {
   isOpen: boolean;
-  message: string;
+  message: string | null;
   onClose: () => void;
 };
 

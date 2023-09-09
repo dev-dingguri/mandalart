@@ -12,7 +12,6 @@ import MandalartView from 'components/MandalartView';
 import LeftDrawer from 'components/LeftDrawer';
 import { EMPTY_SNIPPET, EMPTY_TOPIC_TREE } from 'constants/constants';
 import RightDrawer from 'components/RightDrawer';
-import { useAlert } from 'contexts/AlertContext';
 import { Snippet } from '../types/Snippet';
 import { TopicNode } from '../types/TopicNode';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +23,8 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import { BsPlus } from 'react-icons/bs';
 import { useBoolean } from 'usehooks-ts';
+import useModal from 'hooks/useModal';
+import Alert from './Alert';
 
 export type UserHandlers = {
   user?: User | null;
@@ -84,7 +85,12 @@ const MainContent = ({
     setTrue: openSignInModal,
     setFalse: closeSignInModal,
   } = useBoolean(false);
-  const { Alert, open: openAlert } = useAlert();
+  const {
+    isOpen: isOpenAlert,
+    open: openAlert,
+    close: closeAlert,
+    content: alertContent,
+  } = useModal<string>();
 
   const { t } = useTranslation();
 
@@ -229,7 +235,7 @@ const MainContent = ({
         onClose={closeSignInModal}
         onSignIn={signIn}
       />
-      <Alert />
+      <Alert isOpen={isOpenAlert} message={alertContent} onClose={closeAlert} />
     </Box>
   );
 };
