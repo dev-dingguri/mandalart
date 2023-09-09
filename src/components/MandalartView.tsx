@@ -3,7 +3,7 @@ import ZoomInMandalart from 'components/ZoomInMandalart';
 import Mandalart, { MandalartProps } from 'components/Mandalart';
 import { TopicNode } from 'types/TopicNode';
 import {
-  MAX_MANDALART_TITLE_SIZE,
+  MAX_TOPIC_TEXT_SIZE,
   TABLE_CENTER_IDX,
   TMP_MANDALART_ID,
 } from 'constants/constants';
@@ -81,7 +81,7 @@ const MandalartView = ({
       <TextEditor
         isOpen={isOpenTitleEditor}
         initialText={snippet.title}
-        textLimit={MAX_MANDALART_TITLE_SIZE}
+        textLimit={MAX_TOPIC_TEXT_SIZE}
         onClose={closeTitleEditor}
         onConfirm={(title) => onSnippetChange({ title })}
       />
