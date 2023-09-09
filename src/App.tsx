@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import MainPage from 'components/MainPage/MainPage';
+import MainPage from 'components/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage/OpenSourceLicensesPage';
+import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage';
 import { useTranslation } from 'react-i18next';
 import { PATH_MAIN, PATH_OSS } from 'constants/constants';
 import { Helmet } from 'react-helmet-async';

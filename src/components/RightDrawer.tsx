@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BsGithub, BsYoutube } from 'react-icons/bs';
 import { APP_VERSION } from 'version';
-import { PATH_OSS } from '../../constants/constants';
+import { PATH_OSS } from '../constants/constants';
 import Drawer from '@mui/material/Drawer';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';

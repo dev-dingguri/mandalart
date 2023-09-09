@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
-import ZoomInMandalart from 'components/ZoomInMandalart/ZoomInMandalart';
-import Mandalart, { MandalartProps } from 'components/Mandalart/Mandalart';
+import ZoomInMandalart from 'components/ZoomInMandalart';
+import Mandalart, { MandalartProps } from 'components/Mandalart';
 import { TopicNode } from 'types/TopicNode';
 import {
   MAX_MANDALART_TITLE_SIZE,
@@ -8,9 +8,9 @@ import {
   TMP_MANDALART_ID,
 } from 'constants/constants';
 import { cloneDeep } from 'lodash';
-import MandalartViewToggle from 'components/MandalartViewToggle/MandalartViewToggle';
+import MandalartViewToggle from 'components/MandalartViewToggle';
 import { Snippet } from 'types/Snippet';
-import TextEditor from 'components/TextEditor/TextEditor';
+import TextEditor from 'components/TextEditor';
 import { useTranslation } from 'react-i18next';
 import Typography from '@mui/material/Typography';
 import Box, { BoxProps } from '@mui/material/Box';

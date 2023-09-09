@@ -1,4 +1,4 @@
-import Alert, { AlertProps } from 'components/Alert/Alert';
+import Alert, { AlertProps } from 'components/Alert';
 import {
   createContext,
   useContext,

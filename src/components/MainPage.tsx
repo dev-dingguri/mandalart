@@ -1,8 +1,8 @@
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import useUser from 'hooks/useUser';
-import MainUserPage from 'components/MainUserPage/MainUserPage';
-import MainGuestPage from 'components/MainGuestPage/MainGuestPage';
+import MainUserPage from 'components/MainUserPage';
+import MainGuestPage from 'components/MainGuestPage';
 import { useAddLoadingCondition, useIsLoading } from 'contexts/LoadingContext';
 
 const MainPage = () => {

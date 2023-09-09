@@ -6,15 +6,15 @@ import {
   Dispatch,
   useLayoutEffect,
 } from 'react';
-import Header from 'components/Header/Header';
-import SignInModal from 'components/SignInModal/SignInModal';
-import MandalartView from 'components/MandalartView/MandalartView';
-import LeftDrawer from 'components/LeftDrawer/LeftDrawer';
+import Header from 'components/Header';
+import SignInModal from 'components/SignInModal';
+import MandalartView from 'components/MandalartView';
+import LeftDrawer from 'components/LeftDrawer';
 import { EMPTY_SNIPPET, EMPTY_TOPIC_TREE } from 'constants/constants';
-import RightDrawer from 'components/RightDrawer/RightDrawer';
+import RightDrawer from 'components/RightDrawer';
 import { useAlert } from 'contexts/AlertContext';
-import { Snippet } from '../../types/Snippet';
-import { TopicNode } from '../../types/TopicNode';
+import { Snippet } from '../types/Snippet';
+import { TopicNode } from '../types/TopicNode';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 import useAuth from 'hooks/useAuth';

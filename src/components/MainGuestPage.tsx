@@ -1,4 +1,4 @@
-import MainContent from 'components/MainContent/MainContent';
+import MainContent from 'components/MainContent';
 import { useAddLoadingCondition } from 'contexts/LoadingContext';
 import useGuestMandalarts from 'hooks/useGuestMandalarts';
 

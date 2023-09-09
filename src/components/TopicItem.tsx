@@ -1,10 +1,10 @@
-import TextEditor from 'components/TextEditor/TextEditor';
+import TextEditor from 'components/TextEditor';
 import { MAX_TOPIC_TEXT_SIZE } from 'constants/constants';
 import { useTranslation } from 'react-i18next';
-import SquareBox from 'components/SquareBox/SquareBox';
+import SquareBox from 'components/SquareBox';
 import { BoxProps } from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import MaxLinesTypography from 'components/MaxLinesTypography/MaxLinesTypography';
+import MaxLinesTypography from 'components/MaxLinesTypography';
 import { useBoolean, useMediaQuery } from 'usehooks-ts';
 
 const TopicItemBox = styled(SquareBox, {

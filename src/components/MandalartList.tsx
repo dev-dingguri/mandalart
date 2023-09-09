@@ -1,7 +1,7 @@
 import React from 'react';
 import List, { ListProps } from '@mui/material/List';
 import { Snippet } from 'types/Snippet';
-import MandalartListItem from 'components/MandalartListItem/MandalartListItem';
+import MandalartListItem from 'components/MandalartListItem';
 
 type MandalartListProps = {
   snippetMap: Map<string, Snippet>;

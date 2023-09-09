@@ -1,5 +1,5 @@
-import useUserMandalarts from '../../hooks/useUserMandalarts';
-import MainContent from 'components/MainContent/MainContent';
+import useUserMandalarts from '../hooks/useUserMandalarts';
+import MainContent from 'components/MainContent';
 import { useAddLoadingCondition } from 'contexts/LoadingContext';
 import { User } from 'firebase/auth';
 

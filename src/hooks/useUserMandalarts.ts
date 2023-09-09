@@ -13,7 +13,7 @@ import {
 } from 'constants/constants';
 import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
-import { MandalartsHandlers } from 'components/MainContent/MainContent';
+import { MandalartsHandlers } from 'components/MainContent';
 import useDatabase from './useDatabase';
 import useGuestSnippets from './useGuestSnippets';
 import useGuestTopicTrees from './useGuestTopicTrees';

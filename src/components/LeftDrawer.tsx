@@ -1,7 +1,7 @@
 import React from 'react';
 import { BsPlus } from 'react-icons/bs';
 import Button from '@mui/material/Button';
-import MandalartList from 'components/MandalartList/MandalartList';
+import MandalartList from 'components/MandalartList';
 import { Snippet } from 'types/Snippet';
 import { useTranslation } from 'react-i18next';
 import Drawer from '@mui/material/Drawer';

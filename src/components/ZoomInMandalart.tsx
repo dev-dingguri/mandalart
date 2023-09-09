@@ -1,12 +1,12 @@
 import React, { useRef, useState, TouchEvent } from 'react';
-import Mandalart, { MandalartProps } from 'components/Mandalart/Mandalart';
+import Mandalart, { MandalartProps } from 'components/Mandalart';
 import { useCallback } from 'react';
 import {
   TABLE_COL_SIZE,
   TABLE_SIZE,
   TABLE_CENTER_IDX,
 } from 'constants/constants';
-import SquareBox from 'components/SquareBox/SquareBox';
+import SquareBox from 'components/SquareBox';
 import Box from '@mui/material/Box';
 
 const ZoomInMandalart = ({ ...props }: MandalartProps) => {

@@ -1,5 +1,5 @@
-import ItemGrid from 'components/ItemGrid/ItemGrid';
-import TopicGrid from 'components/TopicGrid/TopicGrid';
+import ItemGrid from 'components/ItemGrid';
+import TopicGrid from 'components/TopicGrid';
 import { TopicNode } from 'types/TopicNode';
 import {
   TABLE_ROW_SIZE,

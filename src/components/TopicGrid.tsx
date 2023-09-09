@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import ItemGrid from 'components/ItemGrid/ItemGrid';
-import TopicItem from 'components/TopicItem/TopicItem';
+import ItemGrid from 'components/ItemGrid';
+import TopicItem from 'components/TopicItem';
 import { TopicNode } from 'types/TopicNode';
 import { scrollIntoView } from 'seamless-scroll-polyfill';
 import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';

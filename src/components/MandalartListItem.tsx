@@ -7,7 +7,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import TextEditor from 'components/TextEditor/TextEditor';
+import TextEditor from 'components/TextEditor';
 import {
   MAX_MANDALART_TITLE_SIZE,
   TMP_MANDALART_ID,
