@@ -98,7 +98,6 @@ const MandalartListItem = ({
         </MenuItem>
         <MenuItem onClick={openEditor}>{t('mandalart.rename')}</MenuItem>
       </Menu>
-      {/* todo: 만다라트 제목 편집 후 Drawer 닫힘 방지 검토 */}
       <TextEditor
         isOpen={isOpenEditor}
         initialText={snippet.title}

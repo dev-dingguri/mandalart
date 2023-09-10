@@ -52,11 +52,26 @@ const TextEditor = ({
     setText(initialText);
   }, [isOpen, initialText]);
 
+  // todo: Drawer를 통해서 열렸을 때 Drawer 닫힘 방지 방법 개선
+  // - 다이얼로그를 상위 컴포넌트로 변경하면 해결되는지 확인
   return (
-    <Dialog open={isOpen} onClose={onClose}>
-      <form onSubmit={handleConfirm}>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      onClick={(ev) => {
+        ev.stopPropagation(); // Drawer를 통해서 열렸을 때 Drawer 닫힘 방지
+        onClose();
+      }}
+    >
+      <form
+        onSubmit={handleConfirm}
+        onClick={(ev) => {
+          ev.stopPropagation(); // Drawer를 통해서 열렸을 때 Drawer 닫힘 방지
+        }}
+      >
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
+          {/* todo: Drawer를 통해서 열렸을 때 포커스가 되지 않는 이슈 수정 */}
           <TextField
             id={'mandalart-topic'}
             autoFocus
