@@ -23,7 +23,6 @@ const SignInModal = ({ isOpen, onClose, onSignIn }: SignInModalProps) => {
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogTitle>{t('global.app')}</DialogTitle>
       <IconButton
         sx={{ position: 'absolute', top: '0.5em', right: '0.5em' }}
         size="small"
@@ -31,6 +30,7 @@ const SignInModal = ({ isOpen, onClose, onSignIn }: SignInModalProps) => {
       >
         <BsXLg />
       </IconButton>
+      <DialogTitle>{t('global.app')}</DialogTitle>
       <DialogContent sx={{ width: '16em' }}>
         <DialogContentText sx={{ textAlign: 'center' }}>
           {t('signInModal.message')}

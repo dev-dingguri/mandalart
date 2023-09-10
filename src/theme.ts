@@ -211,7 +211,6 @@ const theme = (mode: PaletteMode) => {
           root: {
             '& .MuiPaper-root': {
               backgroundImage: 'none',
-              padding: '16px 24px',
             },
           },
         },
@@ -220,23 +219,24 @@ const theme = (mode: PaletteMode) => {
         styleOverrides: {
           root: {
             fontWeight: 'bold',
-            padding: '0',
-            paddingBottom: '16px',
+            padding: '16px 24px',
           },
         },
       },
       MuiDialogContent: {
         styleOverrides: {
           root: {
-            padding: '0',
+            padding: '16px 24px',
           },
         },
       },
       MuiDialogActions: {
         styleOverrides: {
           root: {
-            padding: '0',
-            paddingTop: '16px',
+            padding: '16px 24px',
+            '.MuiDialogContent-root+&': {
+              paddingTop: '0',
+            },
           },
         },
       },
