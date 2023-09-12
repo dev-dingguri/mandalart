@@ -33,16 +33,6 @@ const LeftDrawer = ({
 }: LeftDrawerProps) => {
   const { t } = useTranslation();
 
-  const handleSelectMandalart = (mandalartId: string) => {
-    onSelectMandalart(mandalartId);
-    onClose();
-  };
-
-  const handleNewClick = () => {
-    onCreateMandalart();
-    onClose();
-  };
-
   return (
     <Drawer
       anchor="left"
@@ -60,7 +50,7 @@ const LeftDrawer = ({
       <MandalartList
         snippetMap={snippetMap}
         selectedId={selectedMandalartId}
-        onItemSelect={handleSelectMandalart}
+        onItemSelect={onSelectMandalart}
         onItemDelete={onDeleteMandalart}
         onItemRename={onRenameMandalart}
         onItemReset={onResetMandalart}
@@ -87,7 +77,7 @@ const LeftDrawer = ({
             justifyContent: 'flex-start',
             backgroundColor: (theme) => theme.palette.primary.dark,
           }}
-          onClick={handleNewClick}
+          onClick={onCreateMandalart}
           size="large"
         >
           {t('mandalart.new')}

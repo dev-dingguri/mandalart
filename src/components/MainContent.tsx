@@ -211,7 +211,10 @@ const MainContent = ({
         isOpen={isOpenLeftDrawer}
         snippetMap={snippetMap}
         selectedMandalartId={currentMandalartId}
-        onSelectMandalart={(mandalartId) => selectMandalartId(mandalartId)}
+        onSelectMandalart={(mandalartId) => {
+          selectMandalartId(mandalartId);
+          closeLeftDrawer();
+        }}
         onDeleteMandalart={(mandalartId) => {
           deleteMandalart(mandalartId);
         }}
@@ -223,9 +226,9 @@ const MainContent = ({
           saveTopicTree(mandalartId, EMPTY_TOPIC_TREE);
         }}
         onCreateMandalart={() => {
-          createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch((e: Error) =>
-            openAlert(e.message)
-          );
+          createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE)
+            .then(() => closeLeftDrawer())
+            .catch((e: Error) => openAlert(e.message));
         }}
         onClose={closeLeftDrawer}
       />
