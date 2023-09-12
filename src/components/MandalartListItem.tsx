@@ -51,15 +51,9 @@ const MandalartListItem = ({
 
   const handleOpenMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
     ev.preventDefault();
-    ev.stopPropagation();
     setMenuY(ev.pageY);
     setMenuX(ev.pageX);
     openMenu();
-  };
-
-  const handleMenuClick = (ev: React.MouseEvent<Element, MouseEvent>) => {
-    ev.stopPropagation(); // 메뉴 클릭시 Drawer 닫힘 방지
-    closeMenu();
   };
 
   return (
@@ -79,27 +73,33 @@ const MandalartListItem = ({
             </Typography>
           }
         />
-        <IconButton size="small" onClick={handleOpenMenu}>
+        <IconButton
+          size="small"
+          onClick={(ev) => {
+            ev.stopPropagation(); // 만다라트 리스트 항목이 선택되는 것 방지
+            handleOpenMenu(ev);
+          }}
+        >
           <BsThreeDots />
         </IconButton>
-        <Menu
-          open={isOpenMenu}
-          onClick={handleMenuClick}
-          onClose={closeMenu}
-          anchorReference="anchorPosition"
-          anchorPosition={isOpenMenu ? { top: menuY, left: menuX } : undefined}
-        >
-          {mandalartId !== TMP_MANDALART_ID && (
-            <MenuItem onClick={() => onDelete(mandalartId)}>
-              {t('mandalart.delete')}
-            </MenuItem>
-          )}
-          <MenuItem onClick={() => onReset(mandalartId)}>
-            {t('mandalart.reset')}
-          </MenuItem>
-          <MenuItem onClick={openEditor}>{t('mandalart.rename')}</MenuItem>
-        </Menu>
       </ListItemButton>
+      <Menu
+        open={isOpenMenu}
+        onClick={closeMenu}
+        onClose={closeMenu}
+        anchorReference="anchorPosition"
+        anchorPosition={isOpenMenu ? { top: menuY, left: menuX } : undefined}
+      >
+        {mandalartId !== TMP_MANDALART_ID && (
+          <MenuItem onClick={() => onDelete(mandalartId)}>
+            {t('mandalart.delete')}
+          </MenuItem>
+        )}
+        <MenuItem onClick={() => onReset(mandalartId)}>
+          {t('mandalart.reset')}
+        </MenuItem>
+        <MenuItem onClick={openEditor}>{t('mandalart.rename')}</MenuItem>
+      </Menu>
       <TextEditor
         isOpen={isOpenEditor}
         initialText={snippet.title}
