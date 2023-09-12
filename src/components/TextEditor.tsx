@@ -53,11 +53,14 @@ const TextEditor = ({
   }, [isOpen, initialText]);
 
   return (
-    <Dialog open={isOpen} onClose={onClose}>
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      disableRestoreFocus // https://github.com/mui/material-ui/issues/33004
+    >
       <form onSubmit={handleConfirm}>
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
-          {/* todo: Drawer를 통해서 열렸을 때 포커스가 되지 않는 이슈 수정 */}
           <TextField
             id={'mandalart-topic'}
             autoFocus
