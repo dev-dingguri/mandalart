@@ -63,41 +63,43 @@ const MandalartListItem = ({
   };
 
   return (
-    <ListItemButton
-      selected={isSelected}
-      onClick={() => onSelect(mandalartId)}
-      onContextMenu={handleOpenMenu}
-    >
-      <ListItemIcon>
-        <BsGrid3X3 />
-      </ListItemIcon>
-      <ListItemText
-        primary={
-          <Typography variant="body1" noWrap>
-            {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
-          </Typography>
-        }
-      />
-      <IconButton size="small" onClick={handleOpenMenu}>
-        <BsThreeDots />
-      </IconButton>
-      <Menu
-        open={isOpenMenu}
-        onClick={handleMenuClick}
-        onClose={closeMenu}
-        anchorReference="anchorPosition"
-        anchorPosition={isOpenMenu ? { top: menuY, left: menuX } : undefined}
+    <>
+      <ListItemButton
+        selected={isSelected}
+        onClick={() => onSelect(mandalartId)}
+        onContextMenu={handleOpenMenu}
       >
-        {mandalartId !== TMP_MANDALART_ID && (
-          <MenuItem onClick={() => onDelete(mandalartId)}>
-            {t('mandalart.delete')}
+        <ListItemIcon>
+          <BsGrid3X3 />
+        </ListItemIcon>
+        <ListItemText
+          primary={
+            <Typography variant="body1" noWrap>
+              {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
+            </Typography>
+          }
+        />
+        <IconButton size="small" onClick={handleOpenMenu}>
+          <BsThreeDots />
+        </IconButton>
+        <Menu
+          open={isOpenMenu}
+          onClick={handleMenuClick}
+          onClose={closeMenu}
+          anchorReference="anchorPosition"
+          anchorPosition={isOpenMenu ? { top: menuY, left: menuX } : undefined}
+        >
+          {mandalartId !== TMP_MANDALART_ID && (
+            <MenuItem onClick={() => onDelete(mandalartId)}>
+              {t('mandalart.delete')}
+            </MenuItem>
+          )}
+          <MenuItem onClick={() => onReset(mandalartId)}>
+            {t('mandalart.reset')}
           </MenuItem>
-        )}
-        <MenuItem onClick={() => onReset(mandalartId)}>
-          {t('mandalart.reset')}
-        </MenuItem>
-        <MenuItem onClick={openEditor}>{t('mandalart.rename')}</MenuItem>
-      </Menu>
+          <MenuItem onClick={openEditor}>{t('mandalart.rename')}</MenuItem>
+        </Menu>
+      </ListItemButton>
       <TextEditor
         isOpen={isOpenEditor}
         initialText={snippet.title}
@@ -107,7 +109,7 @@ const MandalartListItem = ({
           onRename(mandalartId, name);
         }}
       />
-    </ListItemButton>
+    </>
   );
 };
 
