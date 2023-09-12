@@ -50,7 +50,7 @@ const TextEditor = ({
 
   useEffect(() => {
     setText(initialText);
-  }, [isOpen, initialText]);
+  }, [initialText]);
 
   return (
     <Dialog
