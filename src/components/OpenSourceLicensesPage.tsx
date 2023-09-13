@@ -89,7 +89,12 @@ const OpenSourceLicensesPage = () => {
 
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        height: '100%',
+      }}
     >
       <AppBar
         position="static"
@@ -110,18 +115,25 @@ const OpenSourceLicensesPage = () => {
         </Toolbar>
       </AppBar>
       <Divider flexItem />
-      <List
+      <Box
         sx={{
-          width: 'var(--size-content-width)',
-          minWidth: 'var(--size-content-min-width)',
+          width: '100%',
           overflow: 'auto',
           scrollbarGutter: 'stable both-edges',
         }}
       >
-        {licenses.map((data, idx) => (
-          <Item key={idx} {...data} />
-        ))}
-      </List>
+        <List
+          sx={{
+            width: 'var(--size-content-width)',
+            minWidth: 'var(--size-content-min-width)',
+            margin: 'auto',
+          }}
+        >
+          {licenses.map((data, idx) => (
+            <Item key={idx} {...data} />
+          ))}
+        </List>
+      </Box>
     </Box>
   );
 };
