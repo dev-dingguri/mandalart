@@ -41,7 +41,7 @@
     "delete": "Delete",
     "reset": "Reset",
     "rename": "Rename",
-    "draft": "Draft",
+    "temp": "Temp",
     "snippet": {
       "untitled": "Untitled"
     },
@@ -51,8 +51,8 @@
         "signInRequired": "Couldn't add mandalart.😥 Sign in is required to add a mandalart.",
         "maxUploaded": "Couldn't add mandalart.😥 The mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and try again."
       },
-      "uploadDraft": {
-        "maxUploaded": "Couldn't save draft mandalart.😥 The mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and sign in again."
+      "uploadTemp": {
+        "maxUploaded": "Couldn't save temp mandalart.😥 The mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and sign in again."
       },
       "sync": {
         "default": "Couldn't sync with cloud storage. You will be signed out."

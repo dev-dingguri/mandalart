@@ -17,10 +17,10 @@ export const MAX_TOPIC_TEXT_SIZE = 50;
 // mandalart data
 export const TMP_MANDALART_ID = 'tmp_mandalart_id';
 
-export const DEFAULT_SNIPPET: Snippet = {
+export const EMPTY_SNIPPET: Snippet = {
   title: '',
 };
-export const DEFAULT_TOPIC_TREE: TopicNode = {
+export const EMPTY_TOPIC_TREE: TopicNode = {
   text: '',
   children: Array.from({ length: TABLE_SIZE - 1 }, () => ({
     text: '',
@@ -31,9 +31,14 @@ export const DEFAULT_TOPIC_TREE: TopicNode = {
   })),
 };
 
+// database path
+export const DB_SNIPPETS = 'mandalarts/snippets';
+export const DB_TOPIC_TREES = 'mandalarts/topictrees';
+
 // storage keys
 export const STORAGE_KEY_SNIPPETS = 'mandalarts__snippets';
 export const STORAGE_KEY_TOPIC_TREES = 'mandalarts__topictrees';
+export const STORAGE_KEY_SIGN_IN_SESSION = 'sign_in_session';
 
 // url
 export const PATH_MAIN = '/';
