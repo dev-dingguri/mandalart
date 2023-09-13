@@ -17,7 +17,7 @@ import Divider from '@mui/material/Divider';
 /*
  * openSourceLicenses.json
  * Created with 'license-checker --production -excludePrivatePackages --customPath [customPath.json] --json > openSourceLicenses.json'
- *
+ * 만들어진 파일에 공백("")이 있을 수 있습니다.
  * [customPath.json]
  * {
  *   "name": "",
