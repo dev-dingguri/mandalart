@@ -1,8 +1,0 @@
-.dialog {
-  box-shadow: var(--shadow-popup);
-}
-
-.dialog::backdrop {
-  background-color: transparent;
-  backdrop-filter: var(--filter-backdrop);
-}
