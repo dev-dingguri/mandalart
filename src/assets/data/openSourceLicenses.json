@@ -5589,6 +5589,11 @@
     "repository": "https://github.com/react-icons/react-icons",
     "name": "react-icons"
   },
+  "react-infinite-scroll-component@6.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ankeetmaini/react-infinite-scroll-component",
+    "name": "react-infinite-scroll-component"
+  },
   "react-is@16.13.1": {
     "licenses": "MIT",
     "repository": "https://github.com/facebook/react",
@@ -6303,6 +6308,11 @@
     "licenses": "MIT",
     "repository": "https://github.com/ForbesLindesay/throat",
     "name": "throat"
+  },
+  "throttle-debounce@2.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/niksy/throttle-debounce",
+    "name": "throttle-debounce"
   },
   "thunky@1.1.0": {
     "licenses": "MIT",

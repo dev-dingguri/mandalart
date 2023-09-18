@@ -253,13 +253,6 @@ const theme = (mode: PaletteMode) => {
           },
         },
       },
-      MuiCircularProgress: {
-        styleOverrides: {
-          root: {
-            color: palette.secondary?.main,
-          },
-        },
-      },
       MuiTypography: {
         defaultProps: {
           variantMapping: {
