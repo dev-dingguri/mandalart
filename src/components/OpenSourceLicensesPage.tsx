@@ -9,7 +9,6 @@ import ListItem from '@mui/material/ListItem';
 import Link from '@mui/material/Link';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { PATH_MAIN } from 'constants/constants';
 import openSourceLicensesJson from 'assets/data/openSourceLicenses.json';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -95,7 +94,7 @@ const OpenSourceLicensesPage = () => {
   const navigate = useNavigate();
   const goToBack = () => {
     if (location.key === 'default') {
-      navigate(`/${lang}${PATH_MAIN}`);
+      navigate(`/${lang}`);
     } else {
       navigate(-1);
     }

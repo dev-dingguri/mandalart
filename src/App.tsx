@@ -3,7 +3,7 @@ import MainPage from 'components/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage';
 import { useTranslation } from 'react-i18next';
-import { PATH_MAIN, PATH_OSS } from 'constants/constants';
+import { PATH_OSS } from 'constants/constants';
 import { Helmet } from 'react-helmet-async';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -39,17 +39,14 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route
-              path={`/${lang}${PATH_MAIN}`} //
+              path={`/${lang}`} //
               element={<MainPage />}
             />
             <Route
               path={`/${lang}${PATH_OSS}`}
               element={<OpenSourceLicensesPage />}
             />
-            <Route
-              path="*"
-              element={<Navigate to={`/${lang}${PATH_MAIN}`} />}
-            />
+            <Route path="*" element={<Navigate to={`/${lang}`} />} />
           </Routes>
         </BrowserRouter>
       </Box>
