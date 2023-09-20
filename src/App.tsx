@@ -15,7 +15,7 @@ import { useEventListener, useTernaryDarkMode } from 'usehooks-ts';
 const App = () => {
   const [height, setHeight] = useState(window.innerHeight);
   const { t, i18n } = useTranslation();
-  const lang = i18n.languages[0];
+  const lang = i18n.language;
 
   /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 높이로 변경 */
   useEventListener(
@@ -38,10 +38,7 @@ const App = () => {
         </Helmet>
         <BrowserRouter>
           <Routes>
-            <Route
-              path={`/${lang}`} //
-              element={<MainPage />}
-            />
+            <Route path={`/${lang}`} element={<MainPage />} />
             <Route
               path={`/${lang}${PATH_OSS}`}
               element={<OpenSourceLicensesPage />}
