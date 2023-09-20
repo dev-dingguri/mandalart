@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Link from '@mui/material/Link';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import openSourceLicensesJson from 'assets/data/openSourceLicenses.json';
 import Box from '@mui/material/Box';
@@ -75,8 +75,7 @@ const Item = ({ name, licenses, repository }: License) => {
 
 const OpenSourceLicensesPage = () => {
   const [currentLicenses, setCurrentLicenses] = useState<License[]>([]);
-  const { t, i18n } = useTranslation();
-  const lang = i18n.languages[0];
+  const { t } = useTranslation();
 
   useEffect(() => {
     setCurrentLicenses(licenses.slice(0, 50));
@@ -90,15 +89,7 @@ const OpenSourceLicensesPage = () => {
     }, 300);
   };
 
-  const location = useLocation();
   const navigate = useNavigate();
-  const goToBack = () => {
-    if (location.key === 'default') {
-      navigate(`/${lang}`);
-    } else {
-      navigate(-1);
-    }
-  };
 
   return (
     <Box
@@ -121,7 +112,10 @@ const OpenSourceLicensesPage = () => {
         }}
       >
         <Toolbar>
-          <IconButton onClick={goToBack} sx={{ marginRight: '0.25em' }}>
+          <IconButton
+            onClick={() => navigate('..')}
+            sx={{ marginRight: '0.25em' }}
+          >
             <BsChevronLeft />
           </IconButton>
           <Typography variant="h1">{t('oss.label')}</Typography>
