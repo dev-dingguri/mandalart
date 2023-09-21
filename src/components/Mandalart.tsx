@@ -11,11 +11,7 @@ import { memo } from 'react';
 export type MandalartProps = {
   onGetTopic: (gridIdx: number, gridItemIdx: number) => TopicNode;
   onUpdateTopic: (gridIdx: number, gridItemIdx: number, text: string) => void;
-  onCanEdit?: (gridIdx: number) => boolean;
-  onSyncFocuse?: (
-    gridIdx: number,
-    scrollInto: (options?: ScrollIntoViewOptions) => void
-  ) => void;
+  focusedIdx?: number;
   onUpdateFocuse?: (gridIdx: number) => void;
 };
 
@@ -23,8 +19,7 @@ const Mandalart = memo(
   ({
     onGetTopic,
     onUpdateTopic,
-    onCanEdit,
-    onSyncFocuse,
+    focusedIdx,
     onUpdateFocuse,
   }: MandalartProps) => {
     return (
@@ -39,11 +34,7 @@ const Mandalart = memo(
             onUpdateTopic={(gridItemIdx, text) =>
               onUpdateTopic(gridIdx, gridItemIdx, text)
             }
-            onCanEdit={onCanEdit && (() => onCanEdit(gridIdx))}
-            onSyncFocuse={
-              onSyncFocuse &&
-              ((scrollInto) => onSyncFocuse(gridIdx, scrollInto))
-            }
+            isFocused={focusedIdx === gridIdx}
             onUpdateFocuse={onUpdateFocuse && (() => onUpdateFocuse(gridIdx))}
           />
         )}
