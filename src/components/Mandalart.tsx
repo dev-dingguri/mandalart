@@ -34,7 +34,9 @@ const Mandalart = memo(
             onUpdateTopic={(gridItemIdx, text) =>
               onUpdateTopic(gridIdx, gridItemIdx, text)
             }
-            isFocused={focusedIdx === gridIdx}
+            {...(focusedIdx !== undefined && {
+              isFocused: focusedIdx === gridIdx,
+            })}
             onUpdateFocuse={onUpdateFocuse && (() => onUpdateFocuse(gridIdx))}
           />
         )}
