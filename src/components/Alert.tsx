@@ -19,8 +19,7 @@ const Alert = ({ isOpen, message, onClose }: AlertProps) => {
   return (
     <Dialog open={isOpen} onClose={onClose}>
       <DialogTitle>{t('global.app')}</DialogTitle>
-      <DialogContent sx={{ width: '20em' }}>
-        {/* todo: 주요 내용, 세부 내용 나눠서 2줄로 출력 검토 */}
+      <DialogContent>
         <DialogContentText>{message}</DialogContentText>
       </DialogContent>
       <DialogActions>

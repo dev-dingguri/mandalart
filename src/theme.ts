@@ -254,6 +254,11 @@ const theme = (mode: PaletteMode) => {
         },
       },
       MuiTypography: {
+        styleOverrides: {
+          root: {
+            ':not(.MuiTypography-noWrap)': { whiteSpace: 'pre-line' },
+          },
+        },
         defaultProps: {
           variantMapping: {
             h1: 'h1',
