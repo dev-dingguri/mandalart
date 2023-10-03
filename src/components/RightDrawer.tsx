@@ -15,6 +15,18 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Divider from '@mui/material/Divider';
 import { useTernaryDarkMode } from 'usehooks-ts';
 
+const languageOptions = [
+  { value: 'en', name: 'English' },
+  { value: 'ko', name: '한국어' },
+  { value: 'ja', name: '日本語' },
+];
+
+const themeOptions = [
+  { value: 'system', name: 'theme.options.system' },
+  { value: 'light', name: 'theme.options.light' },
+  { value: 'dark', name: 'theme.options.dark' },
+];
+
 type RightAsideProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -26,24 +38,10 @@ const RightAside = ({ isOpen, onClose }: RightAsideProps) => {
 
   const { t, i18n } = useTranslation();
 
-  type ThemeOption = {
-    value: TernaryDarkMode;
-    name: string;
-  };
-  const themeOptions: ThemeOption[] = [
-    { value: 'system', name: t('theme.options.system') },
-    { value: 'light', name: t('theme.options.light') },
-    { value: 'dark', name: t('theme.options.dark') },
-  ];
   const handleSelectTheme = (ev: SelectChangeEvent) => {
     setTernaryDarkMode(ev.target.value as TernaryDarkMode);
   };
 
-  const languageOptions = [
-    { value: 'en', name: 'English' },
-    { value: 'ko', name: '한국어' },
-    { value: 'ja', name: '日本語' },
-  ];
   const handleSelectlanguage = (ev: SelectChangeEvent) => {
     i18n.changeLanguage(ev.target.value);
   };
@@ -89,7 +87,7 @@ const RightAside = ({ isOpen, onClose }: RightAsideProps) => {
             >
               {themeOptions.map(({ value, name }) => (
                 <MenuItem key={value} value={value}>
-                  {name}
+                  {t(name)}
                 </MenuItem>
               ))}
             </Select>
