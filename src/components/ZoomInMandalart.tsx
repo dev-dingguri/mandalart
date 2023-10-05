@@ -111,8 +111,7 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
       >
         <Mandalart
           {...props}
-          focusedIdx={focusedIdx}
-          onUpdateFocuse={setFocusedIdx}
+          focusHandlers={{ focusedIdx, onUpdateFocuse: setFocusedIdx }}
         />
       </SquareBox>
     </Box>

@@ -7,29 +7,32 @@ import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';
 import Box from '@mui/material/Box';
 import { useEventListener } from 'usehooks-ts';
 
+type FocusHandlers = {
+  isFocused: boolean;
+  onUpdateFocuse: () => void;
+};
+
 type TopicGridProps = {
   onIsAccented: (gridItemIdx: number) => boolean;
   onGetTopic: (gridItemIdx: number) => TopicNode;
   onUpdateTopic: (gridItemIdx: number, text: string) => void;
-  isFocused?: boolean;
-  onUpdateFocuse?: () => void;
+  focusHandlers?: FocusHandlers;
 };
 
 const TopicGrid = ({
   onIsAccented,
   onGetTopic,
   onUpdateTopic,
-  isFocused,
-  onUpdateFocuse,
+  focusHandlers,
 }: TopicGridProps) => {
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    isFocused && scrollCenter(gridRef.current, 'auto');
-  }, [isFocused]);
+    focusHandlers?.isFocused && scrollCenter(gridRef.current, 'auto');
+  }, [focusHandlers?.isFocused]);
 
   useEventListener('resize', () => {
-    isFocused && scrollCenter(gridRef.current, 'auto');
+    focusHandlers?.isFocused && scrollCenter(gridRef.current, 'auto');
   });
 
   return (
@@ -42,14 +45,14 @@ const TopicGrid = ({
             key={gridItemIdx}
             topic={onGetTopic(gridItemIdx).text}
             isAccented={onIsAccented(gridItemIdx)}
-            isEditable={isFocused !== false}
+            isEditable={focusHandlers?.isFocused !== false}
             onUpdateTopic={(text) => onUpdateTopic(gridItemIdx, text)}
           />
         )}
         spacing="2px"
         onClick={() => {
           scrollCenter(gridRef.current, 'smooth');
-          onUpdateFocuse && onUpdateFocuse();
+          focusHandlers && focusHandlers.onUpdateFocuse();
         }}
       />
     </Box>
