@@ -28,7 +28,7 @@ const TopicGrid = ({
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    focusHandlers?.isFocused && scrollCenter(gridRef.current, 'auto');
+    focusHandlers?.isFocused && scrollCenter(gridRef.current, 'smooth');
   }, [focusHandlers?.isFocused]);
 
   useEventListener('resize', () => {
