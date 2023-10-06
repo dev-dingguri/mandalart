@@ -10,7 +10,7 @@ i18n
     fallbackLng: 'en',
     supportedLngs: Object.keys(languages),
     detection: {
-      order: ['path', 'navigator'],
+      order: ['path', 'localStorage', 'navigator'],
       lookupFromPathIndex: 0,
     },
     keySeparator: '.',

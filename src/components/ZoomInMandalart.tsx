@@ -1,6 +1,11 @@
-import React, { useRef, useState, TouchEvent } from 'react';
+import React, {
+  useRef,
+  useState,
+  TouchEvent,
+  useEffect,
+  useLayoutEffect,
+} from 'react';
 import Mandalart, { MandalartProps } from 'components/Mandalart';
-import { useCallback } from 'react';
 import {
   TABLE_COL_SIZE,
   TABLE_SIZE,
@@ -11,7 +16,6 @@ import Box from '@mui/material/Box';
 
 const ZoomInMandalart = ({ ...props }: MandalartProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
-  const isSyncedFocuseRef = useRef(false);
 
   const ref = useRef<HTMLDivElement>(null);
   // 스와이프 시작시 상태를 저장하기 위한 useRef들
@@ -96,40 +100,14 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
     });
   };
 
-  /**
-   * return stopSyncFocuse
-   */
-  const handleSyncFocuse = useCallback(
-    (
-      gridIdx: number,
-      scrollInto: (options?: ScrollIntoViewOptions) => void
-    ) => {
-      if (focusedIdx !== gridIdx) return;
-
-      const scrollCenter = (behavior: ScrollBehavior) => {
-        scrollInto({
-          behavior: behavior,
-          block: 'center',
-          inline: 'center',
-        });
-      };
-
-      scrollCenter(isSyncedFocuseRef.current ? 'smooth' : 'auto');
-      isSyncedFocuseRef.current = true;
-
-      const handleResize = () => scrollCenter('auto');
-      window.addEventListener('resize', handleResize);
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    },
-    [focusedIdx]
-  );
-
-  const handleCanEdit = useCallback(
-    (gridIdx: number) => focusedIdx === gridIdx,
-    [focusedIdx]
-  );
+  useLayoutEffect(() => {
+    const mandalart = ref.current!;
+    mandalart.scroll({
+      top: (mandalart.scrollHeight - mandalart.clientHeight) / 2,
+      left: (mandalart.scrollWidth - mandalart.clientWidth) / 2,
+      behavior: 'auto',
+    });
+  }, []);
 
   return (
     <Box
@@ -148,9 +126,7 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
       >
         <Mandalart
           {...props}
-          onSyncFocuse={handleSyncFocuse}
-          onUpdateFocuse={setFocusedIdx}
-          onCanEdit={handleCanEdit}
+          focusHandlers={{ focusedIdx, onUpdateFocuse: setFocusedIdx }}
         />
       </SquareBox>
     </Box>

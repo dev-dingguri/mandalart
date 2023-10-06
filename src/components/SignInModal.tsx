@@ -31,7 +31,7 @@ const SignInModal = ({ isOpen, onClose, onSignIn }: SignInModalProps) => {
         <BsXLg />
       </IconButton>
       <DialogTitle>{t('global.app')}</DialogTitle>
-      <DialogContent sx={{ width: '16em' }}>
+      <DialogContent>
         <DialogContentText sx={{ textAlign: 'center' }}>
           {t('signInModal.message')}
         </DialogContentText>

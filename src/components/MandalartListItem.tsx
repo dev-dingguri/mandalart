@@ -62,6 +62,7 @@ const MandalartListItem = ({
         selected={isSelected}
         onClick={() => onSelect(mandalartId)}
         onContextMenu={handleOpenMenu}
+        sx={{ borderRadius: '4px' }}
       >
         <ListItemIcon>
           <BsGrid3X3 />

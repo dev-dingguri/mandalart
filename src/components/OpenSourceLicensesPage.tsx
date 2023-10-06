@@ -7,12 +7,13 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Link from '@mui/material/Link';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { PATH_MAIN } from 'constants/constants';
-import licenseMap from 'assets/data/openSourceLicenses.json';
+import openSourceLicensesJson from 'assets/data/openSourceLicenses.json';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import CircularProgress from '@mui/material/CircularProgress';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 /*
  * openSourceLicenses.json
@@ -42,50 +43,53 @@ type License = {
   repository: string;
 };
 
+const licensesObj: { [key: string]: License } = openSourceLicensesJson;
+const licenses = Object.keys(licensesObj).map((key) => licensesObj[key]);
+
 const Item = ({ name, licenses, repository }: License) => {
   return (
-    <ListItem
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        padding: '0.25em 0',
-      }}
-    >
-      <Typography variant="subtitle1">{name}</Typography>
-      <Typography variant="body2">{licenses}</Typography>
-      <Link
-        href={repository}
-        target="blank"
-        color="inherit"
-        underline="none"
-        variant="body2"
+    <>
+      <ListItem
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+        }}
       >
-        {repository}
-      </Link>
-      <Divider flexItem />
-    </ListItem>
+        <Typography variant="subtitle1">{name}</Typography>
+        <Typography variant="body2">{licenses}</Typography>
+        <Link
+          href={repository}
+          target="blank"
+          color="inherit"
+          underline="none"
+          variant="body2"
+        >
+          {repository}
+        </Link>
+      </ListItem>
+      <Divider component="li" />
+    </>
   );
 };
 
 const OpenSourceLicensesPage = () => {
-  const [licenses, setLicenses] = useState<License[]>([]);
-  const { t, i18n } = useTranslation();
-  const lang = i18n.languages[0];
+  const [currentLicenses, setCurrentLicenses] = useState<License[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
-    setLicenses(mapToArray(licenseMap));
+    setCurrentLicenses(licenses.slice(0, 50));
   }, []);
 
-  const location = useLocation();
-  const navigate = useNavigate();
-  const goToBack = () => {
-    if (location.key === 'default') {
-      navigate(`/${lang}${PATH_MAIN}`);
-    } else {
-      navigate(-1);
-    }
+  const appendLicenses = () => {
+    setTimeout(() => {
+      setCurrentLicenses((currentLicenses) =>
+        licenses.slice(0, currentLicenses.length + 50)
+      );
+    }, 300);
   };
+
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -108,7 +112,10 @@ const OpenSourceLicensesPage = () => {
         }}
       >
         <Toolbar>
-          <IconButton onClick={goToBack} sx={{ marginRight: '0.25em' }}>
+          <IconButton
+            onClick={() => navigate('..')}
+            sx={{ marginRight: '0.25em' }}
+          >
             <BsChevronLeft />
           </IconButton>
           <Typography variant="h1">{t('oss.label')}</Typography>
@@ -116,30 +123,40 @@ const OpenSourceLicensesPage = () => {
       </AppBar>
       <Divider flexItem />
       <Box
+        id="scrollableBox"
         sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          textAlign: 'center',
           width: '100%',
-          overflow: 'auto',
+          overflowY: 'auto',
           scrollbarGutter: 'stable both-edges',
         }}
       >
-        <List
-          sx={{
-            width: 'var(--size-content-width)',
-            minWidth: 'var(--size-content-min-width)',
-            margin: 'auto',
-          }}
+        <InfiniteScroll
+          dataLength={currentLicenses.length}
+          next={appendLicenses}
+          hasMore={currentLicenses.length < licenses.length}
+          loader={
+            <CircularProgress size="3rem" thickness={4} sx={{ m: '0.5em' }} />
+          }
+          scrollableTarget="scrollableBox"
         >
-          {licenses.map((data, idx) => (
-            <Item key={idx} {...data} />
-          ))}
-        </List>
+          <List
+            sx={{
+              width: 'var(--size-content-width)',
+              minWidth: 'var(--size-content-min-width)',
+              padding: 0,
+            }}
+          >
+            {currentLicenses.map((data, idx) => (
+              <Item key={idx} {...data} />
+            ))}
+          </List>
+        </InfiniteScroll>
       </Box>
     </Box>
   );
-};
-
-const mapToArray = (licenseMap: { [key: string]: License }) => {
-  return Object.keys(licenseMap).map((key) => licenseMap[key]);
 };
 
 export default OpenSourceLicensesPage;

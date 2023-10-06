@@ -253,14 +253,12 @@ const theme = (mode: PaletteMode) => {
           },
         },
       },
-      MuiCircularProgress: {
+      MuiTypography: {
         styleOverrides: {
           root: {
-            color: palette.secondary?.main,
+            ':not(.MuiTypography-noWrap)': { whiteSpace: 'pre-line' },
           },
         },
-      },
-      MuiTypography: {
         defaultProps: {
           variantMapping: {
             h1: 'h1',
