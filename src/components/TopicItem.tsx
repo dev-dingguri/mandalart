@@ -21,17 +21,15 @@ const TopicItemBox = styled(SquareBox, {
 type TopicItemProps = {
   topic: string;
   isAccented: boolean;
-  canEdit: boolean;
+  isEditable: boolean;
   onUpdateTopic: (text: string) => void;
-  onUpdateFocuse?: () => void;
 };
 
 const TopicItem = ({
   topic,
   isAccented,
-  canEdit,
+  isEditable,
   onUpdateTopic,
-  onUpdateFocuse,
 }: TopicItemProps) => {
   const {
     value: isOpenEditor,
@@ -44,10 +42,7 @@ const TopicItem = ({
     <>
       <TopicItemBox
         accented={isAccented}
-        onClick={() => {
-          onUpdateFocuse && onUpdateFocuse();
-          canEdit && openEditor();
-        }}
+        onClick={() => isEditable && openEditor()}
       >
         <MaxLinesTypography
           variant="body1"

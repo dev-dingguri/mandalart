@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback } from 'react';
 import { STORAGE_KEY_SIGN_IN_SESSION } from 'constants/constants';
 import { useSessionStorage } from 'usehooks-ts';
 import { User } from 'firebase/auth';
@@ -17,26 +17,37 @@ const useSignInSession = () => {
     Record<string, SignInSession>
   >(STORAGE_KEY_SIGN_IN_SESSION, {});
 
-  return useMemo(() => {
-    const getSignInSession = (user: User) =>
-      signInSessions[user.uid] ?? INITIAL_SIGN_IN_SESSION;
-    const setSignInSession = (user: User, signInSession: SignInSession) =>
-      setSignInSessions({ ...signInSessions, [user.uid]: signInSession });
+  const getSignInSession = useCallback(
+    (user: User) => signInSessions[user.uid] ?? INITIAL_SIGN_IN_SESSION,
+    [signInSessions]
+  );
+  const setSignInSession = useCallback(
+    (user: User, signInSession: SignInSession) =>
+      setSignInSessions((signInSessions) => ({
+        ...signInSessions,
+        [user.uid]: signInSession,
+      })),
+    [setSignInSessions]
+  );
 
-    const getShouldUploadTemp = (user: User) =>
-      getSignInSession(user).shouldUploadTemp;
-    const setShouldUploadTemp = (user: User, shouldUploadTemp: boolean) => {
+  const getShouldUploadTemp = useCallback(
+    (user: User) => getSignInSession(user).shouldUploadTemp,
+    [getSignInSession]
+  );
+  const setShouldUploadTemp = useCallback(
+    (user: User, shouldUploadTemp: boolean) => {
       const signInSession = getSignInSession(user);
       setSignInSession(user, { ...signInSession, shouldUploadTemp });
-    };
+    },
+    [getSignInSession, setSignInSession]
+  );
 
-    return {
-      getSignInSession,
-      setSignInSession,
-      getShouldUploadTemp,
-      setShouldUploadTemp,
-    };
-  }, [signInSessions, setSignInSessions]);
+  return {
+    getSignInSession,
+    setSignInSession,
+    getShouldUploadTemp,
+    setShouldUploadTemp,
+  };
 };
 
 export default useSignInSession;

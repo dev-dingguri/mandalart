@@ -41,5 +41,4 @@ export const STORAGE_KEY_TOPIC_TREES = 'mandalarts__topictrees';
 export const STORAGE_KEY_SIGN_IN_SESSION = 'sign_in_session';
 
 // url
-export const PATH_MAIN = '/';
 export const PATH_OSS = '/oss';

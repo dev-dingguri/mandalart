@@ -22,7 +22,12 @@ const MainPage = () => {
             : { display: 'none' }
         }
       >
-        <CircularProgress size="4rem" thickness={4} sx={{ m: 'auto' }} />
+        <CircularProgress
+          size="4rem"
+          thickness={4}
+          sx={{ m: 'auto' }}
+          color="secondary"
+        />
       </Box>
       {user ? (
         <MainUserPage user={user} userError={userError} />

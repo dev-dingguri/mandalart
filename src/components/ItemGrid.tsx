@@ -18,8 +18,8 @@ const ItemGrid = ({
   return (
     <Box {...rest}>
       <Grid container spacing={{ xs: spacing }} columns={{ xs: colSize }}>
-        {Array.from({ length: rowSize }).map((_, row) =>
-          Array.from({ length: colSize }).map((_, col) => (
+        {Array.from({ length: rowSize }, (_, row) =>
+          Array.from({ length: colSize }, (_, col) => (
             <Grid xs={1}>{createItem(row * rowSize + col, row, col)}</Grid>
           ))
         )}
