@@ -7,22 +7,22 @@
     "ok": "OK"
   },
   "tag": {
-    "title": "Mandalart - Organize and expand your thinking.",
-    "description": "You can access and edit your mandalart in wherever."
+    "title": "Mandalart - Organize and Expand Your Thoughts",
+    "description": "Access and edit your Mandalarts from anywhere."
   },
   "auth": {
-    "signIn": "Sign in",
-    "signOut": "Sign out",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
     "errors": {
       "signIn": {
-        "default": "Couldn't sign in. Error: {{detail}}"
+        "default": "Unable to sign in. Error: {{detail}}"
       }
     }
   },
   "theme": {
     "label": "Theme",
     "options": {
-      "system": "Use system setting",
+      "system": "Use System Setting",
       "light": "Light",
       "dark": "Dark"
     }
@@ -47,26 +47,26 @@
     },
     "errors": {
       "create": {
-        "default": "Couldn't add mandalart.😥 ",
-        "signInRequired": "Couldn't add mandalart.😥 Sign in is required to add a mandalart.",
-        "maxUploaded": "Couldn't add mandalart.😥 The mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and try again."
+        "default": "Unable to add Mandalart. 😥",
+        "signInRequired": "Unable to add Mandalart. 😥\nYou must sign in to add Mandalarts.",
+        "maxUploaded": "Unable to add Mandalart. 😥\nMandalart count cannot exceed {{maxSize}}.\nPlease delete saved Mandalarts and try again."
       },
       "uploadTemp": {
-        "maxUploaded": "Couldn't save temp mandalart.😥 The mandalarts size cannot exceed {{maxSize}}.\nPlease delete the saved mandalart and sign in again."
+        "maxUploaded": "Unable to save temporary Mandalart. 😥\nMandalart count cannot exceed {{maxSize}}.\nPlease delete saved Mandalarts and sign in again."
       },
       "sync": {
-        "default": "Couldn't sync with cloud storage. You will be signed out."
+        "default": "Unable to synchronize with cloud storage.\nYou will be logged out."
       }
     }
   },
   "signInModal": {
-    "message": "When you're signed in you can access and edit your mandalart in wherever.",
+    "message": "Sign in to access and edit\nyour Mandalart from anywhere.",
     "signIn": {
       "google": "Sign in with Google"
     }
   },
   "textEditor": {
-    "placeholder": "Please enter the content",
-    "maxTextReached": "Character limit reached"
+    "maxTextReached": "Character limit reached",
+    "placeholder": "Enter your content here"
   }
 }
