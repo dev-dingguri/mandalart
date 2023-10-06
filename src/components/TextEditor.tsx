@@ -70,6 +70,7 @@ const TextEditor = ({
             onChange={handleInputChange}
             value={text}
             error={isLimitReached}
+            sx={{ width: '16em' }}
           />
           {hasLimit && (
             <Stack direction="row">
