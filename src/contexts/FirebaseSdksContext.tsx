@@ -1,11 +1,13 @@
 import { FirebaseOptions, initializeApp } from 'firebase/app';
 import { Auth, getAuth } from 'firebase/auth';
 import { Database, getDatabase } from 'firebase/database';
+import { Analytics, getAnalytics } from 'firebase/analytics';
 import { createContext, useContext, PropsWithChildren, useMemo } from 'react';
 
 type FirebaseSdksContextType = {
   firebaseAuth: Auth;
   firebaseDatabase: Database;
+  firebaseAnalytics: Analytics;
 };
 
 const FirebaseSdksContext = createContext<FirebaseSdksContextType | null>(null);
@@ -23,6 +25,7 @@ export const FirebaseSdksProvider = ({
     return {
       firebaseAuth: getAuth(firebaseApp),
       firebaseDatabase: getDatabase(firebaseApp),
+      firebaseAnalytics: getAnalytics(firebaseApp),
     };
   }, [firebaseConfig]);
 
@@ -45,3 +48,4 @@ const useFirebaseSdks = () => {
 
 export const useFirebaseAuth = () => useFirebaseSdks().firebaseAuth;
 export const useFirebaseDatabase = () => useFirebaseSdks().firebaseDatabase;
+export const useFirebaseAnalytics = () => useFirebaseSdks().firebaseAnalytics;
