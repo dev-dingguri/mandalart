@@ -6,10 +6,10 @@ import {
   User,
   NextOrObserver,
 } from 'firebase/auth';
-import { useFirebaseAuth } from 'contexts/FirebaseSdksContext';
+import { useAuthSdk } from 'contexts/FirebaseSdksContext';
 
 const useAuth = () => {
-  const auth = useFirebaseAuth();
+  const auth = useAuthSdk();
 
   return useMemo(
     () => ({

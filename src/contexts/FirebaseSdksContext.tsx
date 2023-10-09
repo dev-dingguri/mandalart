@@ -46,6 +46,6 @@ const useFirebaseSdks = () => {
   return context;
 };
 
-export const useFirebaseAuth = () => useFirebaseSdks().firebaseAuth;
-export const useFirebaseDatabase = () => useFirebaseSdks().firebaseDatabase;
-export const useFirebaseAnalytics = () => useFirebaseSdks().firebaseAnalytics;
+export const useAuthSdk = () => useFirebaseSdks().firebaseAuth;
+export const useDatabaseSdk = () => useFirebaseSdks().firebaseDatabase;
+export const useAnalyticsSdk = () => useFirebaseSdks().firebaseAnalytics;
