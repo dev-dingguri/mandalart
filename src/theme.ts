@@ -100,6 +100,7 @@ const theme = (mode: PaletteMode) => {
         styleOverrides: {
           root: {
             '&&': {
+              textTransform: 'none',
               '&:hover': {
                 boxShadow: `inset 0 0 0 10em ${palette.filter?.primary}`,
               },
