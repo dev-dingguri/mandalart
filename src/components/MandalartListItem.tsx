@@ -64,7 +64,7 @@ const MandalartListItem = ({
         onContextMenu={handleOpenMenu}
         sx={{ borderRadius: '4px' }}
       >
-        <ListItemIcon>
+        <ListItemIcon sx={{ minWidth: '26px' }}>
           <BsGrid3X3 />
         </ListItemIcon>
         <ListItemText
