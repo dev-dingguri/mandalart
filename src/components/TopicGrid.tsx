@@ -26,13 +26,19 @@ const TopicGrid = ({
   focusHandlers,
 }: TopicGridProps) => {
   const gridRef = useRef<HTMLDivElement>(null);
+  const isFocuseTriedRef = useRef(false);
+
+  const isFocused = focusHandlers?.isFocused;
 
   useEffect(() => {
-    focusHandlers?.isFocused && scrollCenter(gridRef.current, 'smooth');
-  }, [focusHandlers?.isFocused]);
+    const isTried = isFocuseTriedRef.current;
+    isFocuseTriedRef.current = true;
+
+    isFocused && scrollCenter(gridRef.current, isTried ? 'smooth' : 'auto');
+  }, [isFocused]);
 
   useEventListener('resize', () => {
-    focusHandlers?.isFocused && scrollCenter(gridRef.current, 'auto');
+    isFocused && scrollCenter(gridRef.current, 'auto');
   });
 
   return (
@@ -45,14 +51,14 @@ const TopicGrid = ({
             key={gridItemIdx}
             topic={onGetTopic(gridItemIdx).text}
             isAccented={onIsAccented(gridItemIdx)}
-            isEditable={focusHandlers?.isFocused !== false}
+            isEditable={isFocused !== false}
             onUpdateTopic={(text) => onUpdateTopic(gridItemIdx, text)}
           />
         )}
         spacing="2px"
         onClick={() => {
           scrollCenter(gridRef.current, 'smooth');
-          focusHandlers && focusHandlers.onUpdateFocuse();
+          focusHandlers?.onUpdateFocuse();
         }}
       />
     </Box>
