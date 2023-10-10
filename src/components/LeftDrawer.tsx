@@ -72,6 +72,7 @@ const LeftDrawer = ({
         <Button
           startIcon={<BsPlus />}
           sx={{
+            fontSize: '1rem',
             m: '0.5em',
             p: '0.5em 1em',
             justifyContent: 'flex-start',

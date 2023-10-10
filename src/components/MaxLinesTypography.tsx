@@ -8,6 +8,7 @@ const MaxLinesTypography = styled(Typography, {
   display: '-webkit-box',
   WebkitLineClamp: maxLines,
   WebkitBoxOrient: 'vertical',
+  wordBreak: 'break-word',
 }));
 
 export default MaxLinesTypography;

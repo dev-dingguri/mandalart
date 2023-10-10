@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MainPage from 'components/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage';
@@ -11,11 +11,19 @@ import Box from '@mui/material/Box';
 import { throttle } from 'lodash';
 import theme from 'theme';
 import { useEventListener, useTernaryDarkMode } from 'usehooks-ts';
+import useAnalytics from 'hooks/useAnalytics';
+import { APP_VERSION } from 'version';
 
 const App = () => {
   const [height, setHeight] = useState(window.innerHeight);
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
+
+  const { setUserProperties } = useAnalytics();
+
+  useEffect(() => {
+    setUserProperties({ app_version: APP_VERSION });
+  }, [setUserProperties]);
 
   /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 높이로 변경 */
   useEventListener(

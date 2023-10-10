@@ -1,9 +1,9 @@
-import { useFirebaseDatabase } from 'contexts/FirebaseSdksContext';
+import { useDatabaseSdk } from 'contexts/FirebaseSdksContext';
 import { ref, push, set, remove, onValue } from 'firebase/database';
 import { useMemo } from 'react';
 
 const useDatabase = <T>(parent: string) => {
-  const db = useFirebaseDatabase();
+  const db = useDatabaseSdk();
 
   return useMemo(
     () => ({

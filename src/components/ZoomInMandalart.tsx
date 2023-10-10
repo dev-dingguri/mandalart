@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  TouchEvent,
-  useEffect,
-  useLayoutEffect,
-} from 'react';
+import React, { useRef, useState, TouchEvent, useLayoutEffect } from 'react';
 import Mandalart, { MandalartProps } from 'components/Mandalart';
 import {
   TABLE_COL_SIZE,
