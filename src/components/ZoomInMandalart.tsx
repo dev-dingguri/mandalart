@@ -1,4 +1,4 @@
-import React, { useRef, useState, TouchEvent, useLayoutEffect } from 'react';
+import React, { useRef, useState, TouchEvent } from 'react';
 import Mandalart, { MandalartProps } from 'components/Mandalart';
 import {
   TABLE_COL_SIZE,
@@ -93,15 +93,6 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
       behavior: 'auto',
     });
   };
-
-  useLayoutEffect(() => {
-    const mandalart = ref.current!;
-    mandalart.scroll({
-      top: (mandalart.scrollHeight - mandalart.clientHeight) / 2,
-      left: (mandalart.scrollWidth - mandalart.clientWidth) / 2,
-      behavior: 'auto',
-    });
-  }, []);
 
   return (
     <Box
