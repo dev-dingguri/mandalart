@@ -19,6 +19,7 @@ const languageOptions = [
   { value: 'en', name: 'English' },
   { value: 'ko', name: '한국어' },
   { value: 'ja', name: '日本語' },
+  { value: 'zh-CN', name: '中文 (简体)' },
 ];
 
 const themeOptions = [
