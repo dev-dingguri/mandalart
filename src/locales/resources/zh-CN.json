@@ -1,0 +1,72 @@
+{
+  "global": {
+    "app": "曼达拉图",
+    "topic": "主题",
+    "save": "保存",
+    "cancel": "取消",
+    "ok": "确定"
+  },
+  "tag": {
+    "title": "使用曼达拉图来规划和实现目标 - mandalart.me",
+    "description": "曼达拉图是一个帮助您有效且轻松地进行目标达成规划和思维整理的最佳工具。随时随地制作曼达拉图并实现您的目标。"
+  },
+  "auth": {
+    "signIn": "登录",
+    "signOut": "登出",
+    "errors": {
+      "signIn": {
+        "default": "无法登录。错误：{{detail}}"
+      }
+    }
+  },
+  "theme": {
+    "label": "主题",
+    "options": {
+      "system": "使用系统设置",
+      "light": "浅色",
+      "dark": "深色"
+    }
+  },
+  "language": {
+    "label": "语言"
+  },
+  "oss": {
+    "label": "开源许可证"
+  },
+  "version": {
+    "label": "版本"
+  },
+  "mandalart": {
+    "new": "新曼达拉图",
+    "delete": "删除",
+    "reset": "重置",
+    "rename": "重命名",
+    "temp": "临时保存",
+    "snippet": {
+      "untitled": "无标题"
+    },
+    "errors": {
+      "create": {
+        "default": "无法添加曼达拉图。😥",
+        "signInRequired": "无法添加曼达拉图。😥\n必须登录才能添加曼达拉图。",
+        "maxUploaded": "无法添加曼达拉图。😥\n曼达拉图的数量不能超过{{maxSize}}个。\n请删除已保存的曼达拉图后重试。"
+      },
+      "uploadTemp": {
+        "maxUploaded": "无法保存临时存储的曼达拉图。😥\n曼达拉图的数量不能超过{{maxSize}}个。\n请删除已保存的曼达拉图然后重新登录。"
+      },
+      "sync": {
+        "default": "无法与云存储同步。\n您将被登出。"
+      }
+    }
+  },
+  "signInModal": {
+    "message": "登录后，您可以随时随地\n访问并编辑您的曼达拉图。",
+    "signIn": {
+      "google": "用Google登录"
+    }
+  },
+  "textEditor": {
+    "placeholder": "请输入内容",
+    "maxTextReached": "已超过最大字数"
+  }
+}

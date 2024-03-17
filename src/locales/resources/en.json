@@ -7,22 +7,22 @@
     "ok": "OK"
   },
   "tag": {
-    "title": "Plan Your Goals and Achieve Them with Mandalart - mandalart.me",
-    "description": "Mandalart is the ultimate tool for effective and easy planning and organizing thoughts to achieve your goals. Write your Mandalart anytime, anywhere on mandalart.me and accomplish your objectives."
+    "title": "Plan and achieve your goals with Mandalart - mandalart.me",
+    "description": "Mandalart is the best tool for effectively and easily planning and mind storming for achieving goals. Write Mandalart anytime, anywhere, and achieve your goals."
   },
   "auth": {
     "signIn": "Sign In",
     "signOut": "Sign Out",
     "errors": {
       "signIn": {
-        "default": "Unable to sign in. Error: {{detail}}"
+        "default": "Cannot sign in. Error: {{detail}}"
       }
     }
   },
   "theme": {
     "label": "Theme",
     "options": {
-      "system": "Use System Setting",
+      "system": "Use system settings",
       "light": "Light",
       "dark": "Dark"
     }
@@ -47,15 +47,15 @@
     },
     "errors": {
       "create": {
-        "default": "Unable to add Mandalart. 😥",
-        "signInRequired": "Unable to add Mandalart. 😥\nYou must sign in to add Mandalarts.",
-        "maxUploaded": "Unable to add Mandalart. 😥\nMandalart count cannot exceed {{maxSize}}.\nPlease delete saved Mandalarts and try again."
+        "default": "Cannot add Mandalart. 😥",
+        "signInRequired": "Cannot add Mandalart. 😥\nYou must sign in to add Mandalarts.",
+        "maxUploaded": "Cannot add Mandalart. 😥\nMandalart count cannot exceed {{maxSize}}.\nPlease delete saved Mandalarts and try again."
       },
       "uploadTemp": {
-        "maxUploaded": "Unable to save temporary Mandalart. 😥\nMandalart count cannot exceed {{maxSize}}.\nPlease delete saved Mandalarts and sign in again."
+        "maxUploaded": "Cannot save temporary Mandalart. 😥\nMandalart count cannot exceed {{maxSize}}.\nPlease delete saved Mandalarts and sign in again."
       },
       "sync": {
-        "default": "Unable to synchronize with cloud storage.\nYou will be logged out."
+        "default": "Cannot synchronize with cloud storage.\nYou will be logged out."
       }
     }
   },
