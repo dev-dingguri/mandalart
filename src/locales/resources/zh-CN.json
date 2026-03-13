@@ -60,7 +60,7 @@
     }
   },
   "signInModal": {
-    "message": "登录后，您可以随时随地访问并编辑您的曼达拉图。",
+    "message": "登录后，您可以随时随地\n访问并编辑您的曼达拉图。",
     "signIn": {
       "google": "用Google登录"
     }
