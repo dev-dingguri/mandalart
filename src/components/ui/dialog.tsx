@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { useTranslation } from "react-i18next"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -41,12 +42,15 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
-  closeLabel = "Close",
+  closeLabel,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
   closeLabel?: string
 }) {
+  const { t } = useTranslation()
+  const resolvedCloseLabel = closeLabel ?? t("global.close")
+
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -70,7 +74,7 @@ function DialogContent({
               size="icon-sm"
             >
               <XIcon />
-              <span className="sr-only">{closeLabel}</span>
+              <span className="sr-only">{resolvedCloseLabel}</span>
             </Button>
           </DialogPrimitive.Close>
         )}
@@ -92,13 +96,16 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
 function DialogFooter({
   className,
   showCloseButton = false,
-  closeLabel = "Close",
+  closeLabel,
   children,
   ...props
 }: React.ComponentProps<"div"> & {
   showCloseButton?: boolean
   closeLabel?: string
 }) {
+  const { t } = useTranslation()
+  const resolvedCloseLabel = closeLabel ?? t("global.close")
+
   return (
     <div
       data-slot="dialog-footer"
@@ -108,14 +115,14 @@ function DialogFooter({
       )}
       {...props}
     >
-      {children}
       {showCloseButton && (
         <DialogPrimitive.Close asChild>
           <Button variant="outline">
-            {closeLabel}
+            {resolvedCloseLabel}
           </Button>
         </DialogPrimitive.Close>
       )}
+      {children}
     </div>
   )
 }
