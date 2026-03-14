@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import Link from '@mui/material/Link';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import openSourceLicensesJson from 'assets/data/openSourceLicenses.json';
 import Box from '@mui/material/Box';

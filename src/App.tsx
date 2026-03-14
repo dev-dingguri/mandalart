@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MainPage from 'components/MainPage';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from 'constants/constants';
