@@ -13,7 +13,7 @@ const MainPage = () => {
   return (
     <>
       <div className={isLoading ? 'flex h-full' : 'hidden'}>
-        <div className="m-auto size-16 animate-spin rounded-full border-4 border-app-primary border-t-app-secondary" />
+        <div className="m-auto size-16 animate-spin rounded-full border-4 border-border border-t-foreground" />
       </div>
       {user ? (
         <MainUserPage user={user} userError={userError} />

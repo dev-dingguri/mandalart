@@ -24,7 +24,7 @@ const Header = ({
   const { t } = useTranslation();
 
   return (
-    <header className={cn('bg-app-bg', className)}>
+    <header className={cn('bg-background', className)}>
       <nav className="flex min-h-14 items-center">
         <Button
           variant="ghost"

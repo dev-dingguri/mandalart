@@ -59,7 +59,7 @@ const LeftDrawer = ({
           <Button
             variant="ghost"
             size="lg"
-            className="m-2 justify-start gap-2 bg-app-primary-dark text-base"
+            className="m-2 justify-start gap-2 bg-muted text-base"
             onClick={onCreateMandalart}
           >
             <BsPlus className="size-5" />

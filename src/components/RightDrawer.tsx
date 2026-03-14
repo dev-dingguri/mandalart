@@ -51,7 +51,7 @@ const InlineSelect = ({
           />
         </button>
         {isOpen && (
-          <div className="absolute top-full left-0 z-10 mt-1 w-full rounded-lg border border-input bg-app-primary shadow-lg">
+          <div className="absolute top-full left-0 z-10 mt-1 w-full rounded-lg border border-input bg-popover shadow-lg">
             {options.map((opt) => (
               <button
                 key={opt.value}
@@ -60,9 +60,9 @@ const InlineSelect = ({
                   onChange(opt.value);
                   setIsOpen(false);
                 }}
-                className={`w-full px-3 py-2 text-left text-sm first:rounded-t-lg last:rounded-b-lg hover:bg-app-filter-primary ${
+                className={`w-full px-3 py-2 text-left text-sm first:rounded-t-lg last:rounded-b-lg hover:bg-accent ${
                   opt.value === value
-                    ? 'font-medium text-app-secondary'
+                    ? 'font-medium text-foreground'
                     : ''
                 }`}
               >
@@ -140,7 +140,7 @@ const RightAside = ({ isOpen, onClose }: RightAsideProps) => {
           <Separator />
 
           <button
-            className="cursor-pointer text-left text-sm hover:text-app-secondary"
+            className="cursor-pointer text-left text-sm hover:text-foreground"
             onClick={goToOpenSourceLicense}
           >
             {t('oss.label')}
@@ -150,18 +150,18 @@ const RightAside = ({ isOpen, onClose }: RightAsideProps) => {
 
           <div className="flex items-center gap-2 text-sm">
             <span>{t('version.label')}</span>
-            <span className="text-app-fg-secondary">{APP_VERSION}</span>
+            <span className="text-muted-foreground">{APP_VERSION}</span>
           </div>
 
           <Separator />
 
-          <p className="text-sm text-app-fg-secondary">
+          <p className="text-sm text-muted-foreground">
             dingguri.lab@gmail.com
           </p>
 
           <div className="flex gap-3">
             <BsYoutube
-              className="size-6 cursor-pointer hover:text-app-secondary"
+              className="size-6 cursor-pointer hover:text-foreground"
               onClick={() =>
                 window.open(
                   'https://www.youtube.com/channel/UCoZkSE87r1jR1HasRJpPX3g'
@@ -169,14 +169,14 @@ const RightAside = ({ isOpen, onClose }: RightAsideProps) => {
               }
             />
             <BsGithub
-              className="size-6 cursor-pointer hover:text-app-secondary"
+              className="size-6 cursor-pointer hover:text-foreground"
               onClick={() =>
                 window.open('https://github.com/dev-dingguri/mandalart')
               }
             />
           </div>
 
-          <p className="text-sm text-app-fg-secondary">
+          <p className="text-sm text-muted-foreground">
             DINGGURI.LAB. ALL RIGHTS RESERVED
           </p>
         </div>

@@ -170,21 +170,21 @@ code {
   * {
     @apply border-border outline-ring/50;
     scrollbar-width: thin;
-    scrollbar-color: var(--color-app-primary) var(--color-app-primary-dark);
+    scrollbar-color: var(--color-muted-foreground) var(--color-muted);
   }
   *::-webkit-scrollbar {
     width: var(--size-scrollbar-width);
     height: var(--size-scrollbar-width);
   }
   *::-webkit-scrollbar-track {
-    background-color: var(--color-app-primary-dark);
+    background-color: var(--color-muted);
   }
   *::-webkit-scrollbar-thumb {
-    background-color: var(--color-app-primary);
+    background-color: var(--color-muted-foreground);
     border-radius: calc(var(--size-scrollbar-width) / 2);
   }
   body {
-    @apply bg-app-bg text-app-fg;
+    @apply bg-background text-foreground;
   }
   html {
     @apply font-sans;
