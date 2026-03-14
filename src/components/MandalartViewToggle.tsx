@@ -1,4 +1,4 @@
-import { BsFullscreen } from 'react-icons/bs';
+import { Maximize2 } from 'lucide-react';
 import { Toggle } from 'components/ui/toggle';
 
 type MandalartViewToggleProps = {
@@ -18,7 +18,7 @@ const MandalartViewToggle = ({
       onPressedChange={(pressed) => onChange(!pressed)}
       aria-label={isAllView ? '확대 보기' : '전체 보기'}
     >
-      <BsFullscreen />
+      <Maximize2 />
     </Toggle>
   );
 };

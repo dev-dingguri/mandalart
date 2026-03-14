@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { BsGithub, BsYoutube, BsChevronDown } from 'react-icons/bs';
+import { Github, Youtube, ChevronDown } from 'lucide-react';
 import { APP_VERSION } from 'version';
 import { PATH_OSS } from '../constants/constants';
 import { useThemeStore, TernaryDarkMode } from 'stores/useThemeStore';
@@ -46,7 +46,7 @@ const InlineSelect = ({
           className="flex w-full items-center justify-between rounded-lg border border-input bg-transparent px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/50"
         >
           {selectedLabel}
-          <BsChevronDown
+          <ChevronDown
             className={`size-3 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           />
         </button>
@@ -159,7 +159,7 @@ const RightDrawer = ({ isOpen, onClose }: RightDrawerProps) => {
           </p>
 
           <div className="flex gap-3">
-            <BsYoutube
+            <Youtube
               className="size-6 cursor-pointer hover:text-foreground"
               onClick={() =>
                 window.open(
@@ -167,7 +167,7 @@ const RightDrawer = ({ isOpen, onClose }: RightDrawerProps) => {
                 )
               }
             />
-            <BsGithub
+            <Github
               className="size-6 cursor-pointer hover:text-foreground"
               onClick={() =>
                 window.open('https://github.com/dev-dingguri/mandalart')

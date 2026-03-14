@@ -5584,11 +5584,6 @@
     "repository": "https://github.com/i18next/react-i18next",
     "name": "react-i18next"
   },
-  "react-icons@4.11.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/react-icons/react-icons",
-    "name": "react-icons"
-  },
   "react-infinite-scroll-component@6.1.0": {
     "licenses": "MIT",
     "repository": "https://github.com/ankeetmaini/react-infinite-scroll-component",

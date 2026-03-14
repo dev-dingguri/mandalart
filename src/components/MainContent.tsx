@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useMandalartStore } from 'stores/useMandalartStore';
-import { BsPlus } from 'react-icons/bs';
+import { Plus } from 'lucide-react';
 import useModal from 'hooks/useModal';
 import Alert from './Alert';
 import { Separator } from 'components/ui/separator';
@@ -143,7 +143,7 @@ const MainContent = ({
               );
             }}
           >
-            <BsPlus className="size-8" />
+            <Plus className="size-8" />
             {t('mandalart.new')}
           </Button>
         )}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { BsChevronLeft } from 'react-icons/bs';
+import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import openSourceLicensesJson from 'assets/data/openSourceLicenses.json';
@@ -98,7 +98,7 @@ const OpenSourceLicensesPage = () => {
           onClick={() => navigate('..')}
           className="mr-1"
         >
-          <BsChevronLeft />
+          <ChevronLeft />
         </Button>
         <h1 className="text-lg font-semibold">{t('oss.label')}</h1>
       </header>

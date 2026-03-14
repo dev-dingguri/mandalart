@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Snippet } from 'types/Snippet';
-import { BsGrid3X3, BsThreeDots } from 'react-icons/bs';
+import { LayoutGrid, MoreHorizontal } from 'lucide-react';
 import TextEditor from 'components/TextEditor';
 import {
   MAX_MANDALART_TITLE_SIZE,
@@ -48,7 +48,7 @@ const MandalartListItem = ({
           isSelected ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50',
         ].join(' ')}
       >
-        <BsGrid3X3 className="shrink-0 text-muted-foreground" />
+        <LayoutGrid className="size-4 shrink-0 text-muted-foreground" />
         <span className="min-w-0 flex-1 truncate">
           {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
         </span>
@@ -57,7 +57,7 @@ const MandalartListItem = ({
             className="flex size-6 shrink-0 items-center justify-center rounded hover:bg-accent"
             onClick={(e) => e.stopPropagation()}
           >
-            <BsThreeDots />
+            <MoreHorizontal className="size-4" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {mandalartId !== TMP_MANDALART_ID && (

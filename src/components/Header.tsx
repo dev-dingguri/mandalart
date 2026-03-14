@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
-import { BsList, BsThreeDots } from 'react-icons/bs';
+import { Menu, MoreHorizontal } from 'lucide-react';
 import { Button } from 'components/ui/button';
 import { cn } from 'lib/utils';
 
@@ -32,7 +32,7 @@ const Header = ({
           onClick={onOpenLeftDrawer}
           className="mr-1"
         >
-          <BsList className="size-5" />
+          <Menu className="size-5" />
         </Button>
         <h1 className="flex-1 text-[1.3rem] font-bold">{t('global.app')}</h1>
         <span className="mx-2 text-sm">{user && user.displayName}</span>
@@ -51,7 +51,7 @@ const Header = ({
           onClick={onOpenRightDrawer}
           className="ml-1"
         >
-          <BsThreeDots className="size-5" />
+          <MoreHorizontal className="size-5" />
         </Button>
       </nav>
     </header>

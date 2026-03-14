@@ -1,4 +1,4 @@
-import { BsPlus } from 'react-icons/bs';
+import { Plus } from 'lucide-react';
 import { Button } from 'components/ui/button';
 import MandalartList from 'components/MandalartList';
 import { Snippet } from 'types/Snippet';
@@ -57,7 +57,7 @@ const LeftDrawer = ({
             className="m-2 justify-start gap-2 bg-muted text-base"
             onClick={onCreateMandalart}
           >
-            <BsPlus className="size-5" />
+            <Plus className="size-5" />
             {t('mandalart.new')}
           </Button>
         </div>

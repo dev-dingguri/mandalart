@@ -98,10 +98,6 @@ code {
   pointer-events: none;
 }
 
-.react-icons {
-  font-size: inherit;
-}
-
 @theme inline {
   --font-sans: 'Geist Variable', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
