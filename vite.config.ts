@@ -12,6 +12,25 @@ export default defineConfig({
   build: {
     outDir: 'build',
     sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-router': ['react-router'],
+          'vendor-firebase': [
+            'firebase/app',
+            'firebase/auth',
+            'firebase/database',
+            'firebase/analytics',
+          ],
+          'vendor-i18n': [
+            'i18next',
+            'react-i18next',
+            'i18next-browser-languagedetector',
+          ],
+          'vendor-ui': ['lucide-react', 'vaul', '@base-ui/react'],
+        },
+      },
+    },
   },
   test: {
     environment: 'jsdom',
