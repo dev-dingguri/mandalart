@@ -27,7 +27,7 @@ export default defineConfig({
             'react-i18next',
             'i18next-browser-languagedetector',
           ],
-          'vendor-ui': ['lucide-react', 'vaul', '@base-ui/react'],
+          'vendor-ui': ['lucide-react', 'vaul', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toggle', '@radix-ui/react-separator'],
         },
       },
     },

@@ -12,7 +12,7 @@
 ## 기술 스택
 
 - React 19 + TypeScript 5
-- Tailwind CSS v4 + shadcn/ui (CSS-in-JS 없음)
+- Tailwind CSS v4 + shadcn/ui (CSS-in-JS 없음, Radix 기반 — Base UI 사용 자제)
 - Zustand (상태 관리)
 - Firebase v12 (Auth, Realtime Database, Analytics, Hosting)
 - react-router v7, i18next v25, react-i18next v16
