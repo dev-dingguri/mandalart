@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, HTMLAttributes } from 'react';
 import ZoomInMandalart from 'components/ZoomInMandalart';
 import Mandalart, { MandalartProps } from 'components/Mandalart';
 import { TopicNode } from 'types/TopicNode';
@@ -11,9 +11,6 @@ import MandalartViewToggle from 'components/MandalartViewToggle';
 import { Snippet } from 'types/Snippet';
 import TextEditor from 'components/TextEditor';
 import { useTranslation } from 'react-i18next';
-import Typography from '@mui/material/Typography';
-import Box, { BoxProps } from '@mui/material/Box';
-import { useBoolean } from 'usehooks-ts';
 
 type MandalartViewProps = {
   mandalartId: string;
@@ -21,7 +18,7 @@ type MandalartViewProps = {
   topicTree: TopicNode;
   onSnippetChange: (snippet: Snippet) => void;
   onTopicTreeChange: (topicTree: TopicNode) => void;
-} & BoxProps;
+} & HTMLAttributes<HTMLDivElement>;
 
 const MandalartView = ({
   mandalartId,
@@ -29,14 +26,11 @@ const MandalartView = ({
   topicTree,
   onSnippetChange,
   onTopicTreeChange,
+  className,
   ...rest
 }: MandalartViewProps) => {
   const [isAllView, setIsAllView] = useState(true);
-  const {
-    value: isOpenTitleEditor,
-    setTrue: openTitleEditor,
-    setFalse: closeTitleEditor,
-  } = useBoolean(false);
+  const [isOpenTitleEditor, setIsOpenTitleEditor] = useState(false);
 
   const { t } = useTranslation();
 
@@ -62,29 +56,34 @@ const MandalartView = ({
   };
 
   return (
-    <Box {...rest}>
-      <Typography variant="body2">
+    <div className={className} {...rest}>
+      <p className="text-sm text-muted-foreground">
         {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.temp')})`}
-      </Typography>
-      <Typography variant="h2" noWrap onClick={openTitleEditor}>
-        {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
-      </Typography>
-      <Box sx={{ mt: '0.2em', mb: '0.5em' }}>
+      </p>
+      <div className="flex items-center gap-3">
+        <h2
+          className="min-w-0 flex-1 cursor-pointer select-none truncate text-2xl font-semibold"
+          onClick={() => setIsOpenTitleEditor(true)}
+        >
+          {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
+        </h2>
+        <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
+      </div>
+      <div className="mb-2 mt-3">
         {isAllView ? (
           <Mandalart {...mandalartProps} />
         ) : (
           <ZoomInMandalart {...mandalartProps} />
         )}
-      </Box>
-      <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
+      </div>
       <TextEditor
         isOpen={isOpenTitleEditor}
         initialText={snippet.title}
         textLimit={MAX_TOPIC_TEXT_SIZE}
-        onClose={closeTitleEditor}
+        onClose={() => setIsOpenTitleEditor(false)}
         onConfirm={(title) => onSnippetChange({ title })}
       />
-    </Box>
+    </div>
   );
 };
 

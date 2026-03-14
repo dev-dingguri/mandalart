@@ -1,5 +1,4 @@
 import React from 'react';
-import List, { ListProps } from '@mui/material/List';
 import { Snippet } from 'types/Snippet';
 import MandalartListItem from 'components/MandalartListItem';
 
@@ -10,7 +9,8 @@ type MandalartListProps = {
   onItemDelete: (mandalartId: string) => void;
   onItemReset: (mandalartId: string) => void;
   onItemRename: (mandalartId: string, name: string) => void;
-} & Omit<ListProps, 'onSelect' | 'onReset'>;
+  className?: string;
+};
 
 const MandalartList = ({
   snippetMap,
@@ -19,10 +19,10 @@ const MandalartList = ({
   onItemDelete,
   onItemReset,
   onItemRename,
-  ...listProps
+  className,
 }: MandalartListProps) => {
   return (
-    <List {...listProps} disablePadding>
+    <div className={className}>
       {Array.from(snippetMap)
         .reverse()
         .map(([mandalartId, snippet]) => (
@@ -37,7 +37,7 @@ const MandalartList = ({
             onRename={onItemRename}
           />
         ))}
-    </List>
+    </div>
   );
 };
 

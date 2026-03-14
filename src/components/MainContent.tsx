@@ -136,12 +136,7 @@ const MainContent = ({
             topicTree={currentTopicTree}
             onSnippetChange={handleSnippetChange}
             onTopicTreeChange={handleTopicTreeChange}
-            sx={{
-              width: 'var(--size-content-width)',
-              minWidth: 'var(--size-content-min-width)',
-              m: 'auto',
-              p: '0.5em 0',
-            }}
+            className="mx-auto w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] py-2"
           />
         ) : (
           <Button

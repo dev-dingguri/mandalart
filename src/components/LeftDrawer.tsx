@@ -47,12 +47,7 @@ const LeftDrawer = ({
           onItemDelete={onDeleteMandalart}
           onItemRename={onRenameMandalart}
           onItemReset={onResetMandalart}
-          sx={{
-            p: '0.5em',
-            pt: '1em',
-            overflow: 'auto',
-            scrollbarGutter: 'stable both-edges',
-          }}
+          className="overflow-auto p-2 pt-4 [scrollbar-gutter:stable_both-edges]"
         />
         <div className="flex flex-col px-[var(--size-scrollbar-width)]">
           <Separator />

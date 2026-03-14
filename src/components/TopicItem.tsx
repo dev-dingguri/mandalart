@@ -13,6 +13,8 @@ const TopicItemBox = styled(SquareBox, {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
+  cursor: 'pointer',
+  userSelect: 'none',
   backgroundColor: accented
     ? theme.palette.secondary.main
     : theme.palette.primary.main,
