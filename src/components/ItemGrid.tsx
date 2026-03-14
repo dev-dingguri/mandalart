@@ -26,7 +26,7 @@ const ItemGrid = ({
       >
         {Array.from({ length: rowSize }, (_, row) =>
           Array.from({ length: colSize }, (_, col) => (
-            <div key={row * colSize + col}>
+            <div key={row * colSize + col} style={{ aspectRatio: '1/1' }}>
               {createItem(row * rowSize + col, row, col)}
             </div>
           ))

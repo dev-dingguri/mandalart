@@ -102,7 +102,7 @@ const MandalartFocusView = ({ ...props }: MandalartProps) => {
       onTouchCancel={handleTouchEnd}
       onTouchMove={handleTouchMove}
     >
-      <AspectSquare style={{ width: '240%', height: '240%' }}>
+      <AspectSquare style={{ width: '240%' }}>
         <Mandalart
           {...props}
           focusHandlers={{ focusedIdx, onUpdateFocus: setFocusedIdx }}
