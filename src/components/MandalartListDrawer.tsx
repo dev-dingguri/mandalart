@@ -8,7 +8,7 @@ import { Separator } from 'components/ui/separator';
 
 type MandalartListDrawerProps = {
   isOpen: boolean;
-  snippetMap: Map<string, MandalartMeta>;
+  metaMap: Map<string, MandalartMeta>;
   selectedMandalartId: string | null;
   onSelectMandalart: (mandalartId: string) => void;
   onDeleteMandalart: (mandalartId: string) => void;
@@ -20,7 +20,7 @@ type MandalartListDrawerProps = {
 
 const MandalartListDrawer = ({
   isOpen,
-  snippetMap,
+  metaMap,
   selectedMandalartId,
   onSelectMandalart,
   onDeleteMandalart,
@@ -41,7 +41,7 @@ const MandalartListDrawer = ({
     >
       <DrawerContent>
         <MandalartList
-          snippetMap={snippetMap}
+          metaMap={metaMap}
           selectedId={selectedMandalartId}
           onItemSelect={onSelectMandalart}
           onItemDelete={onDeleteMandalart}

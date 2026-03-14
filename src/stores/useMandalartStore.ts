@@ -62,23 +62,23 @@ const saveGuestTopicTrees = (map: Map<string, TopicNode>) => {
   );
 };
 
-const isAnyChanged = (snippet: MandalartMeta, topicTree: TopicNode) =>
-  JSON.stringify(snippet) !== JSON.stringify(EMPTY_META) ||
+const isAnyChanged = (meta: MandalartMeta, topicTree: TopicNode) =>
+  JSON.stringify(meta) !== JSON.stringify(EMPTY_META) ||
   JSON.stringify(topicTree) !== JSON.stringify(EMPTY_TOPIC_TREE);
 
 // -- Store --
 
 type MandalartState = {
-  snippetMap: Map<string, MandalartMeta>;
+  metaMap: Map<string, MandalartMeta>;
   currentMandalartId: string | null;
   currentTopicTree: TopicNode | null;
   isLoading: boolean;
   error: Error | null;
 
   selectMandalart: (id: string | null) => void;
-  createMandalart: (snippet: MandalartMeta, topicTree: TopicNode) => Promise<void>;
+  createMandalart: (meta: MandalartMeta, topicTree: TopicNode) => Promise<void>;
   deleteMandalart: (id: string | null) => Promise<void>;
-  saveMandalartMeta: (id: string | null, snippet: MandalartMeta) => Promise<void>;
+  saveMandalartMeta: (id: string | null, meta: MandalartMeta) => Promise<void>;
   saveTopicTree: (id: string | null, topicTree: TopicNode) => Promise<void>;
   uploadTemp: () => Promise<void>;
 
@@ -89,7 +89,7 @@ type MandalartState = {
 };
 
 export const useMandalartStore = create<MandalartState>((set, get) => ({
-  snippetMap: new Map(),
+  metaMap: new Map(),
   currentMandalartId: null,
   currentTopicTree: null,
   isLoading: true,
@@ -109,27 +109,27 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
     }
   },
 
-  _setMandalartMetas: (snippetMap) => {
+  _setMandalartMetas: (metaMap) => {
     const { currentMandalartId, selectMandalart } = get();
     const isSelected =
-      snippetMap.size === 0 ||
-      (!!currentMandalartId && snippetMap.has(currentMandalartId));
+      metaMap.size === 0 ||
+      (!!currentMandalartId && metaMap.has(currentMandalartId));
 
-    set({ snippetMap });
+    set({ metaMap });
     if (!isSelected) {
-      const lastId = Array.from(snippetMap.keys()).pop() ?? null;
+      const lastId = Array.from(metaMap.keys()).pop() ?? null;
       selectMandalart(lastId);
     }
   },
 
-  createMandalart: async (snippet, topicTree) => {
+  createMandalart: async (meta, topicTree) => {
     const user = get()._user;
     if (!user) {
       throw new Error(`${i18next.t('mandalart.errors.create.signInRequired')}`);
     }
 
-    const { snippetMap } = get();
-    if (snippetMap.size + 1 > MAX_UPLOAD_MANDALARTS_SIZE) {
+    const { metaMap } = get();
+    if (metaMap.size + 1 > MAX_UPLOAD_MANDALARTS_SIZE) {
       throw new Error(
         `${i18next.t('mandalart.errors.create.maxUploaded', {
           maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
@@ -139,7 +139,7 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
 
     const result = await push(
       ref(db, `${user.uid}/${DB_SNIPPETS}`),
-      snippet
+      meta
     );
     const mandalartId = result.key;
     if (!mandalartId) {
@@ -161,15 +161,15 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
     await fbRemove(ref(db, `${user.uid}/${DB_TOPIC_TREES}/${id}`));
   },
 
-  saveMandalartMeta: async (id, snippet) => {
+  saveMandalartMeta: async (id, meta) => {
     if (!id) return;
     const user = get()._user;
     if (user) {
-      await fbSet(ref(db, `${user.uid}/${DB_SNIPPETS}/${id}`), snippet);
+      await fbSet(ref(db, `${user.uid}/${DB_SNIPPETS}/${id}`), meta);
     } else {
-      const snippetMap = new Map(get().snippetMap).set(id, snippet);
-      saveGuestMandalartMetas(snippetMap);
-      set({ snippetMap });
+      const metaMap = new Map(get().metaMap).set(id, meta);
+      saveGuestMandalartMetas(metaMap);
+      set({ metaMap });
     }
   },
 
@@ -205,14 +205,14 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
     const firstKey = Array.from(guestMandalartMetas.keys()).shift();
     if (!firstKey) return;
 
-    const snippet = guestMandalartMetas.get(firstKey);
+    const meta = guestMandalartMetas.get(firstKey);
     const topicTree = guestTopicTrees.get(firstKey);
-    if (!snippet || !topicTree) return;
+    if (!meta || !topicTree) return;
 
-    if (!isAnyChanged(snippet, topicTree)) return;
+    if (!isAnyChanged(meta, topicTree)) return;
 
     try {
-      await get().createMandalart(snippet, topicTree);
+      await get().createMandalart(meta, topicTree);
       saveGuestMandalartMetas(new Map());
       saveGuestTopicTrees(new Map());
     } catch {
@@ -235,13 +235,13 @@ export const useMandalartInit = (user: User | null) => {
     useMandalartStore.setState({ _user: user });
   }, [user]);
 
-  // User mode: subscribe to snippets
+  // User mode: subscribe to metas
   useEffect(() => {
     if (!user) return;
 
     useMandalartStore.setState({
       isLoading: true,
-      snippetMap: new Map(),
+      metaMap: new Map(),
       currentMandalartId: null,
       currentTopicTree: null,
       error: null,
@@ -303,18 +303,18 @@ export const useMandalartInit = (user: User | null) => {
   useEffect(() => {
     if (user) return;
 
-    let snippets = loadGuestMandalartMetas();
+    let metas = loadGuestMandalartMetas();
     let topicTrees = loadGuestTopicTrees();
 
-    if (snippets.size === 0 || topicTrees.size === 0) {
-      snippets = new Map([[TMP_MANDALART_ID, EMPTY_META]]);
+    if (metas.size === 0 || topicTrees.size === 0) {
+      metas = new Map([[TMP_MANDALART_ID, EMPTY_META]]);
       topicTrees = new Map([[TMP_MANDALART_ID, EMPTY_TOPIC_TREE]]);
-      saveGuestMandalartMetas(snippets);
+      saveGuestMandalartMetas(metas);
       saveGuestTopicTrees(topicTrees);
     }
 
     useMandalartStore.setState({ _guestTopicTrees: topicTrees });
-    useMandalartStore.getState()._setMandalartMetas(snippets);
+    useMandalartStore.getState()._setMandalartMetas(metas);
 
     const id = useMandalartStore.getState().currentMandalartId;
     if (id) {

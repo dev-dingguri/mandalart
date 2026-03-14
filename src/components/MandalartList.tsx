@@ -2,7 +2,7 @@ import { MandalartMeta } from 'types/MandalartMeta';
 import MandalartListItem from 'components/MandalartListItem';
 
 type MandalartListProps = {
-  snippetMap: Map<string, MandalartMeta>;
+  metaMap: Map<string, MandalartMeta>;
   selectedId: string | null;
   onItemSelect: (mandalartId: string) => void;
   onItemDelete: (mandalartId: string) => void;
@@ -12,7 +12,7 @@ type MandalartListProps = {
 };
 
 const MandalartList = ({
-  snippetMap,
+  metaMap,
   selectedId,
   onItemSelect,
   onItemDelete,
@@ -22,13 +22,13 @@ const MandalartList = ({
 }: MandalartListProps) => {
   return (
     <div className={className}>
-      {Array.from(snippetMap)
+      {Array.from(metaMap)
         .reverse()
-        .map(([mandalartId, snippet]) => (
+        .map(([mandalartId, meta]) => (
           <MandalartListItem
             key={mandalartId}
             mandalartId={mandalartId}
-            snippet={snippet}
+            meta={meta}
             isSelected={selectedId === mandalartId}
             onSelect={onItemSelect}
             onDelete={onItemDelete}

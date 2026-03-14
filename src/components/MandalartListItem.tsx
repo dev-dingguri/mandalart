@@ -16,7 +16,7 @@ import {
 
 type MandalartListItemProps = {
   mandalartId: string;
-  snippet: MandalartMeta;
+  meta: MandalartMeta;
   isSelected: boolean;
   onSelect: (mandalartId: string) => void;
   onDelete: (mandalartId: string) => void;
@@ -26,7 +26,7 @@ type MandalartListItemProps = {
 
 const MandalartListItem = ({
   mandalartId,
-  snippet,
+  meta,
   isSelected,
   onSelect,
   onDelete,
@@ -50,7 +50,7 @@ const MandalartListItem = ({
       >
         <LayoutGrid className="size-4 shrink-0 text-muted-foreground" />
         <span className="min-w-0 flex-1 truncate">
-          {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
+          {meta.title ? meta.title : t('mandalart.snippet.untitled')}
         </span>
         <DropdownMenu>
           <DropdownMenuTrigger
@@ -76,7 +76,7 @@ const MandalartListItem = ({
       </div>
       <TextInputDialog
         isOpen={isOpenEditor}
-        initialText={snippet.title}
+        initialText={meta.title}
         textLimit={MAX_MANDALART_TITLE_SIZE}
         onClose={() => setIsOpenEditor(false)}
         onConfirm={(name) => {

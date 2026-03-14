@@ -32,7 +32,7 @@ const AppLayout = ({
   const { signIn, signOut, getShouldUploadTemp, setShouldUploadTemp } =
     useAuthStore();
   const {
-    snippetMap,
+    metaMap,
     currentMandalartId,
     currentTopicTree,
     error: mandalartsError,
@@ -65,8 +65,8 @@ const AppLayout = ({
   const { t } = useTranslation();
 
   const handleMandalartMetaChange = useCallback(
-    (snippet: MandalartMeta) => {
-      saveMandalartMeta(currentMandalartId, snippet);
+    (meta: MandalartMeta) => {
+      saveMandalartMeta(currentMandalartId, meta);
     },
     [currentMandalartId, saveMandalartMeta]
   );
@@ -80,12 +80,12 @@ const AppLayout = ({
 
   const currentMandalartMeta = useMemo(() => {
     if (!currentMandalartId) return null;
-    const snippet = snippetMap.get(currentMandalartId);
-    return snippet ? snippet : null;
-  }, [snippetMap, currentMandalartId]);
+    const meta = metaMap.get(currentMandalartId);
+    return meta ? meta : null;
+  }, [metaMap, currentMandalartId]);
 
   const hasMandalart =
-    snippetMap.size > 0 &&
+    metaMap.size > 0 &&
     currentMandalartId !== null &&
     currentMandalartMeta !== null &&
     currentTopicTree !== null;
@@ -127,7 +127,7 @@ const AppLayout = ({
         {hasMandalart ? (
           <MandalartView
             mandalartId={currentMandalartId}
-            snippet={currentMandalartMeta}
+            meta={currentMandalartMeta}
             topicTree={currentTopicTree}
             onMandalartMetaChange={handleMandalartMetaChange}
             onTopicTreeChange={handleTopicTreeChange}
@@ -151,7 +151,7 @@ const AppLayout = ({
       </div>
       <MandalartListDrawer
         isOpen={isOpenLeftDrawer}
-        snippetMap={snippetMap}
+        metaMap={metaMap}
         selectedMandalartId={currentMandalartId}
         onSelectMandalart={(mandalartId) => {
           selectMandalartId(mandalartId);

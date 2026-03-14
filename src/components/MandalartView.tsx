@@ -14,15 +14,15 @@ import { useTranslation } from 'react-i18next';
 
 type MandalartViewProps = {
   mandalartId: string;
-  snippet: MandalartMeta;
+  meta: MandalartMeta;
   topicTree: TopicNode;
-  onMandalartMetaChange: (snippet: MandalartMeta) => void;
+  onMandalartMetaChange: (meta: MandalartMeta) => void;
   onTopicTreeChange: (topicTree: TopicNode) => void;
 } & HTMLAttributes<HTMLDivElement>;
 
 const MandalartView = ({
   mandalartId,
-  snippet,
+  meta,
   topicTree,
   onMandalartMetaChange,
   onTopicTreeChange,
@@ -65,7 +65,7 @@ const MandalartView = ({
           className="min-w-0 flex-1 cursor-pointer select-none truncate text-2xl font-semibold"
           onClick={() => setIsOpenTitleEditor(true)}
         >
-          {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
+          {meta.title ? meta.title : t('mandalart.snippet.untitled')}
         </h2>
         <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
       </div>
@@ -78,7 +78,7 @@ const MandalartView = ({
       </div>
       <TextInputDialog
         isOpen={isOpenTitleEditor}
-        initialText={snippet.title}
+        initialText={meta.title}
         textLimit={MAX_TOPIC_TEXT_SIZE}
         onClose={() => setIsOpenTitleEditor(false)}
         onConfirm={(title) => onMandalartMetaChange({ title })}
