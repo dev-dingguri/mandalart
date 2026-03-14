@@ -3,6 +3,7 @@ import { useThemeStore } from 'stores/useThemeStore';
 
 describe('useThemeStore', () => {
   beforeEach(() => {
+    localStorage.clear();  // persist 미들웨어의 localStorage 잔류 방지
     useThemeStore.setState({ ternaryDarkMode: 'system' });
   });
 

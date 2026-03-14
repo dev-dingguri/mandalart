@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import '@testing-library/jest-dom';
 
 // window.matchMedia mock (jsdom에서 미지원)
