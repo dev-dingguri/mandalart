@@ -413,3 +413,26 @@ Expected: `http://localhost:3000`에서 앱이 정상 렌더링
 5. 콘솔에 에러 없음
 
 검증 완료 후 별도 커밋 불필요 (코드 변경 없음).
+
+---
+
+## 실행 중 발견된 사항
+
+### Vite 8 사용 금지 (MUI 5 호환 문제)
+
+Vite 8은 Rolldown(Rust 기반 번들러)을 사용하는데, MUI 5의 `@emotion/styled` CJS 모듈을 ESM으로 변환할 때 default export를 인식하지 못한다. 개발 서버에서 다음 에러가 발생:
+
+```
+Uncaught TypeError: (0 , __toESM(...).default) is not a function
+    at styled-*.js
+```
+
+`optimizeDeps.include`로 해결 시도했으나 실패. **Vite 6으로 다운그레이드하여 해결.** MUI 5를 사용하는 동안은 Vite 8을 사용하지 말 것.
+
+### lodash 직접 의존성 필요
+
+`lodash`가 `package.json`의 `dependencies`에 없었고, CRA(`react-scripts`)의 transitive dependency로 동작하고 있었다. CRA 제거 후 빌드 에러 발생. `pnpm add lodash`로 해결.
+
+### pnpm + CRA 사용 시 shamefully-hoist 필요
+
+pnpm의 기본 symlink 기반 `node_modules` 구조에서 CRA의 ESLint 설정이 플러그인 충돌을 일으킨다. `.npmrc`에 `shamefully-hoist=true`를 추가하여 해결. CRA 제거 후에는 이 설정 제거 가능.
