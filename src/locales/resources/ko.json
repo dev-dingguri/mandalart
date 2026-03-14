@@ -6,35 +6,33 @@
     "cancel": "취소",
     "ok": "확인"
   },
-  "tag": {
+  "seo": {
     "title": "만다라트로 계획을 세우고 목표를 달성하세요 - mandalart.me",
     "description": "만다라트는 목표 달성을 위한 계획과 아이디어 정리를 효과적으로 도와주는 도구입니다. 언제 어디서나 만다라트를 작성하고 당신의 목표를 이루세요."
   },
   "auth": {
     "signIn": "로그인",
     "signOut": "로그아웃",
+    "signInPrompt": "로그인하면 작성한 만다라트를\n어디서든 이어 편집할 수 있습니다.",
+    "signInWithGoogle": "Google로 로그인",
     "errors": {
       "signIn": {
         "default": "로그인할 수 없습니다. 잠시 후 다시 시도해주세요."
       }
     }
   },
-  "theme": {
-    "label": "테마",
-    "options": {
-      "system": "시스템 설정 사용",
-      "light": "밝게",
-      "dark": "어둡게"
-    }
-  },
-  "language": {
-    "label": "언어"
-  },
-  "oss": {
-    "label": "오픈소스 라이선스"
-  },
-  "version": {
-    "label": "버전"
+  "settings": {
+    "theme": {
+      "label": "테마",
+      "options": {
+        "system": "시스템 설정 사용",
+        "light": "밝게",
+        "dark": "어둡게"
+      }
+    },
+    "language": "언어",
+    "oss": "오픈소스 라이선스",
+    "version": "버전"
   },
   "mandalart": {
     "new": "새 만다라트",
@@ -42,9 +40,7 @@
     "reset": "초기화",
     "rename": "이름 바꾸기",
     "temp": "이 기기에만",
-    "snippet": {
-      "untitled": "제목 없음"
-    },
+    "untitled": "제목 없음",
     "errors": {
       "create": {
         "default": "만다라트를 추가할 수 없습니다. 😥",
@@ -59,14 +55,8 @@
       }
     }
   },
-  "signInModal": {
-    "message": "로그인하면 작성한 만다라트를\n어디서든 이어 편집할 수 있습니다.",
-    "signIn": {
-      "google": "Google로 로그인"
-    }
-  },
-  "textEditor": {
+  "topic": {
     "placeholder": "목표나 키워드를 입력하세요",
-    "maxTextReached": "최대 글자 수 초과"
+    "maxLengthReached": "최대 글자 수 초과"
   }
 }

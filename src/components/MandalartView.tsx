@@ -65,7 +65,7 @@ const MandalartView = ({
           className="min-w-0 flex-1 cursor-pointer select-none truncate text-2xl font-semibold"
           onClick={() => setIsOpenTitleEditor(true)}
         >
-          {meta.title ? meta.title : t('mandalart.snippet.untitled')}
+          {meta.title ? meta.title : t('mandalart.untitled')}
         </h2>
         <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
       </div>

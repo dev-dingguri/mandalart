@@ -6,35 +6,33 @@
     "cancel": "キャンセル",
     "ok": "OK"
   },
-  "tag": {
+  "seo": {
     "title": "マンダラートで計画を立て、目標を達成しよう - mandalart.me",
     "description": "マンダラートは、目標達成のための計画やアイデア整理を効果的にサポートするツールです。いつでもどこでもマンダラートを作成して、あなたの目標を実現しましょう。"
   },
   "auth": {
     "signIn": "ログイン",
     "signOut": "ログアウト",
+    "signInPrompt": "ログインすると、作成したマンダラートを\nどこからでも続けて編集できます。",
+    "signInWithGoogle": "Googleでログイン",
     "errors": {
       "signIn": {
         "default": "ログインできませんでした。しばらくしてからもう一度お試しください。"
       }
     }
   },
-  "theme": {
-    "label": "テーマ",
-    "options": {
-      "system": "システム設定に従う",
-      "light": "ライト",
-      "dark": "ダーク"
-    }
-  },
-  "language": {
-    "label": "言語"
-  },
-  "oss": {
-    "label": "オープンソースライセンス"
-  },
-  "version": {
-    "label": "バージョン"
+  "settings": {
+    "theme": {
+      "label": "テーマ",
+      "options": {
+        "system": "システム設定に従う",
+        "light": "ライト",
+        "dark": "ダーク"
+      }
+    },
+    "language": "言語",
+    "oss": "オープンソースライセンス",
+    "version": "バージョン"
   },
   "mandalart": {
     "new": "新規マンダラート",
@@ -42,9 +40,7 @@
     "reset": "リセット",
     "rename": "名前を変更",
     "temp": "このデバイスのみ",
-    "snippet": {
-      "untitled": "無題"
-    },
+    "untitled": "無題",
     "errors": {
       "create": {
         "default": "マンダラートを追加できませんでした。 😥",
@@ -59,14 +55,8 @@
       }
     }
   },
-  "signInModal": {
-    "message": "ログインすると、作成したマンダラートを\nどこからでも続けて編集できます。",
-    "signIn": {
-      "google": "Googleでログイン"
-    }
-  },
-  "textEditor": {
+  "topic": {
     "placeholder": "目標やキーワードを入力してください",
-    "maxTextReached": "文字数の上限に達しました"
+    "maxLengthReached": "文字数の上限に達しました"
   }
 }

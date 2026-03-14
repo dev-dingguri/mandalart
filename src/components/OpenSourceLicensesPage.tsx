@@ -100,7 +100,7 @@ const OpenSourceLicensesPage = () => {
         >
           <ChevronLeft />
         </Button>
-        <h1 className="text-lg font-semibold">{t('oss.label')}</h1>
+        <h1 className="text-lg font-semibold">{t('settings.oss')}</h1>
       </header>
       <Separator />
       <div className="flex w-full justify-center overflow-y-auto [scrollbar-gutter:stable_both-edges]">

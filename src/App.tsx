@@ -38,7 +38,7 @@ const App = () => {
   }, [isDarkMode]);
 
   useEffect(() => {
-    document.title = t('tag.title');
+    document.title = t('seo.title');
     const setMeta = (attr: string, key: string, content: string) => {
       let el = document.querySelector(`meta[${attr}="${key}"]`);
       if (!el) {
@@ -48,9 +48,9 @@ const App = () => {
       }
       el.setAttribute('content', content);
     };
-    setMeta('name', 'description', t('tag.description'));
-    setMeta('property', 'og:title', t('tag.title'));
-    setMeta('property', 'og:description', t('tag.description'));
+    setMeta('name', 'description', t('seo.description'));
+    setMeta('property', 'og:title', t('seo.title'));
+    setMeta('property', 'og:description', t('seo.description'));
     setMeta('name', 'theme-color', isDarkMode ? '#000000' : '#ffffff');
   }, [t, isDarkMode]);
 

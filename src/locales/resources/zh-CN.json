@@ -6,35 +6,33 @@
     "cancel": "取消",
     "ok": "确定"
   },
-  "tag": {
+  "seo": {
     "title": "用曼达拉图规划目标，实现梦想 - mandalart.me",
     "description": "曼达拉图是一款帮助您高效规划目标、整理思路的工具。随时随地创建曼达拉图，一步步实现您的目标。"
   },
   "auth": {
     "signIn": "登录",
     "signOut": "退出登录",
+    "signInPrompt": "登录后，可随时随地\n继续编辑您的曼达拉图。",
+    "signInWithGoogle": "使用 Google 登录",
     "errors": {
       "signIn": {
         "default": "无法登录。请稍后再试。"
       }
     }
   },
-  "theme": {
-    "label": "主题",
-    "options": {
-      "system": "跟随系统设置",
-      "light": "浅色",
-      "dark": "深色"
-    }
-  },
-  "language": {
-    "label": "语言"
-  },
-  "oss": {
-    "label": "开源许可证"
-  },
-  "version": {
-    "label": "版本"
+  "settings": {
+    "theme": {
+      "label": "主题",
+      "options": {
+        "system": "跟随系统设置",
+        "light": "浅色",
+        "dark": "深色"
+      }
+    },
+    "language": "语言",
+    "oss": "开源许可证",
+    "version": "版本"
   },
   "mandalart": {
     "new": "新建曼达拉图",
@@ -42,9 +40,7 @@
     "reset": "重置",
     "rename": "重命名",
     "temp": "仅限本设备",
-    "snippet": {
-      "untitled": "无标题"
-    },
+    "untitled": "无标题",
     "errors": {
       "create": {
         "default": "无法添加曼达拉图。 😥",
@@ -59,14 +55,8 @@
       }
     }
   },
-  "signInModal": {
-    "message": "登录后，可随时随地\n继续编辑您的曼达拉图。",
-    "signIn": {
-      "google": "使用 Google 登录"
-    }
-  },
-  "textEditor": {
+  "topic": {
     "placeholder": "请输入目标或关键词",
-    "maxTextReached": "已达到字数上限"
+    "maxLengthReached": "已达到字数上限"
   }
 }

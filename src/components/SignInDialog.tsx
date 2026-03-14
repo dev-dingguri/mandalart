@@ -25,7 +25,7 @@ const SignInDialog = ({ isOpen, onClose, onSignIn }: SignInDialogProps) => {
         <DialogHeader>
           <DialogTitle>{t('global.app')}</DialogTitle>
           <DialogDescription className="whitespace-pre-line break-keep text-center">
-            {t('signInModal.message')}
+            {t('auth.signInPrompt')}
           </DialogDescription>
         </DialogHeader>
         <Button
@@ -34,7 +34,7 @@ const SignInDialog = ({ isOpen, onClose, onSignIn }: SignInDialogProps) => {
           onClick={() => onSignIn(ProviderId.GOOGLE)}
         >
           <img src={googleIco} alt="google" className="size-4" />
-          {t('signInModal.signIn.google')}
+          {t('auth.signInWithGoogle')}
         </Button>
       </DialogContent>
     </Dialog>

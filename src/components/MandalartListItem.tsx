@@ -50,7 +50,7 @@ const MandalartListItem = ({
       >
         <LayoutGrid className="size-4 shrink-0 text-muted-foreground" />
         <span className="min-w-0 flex-1 truncate">
-          {meta.title ? meta.title : t('mandalart.snippet.untitled')}
+          {meta.title ? meta.title : t('mandalart.untitled')}
         </span>
         <DropdownMenu>
           <DropdownMenuTrigger

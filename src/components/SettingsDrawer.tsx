@@ -84,9 +84,9 @@ const languageOptions = [
 ];
 
 const themeOptions = [
-  { value: 'system', name: 'theme.options.system' },
-  { value: 'light', name: 'theme.options.light' },
-  { value: 'dark', name: 'theme.options.dark' },
+  { value: 'system', name: 'settings.theme.options.system' },
+  { value: 'light', name: 'settings.theme.options.light' },
+  { value: 'dark', name: 'settings.theme.options.dark' },
 ];
 
 type SettingsDrawerProps = {
@@ -115,7 +115,7 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
       <DrawerContent>
         <div className="flex flex-col gap-4 overflow-auto p-4 [scrollbar-gutter:stable_both-edges]">
           <InlineSelect
-            label={t('theme.label')}
+            label={t('settings.theme.label')}
             value={ternaryDarkMode}
             options={themeOptions.map(({ value, name }) => ({
               value,
@@ -127,7 +127,7 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
           <Separator />
 
           <InlineSelect
-            label={t('language.label')}
+            label={t('settings.language')}
             value={i18n.language}
             options={languageOptions.map(({ value, name }) => ({
               value,
@@ -142,13 +142,13 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
             className="cursor-pointer text-left text-sm hover:text-foreground"
             onClick={goToOpenSourceLicense}
           >
-            {t('oss.label')}
+            {t('settings.oss')}
           </button>
 
           <Separator />
 
           <div className="flex items-center gap-2 text-sm">
-            <span>{t('version.label')}</span>
+            <span>{t('settings.version')}</span>
             <span className="text-muted-foreground">{APP_VERSION}</span>
           </div>
 

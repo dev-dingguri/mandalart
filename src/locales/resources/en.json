@@ -6,35 +6,33 @@
     "cancel": "Cancel",
     "ok": "OK"
   },
-  "tag": {
+  "seo": {
     "title": "Plan and achieve your goals with Mandalart - mandalart.me",
     "description": "Mandalart helps you effectively plan and organize your ideas to achieve your goals. Create your Mandalart anytime, anywhere, and turn your vision into reality."
   },
   "auth": {
     "signIn": "Sign In",
     "signOut": "Sign Out",
+    "signInPrompt": "Sign in to continue editing\nyour Mandalart from anywhere.",
+    "signInWithGoogle": "Sign in with Google",
     "errors": {
       "signIn": {
         "default": "Cannot sign in. Please try again later."
       }
     }
   },
-  "theme": {
-    "label": "Theme",
-    "options": {
-      "system": "Use system settings",
-      "light": "Light",
-      "dark": "Dark"
-    }
-  },
-  "language": {
-    "label": "Language"
-  },
-  "oss": {
-    "label": "Open Source Licenses"
-  },
-  "version": {
-    "label": "Version"
+  "settings": {
+    "theme": {
+      "label": "Theme",
+      "options": {
+        "system": "Use system settings",
+        "light": "Light",
+        "dark": "Dark"
+      }
+    },
+    "language": "Language",
+    "oss": "Open Source Licenses",
+    "version": "Version"
   },
   "mandalart": {
     "new": "New Mandalart",
@@ -42,9 +40,7 @@
     "reset": "Reset",
     "rename": "Rename",
     "temp": "On this device",
-    "snippet": {
-      "untitled": "Untitled"
-    },
+    "untitled": "Untitled",
     "errors": {
       "create": {
         "default": "Cannot add Mandalart. 😥",
@@ -59,14 +55,8 @@
       }
     }
   },
-  "signInModal": {
-    "message": "Sign in to continue editing\nyour Mandalart from anywhere.",
-    "signIn": {
-      "google": "Sign in with Google"
-    }
-  },
-  "textEditor": {
+  "topic": {
     "placeholder": "Enter a goal or keyword",
-    "maxTextReached": "Character limit reached"
+    "maxLengthReached": "Character limit reached"
   }
 }

@@ -40,7 +40,7 @@ const TopicItem = ({
         isOpen={isOpenEditor}
         title={`${t('global.topic')}`}
         initialText={topic}
-        placeholder={`${t('textEditor.placeholder')}`}
+        placeholder={`${t('topic.placeholder')}`}
         textLimit={MAX_TOPIC_TEXT_SIZE}
         onClose={() => setIsOpenEditor(false)}
         onConfirm={onUpdateTopic}

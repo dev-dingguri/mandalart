@@ -80,7 +80,7 @@ const TextInputDialog = ({
                 <span
                   className={`flex-1 ${isLimitReached ? 'text-destructive' : ''}`}
                 >
-                  {isLimitReached && t('textEditor.maxTextReached')}
+                  {isLimitReached && t('topic.maxLengthReached')}
                 </span>
                 <span
                   className={
