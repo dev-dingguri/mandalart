@@ -8,7 +8,7 @@
   },
   "tag": {
     "title": "Plan and achieve your goals with Mandalart - mandalart.me",
-    "description": "Mandalart is the best tool for effectively and easily planning and mind storming for achieving goals. Write Mandalart anytime, anywhere, and achieve your goals."
+    "description": "Mandalart helps you effectively plan and organize your ideas to achieve your goals. Create your Mandalart anytime, anywhere, and turn your vision into reality."
   },
   "auth": {
     "signIn": "Sign In",
@@ -41,32 +41,32 @@
     "delete": "Delete",
     "reset": "Reset",
     "rename": "Rename",
-    "temp": "Temp",
+    "temp": "Local",
     "snippet": {
       "untitled": "Untitled"
     },
     "errors": {
       "create": {
         "default": "Cannot add Mandalart. 😥",
-        "signInRequired": "Cannot add Mandalart. 😥\nYou must sign in to add Mandalarts.",
-        "maxUploaded": "Cannot add Mandalart. 😥\nMandalart count cannot exceed {{maxSize}}.\nPlease delete saved Mandalarts and try again."
+        "signInRequired": "Cannot add Mandalart. 😥\nPlease sign in to add a Mandalart.",
+        "maxUploaded": "Cannot add Mandalart. 😥\nYou can save up to {{maxSize}} Mandalarts.\nPlease delete an existing one and try again."
       },
       "uploadTemp": {
-        "maxUploaded": "Cannot save temporary Mandalart. 😥\nMandalart count cannot exceed {{maxSize}}.\nPlease delete saved Mandalarts and sign in again."
+        "maxUploaded": "Cannot save local Mandalart. 😥\nYou can save up to {{maxSize}} Mandalarts.\nPlease delete an existing one and sign in again."
       },
       "sync": {
-        "default": "Cannot synchronize with cloud storage.\nYou will be logged out."
+        "default": "Cannot sync with the cloud.\nYou will be signed out automatically."
       }
     }
   },
   "signInModal": {
-    "message": "Sign in to access and edit\nyour Mandalart from anywhere.",
+    "message": "Sign in to continue editing\nyour Mandalart from anywhere.",
     "signIn": {
       "google": "Sign in with Google"
     }
   },
   "textEditor": {
-    "maxTextReached": "Character limit reached",
-    "placeholder": "Enter your content here"
+    "placeholder": "Enter your content here",
+    "maxTextReached": "Character limit reached"
   }
 }
