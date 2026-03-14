@@ -1,12 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import {
-  AlertDialog as AlertDialogRoot,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogAction,
-} from '@/components/ui/alert-dialog';
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 
 export type AlertDialogProps = {
   isOpen: boolean;
@@ -18,19 +18,19 @@ const AlertDialog = ({ isOpen, message, onClose }: AlertDialogProps) => {
   const { t } = useTranslation();
 
   return (
-    <AlertDialogRoot open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <AlertDialogContent className="gap-3 p-6 w-max">
-        <AlertDialogHeader>
-          <AlertDialogTitle>{t('global.app')}</AlertDialogTitle>
-          <AlertDialogDescription className="whitespace-pre-line break-keep">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent showCloseButton={false} className="gap-3 p-6 w-max">
+        <DialogHeader>
+          <DialogTitle>{t('global.app')}</DialogTitle>
+          <DialogDescription className="whitespace-pre-line break-keep">
             {message}
-          </AlertDialogDescription>
-        </AlertDialogHeader>
+          </DialogDescription>
+        </DialogHeader>
         <div className="flex justify-center">
-          <AlertDialogAction className="w-full">{t('global.ok')}</AlertDialogAction>
+          <Button className="w-full" onClick={onClose}>{t('global.ok')}</Button>
         </div>
-      </AlertDialogContent>
-    </AlertDialogRoot>
+      </DialogContent>
+    </Dialog>
   );
 };
 
