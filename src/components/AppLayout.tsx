@@ -148,16 +148,7 @@ const AppLayout = ({
       />
       <Separator />
       <div className="flex h-full w-full flex-col overflow-auto [scrollbar-gutter:stable_both-edges]">
-        {hasMandalart ? (
-          <MandalartView
-            mandalartId={currentMandalartId}
-            meta={currentMandalartMeta}
-            topicTree={currentTopicTree}
-            onMandalartMetaChange={handleMandalartMetaChange}
-            onTopicTreeChange={handleTopicTreeChange}
-            className="mx-auto my-auto w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] py-2"
-          />
-        ) : (
+        {metaMap.size === 0 ? (
           <Button
             variant="ghost"
             className="m-auto gap-2 text-2xl"
@@ -170,7 +161,16 @@ const AppLayout = ({
             <Plus className="size-8" />
             {t('mandalart.new')}
           </Button>
-        )}
+        ) : hasMandalart ? (
+          <MandalartView
+            mandalartId={currentMandalartId}
+            meta={currentMandalartMeta}
+            topicTree={currentTopicTree}
+            onMandalartMetaChange={handleMandalartMetaChange}
+            onTopicTreeChange={handleTopicTreeChange}
+            className="mx-auto my-auto w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] py-2"
+          />
+        ) : null}
       </div>
       <Suspense fallback={null}>
         <MandalartListDrawer
