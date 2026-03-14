@@ -358,6 +358,39 @@ MUI가 완전히 제거된 후 React 19로 업그레이드한다.
 
 ---
 
+## 버그 수정
+
+### B1: Firebase 프리뷰 채널에서 Google 로그인 실패
+
+**선행 조건:** 없음 (현대화 작업과 독립)
+**우선순위:** 높음 — 프리뷰 채널에서 QA 불가
+
+**현상:**
+- Firebase Hosting 프리뷰 채널(`mandalart-94631--preview-xxx.web.app`)에서 Google 로그인 시 실패
+- 콘솔에 에러 없음 — `getRedirectResult()`가 `null`로 resolve되어 조용히 실패
+- 프로덕션(`mandalart-94631.web.app`)에서는 정상 동작
+
+**추정 원인 (미확인):**
+- `signInWithRedirect` 사용 시, 앱 origin과 `authDomain`이 다른 cross-origin 환경에서 브라우저의 스토리지 파티셔닝(Chrome 115+)으로 인해 인증 credential이 유실되는 것으로 추정
+- 승인된 도메인(Authorized Domains)에는 프리뷰 채널 도메인이 등록되어 있음을 확인 → 도메인 승인 문제는 아님
+- **정확한 원인을 확인하려면**: 프리뷰 채널에서 `getRedirectResult(auth)`의 반환값과 `auth.currentUser`를 로깅하여 실제 동작 확인 필요
+
+**해결 방안:**
+- `signInWithRedirect` → `signInWithPopup` 우선 방식으로 전환
+- Popup은 새 창에서 인증 후 `postMessage`로 결과를 전달하므로 cross-origin 스토리지 문제를 우회
+- 팝업 차단 시 `signInWithRedirect`로 폴백
+
+**작업 순서:**
+- [ ] 프리뷰 채널에서 `getRedirectResult` 반환값 로깅으로 원인 확정
+- [ ] `signInWithPopup` 우선 + `signInWithRedirect` 폴백 방식으로 `useAuthStore.ts` 수정
+- [ ] `getRedirectResult` 모듈 레벨 호출 유지 (폴백 시 결과 처리)
+- [ ] 프로덕션 환경에서 로그인 정상 동작 확인
+- [ ] 프리뷰 채널 재배포 후 로그인 정상 동작 확인
+
+**참고:** 이전에 `signInWithPopup` 우선 방식으로 변경(d326b79)했다가 Revert(eb5d43c)한 이력 있음. Revert 사유 확인 후 진행할 것.
+
+---
+
 ## 검증 체크리스트 (모든 작업 공통)
 
 각 작업 완료 후 반드시 확인:
