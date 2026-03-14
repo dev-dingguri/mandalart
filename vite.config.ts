@@ -6,6 +6,13 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
+  optimizeDeps: {
+    include: [
+      '@emotion/react',
+      '@emotion/styled',
+      '@mui/material',
+    ],
+  },
   server: {
     port: 3000,
     open: true,
