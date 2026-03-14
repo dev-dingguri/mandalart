@@ -1,6 +1,6 @@
-import useUserMandalarts from '../hooks/useUserMandalarts';
 import MainContent from 'components/MainContent';
-import { useAddLoadingCondition } from 'contexts/LoadingContext';
+import { useAddLoadingCondition } from 'stores/useLoadingStore';
+import { useMandalartInit, useMandalartStore } from 'stores/useMandalartStore';
 import { User } from 'firebase/auth';
 
 type MainUserPageProps = {
@@ -9,8 +9,8 @@ type MainUserPageProps = {
 };
 
 const MainUserPage = ({ user, userError }: MainUserPageProps) => {
-  const { ...mandalartsHandlers } = useUserMandalarts(user);
-  const { isLoading } = mandalartsHandlers;
+  useMandalartInit(user);
+  const isLoading = useMandalartStore((s) => s.isLoading);
 
   useAddLoadingCondition('user-mandalarts', isLoading);
 
@@ -19,7 +19,6 @@ const MainUserPage = ({ user, userError }: MainUserPageProps) => {
   return (
     <MainContent
       userHandlers={{ user, error: userError }}
-      mandalartsHandlers={mandalartsHandlers}
     />
   );
 };

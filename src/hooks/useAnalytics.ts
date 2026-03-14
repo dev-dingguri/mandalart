@@ -1,4 +1,4 @@
-import { useAnalyticsSdk } from 'contexts/FirebaseSdksContext';
+import { analytics } from 'lib/firebase';
 import {
   AnalyticsCallOptions,
   CustomEventName,
@@ -9,8 +9,6 @@ import {
 import { useMemo } from 'react';
 
 const useAnalytics = () => {
-  const analytics = useAnalyticsSdk();
-
   return useMemo(
     () => ({
       logEvent: <T extends string>(
@@ -25,7 +23,7 @@ const useAnalytics = () => {
         options?: AnalyticsCallOptions
       ) => setUserProperties(analytics, properties, options),
     }),
-    [analytics]
+    []
   );
 };
 

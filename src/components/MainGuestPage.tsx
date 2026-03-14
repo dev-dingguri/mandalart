@@ -1,24 +1,21 @@
 import MainContent from 'components/MainContent';
-import { useAddLoadingCondition } from 'contexts/LoadingContext';
-import useGuestMandalarts from 'hooks/useGuestMandalarts';
+import { useAddLoadingCondition } from 'stores/useLoadingStore';
+import { useMandalartInit, useMandalartStore } from 'stores/useMandalartStore';
 
 type MainGuestPageProps = {
   userError: Error | null;
 };
 
 const MainGuestPage = ({ userError }: MainGuestPageProps) => {
-  const { ...mandalartsHandlers } = useGuestMandalarts();
-  const { isLoading } = mandalartsHandlers;
+  useMandalartInit(null);
+  const isLoading = useMandalartStore((s) => s.isLoading);
 
   useAddLoadingCondition('guest-mandalarts', isLoading);
 
   if (isLoading) return null;
 
   return (
-    <MainContent
-      userHandlers={{ error: userError }}
-      mandalartsHandlers={mandalartsHandlers}
-    />
+    <MainContent userHandlers={{ error: userError }} />
   );
 };
 

@@ -2,8 +2,6 @@ import {
   useMemo,
   useEffect,
   useCallback,
-  SetStateAction,
-  Dispatch,
   useLayoutEffect,
 } from 'react';
 import Header from 'components/Header';
@@ -16,8 +14,8 @@ import { Snippet } from '../types/Snippet';
 import { TopicNode } from '../types/TopicNode';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
-import useAuth from 'hooks/useAuth';
-import useSignInSession from 'hooks/useSignInSession';
+import { useAuthStore } from 'stores/useAuthStore';
+import { useMandalartStore } from 'stores/useMandalartStore';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
@@ -31,44 +29,27 @@ export type UserHandlers = {
   error?: Error | null;
 };
 
-export type MandalartsHandlers = {
-  snippetMap: Map<string, Snippet>;
-  currentMandalartId: string | null;
-  currentTopicTree: TopicNode | null;
-  error?: Error | null;
-  selectMandalartId: Dispatch<SetStateAction<string | null>>;
-  createMandalart: (snippet: Snippet, topicTree: TopicNode) => Promise<void>;
-  deleteMandalart: (mandalartId: string | null) => Promise<void>;
-  saveSnippet: (mandalartId: string | null, snippet: Snippet) => Promise<void>;
-  saveTopicTree: (
-    mandalartId: string | null,
-    topicTree: TopicNode
-  ) => Promise<void>;
-  uploadTemp?: () => Promise<void>;
-};
-
 type MainContentProps = {
   userHandlers: UserHandlers;
-  mandalartsHandlers: MandalartsHandlers;
 };
 
 const MainContent = ({
   userHandlers: { user = null, error: userError = null },
-  mandalartsHandlers: {
+}: MainContentProps) => {
+  const { signIn, signOut, getShouldUploadTemp, setShouldUploadTemp } =
+    useAuthStore();
+  const {
     snippetMap,
     currentMandalartId,
     currentTopicTree,
-    error: mandalartsError = null,
-    selectMandalartId,
+    error: mandalartsError,
+    selectMandalart: selectMandalartId,
     createMandalart,
     deleteMandalart,
     saveSnippet,
     saveTopicTree,
     uploadTemp,
-  },
-}: MainContentProps) => {
-  const { signIn, signOut } = useAuth();
-  const { getShouldUploadTemp, setShouldUploadTemp } = useSignInSession();
+  } = useMandalartStore();
 
   const {
     value: isOpenLeftDrawer,
@@ -134,10 +115,9 @@ const MainContent = ({
   }, [mandalartsError, openAlert, signOut, t]);
 
   useLayoutEffect(() => {
-    const shouldUploadTemp = !!user && getShouldUploadTemp(user);
+    const shouldUploadTemp = !!user && getShouldUploadTemp();
     if (!shouldUploadTemp) return;
-    if (!uploadTemp) return;
-    setShouldUploadTemp(user, false);
+    setShouldUploadTemp(false);
     uploadTemp().catch((e: Error) => {
       e && openAlert(e.message);
     });
