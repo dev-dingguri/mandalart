@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 import { Menu, MoreHorizontal, LogOut } from 'lucide-react';
-import { Button } from 'components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -10,8 +10,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuItem,
-} from 'components/ui/dropdown-menu';
-import { cn } from 'lib/utils';
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 type HeaderProps = {
   user: User | null;

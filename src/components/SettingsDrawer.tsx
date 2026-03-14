@@ -6,8 +6,8 @@ import { APP_VERSION } from 'version';
 import { PATH_OSS } from 'constants/constants';
 import { useThemeStore, TernaryDarkMode } from 'stores/useThemeStore';
 import useAnalyticsEvents from 'hooks/useAnalyticsEvents';
-import { Drawer, DrawerContent, DrawerTitle } from 'components/ui/drawer';
-import { Separator } from 'components/ui/separator';
+import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
+import { Separator } from '@/components/ui/separator';
 
 type InlineSelectProps = {
   label: string;

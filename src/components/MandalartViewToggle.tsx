@@ -1,5 +1,5 @@
 import { Maximize2 } from 'lucide-react';
-import { Toggle } from 'components/ui/toggle';
+import { Toggle } from '@/components/ui/toggle';
 
 type MandalartViewToggleProps = {
   isAllView: boolean;

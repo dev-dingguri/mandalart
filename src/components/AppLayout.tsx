@@ -16,8 +16,8 @@ import { Plus } from 'lucide-react';
 import useModal from 'hooks/useModal';
 import useAnalyticsEvents from 'hooks/useAnalyticsEvents';
 import AlertDialog from './AlertDialog';
-import { Separator } from 'components/ui/separator';
-import { Button } from 'components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 
 export type UserHandlers = {
   user?: User | null;
