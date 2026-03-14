@@ -4,7 +4,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from 'constants/constants';
-import { Helmet } from 'react-helmet-async';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
@@ -33,17 +32,27 @@ const App = () => {
 
   const { isDarkMode } = useTernaryDarkMode();
 
+  useEffect(() => {
+    document.title = t('tag.title');
+    const setMeta = (attr: string, key: string, content: string) => {
+      let el = document.querySelector(`meta[${attr}="${key}"]`);
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute(attr, key);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+    setMeta('name', 'description', t('tag.description'));
+    setMeta('property', 'og:title', t('tag.title'));
+    setMeta('property', 'og:description', t('tag.description'));
+    setMeta('name', 'theme-color', isDarkMode ? '#000000' : '#ffffff');
+  }, [t, isDarkMode]);
+
   return (
     <ThemeProvider theme={theme(isDarkMode ? 'dark' : 'light')}>
       <CssBaseline />
       <Box sx={{ height }}>
-        <Helmet>
-          <title>{t('tag.title')}</title>
-          <meta name="description" content={`${t('tag.description')}`} />
-          <meta property="og:title" content={`${t('tag.title')}`} />
-          <meta property="og:description" content={`${t('tag.description')}`} />
-          {isDarkMode && <meta name="theme-color" content="#000000" />}
-        </Helmet>
         <BrowserRouter>
           <Routes>
             <Route path={`/${lang}`} element={<MainPage />} />
@@ -58,5 +67,7 @@ const App = () => {
     </ThemeProvider>
   );
 };
+
+
 
 export default App;

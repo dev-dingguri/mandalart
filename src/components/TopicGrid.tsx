@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import ItemGrid from 'components/ItemGrid';
 import TopicItem from 'components/TopicItem';
 import { TopicNode } from 'types/TopicNode';
-import { scrollIntoView } from 'seamless-scroll-polyfill';
 import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';
 import Box from '@mui/material/Box';
 import { useEventListener } from 'usehooks-ts';
@@ -67,7 +66,7 @@ const TopicGrid = ({
 
 const scrollCenter = (element: Element | null, behavior: ScrollBehavior) => {
   if (!element) return;
-  scrollIntoView(element, {
+  element.scrollIntoView({
     behavior: behavior,
     block: 'center',
     inline: 'center',

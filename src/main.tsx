@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { IconContext } from 'react-icons/lib';
-import { HelmetProvider } from 'react-helmet-async';
+
 import { FirebaseSdksProvider } from 'contexts/FirebaseSdksContext';
 import 'locales/i18n';
 import { LoadingProvider } from 'contexts/LoadingContext';
@@ -24,14 +24,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <HelmetProvider>
-      <IconContext.Provider value={{ className: 'react-icons' }}>
-        <FirebaseSdksProvider firebaseConfig={firebaseConfig}>
-          <LoadingProvider>
-            <App />
-          </LoadingProvider>
-        </FirebaseSdksProvider>
-      </IconContext.Provider>
-    </HelmetProvider>
+    <IconContext.Provider value={{ className: 'react-icons' }}>
+      <FirebaseSdksProvider firebaseConfig={firebaseConfig}>
+        <LoadingProvider>
+          <App />
+        </LoadingProvider>
+      </FirebaseSdksProvider>
+    </IconContext.Provider>
   </React.StrictMode>
 );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { BsChevronLeft } from 'react-icons/bs';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -13,7 +13,6 @@ import openSourceLicensesJson from 'assets/data/openSourceLicenses.json';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import CircularProgress from '@mui/material/CircularProgress';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 /*
  * openSourceLicenses.json
@@ -76,18 +75,33 @@ const Item = ({ name, licenses, repository }: License) => {
 const OpenSourceLicensesPage = () => {
   const [currentLicenses, setCurrentLicenses] = useState<License[]>([]);
   const { t } = useTranslation();
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const hasMore = currentLicenses.length < licenses.length;
 
   useEffect(() => {
     setCurrentLicenses(licenses.slice(0, 50));
   }, []);
 
-  const appendLicenses = () => {
-    setTimeout(() => {
-      setCurrentLicenses((currentLicenses) =>
-        licenses.slice(0, currentLicenses.length + 50)
-      );
-    }, 300);
-  };
+  const appendLicenses = useCallback(() => {
+    setCurrentLicenses((prev) => licenses.slice(0, prev.length + 50));
+  }, []);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          appendLicenses();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [appendLicenses]);
 
   const navigate = useNavigate();
 
@@ -123,7 +137,6 @@ const OpenSourceLicensesPage = () => {
       </AppBar>
       <Divider flexItem />
       <Box
-        id="scrollableBox"
         sx={{
           display: 'flex',
           justifyContent: 'center',
@@ -133,27 +146,22 @@ const OpenSourceLicensesPage = () => {
           scrollbarGutter: 'stable both-edges',
         }}
       >
-        <InfiniteScroll
-          dataLength={currentLicenses.length}
-          next={appendLicenses}
-          hasMore={currentLicenses.length < licenses.length}
-          loader={
-            <CircularProgress size="3rem" thickness={4} sx={{ m: '0.5em' }} />
-          }
-          scrollableTarget="scrollableBox"
+        <List
+          sx={{
+            width: 'var(--size-content-width)',
+            minWidth: 'var(--size-content-min-width)',
+            padding: 0,
+          }}
         >
-          <List
-            sx={{
-              width: 'var(--size-content-width)',
-              minWidth: 'var(--size-content-min-width)',
-              padding: 0,
-            }}
-          >
-            {currentLicenses.map((data, idx) => (
-              <Item key={idx} {...data} />
-            ))}
-          </List>
-        </InfiniteScroll>
+          {currentLicenses.map((data, idx) => (
+            <Item key={idx} {...data} />
+          ))}
+        </List>
+        {hasMore && (
+          <div ref={sentinelRef}>
+            <CircularProgress size="3rem" thickness={4} sx={{ m: '0.5em' }} />
+          </div>
+        )}
       </Box>
     </Box>
   );
