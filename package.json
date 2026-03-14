@@ -32,13 +32,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "predeploy": "pnpm build",
-    "deploy": "firebase deploy"
+    "predeploy:firebase": "pnpm build",
+    "deploy:firebase": "firebase deploy"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.1",
     "@types/node": "^22.19.15",
     "@vitejs/plugin-react": "^4.7.0",
+    "firebase-tools": "^15.10.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
