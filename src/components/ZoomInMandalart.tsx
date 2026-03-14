@@ -96,7 +96,7 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
   return (
     <div
       ref={ref}
-      className="overflow-hidden"
+      className="w-full aspect-square overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
