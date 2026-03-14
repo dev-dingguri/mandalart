@@ -1,5 +1,3 @@
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import MainUserPage from 'components/MainUserPage';
 import MainGuestPage from 'components/MainGuestPage';
 import { useAuthStore } from 'stores/useAuthStore';
@@ -14,23 +12,9 @@ const MainPage = () => {
 
   return (
     <>
-      <Box
-        sx={
-          isLoading
-            ? {
-                display: 'flex',
-                height: '100%',
-              }
-            : { display: 'none' }
-        }
-      >
-        <CircularProgress
-          size="4rem"
-          thickness={4}
-          sx={{ m: 'auto' }}
-          color="secondary"
-        />
-      </Box>
+      <div className={isLoading ? 'flex h-full' : 'hidden'}>
+        <div className="m-auto size-16 animate-spin rounded-full border-4 border-app-primary border-t-app-secondary" />
+      </div>
       {user ? (
         <MainUserPage user={user} userError={userError} />
       ) : (

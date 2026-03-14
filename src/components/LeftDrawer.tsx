@@ -1,12 +1,10 @@
-import React from 'react';
 import { BsPlus } from 'react-icons/bs';
-import Button from '@mui/material/Button';
+import { Button } from 'components/ui/button';
 import MandalartList from 'components/MandalartList';
 import { Snippet } from 'types/Snippet';
 import { useTranslation } from 'react-i18next';
-import Drawer from '@mui/material/Drawer';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
+import { Drawer, DrawerContent } from 'components/ui/drawer';
+import { Separator } from 'components/ui/separator';
 
 type LeftDrawerProps = {
   isOpen: boolean;
@@ -35,55 +33,40 @@ const LeftDrawer = ({
 
   return (
     <Drawer
-      anchor="left"
       open={isOpen}
-      onClose={onClose}
-      sx={{
-        '&& .MuiPaper-root': {
-          width: '70vw',
-          '@media screen and (min-width: 30rem)': {
-            width: '21rem',
-          },
-        },
+      onOpenChange={(open) => {
+        if (!open) onClose();
       }}
+      direction="left"
     >
-      <MandalartList
-        snippetMap={snippetMap}
-        selectedId={selectedMandalartId}
-        onItemSelect={onSelectMandalart}
-        onItemDelete={onDeleteMandalart}
-        onItemRename={onRenameMandalart}
-        onItemReset={onResetMandalart}
-        sx={{
-          p: '0.5em',
-          pt: '1em',
-          overflow: 'auto',
-          scrollbarGutter: 'stable both-edges',
-        }}
-      />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          p: '0 var(--size-scrollbar-width)',
-        }}
-      >
-        <Divider variant="middle" />
-        <Button
-          startIcon={<BsPlus />}
+      <DrawerContent>
+        <MandalartList
+          snippetMap={snippetMap}
+          selectedId={selectedMandalartId}
+          onItemSelect={onSelectMandalart}
+          onItemDelete={onDeleteMandalart}
+          onItemRename={onRenameMandalart}
+          onItemReset={onResetMandalart}
           sx={{
-            fontSize: '1rem',
-            m: '0.5em',
-            p: '0.5em 1em',
-            justifyContent: 'flex-start',
-            backgroundColor: (theme) => theme.palette.primary.dark,
+            p: '0.5em',
+            pt: '1em',
+            overflow: 'auto',
+            scrollbarGutter: 'stable both-edges',
           }}
-          onClick={onCreateMandalart}
-          size="large"
-        >
-          {t('mandalart.new')}
-        </Button>
-      </Box>
+        />
+        <div className="flex flex-col px-[var(--size-scrollbar-width)]">
+          <Separator />
+          <Button
+            variant="ghost"
+            size="lg"
+            className="m-2 justify-start gap-2 bg-app-primary-dark text-base"
+            onClick={onCreateMandalart}
+          >
+            <BsPlus className="size-5" />
+            {t('mandalart.new')}
+          </Button>
+        </div>
+      </DrawerContent>
     </Drawer>
   );
 };

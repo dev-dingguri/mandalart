@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useLayoutEffect } from 'react';
 import MainPage from 'components/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from 'constants/constants';
 import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
 import theme from 'theme';
 import { useEventListener, useTernaryDarkMode } from 'usehooks-ts';
 import useAnalytics from 'hooks/useAnalytics';
@@ -30,6 +28,10 @@ const App = () => {
 
   const { isDarkMode } = useTernaryDarkMode();
 
+  useLayoutEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode);
+  }, [isDarkMode]);
+
   useEffect(() => {
     document.title = t('tag.title');
     const setMeta = (attr: string, key: string, content: string) => {
@@ -49,8 +51,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme(isDarkMode ? 'dark' : 'light')}>
-      <CssBaseline />
-      <Box sx={{ height }}>
+      <div style={{ height }}>
         <BrowserRouter>
           <Routes>
             <Route path={`/${lang}`} element={<MainPage />} />
@@ -61,11 +62,9 @@ const App = () => {
             <Route path="*" element={<Navigate to={`/${lang}`} />} />
           </Routes>
         </BrowserRouter>
-      </Box>
+      </div>
     </ThemeProvider>
   );
 };
-
-
 
 export default App;

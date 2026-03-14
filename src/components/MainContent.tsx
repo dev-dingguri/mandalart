@@ -1,9 +1,4 @@
-import {
-  useMemo,
-  useEffect,
-  useCallback,
-  useLayoutEffect,
-} from 'react';
+import { useMemo, useEffect, useCallback, useLayoutEffect } from 'react';
 import Header from 'components/Header';
 import SignInModal from 'components/SignInModal';
 import MandalartView from 'components/MandalartView';
@@ -16,13 +11,12 @@ import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useMandalartStore } from 'stores/useMandalartStore';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
 import { BsPlus } from 'react-icons/bs';
 import { useBoolean } from 'usehooks-ts';
 import useModal from 'hooks/useModal';
 import Alert from './Alert';
+import { Separator } from 'components/ui/separator';
+import { Button } from 'components/ui/button';
 
 export type UserHandlers = {
   user?: User | null;
@@ -124,40 +118,17 @@ const MainContent = ({
   }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert]);
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100%',
-        height: '100%',
-      }}
-    >
+    <div className="flex h-full w-full flex-col items-center">
       <Header
         user={user}
         onOpenSignInUI={openSignInModal}
         onSignOut={signOut}
         onOpenLeftDrawer={openLeftDrawer}
         onOpenRightDrawer={openRightDrawer}
-        sx={{
-          width: 'calc(var(--size-content-width) + 1em)',
-          minWidth: 'calc(var(--size-content-min-width) + 1em)',
-          '& .MuiToolbar-root': {
-            padding: '0',
-          },
-        }}
+        className="w-[calc(var(--size-content-width)+1em)] min-w-[calc(var(--size-content-min-width)+1em)]"
       />
-      <Divider flexItem />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-          height: '100%',
-          overflow: 'auto',
-          scrollbarGutter: 'stable both-edges',
-        }}
-      >
+      <Separator />
+      <div className="flex h-full w-full flex-col overflow-auto [scrollbar-gutter:stable_both-edges]">
         {hasMandalart ? (
           <MandalartView
             mandalartId={currentMandalartId}
@@ -174,19 +145,20 @@ const MainContent = ({
           />
         ) : (
           <Button
-            startIcon={<BsPlus size="2rem" />}
-            sx={{ fontSize: '1.5rem', m: 'auto' }}
+            variant="ghost"
+            className="m-auto gap-2 text-2xl"
             onClick={() => {
               createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch(
                 (e: Error) => openAlert(e.message)
               );
             }}
           >
+            <BsPlus className="size-8" />
             {t('mandalart.new')}
           </Button>
         )}
-        <Box sx={{ height: '4em' }} />
-      </Box>
+        <div className="h-16" />
+      </div>
       <LeftDrawer
         isOpen={isOpenLeftDrawer}
         snippetMap={snippetMap}
@@ -219,7 +191,7 @@ const MainContent = ({
         onSignIn={signIn}
       />
       <Alert isOpen={isOpenAlert} message={alertContent} onClose={closeAlert} />
-    </Box>
+    </div>
   );
 };
 

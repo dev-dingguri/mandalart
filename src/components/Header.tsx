@@ -1,19 +1,16 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
-import AppBar, { AppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import { BsList, BsThreeDots } from 'react-icons/bs';
+import { Button } from 'components/ui/button';
+import { cn } from 'lib/utils';
 
-type HeaderProps = AppBarProps & {
+type HeaderProps = {
   user: User | null;
   onOpenSignInUI: () => void;
   onSignOut: () => void;
   onOpenLeftDrawer: () => void;
   onOpenRightDrawer: () => void;
+  className?: string;
 };
 
 const Header = ({
@@ -22,36 +19,42 @@ const Header = ({
   onSignOut,
   onOpenLeftDrawer,
   onOpenRightDrawer,
-  ...rest
+  className,
 }: HeaderProps) => {
   const { t } = useTranslation();
 
   return (
-    <AppBar position="static" elevation={0} {...rest}>
-      <Toolbar>
-        <IconButton onClick={onOpenLeftDrawer} sx={{ marginRight: '0.25em' }}>
-          <BsList />
-        </IconButton>
-        <Typography variant="h1" sx={{ flexGrow: 1 }}>
-          {t('global.app')}
-        </Typography>
-        <Typography variant="body1" sx={{ margin: '0.5em' }}>
-          {user && user.displayName}
-        </Typography>
+    <header className={cn('bg-app-bg', className)}>
+      <nav className="flex min-h-14 items-center">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onOpenLeftDrawer}
+          className="mr-1"
+        >
+          <BsList className="size-5" />
+        </Button>
+        <h1 className="flex-1 text-[1.3rem] font-bold">{t('global.app')}</h1>
+        <span className="mx-2 text-sm">{user && user.displayName}</span>
         {user ? (
-          <Button sx={{ height: '2.63em' }} onClick={onSignOut}>
+          <Button variant="ghost" onClick={onSignOut}>
             {t('auth.signOut')}
           </Button>
         ) : (
-          <Button sx={{ height: '2.63em' }} onClick={onOpenSignInUI}>
+          <Button variant="ghost" onClick={onOpenSignInUI}>
             {t('auth.signIn')}
           </Button>
         )}
-        <IconButton onClick={onOpenRightDrawer} sx={{ marginLeft: '0.25em' }}>
-          <BsThreeDots />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onOpenRightDrawer}
+          className="ml-1"
+        >
+          <BsThreeDots className="size-5" />
+        </Button>
+      </nav>
+    </header>
   );
 };
 
