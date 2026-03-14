@@ -28,6 +28,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "predeploy:firebase": "pnpm build",
     "deploy:firebase": "firebase deploy",
     "predeploy:preview": "pnpm build",
@@ -35,12 +37,17 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^22.19.15",
     "@vitejs/plugin-react": "^4.7.0",
+    "@vitest/coverage-v8": "^4.1.0",
     "firebase-tools": "^15.10.0",
+    "jsdom": "^28.1.0",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
-    "vite-tsconfig-paths": "^6.1.1"
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.0"
   }
 }
