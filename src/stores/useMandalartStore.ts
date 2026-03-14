@@ -3,7 +3,7 @@ import {
   ref,
   push,
   set as fbSet,
-  remove as fbRemove,
+  update as fbUpdate,
   onValue,
   Unsubscribe,
 } from 'firebase/database';
@@ -112,8 +112,8 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
   _setMandalartMetas: (metaMap) => {
     const { currentMandalartId, selectMandalart } = get();
     const isSelected =
-      metaMap.size === 0 ||
-      (!!currentMandalartId && metaMap.has(currentMandalartId));
+      (metaMap.size === 0 && currentMandalartId === null) ||
+      (currentMandalartId !== null && metaMap.has(currentMandalartId));
 
     set({ metaMap });
     if (!isSelected) {
@@ -146,19 +146,21 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
       throw new Error(`${i18next.t('mandalart.errors.create.default')}`);
     }
 
-    set({ currentMandalartId: mandalartId });
     await fbSet(
       ref(db, `${user.uid}/${DB_TOPIC_TREES}/${mandalartId}`),
       topicTree
     );
+    set({ currentMandalartId: mandalartId });
   },
 
   deleteMandalart: async (id) => {
     const user = get()._user;
     if (!user || !id) return;
 
-    await fbRemove(ref(db, `${user.uid}/${DB_SNIPPETS}/${id}`));
-    await fbRemove(ref(db, `${user.uid}/${DB_TOPIC_TREES}/${id}`));
+    await fbUpdate(ref(db, user.uid), {
+      [`${DB_SNIPPETS}/${id}`]: null,
+      [`${DB_TOPIC_TREES}/${id}`]: null,
+    });
   },
 
   saveMandalartMeta: async (id, meta) => {
@@ -211,17 +213,9 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
 
     if (!isAnyChanged(meta, topicTree)) return;
 
-    try {
-      await get().createMandalart(meta, topicTree);
-      saveGuestMandalartMetas(new Map());
-      saveGuestTopicTrees(new Map());
-    } catch {
-      throw new Error(
-        `${i18next.t('mandalart.errors.uploadTemp.maxUploaded', {
-          maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
-        })}`
-      );
-    }
+    await get().createMandalart(meta, topicTree);
+    saveGuestMandalartMetas(new Map());
+    saveGuestTopicTrees(new Map());
   },
 }));
 
@@ -283,14 +277,12 @@ export const useMandalartInit = (user: User | null) => {
       ref(db, `${user.uid}/${DB_TOPIC_TREES}/${currentMandalartId}`),
       (snapshot) => {
         const value: TopicNode | null = snapshot.val();
-        if (value) {
-          useMandalartStore.setState({
-            currentTopicTree: value,
-            isLoading: false,
-          });
-        }
+        useMandalartStore.setState({
+          currentTopicTree: value,
+          isLoading: false,
+        });
       },
-      (error) => useMandalartStore.setState({ error })
+      (error) => useMandalartStore.setState({ error, isLoading: false })
     );
 
     return () => {
