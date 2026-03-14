@@ -3,7 +3,7 @@ import { Button } from 'components/ui/button';
 import MandalartList from 'components/MandalartList';
 import { MandalartMeta } from 'types/MandalartMeta';
 import { useTranslation } from 'react-i18next';
-import { Drawer, DrawerContent } from 'components/ui/drawer';
+import { Drawer, DrawerContent, DrawerTitle } from 'components/ui/drawer';
 import { Separator } from 'components/ui/separator';
 
 type MandalartListDrawerProps = {
@@ -39,7 +39,8 @@ const MandalartListDrawer = ({
       }}
       direction="left"
     >
-      <DrawerContent>
+      <DrawerContent aria-describedby={undefined}>
+        <DrawerTitle className="sr-only">{t('mandalart.list')}</DrawerTitle>
         <MandalartList
           metaMap={metaMap}
           selectedId={selectedMandalartId}

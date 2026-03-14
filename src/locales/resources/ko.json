@@ -35,6 +35,7 @@
     "version": "버전"
   },
   "mandalart": {
+    "list": "만다라트 목록",
     "new": "새 만다라트",
     "delete": "삭제",
     "reset": "초기화",

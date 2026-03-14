@@ -35,6 +35,7 @@
     "version": "バージョン"
   },
   "mandalart": {
+    "list": "マンダラートリスト",
     "new": "新規マンダラート",
     "delete": "削除",
     "reset": "リセット",
