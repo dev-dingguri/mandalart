@@ -64,7 +64,6 @@ const useUserMandalarts = (
   const createMandalart = useCallback(
     async (snippet: Snippet, topicTree: TopicNode) => {
       if (!canUpload(snippetMap.size, 1)) {
-        // todo: 커스텀 에러 검토
         throw new Error(
           `${t('mandalart.errors.create.maxUploaded', {
             maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
@@ -108,7 +107,6 @@ const useUserMandalarts = (
     [setTopics]
   );
 
-  // todo: 임시 만다라트 업로드한 다음에 동기화 시작하거나 만다라트 업로드도 로딩에 포함시키기
   const uploadTemp = useCallback(async () => {
     const firstKey = Array.from(guestSnippets.keys()).shift();
     if (!firstKey) return;
@@ -124,7 +122,6 @@ const useUserMandalarts = (
         setGuestTopicTrees(new Map());
       })
       .catch((e: Error) => {
-        // todo: e가 'The Mandalart could not be created. ~~'에러인 경우에만
         throw new Error(
           `${t('mandalart.errors.uploadTemp.maxUploaded', {
             maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
@@ -156,7 +153,6 @@ const useUserMandalarts = (
 };
 
 const canUpload = (currentSize: number, uploadSize: number) => {
-  // todo: snippet 임시 저장된 만다라트가 있는 경우 필터링 필요
   return currentSize + uploadSize <= MAX_UPLOAD_MANDALARTS_SIZE;
 };
 

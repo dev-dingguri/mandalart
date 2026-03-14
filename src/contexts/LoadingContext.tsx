@@ -49,7 +49,6 @@ export const useIsLoading = () => {
   if (!context) {
     throw new Error('useIsLoading must be used within a LoadingProvider.');
   }
-  console.log(`isLoading=${context.isLoading}`);
   return context.isLoading;
 };
 
