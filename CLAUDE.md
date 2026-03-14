@@ -12,9 +12,10 @@
 ## 기술 스택
 
 - React 18 + TypeScript 5
-- MUI 5 + Emotion (CSS-in-JS)
-- Firebase (Auth, Realtime Database, Analytics, Hosting)
-- react-router-dom v6, i18next, usehooks-ts
+- Tailwind CSS v4 + shadcn/ui (CSS-in-JS 없음)
+- Zustand (상태 관리)
+- Firebase v11 (Auth, Realtime Database, Analytics, Hosting)
+- react-router v7, i18next, usehooks-ts
 
 ## 환경 변수
 
@@ -24,7 +25,8 @@
 ## 프로젝트 구조
 
 - `src/components/` — React 컴포넌트
-- `src/hooks/` — 커스텀 훅 (인증/DB/상태관리)
-- `src/contexts/` — React Context (FirebaseSdks, Loading)
+- `src/components/ui/` — shadcn/ui 기본 컴포넌트
+- `src/hooks/` — 커스텀 훅
+- `src/stores/` — Zustand 스토어
 - `src/locales/` — 다국어 리소스 (ko, en, ja, zh-CN)
 - `src/types/` — TypeScript 타입 (Snippet, TopicNode)

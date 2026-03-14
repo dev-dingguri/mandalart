@@ -6,19 +6,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-  /* MUI 테마 이식 — MUI 제거 후 shadcn 토큰으로 통합 예정 */
-  --color-app-primary: #FFFFFF;
-  --color-app-primary-dark: #EEF0F2;
-  --color-app-secondary: #5796F8;
-  --color-app-error: #cc3300;
-  --color-app-bg: #EEF0F2;
-  --color-app-fg: #323232;
-  --color-app-fg-secondary: #4e4e4e;
-  --color-app-filter-primary: rgba(17, 15, 13, 0.02);
-  --color-app-filter-secondary: rgba(17, 15, 13, 0.3);
-}
-
 :root {
   color-scheme: light;
   --background: oklch(1 0 0);
@@ -57,15 +44,6 @@
 
 .dark {
   color-scheme: dark;
-  --color-app-primary: #494949;
-  --color-app-primary-dark: #272727;
-  --color-app-secondary: #1670FC;
-  --color-app-error: #b84c4b;
-  --color-app-bg: #272727;
-  --color-app-fg: #e9ebee;
-  --color-app-fg-secondary: #BCBEBF;
-  --color-app-filter-primary: rgba(255, 255, 255, 0.1);
-  --color-app-filter-secondary: rgba(255, 255, 255, 0.35);
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);

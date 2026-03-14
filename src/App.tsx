@@ -4,8 +4,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from 'constants/constants';
-import { ThemeProvider } from '@mui/material/styles';
-import theme from 'theme';
 import { useEventListener, useTernaryDarkMode } from 'usehooks-ts';
 import useAnalytics from 'hooks/useAnalytics';
 import { APP_VERSION } from 'version';
@@ -50,20 +48,18 @@ const App = () => {
   }, [t, isDarkMode]);
 
   return (
-    <ThemeProvider theme={theme(isDarkMode ? 'dark' : 'light')}>
-      <div style={{ height }}>
-        <BrowserRouter>
-          <Routes>
-            <Route path={`/${lang}`} element={<MainPage />} />
-            <Route
-              path={`/${lang}${PATH_OSS}`}
-              element={<OpenSourceLicensesPage />}
-            />
-            <Route path="*" element={<Navigate to={`/${lang}`} />} />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </ThemeProvider>
+    <div style={{ height }}>
+      <BrowserRouter>
+        <Routes>
+          <Route path={`/${lang}`} element={<MainPage />} />
+          <Route
+            path={`/${lang}${PATH_OSS}`}
+            element={<OpenSourceLicensesPage />}
+          />
+          <Route path="*" element={<Navigate to={`/${lang}`} />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 };
 
