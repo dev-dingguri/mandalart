@@ -4,8 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from 'constants/constants';
 import { useIsDarkMode } from 'stores/useThemeStore';
-import useAnalytics from 'hooks/useAnalytics';
-import { APP_VERSION } from 'version';
+import useAnalyticsEvents from 'hooks/useAnalyticsEvents';
 
 const OpenSourceLicensesPage = lazy(
   () => import('components/OpenSourceLicensesPage')
@@ -16,11 +15,11 @@ const App = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
-  const { setUserProperties } = useAnalytics();
+  const { trackAppVersion } = useAnalyticsEvents();
 
   useEffect(() => {
-    setUserProperties({ app_version: APP_VERSION });
-  }, [setUserProperties]);
+    trackAppVersion();
+  }, [trackAppVersion]);
 
   /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 높이로 변경 */
   useEffect(() => {

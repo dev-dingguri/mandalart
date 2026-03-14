@@ -5,6 +5,7 @@ import { Github, Youtube, ChevronDown } from 'lucide-react';
 import { APP_VERSION } from 'version';
 import { PATH_OSS } from 'constants/constants';
 import { useThemeStore, TernaryDarkMode } from 'stores/useThemeStore';
+import useAnalyticsEvents from 'hooks/useAnalyticsEvents';
 import { Drawer, DrawerContent } from 'components/ui/drawer';
 import { Separator } from 'components/ui/separator';
 
@@ -98,6 +99,7 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
   const { ternaryDarkMode, setTernaryDarkMode } = useThemeStore();
 
   const { t, i18n } = useTranslation();
+  const { trackLanguageChange, trackThemeChange } = useAnalyticsEvents();
 
   const navigate = useNavigate();
   const goToOpenSourceLicense = () => {
@@ -121,7 +123,10 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
               value,
               label: t(name),
             }))}
-            onChange={(val) => setTernaryDarkMode(val as TernaryDarkMode)}
+            onChange={(val) => {
+              setTernaryDarkMode(val as TernaryDarkMode);
+              trackThemeChange(val);
+            }}
           />
 
           <Separator />
@@ -133,7 +138,10 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
               value,
               label: name,
             }))}
-            onChange={(val) => i18n.changeLanguage(val)}
+            onChange={(val) => {
+              i18n.changeLanguage(val);
+              trackLanguageChange(val);
+            }}
           />
 
           <Separator />

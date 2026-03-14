@@ -11,6 +11,7 @@ import MandalartViewToggle from 'components/MandalartViewToggle';
 import { MandalartMeta } from 'types/MandalartMeta';
 import TextInputDialog from 'components/TextInputDialog';
 import { useTranslation } from 'react-i18next';
+import useAnalyticsEvents from 'hooks/useAnalyticsEvents';
 
 type MandalartViewProps = {
   mandalartId: string;
@@ -33,6 +34,7 @@ const MandalartView = ({
   const [isOpenTitleEditor, setIsOpenTitleEditor] = useState(false);
 
   const { t } = useTranslation();
+  const { trackViewModeChange } = useAnalyticsEvents();
 
   const handleGetTopic = useCallback(
     (gridIdx: number, gridItemIdx: number) =>
@@ -67,7 +69,13 @@ const MandalartView = ({
         >
           {meta.title ? meta.title : t('mandalart.untitled')}
         </h2>
-        <MandalartViewToggle isAllView={isAllView} onChange={setIsAllView} />
+        <MandalartViewToggle
+          isAllView={isAllView}
+          onChange={(val) => {
+            setIsAllView(val);
+            trackViewModeChange(val ? 'all' : 'focus');
+          }}
+        />
       </div>
       <div className="mb-2 mt-3">
         {isAllView ? (

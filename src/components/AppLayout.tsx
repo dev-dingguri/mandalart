@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useCallback, useLayoutEffect, useState } from 'react';
+import { useMemo, useEffect, useCallback, useLayoutEffect, useState, useRef } from 'react';
 import Header from 'components/Header';
 import SignInDialog from 'components/SignInDialog';
 import MandalartView from 'components/MandalartView';
@@ -13,6 +13,7 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { useMandalartStore } from 'stores/useMandalartStore';
 import { Plus } from 'lucide-react';
 import useModal from 'hooks/useModal';
+import useAnalyticsEvents from 'hooks/useAnalyticsEvents';
 import AlertDialog from './AlertDialog';
 import { Separator } from 'components/ui/separator';
 import { Button } from 'components/ui/button';
@@ -64,6 +65,23 @@ const AppLayout = ({
 
   const { t } = useTranslation();
 
+  const {
+    trackUserType,
+    trackSignIn,
+    trackSignOut,
+    trackMandalartCreate,
+    trackMandalartDelete,
+    trackMandalartReset,
+    trackGuestUpload,
+  } = useAnalyticsEvents();
+
+  const prevUserRef = useRef(user);
+  useEffect(() => {
+    if (prevUserRef.current === user) return;
+    prevUserRef.current = user;
+    trackUserType(user ? 'authenticated' : 'guest');
+  }, [user, trackUserType]);
+
   const handleMandalartMetaChange = useCallback(
     (meta: MandalartMeta) => {
       saveMandalartMeta(currentMandalartId, meta);
@@ -107,17 +125,22 @@ const AppLayout = ({
     const shouldUploadTemp = !!user && getShouldUploadTemp();
     if (!shouldUploadTemp) return;
     setShouldUploadTemp(false);
-    uploadTemp().catch((e: Error) => {
-      e && openAlert(e.message);
-    });
-  }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert]);
+    uploadTemp()
+      .then(() => trackGuestUpload())
+      .catch((e: Error) => {
+        e && openAlert(e.message);
+      });
+  }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert, trackGuestUpload]);
 
   return (
     <div className="flex h-full w-full flex-col items-center">
       <Header
         user={user}
         onOpenSignInUI={openSignInDialog}
-        onSignOut={signOut}
+        onSignOut={() => {
+          trackSignOut();
+          signOut();
+        }}
         onOpenLeftDrawer={openLeftDrawer}
         onOpenRightDrawer={openRightDrawer}
         className="w-[calc(var(--size-content-width)+1em)] min-w-[calc(var(--size-content-min-width)+1em)]"
@@ -138,9 +161,9 @@ const AppLayout = ({
             variant="ghost"
             className="m-auto gap-2 text-2xl"
             onClick={() => {
-              createMandalart(EMPTY_META, EMPTY_TOPIC_TREE).catch(
-                (e: Error) => openAlert(e.message)
-              );
+              createMandalart(EMPTY_META, EMPTY_TOPIC_TREE)
+                .then(() => trackMandalartCreate())
+                .catch((e: Error) => openAlert(e.message));
             }}
           >
             <Plus className="size-8" />
@@ -159,6 +182,7 @@ const AppLayout = ({
         }}
         onDeleteMandalart={(mandalartId) => {
           deleteMandalart(mandalartId);
+          trackMandalartDelete();
         }}
         onRenameMandalart={(mandalartId, name) => {
           saveMandalartMeta(mandalartId, { title: name });
@@ -166,10 +190,14 @@ const AppLayout = ({
         onResetMandalart={(mandalartId) => {
           saveMandalartMeta(mandalartId, EMPTY_META);
           saveTopicTree(mandalartId, EMPTY_TOPIC_TREE);
+          trackMandalartReset();
         }}
         onCreateMandalart={() => {
           createMandalart(EMPTY_META, EMPTY_TOPIC_TREE)
-            .then(() => closeLeftDrawer())
+            .then(() => {
+              trackMandalartCreate();
+              closeLeftDrawer();
+            })
             .catch((e: Error) => openAlert(e.message));
         }}
         onClose={closeLeftDrawer}
@@ -178,7 +206,10 @@ const AppLayout = ({
       <SignInDialog
         isOpen={isOpenSignInDialog}
         onClose={closeSignInDialog}
-        onSignIn={signIn}
+        onSignIn={(providerId) => {
+          trackSignIn(providerId);
+          signIn(providerId);
+        }}
       />
       <AlertDialog isOpen={isOpenAlert} message={alertContent} onClose={closeAlert} />
     </div>
