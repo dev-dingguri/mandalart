@@ -29,7 +29,7 @@ const Header = ({
         <Button
           variant="ghost"
           size="icon"
-          onClick={onOpenLeftDrawer}
+          onClick={(e) => { e.currentTarget.blur(); onOpenLeftDrawer(); }}
           className="mr-1"
         >
           <Menu className="size-5" />
@@ -41,14 +41,14 @@ const Header = ({
             {t('auth.signOut')}
           </Button>
         ) : (
-          <Button variant="ghost" onClick={onOpenSignInUI}>
+          <Button variant="ghost" onClick={(e) => { e.currentTarget.blur(); onOpenSignInUI(); }}>
             {t('auth.signIn')}
           </Button>
         )}
         <Button
           variant="ghost"
           size="icon"
-          onClick={onOpenRightDrawer}
+          onClick={(e) => { e.currentTarget.blur(); onOpenRightDrawer(); }}
           className="ml-1"
         >
           <MoreHorizontal className="size-5" />
