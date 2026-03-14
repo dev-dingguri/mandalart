@@ -3,6 +3,18 @@
 
 <head>
   <meta charset="utf-8" />
+  <script>
+    (function () {
+      var supported = ['ko', 'en', 'ja', 'zh-CN'];
+      var fromPath = location.pathname.match(/^\/(ko|en|ja|zh-CN)(\/|$)/);
+      var lang = (fromPath && fromPath[1])
+        || localStorage.getItem('i18nextLng')
+        || navigator.language
+        || 'en';
+      if (supported.indexOf(lang) === -1) lang = 'en';
+      document.documentElement.lang = lang;
+    })();
+  </script>
   <link rel="alternate" hreflang="x-default" href="https://mandalart.me/" />
   <link rel="alternate" hreflang="en" href="https://mandalart.me/en/" />
   <link rel="alternate" hreflang="ko" href="https://mandalart.me/ko/" />

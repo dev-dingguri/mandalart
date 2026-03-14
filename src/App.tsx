@@ -37,6 +37,10 @@ const App = () => {
     document.documentElement.classList.toggle('dark', isDarkMode);
   }, [isDarkMode]);
 
+  useLayoutEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
   useEffect(() => {
     document.title = t('seo.title');
     const setMeta = (attr: string, key: string, content: string) => {
