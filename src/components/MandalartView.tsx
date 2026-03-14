@@ -8,15 +8,15 @@ import {
   TMP_MANDALART_ID,
 } from 'constants/constants';
 import MandalartViewToggle from 'components/MandalartViewToggle';
-import { Snippet } from 'types/Snippet';
+import { MandalartMeta } from 'types/MandalartMeta';
 import TextInputDialog from 'components/TextInputDialog';
 import { useTranslation } from 'react-i18next';
 
 type MandalartViewProps = {
   mandalartId: string;
-  snippet: Snippet;
+  snippet: MandalartMeta;
   topicTree: TopicNode;
-  onSnippetChange: (snippet: Snippet) => void;
+  onMandalartMetaChange: (snippet: MandalartMeta) => void;
   onTopicTreeChange: (topicTree: TopicNode) => void;
 } & HTMLAttributes<HTMLDivElement>;
 
@@ -24,7 +24,7 @@ const MandalartView = ({
   mandalartId,
   snippet,
   topicTree,
-  onSnippetChange,
+  onMandalartMetaChange,
   onTopicTreeChange,
   className,
   ...rest
@@ -81,7 +81,7 @@ const MandalartView = ({
         initialText={snippet.title}
         textLimit={MAX_TOPIC_TEXT_SIZE}
         onClose={() => setIsOpenTitleEditor(false)}
-        onConfirm={(title) => onSnippetChange({ title })}
+        onConfirm={(title) => onMandalartMetaChange({ title })}
       />
     </div>
   );

@@ -1,4 +1,4 @@
-import { Snippet } from 'types/Snippet';
+import { MandalartMeta } from 'types/MandalartMeta';
 import { TopicNode } from 'types/TopicNode';
 
 // common constants
@@ -17,7 +17,7 @@ export const MAX_TOPIC_TEXT_SIZE = 50;
 // mandalart data
 export const TMP_MANDALART_ID = 'tmp_mandalart_id';
 
-export const EMPTY_SNIPPET: Snippet = {
+export const EMPTY_META: MandalartMeta = {
   title: '',
 };
 export const EMPTY_TOPIC_TREE: TopicNode = {

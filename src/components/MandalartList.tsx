@@ -1,8 +1,8 @@
-import { Snippet } from 'types/Snippet';
+import { MandalartMeta } from 'types/MandalartMeta';
 import MandalartListItem from 'components/MandalartListItem';
 
 type MandalartListProps = {
-  snippetMap: Map<string, Snippet>;
+  snippetMap: Map<string, MandalartMeta>;
   selectedId: string | null;
   onItemSelect: (mandalartId: string) => void;
   onItemDelete: (mandalartId: string) => void;

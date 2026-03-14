@@ -1,5 +1,5 @@
-import MainUserPage from 'components/MainUserPage';
-import MainGuestPage from 'components/MainGuestPage';
+import AuthenticatedView from 'components/AuthenticatedView';
+import GuestView from 'components/GuestView';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useIsLoading, useAddLoadingCondition } from 'stores/useLoadingStore';
 
@@ -16,9 +16,9 @@ const MainPage = () => {
         <div className="m-auto size-16 animate-spin rounded-full border-4 border-border border-t-foreground" />
       </div>
       {user ? (
-        <MainUserPage user={user} userError={userError} />
+        <AuthenticatedView user={user} userError={userError} />
       ) : (
-        <MainGuestPage userError={userError} />
+        <GuestView userError={userError} />
       )}
     </>
   );

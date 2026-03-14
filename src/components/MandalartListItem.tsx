@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Snippet } from 'types/Snippet';
+import { MandalartMeta } from 'types/MandalartMeta';
 import { LayoutGrid, MoreHorizontal } from 'lucide-react';
 import TextInputDialog from 'components/TextInputDialog';
 import {
@@ -16,7 +16,7 @@ import {
 
 type MandalartListItemProps = {
   mandalartId: string;
-  snippet: Snippet;
+  snippet: MandalartMeta;
   isSelected: boolean;
   onSelect: (mandalartId: string) => void;
   onDelete: (mandalartId: string) => void;

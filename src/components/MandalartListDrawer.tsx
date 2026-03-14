@@ -1,14 +1,14 @@
 import { Plus } from 'lucide-react';
 import { Button } from 'components/ui/button';
 import MandalartList from 'components/MandalartList';
-import { Snippet } from 'types/Snippet';
+import { MandalartMeta } from 'types/MandalartMeta';
 import { useTranslation } from 'react-i18next';
 import { Drawer, DrawerContent } from 'components/ui/drawer';
 import { Separator } from 'components/ui/separator';
 
 type MandalartListDrawerProps = {
   isOpen: boolean;
-  snippetMap: Map<string, Snippet>;
+  snippetMap: Map<string, MandalartMeta>;
   selectedMandalartId: string | null;
   onSelectMandalart: (mandalartId: string) => void;
   onDeleteMandalart: (mandalartId: string) => void;

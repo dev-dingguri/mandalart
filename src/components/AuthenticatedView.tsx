@@ -3,12 +3,12 @@ import { useAddLoadingCondition } from 'stores/useLoadingStore';
 import { useMandalartInit, useMandalartStore } from 'stores/useMandalartStore';
 import { User } from 'firebase/auth';
 
-type MainUserPageProps = {
+type AuthenticatedViewProps = {
   user: User;
   userError: Error | null;
 };
 
-const MainUserPage = ({ user, userError }: MainUserPageProps) => {
+const AuthenticatedView = ({ user, userError }: AuthenticatedViewProps) => {
   useMandalartInit(user);
   const isLoading = useMandalartStore((s) => s.isLoading);
 
@@ -23,4 +23,4 @@ const MainUserPage = ({ user, userError }: MainUserPageProps) => {
   );
 };
 
-export default MainUserPage;
+export default AuthenticatedView;

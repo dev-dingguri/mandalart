@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import {
   TABLE_SIZE,
   TABLE_CENTER_IDX,
-  EMPTY_SNIPPET,
+  EMPTY_META,
   EMPTY_TOPIC_TREE,
   MAX_MANDALART_TITLE_SIZE,
   MAX_TOPIC_TEXT_SIZE,
@@ -17,8 +17,8 @@ describe('만다라트 상수', () => {
     expect(TABLE_CENTER_IDX).toBe(4);
   });
 
-  it('EMPTY_SNIPPET은 빈 title을 가져야 한다', () => {
-    expect(EMPTY_SNIPPET.title).toBe('');
+  it('EMPTY_META는 빈 title을 가져야 한다', () => {
+    expect(EMPTY_META.title).toBe('');
   });
 
   it('EMPTY_TOPIC_TREE는 올바른 2단계 트리 구조여야 한다', () => {

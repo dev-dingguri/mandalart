@@ -2,11 +2,11 @@ import AppLayout from 'components/AppLayout';
 import { useAddLoadingCondition } from 'stores/useLoadingStore';
 import { useMandalartInit, useMandalartStore } from 'stores/useMandalartStore';
 
-type MainGuestPageProps = {
+type GuestViewProps = {
   userError: Error | null;
 };
 
-const MainGuestPage = ({ userError }: MainGuestPageProps) => {
+const GuestView = ({ userError }: GuestViewProps) => {
   useMandalartInit(null);
   const isLoading = useMandalartStore((s) => s.isLoading);
 
@@ -19,4 +19,4 @@ const MainGuestPage = ({ userError }: MainGuestPageProps) => {
   );
 };
 
-export default MainGuestPage;
+export default GuestView;

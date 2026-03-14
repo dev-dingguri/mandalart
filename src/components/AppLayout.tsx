@@ -3,9 +3,9 @@ import Header from 'components/Header';
 import SignInDialog from 'components/SignInDialog';
 import MandalartView from 'components/MandalartView';
 import MandalartListDrawer from 'components/MandalartListDrawer';
-import { EMPTY_SNIPPET, EMPTY_TOPIC_TREE } from 'constants/constants';
+import { EMPTY_META, EMPTY_TOPIC_TREE } from 'constants/constants';
 import SettingsDrawer from 'components/SettingsDrawer';
-import { Snippet } from '../types/Snippet';
+import { MandalartMeta } from '../types/MandalartMeta';
 import { TopicNode } from '../types/TopicNode';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
@@ -39,7 +39,7 @@ const AppLayout = ({
     selectMandalart: selectMandalartId,
     createMandalart,
     deleteMandalart,
-    saveSnippet,
+    saveMandalartMeta,
     saveTopicTree,
     uploadTemp,
   } = useMandalartStore();
@@ -64,11 +64,11 @@ const AppLayout = ({
 
   const { t } = useTranslation();
 
-  const handleSnippetChange = useCallback(
-    (snippet: Snippet) => {
-      saveSnippet(currentMandalartId, snippet);
+  const handleMandalartMetaChange = useCallback(
+    (snippet: MandalartMeta) => {
+      saveMandalartMeta(currentMandalartId, snippet);
     },
-    [currentMandalartId, saveSnippet]
+    [currentMandalartId, saveMandalartMeta]
   );
 
   const handleTopicTreeChange = useCallback(
@@ -78,7 +78,7 @@ const AppLayout = ({
     [currentMandalartId, saveTopicTree]
   );
 
-  const currentSnippet = useMemo(() => {
+  const currentMandalartMeta = useMemo(() => {
     if (!currentMandalartId) return null;
     const snippet = snippetMap.get(currentMandalartId);
     return snippet ? snippet : null;
@@ -87,7 +87,7 @@ const AppLayout = ({
   const hasMandalart =
     snippetMap.size > 0 &&
     currentMandalartId !== null &&
-    currentSnippet !== null &&
+    currentMandalartMeta !== null &&
     currentTopicTree !== null;
 
   useEffect(() => {
@@ -127,9 +127,9 @@ const AppLayout = ({
         {hasMandalart ? (
           <MandalartView
             mandalartId={currentMandalartId}
-            snippet={currentSnippet}
+            snippet={currentMandalartMeta}
             topicTree={currentTopicTree}
-            onSnippetChange={handleSnippetChange}
+            onMandalartMetaChange={handleMandalartMetaChange}
             onTopicTreeChange={handleTopicTreeChange}
             className="mx-auto w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] py-2"
           />
@@ -138,7 +138,7 @@ const AppLayout = ({
             variant="ghost"
             className="m-auto gap-2 text-2xl"
             onClick={() => {
-              createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE).catch(
+              createMandalart(EMPTY_META, EMPTY_TOPIC_TREE).catch(
                 (e: Error) => openAlert(e.message)
               );
             }}
@@ -161,14 +161,14 @@ const AppLayout = ({
           deleteMandalart(mandalartId);
         }}
         onRenameMandalart={(mandalartId, name) => {
-          saveSnippet(mandalartId, { title: name });
+          saveMandalartMeta(mandalartId, { title: name });
         }}
         onResetMandalart={(mandalartId) => {
-          saveSnippet(mandalartId, EMPTY_SNIPPET);
+          saveMandalartMeta(mandalartId, EMPTY_META);
           saveTopicTree(mandalartId, EMPTY_TOPIC_TREE);
         }}
         onCreateMandalart={() => {
-          createMandalart(EMPTY_SNIPPET, EMPTY_TOPIC_TREE)
+          createMandalart(EMPTY_META, EMPTY_TOPIC_TREE)
             .then(() => closeLeftDrawer())
             .catch((e: Error) => openAlert(e.message));
         }}
