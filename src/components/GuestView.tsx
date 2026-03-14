@@ -1,5 +1,4 @@
 import AppLayout from 'components/AppLayout';
-import { useAddLoadingCondition } from 'stores/useLoadingStore';
 import { useMandalartInit, useMandalartStore } from 'stores/useMandalartStore';
 
 type GuestViewProps = {
@@ -9,8 +8,6 @@ type GuestViewProps = {
 const GuestView = ({ userError }: GuestViewProps) => {
   useMandalartInit(null);
   const isLoading = useMandalartStore((s) => s.isLoading);
-
-  useAddLoadingCondition('guest-mandalarts', isLoading);
 
   if (isLoading) return null;
 

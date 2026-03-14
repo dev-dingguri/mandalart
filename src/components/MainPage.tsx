@@ -1,14 +1,14 @@
 import AuthenticatedView from 'components/AuthenticatedView';
 import GuestView from 'components/GuestView';
 import { useAuthStore } from 'stores/useAuthStore';
-import { useIsLoading, useAddLoadingCondition } from 'stores/useLoadingStore';
+import { useMandalartStore } from 'stores/useMandalartStore';
 
 const MainPage = () => {
   const user = useAuthStore((s) => s.user);
-  const isUserLoading = useAuthStore((s) => s.isLoading);
+  const isAuthLoading = useAuthStore((s) => s.isLoading);
   const userError = useAuthStore((s) => s.error);
-  const isLoading = useIsLoading();
-  useAddLoadingCondition('user', isUserLoading);
+  const isMandalartLoading = useMandalartStore((s) => s.isLoading);
+  const isLoading = isAuthLoading || (user !== null && isMandalartLoading);
 
   return (
     <>
