@@ -11,7 +11,6 @@ import {
   DB_SNIPPETS,
   DB_TOPIC_TREES,
 } from 'constants/constants';
-import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { MandalartsHandlers } from 'components/MainContent';
 import useDatabase from './useDatabase';
@@ -163,8 +162,8 @@ const canUpload = (currentSize: number, uploadSize: number) => {
 
 const isAnyChanged = (snippet: Snippet, topicTree: TopicNode) => {
   return (
-    !isEqual(snippet, EMPTY_SNIPPET) || //
-    !isEqual(topicTree, EMPTY_TOPIC_TREE)
+    JSON.stringify(snippet) !== JSON.stringify(EMPTY_SNIPPET) ||
+    JSON.stringify(topicTree) !== JSON.stringify(EMPTY_TOPIC_TREE)
   );
 };
 

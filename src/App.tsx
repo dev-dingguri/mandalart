@@ -7,7 +7,6 @@ import { PATH_OSS } from 'constants/constants';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import { throttle } from 'lodash';
 import theme from 'theme';
 import { useEventListener, useTernaryDarkMode } from 'usehooks-ts';
 import useAnalytics from 'hooks/useAnalytics';
@@ -25,10 +24,9 @@ const App = () => {
   }, [setUserProperties]);
 
   /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 높이로 변경 */
-  useEventListener(
-    'resize',
-    throttle(() => setHeight(window.innerHeight), 33)
-  );
+  useEventListener('resize', () => {
+    requestAnimationFrame(() => setHeight(window.innerHeight));
+  });
 
   const { isDarkMode } = useTernaryDarkMode();
 

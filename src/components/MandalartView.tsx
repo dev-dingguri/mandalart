@@ -7,7 +7,6 @@ import {
   TABLE_CENTER_IDX,
   TMP_MANDALART_ID,
 } from 'constants/constants';
-import { cloneDeep } from 'lodash';
 import MandalartViewToggle from 'components/MandalartViewToggle';
 import { Snippet } from 'types/Snippet';
 import TextEditor from 'components/TextEditor';
@@ -49,7 +48,7 @@ const MandalartView = ({
 
   const handleUpdateTopic = useCallback(
     (gridIdx: number, gridItemIdx: number, text: string) => {
-      const newTopicTree = cloneDeep(topicTree);
+      const newTopicTree = structuredClone(topicTree);
       const newTopic = getTopic(newTopicTree, gridIdx, gridItemIdx);
       newTopic.text = text;
       onTopicTreeChange(newTopicTree);
