@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Snippet } from 'types/Snippet';
 import { LayoutGrid, MoreHorizontal } from 'lucide-react';
 import TextEditor from 'components/TextEditor';

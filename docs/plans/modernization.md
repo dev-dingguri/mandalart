@@ -467,9 +467,10 @@ MUI가 완전히 제거된 후 React 19로 업그레이드한다.
 
 ## 기술 부채
 
-### TD1: 불필요한 `import React` default import 잔존
+### TD1: 불필요한 `import React` default import 잔존 :white_check_mark:
 
 **발견:** T17 코드 리뷰 (2026-03-14)
+**완료:** 2026-03-14
 **우선순위:** 낮음 — 기능 영향 없음, 코드 위생 문제
 
 **대상 파일:**
