@@ -206,9 +206,15 @@ const AppLayout = ({
       <SignInDialog
         isOpen={isOpenSignInDialog}
         onClose={closeSignInDialog}
-        onSignIn={(providerId) => {
+        onSignIn={async (providerId) => {
           trackSignIn(providerId);
-          signIn(providerId);
+          try {
+            await signIn(providerId);
+          } catch (e: any) {
+            if (e?.code !== 'auth/popup-closed-by-user') {
+              openAlert(t('auth.errors.signIn.default'));
+            }
+          }
         }}
       />
       <AlertDialog isOpen={isOpenAlert} message={alertContent} onClose={closeAlert} />

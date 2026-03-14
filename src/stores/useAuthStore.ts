@@ -2,8 +2,7 @@ import { create } from 'zustand';
 import {
   User,
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
 } from 'firebase/auth';
 import { auth } from 'lib/firebase';
 import { STORAGE_KEY_SIGN_IN_SESSION } from 'constants/constants';
@@ -55,8 +54,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
   error: null,
 
-  signIn: async (providerId) =>
-    signInWithRedirect(auth, getProvider(providerId)),
+  signIn: async (providerId) => {
+    const userCred = await signInWithPopup(auth, getProvider(providerId));
+    const sessions = readSessions();
+    sessions[userCred.user.uid] = INITIAL_SIGN_IN_SESSION;
+    writeSessions(sessions);
+  },
 
   signOut: async () => auth.signOut(),
 
@@ -78,17 +81,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     writeSessions(sessions);
   },
 }));
-
-// Module-level initialization — runs once when the module is first imported
-getRedirectResult(auth)
-  .then((userCred) => {
-    if (userCred) {
-      const sessions = readSessions();
-      sessions[userCred.user.uid] = INITIAL_SIGN_IN_SESSION;
-      writeSessions(sessions);
-    }
-  })
-  .catch((error) => useAuthStore.setState({ error }));
 
 auth.onAuthStateChanged(
   (user) => useAuthStore.setState({ user, isLoading: false, error: null }),
