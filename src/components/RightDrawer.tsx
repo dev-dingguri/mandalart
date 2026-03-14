@@ -89,12 +89,12 @@ const themeOptions = [
   { value: 'dark', name: 'theme.options.dark' },
 ];
 
-type RightAsideProps = {
+type RightDrawerProps = {
   isOpen: boolean;
   onClose: () => void;
 };
 
-const RightAside = ({ isOpen, onClose }: RightAsideProps) => {
+const RightDrawer = ({ isOpen, onClose }: RightDrawerProps) => {
   const { ternaryDarkMode, setTernaryDarkMode } = useThemeStore();
 
   const { t, i18n } = useTranslation();
@@ -184,4 +184,4 @@ const RightAside = ({ isOpen, onClose }: RightAsideProps) => {
   );
 };
 
-export default RightAside;
+export default RightDrawer;
