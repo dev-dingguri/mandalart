@@ -16,6 +16,7 @@
 - Zustand (상태 관리)
 - Firebase v12 (Auth, Realtime Database, Analytics, Hosting)
 - react-router v7, i18next v25, react-i18next v16
+- lucide-react (아이콘)
 
 ## 환경 변수
 
