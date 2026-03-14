@@ -7,28 +7,28 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Light 기본 — dark 모드는 .dark 클래스로 오버라이드 */
-  --color-primary: #FFFFFF;
-  --color-primary-dark: #EEF0F2;
-  --color-secondary: #5796F8;
-  --color-error: #cc3300;
-  --color-background: #EEF0F2;
-  --color-foreground: #323232;
-  --color-foreground-secondary: #4e4e4e;
-  --color-filter-primary: rgba(17, 15, 13, 0.02);
-  --color-filter-secondary: rgba(17, 15, 13, 0.3);
+  /* MUI 테마 이식 — MUI 제거 후 shadcn 토큰으로 통합 예정 */
+  --color-app-primary: #FFFFFF;
+  --color-app-primary-dark: #EEF0F2;
+  --color-app-secondary: #5796F8;
+  --color-app-error: #cc3300;
+  --color-app-bg: #EEF0F2;
+  --color-app-fg: #323232;
+  --color-app-fg-secondary: #4e4e4e;
+  --color-app-filter-primary: rgba(17, 15, 13, 0.02);
+  --color-app-filter-secondary: rgba(17, 15, 13, 0.3);
 }
 
 .dark {
-  --color-primary: #494949;
-  --color-primary-dark: #272727;
-  --color-secondary: #1670FC;
-  --color-error: #b84c4b;
-  --color-background: #272727;
-  --color-foreground: #e9ebee;
-  --color-foreground-secondary: #BCBEBF;
-  --color-filter-primary: rgba(255, 255, 255, 0.1);
-  --color-filter-secondary: rgba(255, 255, 255, 0.35);
+  --color-app-primary: #494949;
+  --color-app-primary-dark: #272727;
+  --color-app-secondary: #1670FC;
+  --color-app-error: #b84c4b;
+  --color-app-bg: #272727;
+  --color-app-fg: #e9ebee;
+  --color-app-fg-secondary: #BCBEBF;
+  --color-app-filter-primary: rgba(255, 255, 255, 0.1);
+  --color-app-filter-secondary: rgba(255, 255, 255, 0.35);
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
