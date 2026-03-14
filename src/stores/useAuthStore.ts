@@ -4,8 +4,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
 } from 'firebase/auth';
-import { auth } from 'lib/firebase';
-import { STORAGE_KEY_SIGN_IN_SESSION } from 'constants/constants';
+import { auth } from '@/lib/firebase';
+import { STORAGE_KEY_SIGN_IN_SESSION } from '@/constants/constants';
 
 type SignInSession = {
   shouldUploadTemp: boolean;

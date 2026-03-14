@@ -1,5 +1,5 @@
-import { MandalartMeta } from 'types/MandalartMeta';
-import { TopicNode } from 'types/TopicNode';
+import { MandalartMeta } from '@/types/MandalartMeta';
+import { TopicNode } from '@/types/TopicNode';
 
 // common constants
 

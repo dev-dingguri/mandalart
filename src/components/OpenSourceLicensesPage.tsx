@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import openSourceLicensesJson from 'assets/data/openSourceLicenses.json';
+import openSourceLicensesJson from '@/assets/data/openSourceLicenses.json';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 

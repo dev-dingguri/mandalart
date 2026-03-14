@@ -1,7 +1,7 @@
-import AuthenticatedView from 'components/AuthenticatedView';
-import GuestView from 'components/GuestView';
-import { useAuthStore } from 'stores/useAuthStore';
-import { useMandalartStore } from 'stores/useMandalartStore';
+import AuthenticatedView from '@/components/AuthenticatedView';
+import GuestView from '@/components/GuestView';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useMandalartStore } from '@/stores/useMandalartStore';
 
 const MainPage = () => {
   const user = useAuthStore((s) => s.user);

@@ -1,11 +1,11 @@
 import { useRef, useState, TouchEvent } from 'react';
-import Mandalart, { MandalartProps } from 'components/Mandalart';
+import Mandalart, { MandalartProps } from '@/components/Mandalart';
 import {
   TABLE_COL_SIZE,
   TABLE_SIZE,
   TABLE_CENTER_IDX,
-} from 'constants/constants';
-import AspectSquare from 'components/AspectSquare';
+} from '@/constants/constants';
+import AspectSquare from '@/components/AspectSquare';
 
 const MandalartFocusView = ({ ...props }: MandalartProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);

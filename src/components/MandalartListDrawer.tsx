@@ -1,7 +1,7 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import MandalartList from 'components/MandalartList';
-import { MandalartMeta } from 'types/MandalartMeta';
+import MandalartList from '@/components/MandalartList';
+import { MandalartMeta } from '@/types/MandalartMeta';
 import { useTranslation } from 'react-i18next';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { Separator } from '@/components/ui/separator';

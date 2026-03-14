@@ -1,5 +1,5 @@
 import { ProviderId } from 'firebase/auth';
-import googleIco from 'assets/images/google.svg';
+import googleIco from '@/assets/images/google.svg';
 import { useTranslation } from 'react-i18next';
 import {
   Dialog,

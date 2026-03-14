@@ -1,6 +1,6 @@
 import { useState, useEffect, FormEvent, ChangeEvent, KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import i18n from 'locales/i18n';
+import i18n from '@/locales/i18n';
 import {
   Dialog,
   DialogContent,

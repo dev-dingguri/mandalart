@@ -9,10 +9,10 @@ import {
 } from 'firebase/database';
 import { User } from 'firebase/auth';
 import { useEffect, useRef } from 'react';
-import { db } from 'lib/firebase';
+import { db } from '@/lib/firebase';
 import i18next from 'i18next';
-import { MandalartMeta } from 'types/MandalartMeta';
-import { TopicNode } from 'types/TopicNode';
+import { MandalartMeta } from '@/types/MandalartMeta';
+import { TopicNode } from '@/types/TopicNode';
 import {
   DB_SNIPPETS,
   DB_TOPIC_TREES,
@@ -22,7 +22,7 @@ import {
   EMPTY_META,
   EMPTY_TOPIC_TREE,
   MAX_UPLOAD_MANDALARTS_SIZE,
-} from 'constants/constants';
+} from '@/constants/constants';
 
 // -- localStorage helpers --
 

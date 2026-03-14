@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import useAnalytics from 'hooks/useAnalytics';
-import { APP_VERSION } from 'version';
+import useAnalytics from '@/hooks/useAnalytics';
+import { APP_VERSION } from '@/version';
 
 const useAnalyticsEvents = () => {
   const { logEvent, setUserProperties } = useAnalytics();

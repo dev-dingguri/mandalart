@@ -1,5 +1,5 @@
-import AppLayout from 'components/AppLayout';
-import { useMandalartInit, useMandalartStore } from 'stores/useMandalartStore';
+import AppLayout from '@/components/AppLayout';
+import { useMandalartInit, useMandalartStore } from '@/stores/useMandalartStore';
 import { User } from 'firebase/auth';
 
 type AuthenticatedViewProps = {

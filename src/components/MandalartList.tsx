@@ -1,5 +1,5 @@
-import { MandalartMeta } from 'types/MandalartMeta';
-import MandalartListItem from 'components/MandalartListItem';
+import { MandalartMeta } from '@/types/MandalartMeta';
+import MandalartListItem from '@/components/MandalartListItem';
 
 type MandalartListProps = {
   metaMap: Map<string, MandalartMeta>;

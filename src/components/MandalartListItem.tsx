@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { MandalartMeta } from 'types/MandalartMeta';
+import { MandalartMeta } from '@/types/MandalartMeta';
 import { LayoutGrid, MoreHorizontal } from 'lucide-react';
-import TextInputDialog from 'components/TextInputDialog';
+import TextInputDialog from '@/components/TextInputDialog';
 import {
   MAX_MANDALART_TITLE_SIZE,
   TMP_MANDALART_ID,
-} from 'constants/constants';
+} from '@/constants/constants';
 import { useTranslation } from 'react-i18next';
 import {
   DropdownMenu,

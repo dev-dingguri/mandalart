@@ -1,4 +1,4 @@
-import { analytics } from 'lib/firebase';
+import { analytics } from '@/lib/firebase';
 import {
   AnalyticsCallOptions,
   CustomEventName,

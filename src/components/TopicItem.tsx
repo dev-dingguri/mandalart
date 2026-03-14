@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import TextInputDialog from 'components/TextInputDialog';
-import { MAX_TOPIC_TEXT_SIZE } from 'constants/constants';
+import TextInputDialog from '@/components/TextInputDialog';
+import { MAX_TOPIC_TEXT_SIZE } from '@/constants/constants';
 import { useTranslation } from 'react-i18next';
-import AspectSquare from 'components/AspectSquare';
+import AspectSquare from '@/components/AspectSquare';
 import { cn } from '@/lib/utils';
 
 type TopicItemProps = {

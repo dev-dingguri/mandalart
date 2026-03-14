@@ -6,7 +6,7 @@ import {
   EMPTY_TOPIC_TREE,
   MAX_MANDALART_TITLE_SIZE,
   MAX_TOPIC_TEXT_SIZE,
-} from 'constants/constants';
+} from '@/constants/constants';
 
 describe('만다라트 상수', () => {
   it('TABLE_SIZE는 9여야 한다', () => {

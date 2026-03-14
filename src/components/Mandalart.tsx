@@ -1,11 +1,11 @@
-import ItemGrid from 'components/ItemGrid';
-import TopicGrid from 'components/TopicGrid';
-import { TopicNode } from 'types/TopicNode';
+import ItemGrid from '@/components/ItemGrid';
+import TopicGrid from '@/components/TopicGrid';
+import { TopicNode } from '@/types/TopicNode';
 import {
   TABLE_ROW_SIZE,
   TABLE_COL_SIZE,
   TABLE_CENTER_IDX,
-} from 'constants/constants';
+} from '@/constants/constants';
 import { memo } from 'react';
 
 type FocusHandlers = {

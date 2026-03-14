@@ -1,13 +1,13 @@
 import { useEffect, useState, useLayoutEffect, lazy, Suspense } from 'react';
-import MainPage from 'components/MainPage';
+import MainPage from '@/components/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { PATH_OSS } from 'constants/constants';
-import { useIsDarkMode } from 'stores/useThemeStore';
-import useAnalyticsEvents from 'hooks/useAnalyticsEvents';
+import { PATH_OSS } from '@/constants/constants';
+import { useIsDarkMode } from '@/stores/useThemeStore';
+import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
 
 const OpenSourceLicensesPage = lazy(
-  () => import('components/OpenSourceLicensesPage')
+  () => import('@/components/OpenSourceLicensesPage')
 );
 
 const App = () => {
