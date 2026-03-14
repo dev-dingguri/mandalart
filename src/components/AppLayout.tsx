@@ -93,7 +93,7 @@ const AppLayout = ({
   useEffect(() => {
     if (!userError) return;
 
-    openAlert(t('auth.errors.signIn.default', { detail: userError.message }));
+    openAlert(t('auth.errors.signIn.default'));
   }, [userError, openAlert, t]);
 
   useEffect(() => {

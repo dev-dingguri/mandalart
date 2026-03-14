@@ -15,7 +15,7 @@
     "signOut": "Sign Out",
     "errors": {
       "signIn": {
-        "default": "Cannot sign in.\nError: {{detail}}"
+        "default": "Cannot sign in. Please try again later."
       }
     }
   },
@@ -41,7 +41,7 @@
     "delete": "Delete",
     "reset": "Reset",
     "rename": "Rename",
-    "temp": "Local",
+    "temp": "On this device",
     "snippet": {
       "untitled": "Untitled"
     },
@@ -55,7 +55,7 @@
         "maxUploaded": "Cannot save local Mandalart. 😥\nYou can save up to {{maxSize}} Mandalarts.\nPlease delete an existing one and sign in again."
       },
       "sync": {
-        "default": "Cannot sync with the cloud.\nYou will be signed out automatically."
+        "default": "Your session has expired.\nPlease sign in again."
       }
     }
   },
@@ -66,7 +66,7 @@
     }
   },
   "textEditor": {
-    "placeholder": "Enter your content here",
+    "placeholder": "Enter a goal or keyword",
     "maxTextReached": "Character limit reached"
   }
 }
