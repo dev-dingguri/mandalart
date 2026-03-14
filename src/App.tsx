@@ -1,12 +1,15 @@
-import { useEffect, useState, useLayoutEffect } from 'react';
+import { useEffect, useState, useLayoutEffect, lazy, Suspense } from 'react';
 import MainPage from 'components/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
-import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from 'constants/constants';
 import { useIsDarkMode } from 'stores/useThemeStore';
 import useAnalytics from 'hooks/useAnalytics';
 import { APP_VERSION } from 'version';
+
+const OpenSourceLicensesPage = lazy(
+  () => import('components/OpenSourceLicensesPage')
+);
 
 const App = () => {
   const [height, setHeight] = useState(window.innerHeight);
@@ -58,7 +61,11 @@ const App = () => {
           <Route path={`/${lang}`} element={<MainPage />} />
           <Route
             path={`/${lang}${PATH_OSS}`}
-            element={<OpenSourceLicensesPage />}
+            element={
+              <Suspense fallback={null}>
+                <OpenSourceLicensesPage />
+              </Suspense>
+            }
           />
           <Route path="*" element={<Navigate to={`/${lang}`} />} />
         </Routes>
