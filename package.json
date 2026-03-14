@@ -33,7 +33,9 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "predeploy:firebase": "pnpm build",
-    "deploy:firebase": "firebase deploy"
+    "deploy:firebase": "firebase deploy",
+    "predeploy:preview": "pnpm build",
+    "deploy:preview": "firebase hosting:channel:deploy preview --expires 7d"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.1",
