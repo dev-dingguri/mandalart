@@ -15,7 +15,7 @@
     "signOut": "ログアウト",
     "errors": {
       "signIn": {
-        "default": "ログインできません。エラー: {{detail}}"
+        "default": "ログインできません。\nエラー: {{detail}}"
       }
     }
   },

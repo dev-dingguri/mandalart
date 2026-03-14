@@ -1,17 +1,14 @@
-import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
-import Button from '@mui/material/Button';
+import { useState, useEffect, FormEvent, ChangeEvent, KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18n from 'locales/i18n';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText, {
-  DialogContentTextProps,
-} from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 type TextEditorProps = {
   isOpen: boolean;
@@ -44,8 +41,15 @@ const TextEditor = ({
     onClose();
   };
 
-  const handleInputChange = (ev: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (ev: ChangeEvent<HTMLTextAreaElement>) => {
     setText(ev.target.value);
+  };
+
+  const handleKeyDown = (ev: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (ev.key === 'Enter' && !ev.shiftKey) {
+      ev.preventDefault();
+      ev.currentTarget.form?.requestSubmit();
+    }
   };
 
   useEffect(() => {
@@ -53,57 +57,64 @@ const TextEditor = ({
   }, [isOpen, initialText]);
 
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      disableRestoreFocus // https://github.com/mui/material-ui/issues/33004
-    >
-      <form onSubmit={handleConfirm}>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogContent>
-          <TextField
-            id={'mandalart-topic'}
-            autoFocus
-            autoComplete={'off'}
-            type="text"
-            placeholder={placeholder}
-            onChange={handleInputChange}
-            value={text}
-            error={isLimitReached}
-            sx={{ width: '16em' }}
-          />
-          {hasLimit && (
-            <Stack direction="row">
-              <DialogContentErrorableText
-                error={isLimitReached}
-                sx={{ flexGrow: 1 }}
-              >
-                {isLimitReached && t('textEditor.maxTextReached')}
-              </DialogContentErrorableText>
-              <DialogContentErrorableText
-                error={isLimitReached}
-              >{`${text.length}/${textLimit}`}</DialogContentErrorableText>
-            </Stack>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>{t('global.cancel')}</Button>
-          <Button type="submit" disabled={isLimitReached}>
-            {t('global.save')}
-          </Button>
-        </DialogActions>
-      </form>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent showCloseButton={false} className="p-6">
+        <form onSubmit={handleConfirm} className="grid gap-3">
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+          </DialogHeader>
+          <div>
+            <textarea
+              autoFocus
+              autoComplete="off"
+              rows={2}
+              placeholder={placeholder}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              value={text}
+              aria-invalid={isLimitReached || undefined}
+              className="w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm resize-none dark:bg-input/30"
+            />
+            {hasLimit && (
+              <div className="mt-1 flex text-xs">
+                <span
+                  className={`flex-1 ${isLimitReached ? 'text-destructive' : ''}`}
+                >
+                  {isLimitReached && t('textEditor.maxTextReached')}
+                </span>
+                <span
+                  className={
+                    isLimitReached
+                      ? 'text-destructive'
+                      : 'text-muted-foreground'
+                  }
+                >
+                  {`${text.length}/${textLimit}`}
+                </span>
+              </div>
+            )}
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              type="button"
+              className="flex-1"
+              onClick={onClose}
+            >
+              {t('global.cancel')}
+            </Button>
+            <Button
+              type="submit"
+              className="flex-1"
+              disabled={isLimitReached}
+            >
+              {t('global.save')}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
     </Dialog>
   );
 };
-
-const DialogContentErrorableText = styled(DialogContentText, {
-  shouldForwardProp: (prop) => prop !== 'error',
-})<DialogContentTextProps & { error?: boolean }>(
-  ({ theme, error }) =>
-    error && {
-      color: theme.palette.error.main,
-    }
-);
 
 export default TextEditor;
