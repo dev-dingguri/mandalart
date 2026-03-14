@@ -34,7 +34,9 @@
     },
     "language": "言語",
     "oss": "オープンソースライセンス",
-    "version": "バージョン"
+    "version": "バージョン",
+    "youtube": "YouTubeチャンネル",
+    "github": "GitHubリポジトリ"
   },
   "mandalart": {
     "list": "マンダラートリスト",
@@ -43,6 +45,8 @@
     "reset": "リセット",
     "rename": "名前を変更",
     "temp": "このデバイスのみ",
+    "viewAll": "全体表示",
+    "viewFocus": "拡大表示",
     "untitled": "無題",
     "errors": {
       "create": {

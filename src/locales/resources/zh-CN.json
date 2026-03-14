@@ -34,7 +34,9 @@
     },
     "language": "语言",
     "oss": "开源许可证",
-    "version": "版本"
+    "version": "版本",
+    "youtube": "YouTube 频道",
+    "github": "GitHub 仓库"
   },
   "mandalart": {
     "list": "曼达拉图列表",
@@ -43,6 +45,8 @@
     "reset": "重置",
     "rename": "重命名",
     "temp": "仅限本设备",
+    "viewAll": "查看全部",
+    "viewFocus": "放大查看",
     "untitled": "无标题",
     "errors": {
       "create": {

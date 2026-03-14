@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useCallback, useLayoutEffect, useState, useRef, lazy, Suspense } from 'react';
+import { useMemo, useEffect, useCallback, useState, useRef, lazy, Suspense } from 'react';
 import Header from '@/components/Header';
 import MandalartView from '@/components/MandalartView';
 import { EMPTY_META, EMPTY_TOPIC_TREE } from '@/constants/constants';
@@ -15,7 +15,7 @@ import { useMandalartStore } from '@/stores/useMandalartStore';
 import { Plus } from 'lucide-react';
 import useModal from '@/hooks/useModal';
 import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
-import AlertDialog from './AlertDialog';
+import AlertDialog from '@/components/AlertDialog';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 
@@ -122,7 +122,7 @@ const AppLayout = ({
     signOut();
   }, [mandalartsError, openAlert, signOut, t]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const shouldUploadTemp = !!user && getShouldUploadTemp();
     if (!shouldUploadTemp) return;
     setShouldUploadTemp(false);
@@ -211,8 +211,8 @@ const AppLayout = ({
             trackSignIn(providerId);
             try {
               await signIn(providerId);
-            } catch (e: any) {
-              if (e?.code !== 'auth/popup-closed-by-user') {
+            } catch (e) {
+              if ((e as { code?: string })?.code !== 'auth/popup-closed-by-user') {
                 openAlert(t('auth.errors.signIn.default'));
               }
             }

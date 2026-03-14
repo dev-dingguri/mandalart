@@ -38,9 +38,9 @@ const TopicItem = ({
       </AspectSquare>
       <TextInputDialog
         isOpen={isOpenEditor}
-        title={`${t('global.topic')}`}
+        title={t('global.topic')}
         initialText={topic}
-        placeholder={`${t('topic.placeholder')}`}
+        placeholder={t('topic.placeholder')}
         textLimit={MAX_TOPIC_TEXT_SIZE}
         onClose={() => setIsOpenEditor(false)}
         onConfirm={onUpdateTopic}

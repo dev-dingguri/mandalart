@@ -172,7 +172,7 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
               href="https://www.youtube.com/channel/UCoZkSE87r1jR1HasRJpPX3g"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="YouTube 채널로 이동"
+              aria-label={t('settings.youtube')}
               className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Youtube className="size-5" />
@@ -181,7 +181,7 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
               href="https://github.com/dev-dingguri/mandalart"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="GitHub 저장소로 이동"
+              aria-label={t('settings.github')}
               className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <Github className="size-5" />

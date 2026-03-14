@@ -42,7 +42,12 @@ const MandalartListItem = ({
         role="button"
         tabIndex={0}
         onClick={() => onSelect(mandalartId)}
-        onKeyDown={(e) => e.key === 'Enter' && onSelect(mandalartId)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onSelect(mandalartId);
+          }
+        }}
         className={[
           'flex cursor-pointer items-center gap-1.5 rounded px-2 py-1.5 text-sm',
           isSelected ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50',

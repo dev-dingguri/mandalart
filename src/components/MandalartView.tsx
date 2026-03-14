@@ -3,7 +3,7 @@ import MandalartFocusView from '@/components/MandalartFocusView';
 import Mandalart, { MandalartProps } from '@/components/Mandalart';
 import { TopicNode } from '@/types/TopicNode';
 import {
-  MAX_TOPIC_TEXT_SIZE,
+  MAX_MANDALART_TITLE_SIZE,
   TABLE_CENTER_IDX,
   TMP_MANDALART_ID,
 } from '@/constants/constants';
@@ -64,8 +64,16 @@ const MandalartView = ({
       </p>
       <div className="flex items-center gap-3">
         <h2
+          role="button"
+          tabIndex={0}
           className="min-w-0 flex-1 cursor-pointer select-none truncate text-2xl font-semibold"
           onClick={() => setIsOpenTitleEditor(true)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setIsOpenTitleEditor(true);
+            }
+          }}
         >
           {meta.title ? meta.title : t('mandalart.untitled')}
         </h2>
@@ -87,7 +95,7 @@ const MandalartView = ({
       <TextInputDialog
         isOpen={isOpenTitleEditor}
         initialText={meta.title}
-        textLimit={MAX_TOPIC_TEXT_SIZE}
+        textLimit={MAX_MANDALART_TITLE_SIZE}
         onClose={() => setIsOpenTitleEditor(false)}
         onConfirm={(title) => onMandalartMetaChange({ title })}
       />

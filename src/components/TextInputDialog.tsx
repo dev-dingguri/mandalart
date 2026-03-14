@@ -8,7 +8,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 
 type TextInputDialogProps = {
   isOpen: boolean;
@@ -22,7 +21,7 @@ type TextInputDialogProps = {
 
 const TextInputDialog = ({
   isOpen,
-  title = `${i18n.t('global.app')}`,
+  title = i18n.t('global.app'),
   initialText = '',
   placeholder,
   textLimit,

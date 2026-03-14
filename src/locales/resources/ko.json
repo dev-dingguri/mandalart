@@ -34,7 +34,9 @@
     },
     "language": "언어",
     "oss": "오픈소스 라이선스",
-    "version": "버전"
+    "version": "버전",
+    "youtube": "YouTube 채널",
+    "github": "GitHub 저장소"
   },
   "mandalart": {
     "list": "만다라트 목록",
@@ -43,6 +45,8 @@
     "reset": "초기화",
     "rename": "이름 바꾸기",
     "temp": "이 기기에만",
+    "viewAll": "전체 보기",
+    "viewFocus": "확대 보기",
     "untitled": "제목 없음",
     "errors": {
       "create": {

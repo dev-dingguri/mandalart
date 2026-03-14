@@ -39,20 +39,19 @@ const licenses = Object.keys(licensesObj).map((key) => licensesObj[key]);
 
 const Item = ({ name, licenses, repository }: License) => {
   return (
-    <>
-      <li className="flex flex-col items-start px-4 py-2">
-        <span className="text-sm font-medium">{name}</span>
-        <span className="text-xs text-muted-foreground">{licenses}</span>
-        <a
-          href={repository}
-          target="blank"
-          className="text-xs text-foreground/70 no-underline"
-        >
-          {repository}
-        </a>
-      </li>
-      <Separator />
-    </>
+    <li className="flex flex-col items-start px-4 py-2">
+      <span className="text-sm font-medium">{name}</span>
+      <span className="text-xs text-muted-foreground">{licenses}</span>
+      <a
+        href={repository}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-xs text-foreground/70 no-underline"
+      >
+        {repository}
+      </a>
+      <Separator className="mt-2 -mx-4 w-[calc(100%+2rem)]" />
+    </li>
   );
 };
 
@@ -107,7 +106,7 @@ const OpenSourceLicensesPage = () => {
         <div className="flex w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] flex-col">
           <ul className="p-0">
             {currentLicenses.map((data, idx) => (
-              <Item key={idx} {...data} />
+              <Item key={data.name} {...data} />
             ))}
           </ul>
           {hasMore && (

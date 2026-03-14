@@ -34,7 +34,9 @@
     },
     "language": "Language",
     "oss": "Open Source Licenses",
-    "version": "Version"
+    "version": "Version",
+    "youtube": "YouTube Channel",
+    "github": "GitHub Repository"
   },
   "mandalart": {
     "list": "Mandalart List",
@@ -43,6 +45,8 @@
     "reset": "Reset",
     "rename": "Rename",
     "temp": "On this device",
+    "viewAll": "View All",
+    "viewFocus": "View Focus",
     "untitled": "Untitled",
     "errors": {
       "create": {
