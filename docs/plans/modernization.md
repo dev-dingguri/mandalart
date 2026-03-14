@@ -465,6 +465,37 @@ MUI가 완전히 제거된 후 React 19로 업그레이드한다.
 
 ---
 
+## 기술 부채
+
+### TD1: 불필요한 `import React` default import 잔존
+
+**발견:** T17 코드 리뷰 (2026-03-14)
+**우선순위:** 낮음 — 기능 영향 없음, 코드 위생 문제
+
+**대상 파일:**
+- `src/components/MandalartListItem.tsx` — 1번 줄 `import React from 'react'`
+- `src/components/MandalartList.tsx` — 1번 줄 `import React from 'react'`
+- `src/components/ZoomInMandalart.tsx` — 1번 줄 `import React, { ... }` (default import 불필요, named import만 사용)
+
+**내용:** React 17+ JSX transform 이후 JSX 변환에 `React`를 명시적으로 import할 필요가 없다. 세 파일 모두 `React.` 네임스페이스를 직접 사용하지 않으므로 default import를 제거해야 한다.
+
+**수정 방법:** 각 파일에서 `import React from 'react'`의 default import 부분을 제거하고 named import만 유지.
+
+---
+
+### TD2: 소셜 아이콘 접근성 미흡 (RightDrawer)
+
+**발견:** T17 코드 리뷰 (2026-03-14)
+**우선순위:** 낮음 — 시각 사용자에겐 기능 이상 없음
+
+**대상 파일:** `src/components/RightDrawer.tsx`
+
+**내용:** YouTube, GitHub 아이콘(`Youtube`, `Github` lucide 컴포넌트)이 `onClick` 핸들러를 직접 달고 인터랙티브 요소로 사용되지만, `<button>` 래퍼와 `aria-label`이 없어 스크린 리더에서 접근 불가.
+
+**수정 방법:** SVG 아이콘을 `<button aria-label="YouTube 채널로 이동">` 등의 래퍼로 감싸거나, shadcn `Button` 컴포넌트 (`variant="ghost" size="icon"`)로 교체.
+
+---
+
 ## 검증 체크리스트 (모든 작업 공통)
 
 각 작업 완료 후 반드시 확인:
