@@ -6,7 +6,7 @@ import { APP_VERSION } from 'version';
 import { PATH_OSS } from 'constants/constants';
 import { useThemeStore, TernaryDarkMode } from 'stores/useThemeStore';
 import useAnalyticsEvents from 'hooks/useAnalyticsEvents';
-import { Drawer, DrawerContent } from 'components/ui/drawer';
+import { Drawer, DrawerContent, DrawerTitle } from 'components/ui/drawer';
 import { Separator } from 'components/ui/separator';
 
 type InlineSelectProps = {
@@ -114,7 +114,8 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
       }}
       direction="right"
     >
-      <DrawerContent>
+      <DrawerContent aria-describedby={undefined}>
+        <DrawerTitle className="sr-only">{t('settings.title')}</DrawerTitle>
         <div className="flex flex-col gap-4 overflow-auto p-4 [scrollbar-gutter:stable_both-edges]">
           <InlineSelect
             label={t('settings.theme.label')}

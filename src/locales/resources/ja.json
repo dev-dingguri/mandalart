@@ -22,6 +22,7 @@
     }
   },
   "settings": {
+    "title": "設定",
     "theme": {
       "label": "テーマ",
       "options": {

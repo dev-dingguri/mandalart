@@ -22,6 +22,7 @@
     }
   },
   "settings": {
+    "title": "Settings",
     "theme": {
       "label": "Theme",
       "options": {
