@@ -3,6 +3,23 @@
 
 <head>
   <meta charset="utf-8" />
+  <link rel="alternate" hreflang="x-default" href="https://mandalart.me/" />
+  <link rel="alternate" hreflang="en" href="https://mandalart.me/en/" />
+  <link rel="alternate" hreflang="ko" href="https://mandalart.me/ko/" />
+  <link rel="alternate" hreflang="ja" href="https://mandalart.me/ja/" />
+  <link rel="alternate" hreflang="zh-CN" href="https://mandalart.me/zh-CN/" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Mandalart - Turn One Goal Into 81 Action Plans</title>
+  <meta name="description" content="Break overwhelming goals into 81 concrete action steps. Mandalart is the ultimate tool for visualizing your thinking and achieving your goals. Start planning for free today." />
+  <meta name="keywords" content="만다라트, 만다라트 계획표, Mandalart, 목표 설정, 계획 세우기, 오타니 계획표, 아이디어 정리 도구, 자기계발, 목표 달성 방법, 브레인스토밍, 81칸 계획표" />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mandalart.me/">
+  <meta property="og:title" content="Mandalart - Turn One Goal Into 81 Action Plans">
+  <meta property="og:description" content="Break overwhelming goals into 81 concrete action steps. Mandalart is the ultimate tool for visualizing your thinking and achieving your goals. Start planning for free today.">
+  <meta property="og:image" content="/image.png">
+  <meta property="og:site_name" content="Mandalart">
   <script>
     (function () {
       var supported = ['ko', 'en', 'ja', 'zh-CN'];
@@ -13,20 +30,37 @@
         || 'en';
       if (supported.indexOf(lang) === -1) lang = 'en';
       document.documentElement.lang = lang;
+
+      var seo = {
+        ko: {
+          title: '만다라트(Mandalart) - 하나의 목표를 81개의 행동으로 만드는 계획표',
+          description: '막막한 목표를 81개의 구체적인 실행 계획으로 쪼개보세요. 만다라트는 복잡한 생각을 시각화하고 목표 달성을 돕는 최고의 아이디어 정리 도구입니다. 지금 바로 무료로 계획을 세워보세요.'
+        },
+        en: {
+          title: 'Mandalart - Turn One Goal Into 81 Action Plans',
+          description: 'Break overwhelming goals into 81 concrete action steps. Mandalart is the ultimate tool for visualizing your thinking and achieving your goals. Start planning for free today.'
+        },
+        ja: {
+          title: 'マンダラート(Mandalart) - 1つの目標を81のアクションプランに変える計画表',
+          description: '漠然とした目標を81の具体的な実行計画に落とし込もう。マンダラートは複雑な思考を視覚化し、目標達成をサポートする最高のアイデア整理ツールです。今すぐ無料でプランを始めよう。'
+        },
+        'zh-CN': {
+          title: '曼达拉图(Mandalart) - 将一个目标分解为81个行动计划',
+          description: '将模糊的目标分解成81个具体可执行的步骤。曼达拉图是最好的思维可视化与目标达成工具。立即免费开始规划！'
+        }
+      };
+
+      var s = seo[lang] || seo['en'];
+      document.title = s.title;
+      var setMeta = function (attr, key, value) {
+        var el = document.querySelector('meta[' + attr + '="' + key + '"]');
+        if (el) el.setAttribute('content', value);
+      };
+      setMeta('name', 'description', s.description);
+      setMeta('property', 'og:title', s.title);
+      setMeta('property', 'og:description', s.description);
     })();
   </script>
-  <link rel="alternate" hreflang="x-default" href="https://mandalart.me/" />
-  <link rel="alternate" hreflang="en" href="https://mandalart.me/en/" />
-  <link rel="alternate" hreflang="ko" href="https://mandalart.me/ko/" />
-  <link rel="alternate" hreflang="ja" href="https://mandalart.me/ja/" />
-  <link rel="icon" href="/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>Mandalart - Organize and expand your thinking.</title>
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mandalart.me/">
-  <meta property="og:image" content="/image.png">
-  <meta property="og:site_name" content="Mandalart">
 </head>
 
 <body>
