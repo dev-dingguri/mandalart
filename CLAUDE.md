@@ -11,11 +11,11 @@
 
 ## 기술 스택
 
-- React 18 + TypeScript 5
+- React 19 + TypeScript 5
 - Tailwind CSS v4 + shadcn/ui (CSS-in-JS 없음)
 - Zustand (상태 관리)
-- Firebase v11 (Auth, Realtime Database, Analytics, Hosting)
-- react-router v7, i18next, usehooks-ts
+- Firebase v12 (Auth, Realtime Database, Analytics, Hosting)
+- react-router v7, i18next v25, react-i18next v16
 
 ## 환경 변수
 

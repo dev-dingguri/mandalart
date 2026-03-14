@@ -3,7 +3,7 @@ import { cn } from 'lib/utils';
 type ItemGridProps = {
   rowSize: number;
   colSize: number;
-  createItem: (idx: number, row: number, col: number) => JSX.Element;
+  createItem: (idx: number, row: number, col: number) => React.JSX.Element;
   spacing?: string | number;
 } & React.HTMLAttributes<HTMLDivElement>;
 
