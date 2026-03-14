@@ -4524,6 +4524,11 @@
     "repository": "https://github.com/sindresorhus/locate-path",
     "name": "locate-path"
   },
+  "lucide-react@0.577.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/lucide-icons/lucide",
+    "name": "lucide-react"
+  },
   "lodash.camelcase@4.3.0": {
     "licenses": "MIT",
     "repository": "https://github.com/lodash/lodash",
