@@ -484,9 +484,10 @@ MUI가 완전히 제거된 후 React 19로 업그레이드한다.
 
 ---
 
-### TD2: 소셜 아이콘 접근성 미흡 (RightDrawer)
+### TD2: 소셜 아이콘 접근성 미흡 (RightDrawer) :white_check_mark:
 
 **발견:** T17 코드 리뷰 (2026-03-14)
+**완료:** 2026-03-14
 **우선순위:** 낮음 — 시각 사용자에겐 기능 이상 없음
 
 **대상 파일:** `src/components/RightDrawer.tsx`

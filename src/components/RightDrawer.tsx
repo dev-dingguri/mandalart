@@ -158,21 +158,25 @@ const RightDrawer = ({ isOpen, onClose }: RightDrawerProps) => {
             dingguri.lab@gmail.com
           </p>
 
-          <div className="flex gap-3">
-            <Youtube
-              className="size-6 cursor-pointer hover:text-foreground"
-              onClick={() =>
-                window.open(
-                  'https://www.youtube.com/channel/UCoZkSE87r1jR1HasRJpPX3g'
-                )
-              }
-            />
-            <Github
-              className="size-6 cursor-pointer hover:text-foreground"
-              onClick={() =>
-                window.open('https://github.com/dev-dingguri/mandalart')
-              }
-            />
+          <div className="flex gap-1">
+            <a
+              href="https://www.youtube.com/channel/UCoZkSE87r1jR1HasRJpPX3g"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube 채널로 이동"
+              className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Youtube className="size-5" />
+            </a>
+            <a
+              href="https://github.com/dev-dingguri/mandalart"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub 저장소로 이동"
+              className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Github className="size-5" />
+            </a>
           </div>
 
           <p className="text-sm text-muted-foreground">
