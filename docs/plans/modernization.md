@@ -396,6 +396,35 @@ MUI가 완전히 제거된 후 React 19로 업그레이드한다.
 
 ---
 
+### B2: 확대 뷰(ZoomInMandalart) 센터링 미동작
+
+**선행 조건:** 없음 (T11과 독립)
+**우선순위:** 중간 — 확대 뷰 사용성 저하
+
+**현상:**
+- 확대 뷰 진입 시 포커스된 셀 그룹(TopicGrid)이 화면 중앙에 위치하지 않음
+- 스와이프로 `focusedIdx` 변경 후에도 센터링 안 됨
+- MUI 전환 이전(원본 코드)에서도 동일 현상인지 확인 필요
+
+**추정 원인:**
+- `TopicGrid`의 `scrollIntoView({ block: 'center', inline: 'center' })`가 `overflow: hidden` 컨테이너에서 정상 동작하지 않는 것으로 추정
+- 절대 위치(absolute) 자식이 부모의 `scrollWidth`/`scrollHeight`에 기여하지 않아 스크롤 영역이 0일 가능성
+- `useLayoutEffect` + 직접 `scroll()` 계산 방식도 시도했으나 동일 현상
+
+**시도한 접근:**
+1. SquareBox를 `aspect-square` 단일 div로 단순화
+2. ZoomInMandalart에서 SquareBox 제거 → `aspect-square overflow-hidden` 컨테이너 + `w-[240%]` normal flow 자식
+3. `useLayoutEffect`로 `focusedIdx` 기반 스크롤 위치 직접 계산
+4. 위 모든 접근에서 동일하게 센터링 미동작 → 롤백
+
+**작업 순서:**
+- [ ] MUI 전환 이전 코드에서 센터링 정상 동작 여부 확인 (git stash로 비교)
+- [ ] 브라우저 DevTools에서 `scrollWidth`, `scrollHeight`, `clientWidth` 값 확인
+- [ ] `scrollIntoView` 호출 시 실제 스크롤 발생 여부 콘솔 로깅
+- [ ] 필요 시 `scrollIntoView` 대신 직접 `scrollLeft`/`scrollTop` 계산 방식으로 전환
+
+---
+
 ## 검증 체크리스트 (모든 작업 공통)
 
 각 작업 완료 후 반드시 확인:

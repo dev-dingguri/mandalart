@@ -1,24 +1,9 @@
+import { useState } from 'react';
 import TextEditor from 'components/TextEditor';
 import { MAX_TOPIC_TEXT_SIZE } from 'constants/constants';
 import { useTranslation } from 'react-i18next';
 import SquareBox from 'components/SquareBox';
-import { BoxProps } from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
-import MaxLinesTypography from 'components/MaxLinesTypography';
-import { useBoolean, useMediaQuery } from 'usehooks-ts';
-
-const TopicItemBox = styled(SquareBox, {
-  shouldForwardProp: (prop) => prop !== 'accented',
-})<BoxProps & { accented?: boolean }>(({ theme, accented }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  cursor: 'pointer',
-  userSelect: 'none',
-  backgroundColor: accented
-    ? theme.palette.secondary.main
-    : theme.palette.primary.main,
-}));
+import { cn } from 'lib/utils';
 
 type TopicItemProps = {
   topic: string;
@@ -33,42 +18,31 @@ const TopicItem = ({
   isEditable,
   onUpdateTopic,
 }: TopicItemProps) => {
-  const {
-    value: isOpenEditor,
-    setTrue: openEditor,
-    setFalse: closeEditor,
-  } = useBoolean(false);
-  const isMinWidthReached = useMediaQuery('screen and (min-width: 30rem)');
+  const [isOpenEditor, setIsOpenEditor] = useState(false);
   const { t } = useTranslation();
+
   return (
     <>
-      <TopicItemBox
-        accented={isAccented}
-        onClick={() => isEditable && openEditor()}
+      <SquareBox
+        className={cn(
+          'flex cursor-pointer select-none items-center justify-center',
+          isAccented
+            ? 'bg-primary text-primary-foreground'
+            : 'bg-card text-card-foreground'
+        )}
+        onClick={() => isEditable && setIsOpenEditor(true)}
       >
-        <MaxLinesTypography
-          variant="body1"
-          maxLines={isMinWidthReached ? 3 : 2}
-          sx={{
-            textAlign: 'center',
-            lineHeight: '1.2em',
-            fontSize: '0.7rem',
-            // todo: 컴포넌트 크기에 따라서 폰트 사이즈 다르게
-            '@media screen and (min-width: 30rem)': {
-              fontSize: '0.9rem',
-            },
-          }}
-        >
+        <p className="line-clamp-2 overflow-hidden break-words text-center text-[0.7rem] leading-[1.2em] min-[30rem]:line-clamp-3 min-[30rem]:text-[0.9rem]">
           {topic}
-        </MaxLinesTypography>
-      </TopicItemBox>
+        </p>
+      </SquareBox>
       <TextEditor
         isOpen={isOpenEditor}
         title={`${t('global.topic')}`}
         initialText={topic}
         placeholder={`${t('textEditor.placeholder')}`}
         textLimit={MAX_TOPIC_TEXT_SIZE}
-        onClose={closeEditor}
+        onClose={() => setIsOpenEditor(false)}
         onConfirm={onUpdateTopic}
       />
     </>

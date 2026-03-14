@@ -6,7 +6,6 @@ import {
   TABLE_CENTER_IDX,
 } from 'constants/constants';
 import SquareBox from 'components/SquareBox';
-import Box from '@mui/material/Box';
 
 const ZoomInMandalart = ({ ...props }: MandalartProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
@@ -95,26 +94,21 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
   };
 
   return (
-    <Box
+    <div
       ref={ref}
-      sx={{ overflow: 'hidden' }}
+      className="overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
       onTouchMove={handleTouchMove}
     >
-      <SquareBox
-        sx={{
-          width: '240%',
-          height: '240%',
-        }}
-      >
+      <SquareBox style={{ width: '240%', height: '240%' }}>
         <Mandalart
           {...props}
           focusHandlers={{ focusedIdx, onUpdateFocuse: setFocusedIdx }}
         />
       </SquareBox>
-    </Box>
+    </div>
   );
 };
 

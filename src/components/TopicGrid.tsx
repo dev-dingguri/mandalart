@@ -3,8 +3,6 @@ import ItemGrid from 'components/ItemGrid';
 import TopicItem from 'components/TopicItem';
 import { TopicNode } from 'types/TopicNode';
 import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';
-import Box from '@mui/material/Box';
-import { useEventListener } from 'usehooks-ts';
 
 type FocusHandlers = {
   isFocused: boolean;
@@ -36,12 +34,16 @@ const TopicGrid = ({
     isFocused && scrollCenter(gridRef.current, isTried ? 'smooth' : 'auto');
   }, [isFocused]);
 
-  useEventListener('resize', () => {
-    isFocused && scrollCenter(gridRef.current, 'auto');
-  });
+  useEffect(() => {
+    const handler = () => {
+      isFocused && scrollCenter(gridRef.current, 'auto');
+    };
+    window.addEventListener('resize', handler);
+    return () => window.removeEventListener('resize', handler);
+  }, [isFocused]);
 
   return (
-    <Box ref={gridRef}>
+    <div ref={gridRef}>
       <ItemGrid
         rowSize={TABLE_ROW_SIZE}
         colSize={TABLE_COL_SIZE}
@@ -60,7 +62,7 @@ const TopicGrid = ({
           focusHandlers?.onUpdateFocuse();
         }}
       />
-    </Box>
+    </div>
   );
 };
 
