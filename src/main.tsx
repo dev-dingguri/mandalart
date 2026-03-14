@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 
-import 'locales/i18n';
-import 'stores/useAuthStore';
+import '@/locales/i18n';
+import '@/stores/useAuthStore';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

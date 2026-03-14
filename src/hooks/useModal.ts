@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 
-const useModal = <T extends ReactNode = ReactNode>() => {
+const useModal = <T = ReactNode>() => {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState<T | null>(null);
 

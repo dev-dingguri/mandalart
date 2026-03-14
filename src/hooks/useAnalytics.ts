@@ -16,12 +16,12 @@ const useAnalytics = () => {
         eventParams?: {
           [key: string]: any;
         }
-      ) => logEvent(analytics, eventName, eventParams),
+      ) => analytics && logEvent(analytics, eventName, eventParams),
 
       setUserProperties: (
         properties: CustomParams,
         options?: AnalyticsCallOptions
-      ) => setUserProperties(analytics, properties, options),
+      ) => analytics && setUserProperties(analytics, properties, options),
     }),
     []
   );
