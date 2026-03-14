@@ -2,10 +2,8 @@ import { create } from 'zustand';
 import {
   User,
   GoogleAuthProvider,
-  signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
-  AuthError,
 } from 'firebase/auth';
 import { auth } from 'lib/firebase';
 import { STORAGE_KEY_SIGN_IN_SESSION } from 'constants/constants';
@@ -52,31 +50,13 @@ const writeSessions = (sessions: Record<string, SignInSession>) => {
   );
 };
 
-const saveSession = (uid: string) => {
-  const sessions = readSessions();
-  sessions[uid] = INITIAL_SIGN_IN_SESSION;
-  writeSessions(sessions);
-};
-
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   isLoading: true,
   error: null,
 
-  signIn: async (providerId) => {
-    const provider = getProvider(providerId);
-    try {
-      const userCred = await signInWithPopup(auth, provider);
-      saveSession(userCred.user.uid);
-    } catch (error) {
-      const code = (error as AuthError).code;
-      if (code === 'auth/popup-blocked' || code === 'auth/popup-closed-by-browser') {
-        await signInWithRedirect(auth, provider);
-      } else {
-        set({ error: error as Error });
-      }
-    }
-  },
+  signIn: async (providerId) =>
+    signInWithRedirect(auth, getProvider(providerId)),
 
   signOut: async () => auth.signOut(),
 
@@ -99,10 +79,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
 }));
 
-// Redirect 폴백으로 돌아온 경우 결과 처리
+// Module-level initialization — runs once when the module is first imported
 getRedirectResult(auth)
   .then((userCred) => {
-    if (userCred) saveSession(userCred.user.uid);
+    if (userCred) {
+      const sessions = readSessions();
+      sessions[userCred.user.uid] = INITIAL_SIGN_IN_SESSION;
+      writeSessions(sessions);
+    }
   })
   .catch((error) => useAuthStore.setState({ error }));
 
