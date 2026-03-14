@@ -155,7 +155,7 @@ const AppLayout = ({
             topicTree={currentTopicTree}
             onMandalartMetaChange={handleMandalartMetaChange}
             onTopicTreeChange={handleTopicTreeChange}
-            className="mx-auto w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] py-2"
+            className="mx-auto my-auto w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] py-2"
           />
         ) : (
           <Button
@@ -171,7 +171,6 @@ const AppLayout = ({
             {t('mandalart.new')}
           </Button>
         )}
-        <div className="h-16" />
       </div>
       <Suspense fallback={null}>
         <MandalartListDrawer
