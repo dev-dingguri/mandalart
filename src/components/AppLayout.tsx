@@ -1,10 +1,10 @@
 import { useMemo, useEffect, useCallback, useLayoutEffect, useState } from 'react';
 import Header from 'components/Header';
-import SignInModal from 'components/SignInModal';
+import SignInDialog from 'components/SignInDialog';
 import MandalartView from 'components/MandalartView';
-import LeftDrawer from 'components/LeftDrawer';
+import MandalartListDrawer from 'components/MandalartListDrawer';
 import { EMPTY_SNIPPET, EMPTY_TOPIC_TREE } from 'constants/constants';
-import RightDrawer from 'components/RightDrawer';
+import SettingsDrawer from 'components/SettingsDrawer';
 import { Snippet } from '../types/Snippet';
 import { TopicNode } from '../types/TopicNode';
 import { useTranslation } from 'react-i18next';
@@ -13,7 +13,7 @@ import { useAuthStore } from 'stores/useAuthStore';
 import { useMandalartStore } from 'stores/useMandalartStore';
 import { Plus } from 'lucide-react';
 import useModal from 'hooks/useModal';
-import Alert from './Alert';
+import AlertDialog from './AlertDialog';
 import { Separator } from 'components/ui/separator';
 import { Button } from 'components/ui/button';
 
@@ -22,13 +22,13 @@ export type UserHandlers = {
   error?: Error | null;
 };
 
-type MainContentProps = {
+type AppLayoutProps = {
   userHandlers: UserHandlers;
 };
 
-const MainContent = ({
+const AppLayout = ({
   userHandlers: { user = null, error: userError = null },
-}: MainContentProps) => {
+}: AppLayoutProps) => {
   const { signIn, signOut, getShouldUploadTemp, setShouldUploadTemp } =
     useAuthStore();
   const {
@@ -52,9 +52,9 @@ const MainContent = ({
   const openRightDrawer = () => setIsOpenRightDrawer(true);
   const closeRightDrawer = () => setIsOpenRightDrawer(false);
 
-  const [isOpenSignInModal, setIsOpenSignInModal] = useState(false);
-  const openSignInModal = () => setIsOpenSignInModal(true);
-  const closeSignInModal = () => setIsOpenSignInModal(false);
+  const [isOpenSignInDialog, setIsOpenSignInDialog] = useState(false);
+  const openSignInDialog = () => setIsOpenSignInDialog(true);
+  const closeSignInDialog = () => setIsOpenSignInDialog(false);
   const {
     isOpen: isOpenAlert,
     open: openAlert,
@@ -116,7 +116,7 @@ const MainContent = ({
     <div className="flex h-full w-full flex-col items-center">
       <Header
         user={user}
-        onOpenSignInUI={openSignInModal}
+        onOpenSignInUI={openSignInDialog}
         onSignOut={signOut}
         onOpenLeftDrawer={openLeftDrawer}
         onOpenRightDrawer={openRightDrawer}
@@ -149,7 +149,7 @@ const MainContent = ({
         )}
         <div className="h-16" />
       </div>
-      <LeftDrawer
+      <MandalartListDrawer
         isOpen={isOpenLeftDrawer}
         snippetMap={snippetMap}
         selectedMandalartId={currentMandalartId}
@@ -174,15 +174,15 @@ const MainContent = ({
         }}
         onClose={closeLeftDrawer}
       />
-      <RightDrawer isOpen={isOpenRightDrawer} onClose={closeRightDrawer} />
-      <SignInModal
-        isOpen={isOpenSignInModal}
-        onClose={closeSignInModal}
+      <SettingsDrawer isOpen={isOpenRightDrawer} onClose={closeRightDrawer} />
+      <SignInDialog
+        isOpen={isOpenSignInDialog}
+        onClose={closeSignInDialog}
         onSignIn={signIn}
       />
-      <Alert isOpen={isOpenAlert} message={alertContent} onClose={closeAlert} />
+      <AlertDialog isOpen={isOpenAlert} message={alertContent} onClose={closeAlert} />
     </div>
   );
 };
 
-export default MainContent;
+export default AppLayout;

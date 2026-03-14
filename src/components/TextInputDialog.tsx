@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-type TextEditorProps = {
+type TextInputDialogProps = {
   isOpen: boolean;
   title?: string;
   initialText: string;
@@ -20,7 +20,7 @@ type TextEditorProps = {
   onConfirm: (text: string) => void;
 };
 
-const TextEditor = ({
+const TextInputDialog = ({
   isOpen,
   title = `${i18n.t('global.app')}`,
   initialText = '',
@@ -28,7 +28,7 @@ const TextEditor = ({
   textLimit,
   onClose,
   onConfirm,
-}: TextEditorProps) => {
+}: TextInputDialogProps) => {
   const [text, setText] = useState(initialText);
   const hasLimit = textLimit !== undefined;
   const isLimitReached = hasLimit && textLimit < text.length;
@@ -117,4 +117,4 @@ const TextEditor = ({
   );
 };
 
-export default TextEditor;
+export default TextInputDialog;

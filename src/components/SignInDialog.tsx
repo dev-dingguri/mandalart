@@ -10,13 +10,13 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
-type SignInModalProps = {
+type SignInDialogProps = {
   isOpen: boolean;
   onClose: () => void;
   onSignIn: (providerId: string) => void;
 };
 
-const SignInModal = ({ isOpen, onClose, onSignIn }: SignInModalProps) => {
+const SignInDialog = ({ isOpen, onClose, onSignIn }: SignInDialogProps) => {
   const { t } = useTranslation();
 
   return (
@@ -41,4 +41,4 @@ const SignInModal = ({ isOpen, onClose, onSignIn }: SignInModalProps) => {
   );
 };
 
-export default SignInModal;
+export default SignInDialog;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Snippet } from 'types/Snippet';
 import { LayoutGrid, MoreHorizontal } from 'lucide-react';
-import TextEditor from 'components/TextEditor';
+import TextInputDialog from 'components/TextInputDialog';
 import {
   MAX_MANDALART_TITLE_SIZE,
   TMP_MANDALART_ID,
@@ -74,7 +74,7 @@ const MandalartListItem = ({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <TextEditor
+      <TextInputDialog
         isOpen={isOpenEditor}
         initialText={snippet.title}
         textLimit={MAX_MANDALART_TITLE_SIZE}

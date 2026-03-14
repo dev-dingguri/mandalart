@@ -1,6 +1,6 @@
 import { cn } from 'lib/utils';
 
-const SquareBox = ({
+const AspectSquare = ({
   className,
   ...rest
 }: React.HTMLAttributes<HTMLDivElement>) => {
@@ -9,4 +9,4 @@ const SquareBox = ({
   );
 };
 
-export default SquareBox;
+export default AspectSquare;

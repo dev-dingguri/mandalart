@@ -1,4 +1,4 @@
-import MainContent from 'components/MainContent';
+import AppLayout from 'components/AppLayout';
 import { useAddLoadingCondition } from 'stores/useLoadingStore';
 import { useMandalartInit, useMandalartStore } from 'stores/useMandalartStore';
 import { User } from 'firebase/auth';
@@ -17,7 +17,7 @@ const MainUserPage = ({ user, userError }: MainUserPageProps) => {
   if (isLoading) return null;
 
   return (
-    <MainContent
+    <AppLayout
       userHandlers={{ user, error: userError }}
     />
   );

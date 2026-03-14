@@ -6,7 +6,7 @@ import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';
 
 type FocusHandlers = {
   isFocused: boolean;
-  onUpdateFocuse: () => void;
+  onUpdateFocus: () => void;
 };
 
 type TopicGridProps = {
@@ -23,13 +23,13 @@ const TopicGrid = ({
   focusHandlers,
 }: TopicGridProps) => {
   const gridRef = useRef<HTMLDivElement>(null);
-  const isFocuseTriedRef = useRef(false);
+  const isFocusTriedRef = useRef(false);
 
   const isFocused = focusHandlers?.isFocused;
 
   useEffect(() => {
-    const isTried = isFocuseTriedRef.current;
-    isFocuseTriedRef.current = true;
+    const isTried = isFocusTriedRef.current;
+    isFocusTriedRef.current = true;
 
     isFocused && scrollCenter(gridRef.current, isTried ? 'smooth' : 'auto');
   }, [isFocused]);
@@ -59,7 +59,7 @@ const TopicGrid = ({
         spacing="2px"
         onClick={() => {
           scrollCenter(gridRef.current, 'smooth');
-          focusHandlers?.onUpdateFocuse();
+          focusHandlers?.onUpdateFocus();
         }}
       />
     </div>

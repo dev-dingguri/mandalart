@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Drawer, DrawerContent } from 'components/ui/drawer';
 import { Separator } from 'components/ui/separator';
 
-type LeftDrawerProps = {
+type MandalartListDrawerProps = {
   isOpen: boolean;
   snippetMap: Map<string, Snippet>;
   selectedMandalartId: string | null;
@@ -18,7 +18,7 @@ type LeftDrawerProps = {
   onClose: () => void;
 };
 
-const LeftDrawer = ({
+const MandalartListDrawer = ({
   isOpen,
   snippetMap,
   selectedMandalartId,
@@ -28,7 +28,7 @@ const LeftDrawer = ({
   onResetMandalart,
   onCreateMandalart,
   onClose,
-}: LeftDrawerProps) => {
+}: MandalartListDrawerProps) => {
   const { t } = useTranslation();
 
   return (
@@ -66,4 +66,4 @@ const LeftDrawer = ({
   );
 };
 
-export default LeftDrawer;
+export default MandalartListDrawer;

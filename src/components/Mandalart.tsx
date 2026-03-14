@@ -10,7 +10,7 @@ import { memo } from 'react';
 
 type FocusHandlers = {
   focusedIdx: number;
-  onUpdateFocuse: (gridIdx: number) => void;
+  onUpdateFocus: (gridIdx: number) => void;
 };
 
 export type MandalartProps = {
@@ -37,7 +37,7 @@ const Mandalart = memo(
               focusHandlers
                 ? {
                     isFocused: focusHandlers.focusedIdx === gridIdx,
-                    onUpdateFocuse: () => focusHandlers.onUpdateFocuse(gridIdx),
+                    onUpdateFocus: () => focusHandlers.onUpdateFocus(gridIdx),
                   }
                 : undefined
             }

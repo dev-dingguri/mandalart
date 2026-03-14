@@ -8,13 +8,13 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
-export type AlertProps = {
+export type AlertDialogProps = {
   isOpen: boolean;
   message: string | null;
   onClose: () => void;
 };
 
-const Alert = ({ isOpen, message, onClose }: AlertProps) => {
+const AlertDialog = ({ isOpen, message, onClose }: AlertDialogProps) => {
   const { t } = useTranslation();
 
   return (
@@ -34,4 +34,4 @@ const Alert = ({ isOpen, message, onClose }: AlertProps) => {
   );
 };
 
-export default Alert;
+export default AlertDialog;

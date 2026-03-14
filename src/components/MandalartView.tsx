@@ -1,5 +1,5 @@
 import { useState, useCallback, HTMLAttributes } from 'react';
-import ZoomInMandalart from 'components/ZoomInMandalart';
+import MandalartFocusView from 'components/MandalartFocusView';
 import Mandalart, { MandalartProps } from 'components/Mandalart';
 import { TopicNode } from 'types/TopicNode';
 import {
@@ -9,7 +9,7 @@ import {
 } from 'constants/constants';
 import MandalartViewToggle from 'components/MandalartViewToggle';
 import { Snippet } from 'types/Snippet';
-import TextEditor from 'components/TextEditor';
+import TextInputDialog from 'components/TextInputDialog';
 import { useTranslation } from 'react-i18next';
 
 type MandalartViewProps = {
@@ -73,10 +73,10 @@ const MandalartView = ({
         {isAllView ? (
           <Mandalart {...mandalartProps} />
         ) : (
-          <ZoomInMandalart {...mandalartProps} />
+          <MandalartFocusView {...mandalartProps} />
         )}
       </div>
-      <TextEditor
+      <TextInputDialog
         isOpen={isOpenTitleEditor}
         initialText={snippet.title}
         textLimit={MAX_TOPIC_TEXT_SIZE}

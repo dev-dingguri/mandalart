@@ -5,9 +5,9 @@ import {
   TABLE_SIZE,
   TABLE_CENTER_IDX,
 } from 'constants/constants';
-import SquareBox from 'components/SquareBox';
+import AspectSquare from 'components/AspectSquare';
 
-const ZoomInMandalart = ({ ...props }: MandalartProps) => {
+const MandalartFocusView = ({ ...props }: MandalartProps) => {
   const [focusedIdx, setFocusedIdx] = useState(TABLE_CENTER_IDX);
 
   const ref = useRef<HTMLDivElement>(null);
@@ -102,14 +102,14 @@ const ZoomInMandalart = ({ ...props }: MandalartProps) => {
       onTouchCancel={handleTouchEnd}
       onTouchMove={handleTouchMove}
     >
-      <SquareBox style={{ width: '240%', height: '240%' }}>
+      <AspectSquare style={{ width: '240%', height: '240%' }}>
         <Mandalart
           {...props}
-          focusHandlers={{ focusedIdx, onUpdateFocuse: setFocusedIdx }}
+          focusHandlers={{ focusedIdx, onUpdateFocus: setFocusedIdx }}
         />
-      </SquareBox>
+      </AspectSquare>
     </div>
   );
 };
 
-export default ZoomInMandalart;
+export default MandalartFocusView;

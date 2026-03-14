@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import TextEditor from 'components/TextEditor';
+import TextInputDialog from 'components/TextInputDialog';
 import { MAX_TOPIC_TEXT_SIZE } from 'constants/constants';
 import { useTranslation } from 'react-i18next';
-import SquareBox from 'components/SquareBox';
+import AspectSquare from 'components/AspectSquare';
 import { cn } from 'lib/utils';
 
 type TopicItemProps = {
@@ -23,7 +23,7 @@ const TopicItem = ({
 
   return (
     <>
-      <SquareBox
+      <AspectSquare
         className={cn(
           'flex cursor-pointer select-none items-center justify-center',
           isAccented
@@ -35,8 +35,8 @@ const TopicItem = ({
         <p className="line-clamp-2 overflow-hidden break-words text-center text-[0.7rem] leading-[1.2em] min-[30rem]:line-clamp-3 min-[30rem]:text-[0.9rem]">
           {topic}
         </p>
-      </SquareBox>
-      <TextEditor
+      </AspectSquare>
+      <TextInputDialog
         isOpen={isOpenEditor}
         title={`${t('global.topic')}`}
         initialText={topic}

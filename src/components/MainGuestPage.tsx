@@ -1,4 +1,4 @@
-import MainContent from 'components/MainContent';
+import AppLayout from 'components/AppLayout';
 import { useAddLoadingCondition } from 'stores/useLoadingStore';
 import { useMandalartInit, useMandalartStore } from 'stores/useMandalartStore';
 
@@ -15,7 +15,7 @@ const MainGuestPage = ({ userError }: MainGuestPageProps) => {
   if (isLoading) return null;
 
   return (
-    <MainContent userHandlers={{ error: userError }} />
+    <AppLayout userHandlers={{ error: userError }} />
   );
 };
 
