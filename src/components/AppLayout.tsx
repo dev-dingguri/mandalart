@@ -1,10 +1,11 @@
-import { useMemo, useEffect, useCallback, useLayoutEffect, useState, useRef } from 'react';
+import { useMemo, useEffect, useCallback, useLayoutEffect, useState, useRef, lazy, Suspense } from 'react';
 import Header from 'components/Header';
-import SignInDialog from 'components/SignInDialog';
 import MandalartView from 'components/MandalartView';
-import MandalartListDrawer from 'components/MandalartListDrawer';
 import { EMPTY_META, EMPTY_TOPIC_TREE } from 'constants/constants';
-import SettingsDrawer from 'components/SettingsDrawer';
+
+const MandalartListDrawer = lazy(() => import('components/MandalartListDrawer'));
+const SettingsDrawer = lazy(() => import('components/SettingsDrawer'));
+const SignInDialog = lazy(() => import('components/SignInDialog'));
 import { MandalartMeta } from '../types/MandalartMeta';
 import { TopicNode } from '../types/TopicNode';
 import { useTranslation } from 'react-i18next';
@@ -172,51 +173,53 @@ const AppLayout = ({
         )}
         <div className="h-16" />
       </div>
-      <MandalartListDrawer
-        isOpen={isOpenLeftDrawer}
-        metaMap={metaMap}
-        selectedMandalartId={currentMandalartId}
-        onSelectMandalart={(mandalartId) => {
-          selectMandalartId(mandalartId);
-          closeLeftDrawer();
-        }}
-        onDeleteMandalart={(mandalartId) => {
-          deleteMandalart(mandalartId);
-          trackMandalartDelete();
-        }}
-        onRenameMandalart={(mandalartId, name) => {
-          saveMandalartMeta(mandalartId, { title: name });
-        }}
-        onResetMandalart={(mandalartId) => {
-          saveMandalartMeta(mandalartId, EMPTY_META);
-          saveTopicTree(mandalartId, EMPTY_TOPIC_TREE);
-          trackMandalartReset();
-        }}
-        onCreateMandalart={() => {
-          createMandalart(EMPTY_META, EMPTY_TOPIC_TREE)
-            .then(() => {
-              trackMandalartCreate();
-              closeLeftDrawer();
-            })
-            .catch((e: Error) => openAlert(e.message));
-        }}
-        onClose={closeLeftDrawer}
-      />
-      <SettingsDrawer isOpen={isOpenRightDrawer} onClose={closeRightDrawer} />
-      <SignInDialog
-        isOpen={isOpenSignInDialog}
-        onClose={closeSignInDialog}
-        onSignIn={async (providerId) => {
-          trackSignIn(providerId);
-          try {
-            await signIn(providerId);
-          } catch (e: any) {
-            if (e?.code !== 'auth/popup-closed-by-user') {
-              openAlert(t('auth.errors.signIn.default'));
+      <Suspense fallback={null}>
+        <MandalartListDrawer
+          isOpen={isOpenLeftDrawer}
+          metaMap={metaMap}
+          selectedMandalartId={currentMandalartId}
+          onSelectMandalart={(mandalartId) => {
+            selectMandalartId(mandalartId);
+            closeLeftDrawer();
+          }}
+          onDeleteMandalart={(mandalartId) => {
+            deleteMandalart(mandalartId);
+            trackMandalartDelete();
+          }}
+          onRenameMandalart={(mandalartId, name) => {
+            saveMandalartMeta(mandalartId, { title: name });
+          }}
+          onResetMandalart={(mandalartId) => {
+            saveMandalartMeta(mandalartId, EMPTY_META);
+            saveTopicTree(mandalartId, EMPTY_TOPIC_TREE);
+            trackMandalartReset();
+          }}
+          onCreateMandalart={() => {
+            createMandalart(EMPTY_META, EMPTY_TOPIC_TREE)
+              .then(() => {
+                trackMandalartCreate();
+                closeLeftDrawer();
+              })
+              .catch((e: Error) => openAlert(e.message));
+          }}
+          onClose={closeLeftDrawer}
+        />
+        <SettingsDrawer isOpen={isOpenRightDrawer} onClose={closeRightDrawer} />
+        <SignInDialog
+          isOpen={isOpenSignInDialog}
+          onClose={closeSignInDialog}
+          onSignIn={async (providerId) => {
+            trackSignIn(providerId);
+            try {
+              await signIn(providerId);
+            } catch (e: any) {
+              if (e?.code !== 'auth/popup-closed-by-user') {
+                openAlert(t('auth.errors.signIn.default'));
+              }
             }
-          }
-        }}
-      />
+          }}
+        />
+      </Suspense>
       <AlertDialog isOpen={isOpenAlert} message={alertContent} onClose={closeAlert} />
     </div>
   );
