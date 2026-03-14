@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useCallback, useLayoutEffect } from 'react';
+import { useMemo, useEffect, useCallback, useLayoutEffect, useState } from 'react';
 import Header from 'components/Header';
 import SignInModal from 'components/SignInModal';
 import MandalartView from 'components/MandalartView';
@@ -12,7 +12,6 @@ import { User } from 'firebase/auth';
 import { useAuthStore } from 'stores/useAuthStore';
 import { useMandalartStore } from 'stores/useMandalartStore';
 import { BsPlus } from 'react-icons/bs';
-import { useBoolean } from 'usehooks-ts';
 import useModal from 'hooks/useModal';
 import Alert from './Alert';
 import { Separator } from 'components/ui/separator';
@@ -45,21 +44,17 @@ const MainContent = ({
     uploadTemp,
   } = useMandalartStore();
 
-  const {
-    value: isOpenLeftDrawer,
-    setTrue: openLeftDrawer,
-    setFalse: closeLeftDrawer,
-  } = useBoolean(false);
-  const {
-    value: isOpenRightDrawer,
-    setTrue: openRightDrawer,
-    setFalse: closeRightDrawer,
-  } = useBoolean(false);
-  const {
-    value: isOpenSignInModal,
-    setTrue: openSignInModal,
-    setFalse: closeSignInModal,
-  } = useBoolean(false);
+  const [isOpenLeftDrawer, setIsOpenLeftDrawer] = useState(false);
+  const openLeftDrawer = () => setIsOpenLeftDrawer(true);
+  const closeLeftDrawer = () => setIsOpenLeftDrawer(false);
+
+  const [isOpenRightDrawer, setIsOpenRightDrawer] = useState(false);
+  const openRightDrawer = () => setIsOpenRightDrawer(true);
+  const closeRightDrawer = () => setIsOpenRightDrawer(false);
+
+  const [isOpenSignInModal, setIsOpenSignInModal] = useState(false);
+  const openSignInModal = () => setIsOpenSignInModal(true);
+  const closeSignInModal = () => setIsOpenSignInModal(false);
   const {
     isOpen: isOpenAlert,
     open: openAlert,

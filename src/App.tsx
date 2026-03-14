@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import OpenSourceLicensesPage from 'components/OpenSourceLicensesPage';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from 'constants/constants';
-import { useEventListener, useTernaryDarkMode } from 'usehooks-ts';
+import { useIsDarkMode } from 'stores/useThemeStore';
 import useAnalytics from 'hooks/useAnalytics';
 import { APP_VERSION } from 'version';
 
@@ -20,11 +20,15 @@ const App = () => {
   }, [setUserProperties]);
 
   /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 높이로 변경 */
-  useEventListener('resize', () => {
-    requestAnimationFrame(() => setHeight(window.innerHeight));
-  });
+  useEffect(() => {
+    const handleResize = () => {
+      requestAnimationFrame(() => setHeight(window.innerHeight));
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  const { isDarkMode } = useTernaryDarkMode();
+  const isDarkMode = useIsDarkMode();
 
   useLayoutEffect(() => {
     document.documentElement.classList.toggle('dark', isDarkMode);

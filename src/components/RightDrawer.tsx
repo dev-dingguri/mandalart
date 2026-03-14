@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { BsGithub, BsYoutube, BsChevronDown } from 'react-icons/bs';
 import { APP_VERSION } from 'version';
 import { PATH_OSS } from '../constants/constants';
-import { useTernaryDarkMode } from 'usehooks-ts';
+import { useThemeStore, TernaryDarkMode } from 'stores/useThemeStore';
 import { Drawer, DrawerContent } from 'components/ui/drawer';
 import { Separator } from 'components/ui/separator';
 
@@ -95,8 +95,7 @@ type RightAsideProps = {
 };
 
 const RightAside = ({ isOpen, onClose }: RightAsideProps) => {
-  const { ternaryDarkMode, setTernaryDarkMode } = useTernaryDarkMode();
-  type TernaryDarkMode = typeof ternaryDarkMode;
+  const { ternaryDarkMode, setTernaryDarkMode } = useThemeStore();
 
   const { t, i18n } = useTranslation();
 

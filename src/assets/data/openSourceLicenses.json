@@ -6534,11 +6534,6 @@
     "repository": "https://github.com/unshiftio/url-parse",
     "name": "url-parse"
   },
-  "usehooks-ts@2.9.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/juliencrn/usehooks-ts",
-    "name": "usehooks-ts"
-  },
   "util-deprecate@1.0.2": {
     "licenses": "MIT",
     "repository": "https://github.com/TooTallNate/util-deprecate",
