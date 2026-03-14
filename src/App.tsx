@@ -1,4 +1,4 @@
-import { useEffect, useState, useLayoutEffect, lazy, Suspense } from 'react';
+import { useEffect, useLayoutEffect, lazy, Suspense } from 'react';
 import MainPage from '@/components/MainPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +11,6 @@ const OpenSourceLicensesPage = lazy(
 );
 
 const App = () => {
-  const [height, setHeight] = useState(window.innerHeight);
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
@@ -20,15 +19,6 @@ const App = () => {
   useEffect(() => {
     trackAppVersion();
   }, [trackAppVersion]);
-
-  /* 모바일 브라우저 주소창 및 네비게이션 영역 제외한 높이로 변경 */
-  useEffect(() => {
-    const handleResize = () => {
-      requestAnimationFrame(() => setHeight(window.innerHeight));
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const isDarkMode = useIsDarkMode();
 
@@ -58,7 +48,7 @@ const App = () => {
   }, [t, isDarkMode]);
 
   return (
-    <div style={{ height }}>
+    <div className="h-dvh">
       <BrowserRouter>
         <Routes>
           <Route path={`/${lang}`} element={<MainPage />} />
