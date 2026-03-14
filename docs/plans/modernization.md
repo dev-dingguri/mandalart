@@ -98,6 +98,11 @@ Tailwind CSS v4를 설치하고 기본 설정을 구성한다.
 - [ ] 테마 토큰 정의 (기존 MUI 테마 색상을 CSS 변수로 이식): primary, secondary, background, foreground 등
 - [ ] `pnpm build` 성공 확인 (기존 MUI 스타일과 공존 가능한지)
 
+**테마 방향 결정:** shadcn/ui 공식 Zinc 테마 (기본값)
+- 현재 `index.css`의 `:root` / `.dark` 블록이 이미 공식 테마 적용 상태
+- 기존 MUI 색상(`--color-app-*`)은 참고하지 않음
+- MUI 제거 완료 시(T12) `--color-app-*` 커스텀 변수를 제거하고 shadcn 토큰으로 통합
+
 ---
 
 ### T5: shadcn/ui 설정
