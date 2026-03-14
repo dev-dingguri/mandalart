@@ -8,18 +8,18 @@ const MainPage = () => {
   const isAuthLoading = useAuthStore((s) => s.isLoading);
   const userError = useAuthStore((s) => s.error);
   const isMandalartLoading = useMandalartStore((s) => s.isLoading);
-  const isLoading = isAuthLoading || (user !== null && isMandalartLoading);
+  const isLoading = isAuthLoading || isMandalartLoading;
 
   return (
     <>
       <div className={isLoading ? 'flex h-full' : 'hidden'}>
         <div className="m-auto size-16 animate-spin rounded-full border-4 border-border border-t-foreground" />
       </div>
-      {user ? (
+      {!isAuthLoading && (user ? (
         <AuthenticatedView user={user} userError={userError} />
       ) : (
         <GuestView userError={userError} />
-      )}
+      ))}
     </>
   );
 };
