@@ -48,6 +48,7 @@ const Mandalart = memo(
     );
   }
 );
+Mandalart.displayName = 'Mandalart';
 
 const isAccented = (gridIdx: number, gridItemIdx: number) => {
   return gridIdx === TABLE_CENTER_IDX

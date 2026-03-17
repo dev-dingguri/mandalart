@@ -93,7 +93,7 @@ code-reviewer 에이전트 (코드 리뷰)
 | 2-1 | `TopicGrid`에 `React.memo` 적용 | 탐색 |
 | 2-2 | `Mandalart` 내부 구조 정리 (이미 memo 적용됨) | 탐색 |
 | 2-3 | `MandalartFocusView` — 5개 스와이프 상태 ref + 터치 이벤트 계산 로직을 `useSwipeNavigation` 훅으로 추출 | 탐색 |
-| 2-4 | `MandalartView`의 `isAllView` boolean → 명시적 variant 분리 검토 (`architecture-avoid-boolean-props` + `patterns-explicit-variants`) | composition-patterns |
+| 2-4 | `MandalartView`의 `isAllView` boolean → 명시적 variant 분리 검토 (`architecture-avoid-boolean-props` + `patterns-explicit-variants`). **검토 결론: 변경 불필요** — `isAllView`는 외부 prop이 아닌 내부 useState 토글이므로 `avoid-boolean-props` 규칙 해당 없음. 두 뷰가 동일한 `mandalartProps`/헤더/다이얼로그를 공유하므로 분리 시 중복 발생. | composition-patterns |
 | 2-5 | `rerender-defer-reads` — 콜백에서만 쓰는 상태를 구독하고 있는지 검사 | react-best-practices |
 | 2-6 | `rerender-functional-setstate` — setState에 함수형 업데이트 적용하여 콜백 안정성 확보 | react-best-practices |
 | 2-7 | shadcn 스타일링 규칙, 중첩 삼항 제거, Props 통일, 모션 규칙 | shadcn/simplify/web-design |

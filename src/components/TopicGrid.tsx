@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import ItemGrid from '@/components/ItemGrid';
 import TopicItem from '@/components/TopicItem';
 import { TopicNode } from '@/types/TopicNode';
@@ -16,7 +16,7 @@ type TopicGridProps = {
   focusHandlers?: FocusHandlers;
 };
 
-const TopicGrid = ({
+const TopicGrid = memo(({
   onIsAccented,
   onGetTopic,
   onUpdateTopic,
@@ -64,12 +64,13 @@ const TopicGrid = ({
       />
     </div>
   );
-};
+});
+TopicGrid.displayName = 'TopicGrid';
 
 const scrollCenter = (element: Element | null, behavior: ScrollBehavior) => {
   if (!element) return;
   element.scrollIntoView({
-    behavior: behavior,
+    behavior,
     block: 'center',
     inline: 'center',
   });
