@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import TextInputDialog from '@/components/TextInputDialog';
 import { MAX_TOPIC_TEXT_SIZE } from '@/constants/constants';
 import { useTranslation } from 'react-i18next';
@@ -12,7 +12,7 @@ type TopicItemProps = {
   onUpdateTopic: (text: string) => void;
 };
 
-const TopicItem = ({
+const TopicItem = memo(({
   topic,
   isAccented,
   isEditable,
@@ -47,6 +47,7 @@ const TopicItem = ({
       />
     </>
   );
-};
+});
+TopicItem.displayName = 'TopicItem';
 
 export default TopicItem;

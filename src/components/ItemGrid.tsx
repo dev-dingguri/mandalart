@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { memo } from 'react';
 
 type ItemGridProps = {
   rowSize: number;
@@ -7,7 +7,7 @@ type ItemGridProps = {
   spacing?: string | number;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const ItemGrid = ({
+const ItemGrid = memo(({
   rowSize,
   colSize,
   createItem,
@@ -26,7 +26,7 @@ const ItemGrid = ({
       >
         {Array.from({ length: rowSize }, (_, row) =>
           Array.from({ length: colSize }, (_, col) => (
-            <div key={row * colSize + col} style={{ aspectRatio: '1/1' }}>
+            <div key={row * colSize + col} className="aspect-square">
               {createItem(row * colSize + col, row, col)}
             </div>
           ))
@@ -34,6 +34,7 @@ const ItemGrid = ({
       </div>
     </div>
   );
-};
+});
+ItemGrid.displayName = 'ItemGrid';
 
 export default ItemGrid;
