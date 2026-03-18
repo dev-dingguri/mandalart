@@ -7,27 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
-/*
- * openSourceLicenses.json
- * Created with 'license-checker --production -excludePrivatePackages --customPath [customPath.json] --json > openSourceLicenses.json'
- * 만들어진 파일에 공백("")이 있을 수 있습니다.
- * [customPath.json]
- * {
- *   "name": "",
- *   "version": false,
- *   "description": false,
- *   "repository": "",
- *   "publisher": false,
- *   "email": false,
- *   "url": false,
- *   "licenses": "",
- *   "licenseFile": false,
- *   "licenseText": false,
- *   "licenseModified": false,
- *   "copyright": false,
- *   "path": false
- *  }
- */
+// openSourceLicenses.json — `pnpm licenses` 로 재생성
 
 type License = {
   name: string;

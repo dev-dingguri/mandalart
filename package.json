@@ -36,7 +36,8 @@
     "predeploy:firebase": "pnpm build",
     "deploy:firebase": "firebase deploy",
     "predeploy:preview": "pnpm build",
-    "deploy:preview": "firebase hosting:channel:deploy preview --expires 7d"
+    "deploy:preview": "firebase hosting:channel:deploy preview --expires 7d",
+    "licenses": "node scripts/generate-licenses.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.1",

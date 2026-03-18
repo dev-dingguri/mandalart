@@ -1,4 +1,14 @@
 {
+  "@fontsource-variable/geist@5.2.8": {
+    "licenses": "OFL-1.1",
+    "repository": "https://github.com/fontsource/font-files",
+    "name": "@fontsource-variable/geist"
+  },
+  "@radix-ui/react-alert-dialog@1.1.15": {
+    "licenses": "MIT",
+    "repository": "https://github.com/radix-ui/primitives",
+    "name": "@radix-ui/react-alert-dialog"
+  },
   "@radix-ui/react-dialog@1.1.15": {
     "licenses": "MIT",
     "repository": "https://github.com/radix-ui/primitives",
@@ -8,6 +18,16 @@
     "licenses": "MIT",
     "repository": "https://github.com/radix-ui/primitives",
     "name": "@radix-ui/react-dropdown-menu"
+  },
+  "@radix-ui/react-scroll-area@1.2.10": {
+    "licenses": "MIT",
+    "repository": "https://github.com/radix-ui/primitives",
+    "name": "@radix-ui/react-scroll-area"
+  },
+  "@radix-ui/react-select@2.2.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/radix-ui/primitives",
+    "name": "@radix-ui/react-select"
   },
   "@radix-ui/react-separator@1.1.8": {
     "licenses": "MIT",
@@ -19,10 +39,10 @@
     "repository": "https://github.com/radix-ui/primitives",
     "name": "@radix-ui/react-toggle"
   },
-  "@fontsource-variable/geist@5.2.8": {
-    "licenses": "OFL-1.1",
-    "repository": "https://github.com/fontsource/font-files",
-    "name": "@fontsource-variable/geist"
+  "@radix-ui/react-tooltip@1.2.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/radix-ui/primitives",
+    "name": "@radix-ui/react-tooltip"
   },
   "class-variance-authority@0.7.1": {
     "licenses": "Apache-2.0",
@@ -39,20 +59,25 @@
     "repository": "https://github.com/firebase/firebase-js-sdk",
     "name": "firebase"
   },
-  "i18next-browser-languagedetector@8.2.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/i18next/i18next-browser-languageDetector",
-    "name": "i18next-browser-languagedetector"
-  },
   "i18next@25.8.18": {
     "licenses": "MIT",
     "repository": "https://github.com/i18next/i18next",
     "name": "i18next"
   },
+  "i18next-browser-languagedetector@8.2.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/i18next/i18next-browser-languageDetector",
+    "name": "i18next-browser-languagedetector"
+  },
   "lucide-react@0.577.0": {
     "licenses": "ISC",
     "repository": "https://github.com/lucide-icons/lucide",
     "name": "lucide-react"
+  },
+  "react@19.2.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/react",
+    "name": "react"
   },
   "react-dom@19.2.4": {
     "licenses": "MIT",
@@ -68,11 +93,6 @@
     "licenses": "MIT",
     "repository": "https://github.com/remix-run/react-router",
     "name": "react-router"
-  },
-  "react@19.2.4": {
-    "licenses": "MIT",
-    "repository": "https://github.com/facebook/react",
-    "name": "react"
   },
   "tailwind-merge@3.5.0": {
     "licenses": "MIT",
