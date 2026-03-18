@@ -144,7 +144,7 @@ code-reviewer 에이전트 (코드 리뷰)
 
 ---
 
-## 그룹 4: 리스트/드로어
+## 그룹 4: 리스트/드로어 ✅
 
 **대상**: `MandalartList`(44줄), `MandalartListItem`(96줄), `MandalartListDrawer`(71줄)
 **변경 규모**: 작음~중간 (그룹 3에서 useModal/cn() 선행 적용 완료)
@@ -153,9 +153,9 @@ code-reviewer 에이전트 (코드 리뷰)
 
 | # | 작업 | 출처 |
 |---|------|------|
-| 4-1 | `MandalartListItem` — DropdownMenu 부분을 별도 컴포넌트로 추출하여 렌더링 책임 분리. compound components 패턴은 이 규모(96줄)에서 과도하므로 단순 추출로 한정 | 탐색 |
-| 4-2 | `ScrollArea` 설치 — 드로어 내 리스트 스크롤 영역에 적용 검토 | shadcn |
-| 4-3 | shadcn 스타일링 규칙, 중첩 삼항 제거, Props 통일, 모션 규칙 | shadcn/simplify/web-design |
+| 4-1 ✅ | `MandalartListItem` — DropdownMenu를 `MandalartListItemMenu`로 추출. `Button variant="ghost" size="icon-xs"` + `asChild` 패턴 적용, `aria-label` 추가, `stopPropagation` why 주석 | 탐색 |
+| 4-2 ✅ | `@radix-ui/react-scroll-area` 설치 (Radix 통일), `scroll-area.tsx` 생성, `MandalartListDrawer`에 `ScrollArea` 적용. `overflow-auto` + `scrollbar-gutter` → `ScrollArea` 전환, 불필요한 `px-[var(--size-scrollbar-width)]` 제거 | shadcn |
+| 4-3 ✅ | Button 내 Plus 아이콘에 `data-icon="inline-start"` 적용, 아이콘 사이징 클래스 제거, `meta.title ? meta.title : t(...)` → `meta.title \|\| t(...)` 간소화, `global.more` 번역 키 추가 (ko/en/ja/zh-CN) | shadcn/simplify/web-design |
 
 > **삭제된 항목**:
 > - 구 4-2 (compound components 검토) → 4-1에 통합, 단순 추출로 한정

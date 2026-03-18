@@ -4,6 +4,7 @@ import MandalartList from '@/components/MandalartList';
 import { MandalartMeta } from '@/types/MandalartMeta';
 import { useTranslation } from 'react-i18next';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 
 type MandalartListDrawerProps = {
@@ -41,16 +42,18 @@ const MandalartListDrawer = ({
     >
       <DrawerContent aria-describedby={undefined}>
         <DrawerTitle className="sr-only">{t('mandalart.list')}</DrawerTitle>
-        <MandalartList
-          metaMap={metaMap}
-          selectedId={selectedMandalartId}
-          onItemSelect={onSelectMandalart}
-          onItemDelete={onDeleteMandalart}
-          onItemRename={onRenameMandalart}
-          onItemReset={onResetMandalart}
-          className="overflow-auto p-2 pt-4 [scrollbar-gutter:stable_both-edges]"
-        />
-        <div className="flex flex-col px-[var(--size-scrollbar-width)]">
+        <ScrollArea className="flex-1">
+          <MandalartList
+            metaMap={metaMap}
+            selectedId={selectedMandalartId}
+            onItemSelect={onSelectMandalart}
+            onItemDelete={onDeleteMandalart}
+            onItemRename={onRenameMandalart}
+            onItemReset={onResetMandalart}
+            className="p-2 pt-4"
+          />
+        </ScrollArea>
+        <div className="flex flex-col">
           <Separator />
           <Button
             variant="ghost"
@@ -58,7 +61,7 @@ const MandalartListDrawer = ({
             className="m-2 justify-start gap-2 bg-muted text-base"
             onClick={onCreateMandalart}
           >
-            <Plus className="size-5" />
+            <Plus data-icon="inline-start" />
             {t('mandalart.new')}
           </Button>
         </div>
