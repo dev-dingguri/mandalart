@@ -83,6 +83,7 @@ Extracts all state/logic from `AppLayout` (modals, store subscriptions, analytic
 | `rightDrawer` | `isOpen`, `open`, `close` |
 | `signInDialog` | `isOpen`, `open`, `close`, `onSignIn` |
 | `alert` | `isOpen`, `content`, `close` |
+| `confirmDialog` | `isOpen`, `message`, `confirmText`, `onConfirm`, `close` |
 
 ### Performance Patterns
 

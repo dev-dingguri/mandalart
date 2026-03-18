@@ -24,7 +24,8 @@ const ConfirmDialog = ({ isOpen, message, confirmText, onConfirm, onClose }: Con
 
   return (
     <AlertDialogRoot open={isOpen}>
-      <AlertDialogContent className="gap-3 p-6 w-max">
+      {/* Radix AlertDialog는 기본적으로 ESC/외부 클릭을 차단하므로 명시적으로 ESC 핸들러 추가 */}
+      <AlertDialogContent className="gap-3 p-6 w-max" onEscapeKeyDown={onClose}>
         <AlertDialogHeader>
           <AlertDialogTitle>{t('global.app')}</AlertDialogTitle>
           <AlertDialogDescription className="whitespace-pre-line break-keep">
