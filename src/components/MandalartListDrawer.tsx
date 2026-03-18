@@ -52,19 +52,20 @@ const MandalartListDrawer = ({
             onItemReset={onResetMandalart}
             className="p-2 pt-4"
           />
-        </ScrollArea>
-        <div className="flex flex-col">
           <Separator />
-          <Button
-            variant="ghost"
-            size="lg"
-            className="m-2 justify-start gap-2 bg-muted text-base"
-            onClick={onCreateMandalart}
-          >
-            <Plus data-icon="inline-start" />
-            {t('mandalart.new')}
-          </Button>
-        </div>
+          {/* flex-col의 stretch 기본값으로 inline-flex 버튼이 전체 너비를 채우도록 */}
+          <div className="flex flex-col">
+            <Button
+              variant="ghost"
+              size="lg"
+              className="m-2 justify-start gap-2 bg-muted text-base"
+              onClick={onCreateMandalart}
+            >
+              <Plus data-icon="inline-start" />
+              {t('mandalart.new')}
+            </Button>
+          </div>
+        </ScrollArea>
       </DrawerContent>
     </Drawer>
   );
