@@ -107,6 +107,5 @@ App → MainPage → AuthenticatedView / GuestView → AppLayout
 
 ## Known Issues
 
-- B2: MandalartFocusView centering broken (`scrollIntoView` doesn't work inside `overflow: hidden` container)
 - No confirmation dialog for delete/reset actions (executes immediately)
 - No save-success feedback (no toast notifications)
