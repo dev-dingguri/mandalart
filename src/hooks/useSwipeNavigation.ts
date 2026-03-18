@@ -1,4 +1,14 @@
 import { useCallback, useMemo, useRef, useState, type TouchEvent } from 'react';
+import { useLatestRef } from '@/hooks/useLatestRef';
+
+/** 스와이프 인식 기준: 컨테이너 너비 대비 비율 */
+const SWIPE_THRESHOLD_RATIO = 0.35;
+/** 플릭 제스처로 인식하는 최대 시간(ms) */
+const FLICK_MAX_DURATION_MS = 500;
+/** 플릭 속도→가중치 변환 계수 */
+const FLICK_WEIGHT_FACTOR = 0.02;
+/** 빠른 플릭 시 최대 가중치 배율 */
+const FLICK_MAX_WEIGHT = 5;
 
 type SwipeNavigationConfig = {
   gridSize: number;
@@ -15,10 +25,8 @@ const useSwipeNavigation = ({
   const containerRef = useRef<HTMLDivElement>(null);
 
   // 핸들러 안정화를 위해 상태/config를 ref로 동기화
-  const focusedIdxRef = useRef(focusedIdx);
-  focusedIdxRef.current = focusedIdx;
-  const configRef = useRef({ gridSize, colSize });
-  configRef.current = { gridSize, colSize };
+  const focusedIdxRef = useLatestRef(focusedIdx);
+  const configRef = useLatestRef({ gridSize, colSize });
 
   // 스와이프 시작 시점의 상태를 하나의 ref로 통합
   const swipeStartRef = useRef({
@@ -55,7 +63,7 @@ const useSwipeNavigation = ({
       endY: ev.changedTouches[0].pageY,
       endX: ev.changedTouches[0].pageX,
       startTime: start.time,
-      baseline: container.clientWidth * 0.35,
+      baseline: container.clientWidth * SWIPE_THRESHOLD_RATIO,
       colSize,
       gridSize,
     });
@@ -124,11 +132,12 @@ const calculateSwipedIdx = ({
 }: SwipeParams): number => {
   let movedIdx = currentIdx;
   const period = Date.now() - startTime;
-  // 500ms 안에 스와이프가 끝나면 가중치를 적용하여 빠른 플릭 제스처를 인식
-  const weight = Math.min(Math.max((500 - period) * 0.02, 1), 5);
+  // FLICK_MAX_DURATION_MS 안에 스와이프가 끝나면 가중치를 적용하여 빠른 플릭 제스처를 인식
+  const weight = Math.min(Math.max((FLICK_MAX_DURATION_MS - period) * FLICK_WEIGHT_FACTOR, 1), FLICK_MAX_WEIGHT);
   const forceY = (endY - startY) * weight;
   const forceX = (endX - startX) * weight;
 
+  // 의도적으로 else if가 아닌 독립 if 사용 — 대각선 스와이프 시 상하+좌우 동시 이동을 허용
   // 아래로 이동
   if (forceY < -baseline && movedIdx + colSize < gridSize) {
     movedIdx += colSize;
