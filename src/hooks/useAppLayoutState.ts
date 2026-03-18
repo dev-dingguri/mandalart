@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { EMPTY_META, EMPTY_TOPIC_TREE } from '@/constants/constants';
 import { MandalartMeta } from '@/types/MandalartMeta';
 import { TopicNode } from '@/types/TopicNode';
@@ -91,10 +91,9 @@ const useAppLayoutState = ({
     [currentMandalartId, saveTopicTree]
   );
 
-  const currentMandalartMeta = useMemo(() => {
-    if (!currentMandalartId) return null;
-    return metaMap.get(currentMandalartId) ?? null;
-  }, [metaMap, currentMandalartId]);
+  const currentMandalartMeta = currentMandalartId
+    ? metaMap.get(currentMandalartId) ?? null
+    : null;
 
   useEffect(() => {
     if (!userError) return;
@@ -114,9 +113,7 @@ const useAppLayoutState = ({
     setShouldUploadTemp(false);
     uploadTemp()
       .then(() => trackGuestUpload())
-      .catch((e: Error) => {
-        e && openAlert(e.message);
-      });
+      .catch((e: Error) => openAlert(e.message));
   }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert, trackGuestUpload]);
 
   const handleSignOut = useCallback(() => {

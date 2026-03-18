@@ -1,4 +1,4 @@
-import { useRef, useState, type TouchEvent } from 'react';
+import { useCallback, useMemo, useRef, useState, type TouchEvent } from 'react';
 
 type SwipeNavigationConfig = {
   gridSize: number;
@@ -14,6 +14,12 @@ const useSwipeNavigation = ({
   const [focusedIdx, setFocusedIdx] = useState(initialIdx);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // 핸들러 안정화를 위해 상태/config를 ref로 동기화
+  const focusedIdxRef = useRef(focusedIdx);
+  focusedIdxRef.current = focusedIdx;
+  const configRef = useRef({ gridSize, colSize });
+  configRef.current = { gridSize, colSize };
+
   // 스와이프 시작 시점의 상태를 하나의 ref로 통합
   const swipeStartRef = useRef({
     y: 0,
@@ -23,8 +29,9 @@ const useSwipeNavigation = ({
     time: 0,
   });
 
-  const handleTouchStart = (ev: TouchEvent) => {
-    const container = containerRef.current!;
+  const handleTouchStart = useCallback((ev: TouchEvent) => {
+    const container = containerRef.current;
+    if (!container) return;
     swipeStartRef.current = {
       y: ev.changedTouches[0].pageY,
       x: ev.changedTouches[0].pageX,
@@ -32,14 +39,17 @@ const useSwipeNavigation = ({
       scrollLeft: container.scrollLeft,
       time: Date.now(),
     };
-  };
+  }, []);
 
-  const handleTouchEnd = (ev: TouchEvent) => {
-    const container = containerRef.current!;
+  const handleTouchEnd = useCallback((ev: TouchEvent) => {
+    const container = containerRef.current;
+    if (!container) return;
     const start = swipeStartRef.current;
+    const currentIdx = focusedIdxRef.current;
+    const { gridSize, colSize } = configRef.current;
 
     const movedIdx = calculateSwipedIdx({
-      currentIdx: focusedIdx,
+      currentIdx,
       startY: start.y,
       startX: start.x,
       endY: ev.changedTouches[0].pageY,
@@ -50,7 +60,7 @@ const useSwipeNavigation = ({
       gridSize,
     });
 
-    if (movedIdx !== focusedIdx) {
+    if (movedIdx !== currentIdx) {
       setFocusedIdx(movedIdx);
     } else {
       // 인덱스가 변경되지 않았으면 원래 스크롤 위치로 복원
@@ -60,28 +70,31 @@ const useSwipeNavigation = ({
         behavior: 'smooth',
       });
     }
-  };
+  }, []);
 
-  const handleTouchMove = (ev: TouchEvent) => {
-    const container = containerRef.current!;
+  const handleTouchMove = useCallback((ev: TouchEvent) => {
+    const container = containerRef.current;
+    if (!container) return;
     const start = swipeStartRef.current;
     container.scroll({
       top: start.scrollTop - (ev.changedTouches[0].pageY - start.y),
       left: start.scrollLeft - (ev.changedTouches[0].pageX - start.x),
       behavior: 'auto',
     });
-  };
+  }, []);
+
+  const touchHandlers = useMemo(() => ({
+    onTouchStart: handleTouchStart,
+    onTouchEnd: handleTouchEnd,
+    onTouchCancel: handleTouchEnd,
+    onTouchMove: handleTouchMove,
+  }), [handleTouchStart, handleTouchEnd, handleTouchMove]);
 
   return {
     focusedIdx,
     setFocusedIdx,
     containerRef,
-    touchHandlers: {
-      onTouchStart: handleTouchStart,
-      onTouchEnd: handleTouchEnd,
-      onTouchCancel: handleTouchEnd,
-      onTouchMove: handleTouchMove,
-    },
+    touchHandlers,
   };
 };
 
