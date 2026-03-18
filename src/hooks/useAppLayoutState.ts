@@ -7,7 +7,15 @@ import { User } from 'firebase/auth';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useMandalartStore } from '@/stores/useMandalartStore';
 import useModal from '@/hooks/useModal';
-import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
+import {
+  trackUserType,
+  trackSignIn,
+  trackSignOut,
+  trackMandalartCreate,
+  trackMandalartDelete,
+  trackMandalartReset,
+  trackGuestUpload,
+} from '@/lib/analyticsEvents';
 
 export type UserHandlers = {
   user?: User | null;
@@ -74,23 +82,14 @@ const useAppLayoutState = ({
 
   const { t } = useTranslation();
 
-  const {
-    trackUserType,
-    trackSignIn,
-    trackSignOut,
-    trackMandalartCreate,
-    trackMandalartDelete,
-    trackMandalartReset,
-    trackGuestUpload,
-  } = useAnalyticsEvents();
-
   // user 변경 시 analytics에 사용자 유형 전송
   const prevUserRef = useRef(user);
   useEffect(() => {
     if (prevUserRef.current === user) return;
     prevUserRef.current = user;
     trackUserType(user ? 'authenticated' : 'guest');
-  }, [user, trackUserType]);
+  // trackUserType은 모듈 수준 함수라 의존성 배열에서 생략
+  }, [user]);
 
   const handleMandalartMetaChange = useCallback(
     (meta: MandalartMeta) => {
@@ -125,12 +124,14 @@ const useAppLayoutState = ({
     uploadTemp()
       .then(() => trackGuestUpload())
       .catch((e: Error) => openAlert(e.message));
-  }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert, trackGuestUpload]);
+  // trackGuestUpload은 모듈 수준 함수라 의존성 배열에서 생략
+  }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert]);
 
   const handleSignOut = useCallback(() => {
     trackSignOut();
     signOut();
-  }, [trackSignOut, signOut]);
+  // trackSignOut은 모듈 수준 함수라 의존성 배열에서 생략
+  }, [signOut]);
 
   const handleSignIn = useCallback(
     async (providerId: string) => {
@@ -144,14 +145,16 @@ const useAppLayoutState = ({
         }
       }
     },
-    [trackSignIn, signIn, openAlert, t]
+    // trackSignIn은 모듈 수준 함수라 의존성 배열에서 생략
+    [signIn, openAlert, t]
   );
 
   const handleCreateMandalart = useCallback(() => {
     createMandalart(createEmptyMeta(), createEmptyTopicTree())
       .then(() => trackMandalartCreate())
       .catch((e: Error) => openAlert(e.message));
-  }, [createMandalart, trackMandalartCreate, openAlert]);
+  // trackMandalartCreate은 모듈 수준 함수라 의존성 배열에서 생략
+  }, [createMandalart, openAlert]);
 
   const handleCreateMandalartFromDrawer = useCallback(() => {
     createMandalart(createEmptyMeta(), createEmptyTopicTree())
@@ -160,7 +163,8 @@ const useAppLayoutState = ({
         closeLeftDrawer();
       })
       .catch((e: Error) => openAlert(e.message));
-  }, [createMandalart, trackMandalartCreate, closeLeftDrawer, openAlert]);
+  // trackMandalartCreate은 모듈 수준 함수라 의존성 배열에서 생략
+  }, [createMandalart, closeLeftDrawer, openAlert]);
 
   const handleSelectMandalart = useCallback(
     (mandalartId: string) => {
@@ -181,7 +185,8 @@ const useAppLayoutState = ({
         },
       });
     },
-    [openConfirmDialog, t, deleteMandalart, trackMandalartDelete]
+    // trackMandalartDelete은 모듈 수준 함수라 의존성 배열에서 생략
+    [openConfirmDialog, t, deleteMandalart]
   );
 
   const handleRenameMandalart = useCallback(
@@ -203,7 +208,8 @@ const useAppLayoutState = ({
         },
       });
     },
-    [openConfirmDialog, t, saveMandalartMeta, saveTopicTree, trackMandalartReset]
+    // trackMandalartReset은 모듈 수준 함수라 의존성 배열에서 생략
+    [openConfirmDialog, t, saveMandalartMeta, saveTopicTree]
   );
 
   return {

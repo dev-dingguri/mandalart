@@ -4,7 +4,7 @@ import { Github, Youtube } from 'lucide-react';
 import { APP_VERSION } from '@/version';
 import { PATH_OSS } from '@/constants';
 import { useThemeStore, TernaryDarkMode } from '@/stores/useThemeStore';
-import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
+import { trackLanguageChange, trackThemeChange } from '@/lib/analyticsEvents';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -38,7 +38,6 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
   const { ternaryDarkMode, setTernaryDarkMode } = useThemeStore();
 
   const { t, i18n } = useTranslation();
-  const { trackLanguageChange, trackThemeChange } = useAnalyticsEvents();
 
   const navigate = useNavigate();
   const goToOpenSourceLicense = () => {

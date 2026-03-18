@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from '@/constants';
 import { useIsDarkMode } from '@/stores/useThemeStore';
-import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
+import { trackAppVersion } from '@/lib/analyticsEvents';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 const OpenSourceLicensesPage = lazy(
@@ -15,11 +15,10 @@ const App = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.language;
 
-  const { trackAppVersion } = useAnalyticsEvents();
-
   useEffect(() => {
     trackAppVersion();
-  }, [trackAppVersion]);
+    // 모듈 수준 함수는 의존성 배열 생략 — 마운트 시 1회만 실행하면 충분
+  }, []);
 
   const isDarkMode = useIsDarkMode();
 

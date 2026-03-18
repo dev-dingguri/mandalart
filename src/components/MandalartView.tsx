@@ -11,7 +11,7 @@ import MandalartViewToggle from '@/components/MandalartViewToggle';
 import { MandalartMeta } from '@/types/MandalartMeta';
 import TextInputDialog from '@/components/TextInputDialog';
 import { useTranslation } from 'react-i18next';
-import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
+import { trackViewModeChange } from '@/lib/analyticsEvents';
 import useModal from '@/hooks/useModal';
 
 type MandalartViewProps = {
@@ -35,7 +35,6 @@ const MandalartView = ({
   const { isOpen: isOpenTitleEditor, open: openTitleEditor, close: closeTitleEditor } = useModal();
 
   const { t } = useTranslation();
-  const { trackViewModeChange } = useAnalyticsEvents();
 
   const handleGetTopic = useCallback(
     (gridIdx: number, gridItemIdx: number) =>
