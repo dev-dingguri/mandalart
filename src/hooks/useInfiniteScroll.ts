@@ -5,7 +5,7 @@ import { useLatestRef } from '@/hooks/useLatestRef';
  * IntersectionObserver 기반 무한 스크롤 훅.
  * 반환된 ref를 센티널 요소에 연결하면, 뷰포트 진입 시 onLoadMore가 호출된다.
  */
-const useInfiniteScroll = <T extends HTMLElement = HTMLDivElement>(
+export const useInfiniteScroll = <T extends HTMLElement = HTMLDivElement>(
   onLoadMore: () => void,
   rootMargin = '200px'
 ) => {
@@ -31,4 +31,3 @@ const useInfiniteScroll = <T extends HTMLElement = HTMLDivElement>(
   return sentinelRef;
 };
 
-export default useInfiniteScroll;

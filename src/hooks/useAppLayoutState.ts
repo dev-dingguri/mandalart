@@ -5,7 +5,7 @@ import { User } from 'firebase/auth';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useMandalartStore } from '@/stores/useMandalartStore';
-import useModal from '@/hooks/useModal';
+import { useModal } from '@/hooks/useModal';
 import { useMandalartCallbacks } from '@/hooks/useMandalartCallbacks';
 import type { ConfirmDialogOptions } from '@/hooks/useMandalartCallbacks';
 import { useAuthCallbacks } from '@/hooks/useAuthCallbacks';

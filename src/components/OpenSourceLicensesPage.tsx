@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import openSourceLicensesJson from '@/assets/data/openSourceLicenses.json';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
 // openSourceLicenses.json — `pnpm licenses` 로 재생성
 

@@ -5,7 +5,7 @@ import {
   TABLE_CENTER_IDX,
 } from '@/constants';
 import AspectSquare from '@/components/AspectSquare';
-import useSwipeNavigation from '@/hooks/useSwipeNavigation';
+import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
 
 const MandalartFocusView = (props: MandalartProps) => {
   const { focusedIdx, setFocusedIdx, containerRef, touchHandlers } =

@@ -12,7 +12,7 @@ import { MandalartMeta } from '@/types/MandalartMeta';
 import TextInputDialog from '@/components/TextInputDialog';
 import { useTranslation } from 'react-i18next';
 import { trackViewModeChange } from '@/lib/analyticsEvents';
-import useModal from '@/hooks/useModal';
+import { useModal } from '@/hooks/useModal';
 
 type MandalartViewProps = {
   mandalartId: string;

@@ -16,7 +16,7 @@ type SwipeNavigationConfig = {
   initialIdx: number;
 };
 
-const useSwipeNavigation = ({
+export const useSwipeNavigation = ({
   gridSize,
   colSize,
   initialIdx,
@@ -158,4 +158,3 @@ const calculateSwipedIdx = ({
   return movedIdx;
 };
 
-export default useSwipeNavigation;

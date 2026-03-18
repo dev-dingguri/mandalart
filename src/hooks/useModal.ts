@@ -10,7 +10,7 @@ import { ReactNode, useCallback, useState } from 'react';
  * content를 사용하지 않는 호출처(Drawer, SignInDialog)에서도 동일하게 사용하여
  * 프로젝트 내 토글 상태 패턴을 통일한다.
  */
-const useModal = <T = ReactNode>() => {
+export const useModal = <T = ReactNode>() => {
   const [isOpen, setIsOpen] = useState(false);
   const [content, setContent] = useState<T | null>(null);
 
@@ -32,4 +32,3 @@ const useModal = <T = ReactNode>() => {
   };
 };
 
-export default useModal;
