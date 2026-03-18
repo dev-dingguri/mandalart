@@ -7,7 +7,7 @@ const SettingsDrawer = lazy(() => import('@/components/SettingsDrawer'));
 const SignInDialog = lazy(() => import('@/components/SignInDialog'));
 import { useTranslation } from 'react-i18next';
 import { Plus } from 'lucide-react';
-import useAppLayoutState from '@/hooks/useAppLayoutState';
+import { useAppLayoutState } from '@/hooks/useAppLayoutState';
 import type { UserHandlers } from '@/hooks/useAppLayoutState';
 import AlertDialog from '@/components/AlertDialog';
 import ConfirmDialog from '@/components/ConfirmDialog';
