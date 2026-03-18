@@ -13,7 +13,7 @@ const MainPage = () => {
   return (
     <>
       <div className={isLoading ? 'flex h-full' : 'hidden'}>
-        <div className="m-auto size-16 animate-spin rounded-full border-4 border-border border-t-foreground" />
+        <div className="m-auto size-16 motion-safe:animate-spin rounded-full border-4 border-border border-t-foreground" />
       </div>
       {!isAuthLoading && (user ? (
         <AuthenticatedView user={user} userError={userError} />

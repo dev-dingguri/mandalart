@@ -1,149 +1,60 @@
-import { useMemo, useEffect, useCallback, useState, useRef, lazy, Suspense } from 'react';
+import { lazy, Suspense } from 'react';
 import Header from '@/components/Header';
 import MandalartView from '@/components/MandalartView';
-import { EMPTY_META, EMPTY_TOPIC_TREE } from '@/constants/constants';
 
 const MandalartListDrawer = lazy(() => import('@/components/MandalartListDrawer'));
 const SettingsDrawer = lazy(() => import('@/components/SettingsDrawer'));
 const SignInDialog = lazy(() => import('@/components/SignInDialog'));
-import { MandalartMeta } from '../types/MandalartMeta';
-import { TopicNode } from '../types/TopicNode';
 import { useTranslation } from 'react-i18next';
-import { User } from 'firebase/auth';
-import { useAuthStore } from '@/stores/useAuthStore';
-import { useMandalartStore } from '@/stores/useMandalartStore';
 import { Plus } from 'lucide-react';
-import useModal from '@/hooks/useModal';
-import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
+import useAppLayoutState from '@/hooks/useAppLayoutState';
+import type { UserHandlers } from '@/hooks/useAppLayoutState';
 import AlertDialog from '@/components/AlertDialog';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-
-export type UserHandlers = {
-  user?: User | null;
-  error?: Error | null;
-};
 
 type AppLayoutProps = {
   userHandlers: UserHandlers;
 };
 
-const AppLayout = ({
-  userHandlers: { user = null, error: userError = null },
-}: AppLayoutProps) => {
-  const { signIn, signOut, getShouldUploadTemp, setShouldUploadTemp } =
-    useAuthStore();
+const AppLayout = ({ userHandlers }: AppLayoutProps) => {
+  const { t } = useTranslation();
   const {
+    user,
     metaMap,
     currentMandalartId,
+    currentMandalartMeta,
     currentTopicTree,
-    error: mandalartsError,
-    selectMandalart: selectMandalartId,
-    createMandalart,
-    deleteMandalart,
-    saveMandalartMeta,
-    saveTopicTree,
-    uploadTemp,
-  } = useMandalartStore();
-
-  const [isOpenLeftDrawer, setIsOpenLeftDrawer] = useState(false);
-  const openLeftDrawer = () => setIsOpenLeftDrawer(true);
-  const closeLeftDrawer = () => setIsOpenLeftDrawer(false);
-
-  const [isOpenRightDrawer, setIsOpenRightDrawer] = useState(false);
-  const openRightDrawer = () => setIsOpenRightDrawer(true);
-  const closeRightDrawer = () => setIsOpenRightDrawer(false);
-
-  const {
-    isOpen: isOpenSignInDialog,
-    open: openSignInDialog,
-    close: closeSignInDialog,
-  } = useModal();
-  const {
-    isOpen: isOpenAlert,
-    open: openAlert,
-    close: closeAlert,
-    content: alertContent,
-  } = useModal<string>();
-
-  const { t } = useTranslation();
-
-  const {
-    trackUserType,
-    trackSignIn,
-    trackSignOut,
-    trackMandalartCreate,
-    trackMandalartDelete,
-    trackMandalartReset,
-    trackGuestUpload,
-  } = useAnalyticsEvents();
-
-  const prevUserRef = useRef(user);
-  useEffect(() => {
-    if (prevUserRef.current === user) return;
-    prevUserRef.current = user;
-    trackUserType(user ? 'authenticated' : 'guest');
-  }, [user, trackUserType]);
-
-  const handleMandalartMetaChange = useCallback(
-    (meta: MandalartMeta) => {
-      saveMandalartMeta(currentMandalartId, meta);
-    },
-    [currentMandalartId, saveMandalartMeta]
-  );
-
-  const handleTopicTreeChange = useCallback(
-    (topicTree: TopicNode) => {
-      saveTopicTree(currentMandalartId, topicTree);
-    },
-    [currentMandalartId, saveTopicTree]
-  );
-
-  const currentMandalartMeta = useMemo(() => {
-    if (!currentMandalartId) return null;
-    const meta = metaMap.get(currentMandalartId);
-    return meta ? meta : null;
-  }, [metaMap, currentMandalartId]);
-
-  const hasMandalart =
-    metaMap.size > 0 &&
-    currentMandalartId !== null &&
-    currentMandalartMeta !== null &&
-    currentTopicTree !== null;
-
-  useEffect(() => {
-    if (!userError) return;
-
-    openAlert(t('auth.errors.signIn.default'));
-  }, [userError, openAlert, t]);
-
-  useEffect(() => {
-    if (!mandalartsError) return;
-
-    openAlert(t('mandalart.errors.sync.default'));
-    signOut();
-  }, [mandalartsError, openAlert, signOut, t]);
-
-  useEffect(() => {
-    const shouldUploadTemp = !!user && getShouldUploadTemp();
-    if (!shouldUploadTemp) return;
-    setShouldUploadTemp(false);
-    uploadTemp()
-      .then(() => trackGuestUpload())
-      .catch((e: Error) => {
-        e && openAlert(e.message);
-      });
-  }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert, trackGuestUpload]);
+    handleMandalartMetaChange,
+    handleTopicTreeChange,
+    handleCreateMandalart,
+    isOpenLeftDrawer,
+    openLeftDrawer,
+    closeLeftDrawer,
+    handleSelectMandalart,
+    handleDeleteMandalart,
+    handleRenameMandalart,
+    handleResetMandalart,
+    handleCreateMandalartFromDrawer,
+    isOpenRightDrawer,
+    openRightDrawer,
+    closeRightDrawer,
+    isOpenSignInDialog,
+    openSignInDialog,
+    closeSignInDialog,
+    handleSignIn,
+    handleSignOut,
+    isOpenAlert,
+    alertContent,
+    closeAlert,
+  } = useAppLayoutState(userHandlers);
 
   return (
     <div className="flex h-full w-full flex-col items-center">
       <Header
         user={user}
         onOpenSignInUI={openSignInDialog}
-        onSignOut={() => {
-          trackSignOut();
-          signOut();
-        }}
+        onSignOut={handleSignOut}
         onOpenLeftDrawer={openLeftDrawer}
         onOpenRightDrawer={openRightDrawer}
         className="w-[calc(var(--size-content-width)+1em)] min-w-[calc(var(--size-content-min-width)+1em)]"
@@ -154,16 +65,13 @@ const AppLayout = ({
           <Button
             variant="ghost"
             className="m-auto gap-2 text-2xl"
-            onClick={() => {
-              createMandalart(EMPTY_META, EMPTY_TOPIC_TREE)
-                .then(() => trackMandalartCreate())
-                .catch((e: Error) => openAlert(e.message));
-            }}
+            onClick={handleCreateMandalart}
           >
-            <Plus className="size-8" />
+            {/* text-2xl 버튼에서 기본 아이콘 크기(16px)가 너무 작으므로 명시적 크기 지정 */}
+            <Plus className="size-8" data-icon="inline-start" />
             {t('mandalart.new')}
           </Button>
-        ) : hasMandalart ? (
+        ) : currentMandalartId && currentMandalartMeta && currentTopicTree ? (
           <MandalartView
             mandalartId={currentMandalartId}
             meta={currentMandalartMeta}
@@ -179,46 +87,18 @@ const AppLayout = ({
           isOpen={isOpenLeftDrawer}
           metaMap={metaMap}
           selectedMandalartId={currentMandalartId}
-          onSelectMandalart={(mandalartId) => {
-            selectMandalartId(mandalartId);
-            closeLeftDrawer();
-          }}
-          onDeleteMandalart={(mandalartId) => {
-            deleteMandalart(mandalartId);
-            trackMandalartDelete();
-          }}
-          onRenameMandalart={(mandalartId, name) => {
-            saveMandalartMeta(mandalartId, { title: name });
-          }}
-          onResetMandalart={(mandalartId) => {
-            saveMandalartMeta(mandalartId, EMPTY_META);
-            saveTopicTree(mandalartId, EMPTY_TOPIC_TREE);
-            trackMandalartReset();
-          }}
-          onCreateMandalart={() => {
-            createMandalart(EMPTY_META, EMPTY_TOPIC_TREE)
-              .then(() => {
-                trackMandalartCreate();
-                closeLeftDrawer();
-              })
-              .catch((e: Error) => openAlert(e.message));
-          }}
+          onSelectMandalart={handleSelectMandalart}
+          onDeleteMandalart={handleDeleteMandalart}
+          onRenameMandalart={handleRenameMandalart}
+          onResetMandalart={handleResetMandalart}
+          onCreateMandalart={handleCreateMandalartFromDrawer}
           onClose={closeLeftDrawer}
         />
         <SettingsDrawer isOpen={isOpenRightDrawer} onClose={closeRightDrawer} />
         <SignInDialog
           isOpen={isOpenSignInDialog}
           onClose={closeSignInDialog}
-          onSignIn={async (providerId) => {
-            trackSignIn(providerId);
-            try {
-              await signIn(providerId);
-            } catch (e) {
-              if ((e as { code?: string })?.code !== 'auth/popup-closed-by-user') {
-                openAlert(t('auth.errors.signIn.default'));
-              }
-            }
-          }}
+          onSignIn={handleSignIn}
         />
       </Suspense>
       <AlertDialog isOpen={isOpenAlert} message={alertContent} onClose={closeAlert} />

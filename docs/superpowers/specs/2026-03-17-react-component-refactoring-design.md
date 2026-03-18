@@ -186,7 +186,7 @@ code-reviewer 에이전트 (코드 리뷰)
 
 ---
 
-## 그룹 6: 레이아웃/페이지
+## 그룹 6: 레이아웃/페이지 ✅
 
 **대상**: `AppLayout`(227줄), `MainPage`(28줄), `AuthenticatedView`(24줄), `GuestView`(20줄), `OpenSourceLicensesPage`(124줄)
 **변경 규모**: 큼
@@ -197,16 +197,16 @@ code-reviewer 에이전트 (코드 리뷰)
 
 | # | 작업 | 출처 |
 |---|------|------|
-| 6-1 | `AppLayout` — 드로어 상태, 다이얼로그 상태, 임시 데이터 업로드 useEffect, 메타 태그 설정 등 여러 관심사를 `useAppLayoutState` 훅으로 추출하여 컴포넌트는 렌더링에만 집중 | 탐색 |
-| 6-2a | `AppLayout` 드로어 상태를 `useModal`로 전환 — 현재 `isOpenLeftDrawer`, `isOpenRightDrawer`가 `useState` 직접 사용 중(49~55줄). 그룹 3에서 확립된 `useModal` 패턴으로 통일하면 boolean props 문제가 상당 부분 해소됨 | 탐색 / composition-patterns |
-| 6-2b | `architecture-avoid-boolean-props` — 6-2a 적용 후에도 여전히 다수의 boolean이 props로 자식에게 전달되는 경우에만 Provider/Context 전환 검토 | composition-patterns |
-| 6-3 | `rerender-move-effect-to-event` — useEffect에 들어 있는 상호작용 로직이 이벤트 핸들러로 옮겨질 수 있는지 검사 | react-best-practices |
-| 6-4 | `OpenSourceLicensesPage` — 무한 스크롤 로직(IntersectionObserver + ref)을 커스텀 훅으로 추출 | 탐색 |
-| 6-5 | `rendering-content-visibility` — OSS 라이선스 목록에 content-visibility CSS 적용 검토 | react-best-practices |
-| 6-6 | 다크모드 `<meta name="theme-color">` — 배경색과 일치하는 메타 태그 추가 | web-design-guidelines |
-| 6-7 | `text-wrap: balance` — 제목 요소에 적용 검토 | web-design-guidelines |
-| 6-8 | `MainPage`, `AuthenticatedView`, `GuestView` — 앞선 그룹 변경 반영 확인 | 탐색 |
-| 6-9 | shadcn 스타일링 규칙, 중첩 삼항 제거, Props 통일, 모션 규칙 | shadcn/simplify/web-design |
+| 6-1 ✅ | `AppLayout` — 드로어/다이얼로그 상태, store 구독, analytics, 에러 처리 등을 `useAppLayoutState` 훅(`src/hooks/useAppLayoutState.ts`)으로 추출. AppLayout 227줄 → 109줄, 렌더링에만 집중. 인라인 콜백도 모두 named `useCallback`으로 전환 | 탐색 |
+| 6-2a ✅ | `AppLayout` 드로어 상태를 `useModal`로 전환 — `isOpenLeftDrawer`/`isOpenRightDrawer`의 `useState` 직접 사용 → `useModal()` 패턴으로 통일. 6-1 훅 추출에 통합 구현 | 탐색 / composition-patterns |
+| 6-2b ✅ | `architecture-avoid-boolean-props` — 검토 완료, **변경 불필요**. `isOpen` props는 controlled visibility state(Drawer/Dialog 제어)이므로 해당 규칙의 대상(동작 변경 boolean)이 아님. 훅 추출로 boolean이 훅 내부에서 관리되어 props 전달도 최소화됨 | composition-patterns |
+| 6-3 ✅ | `rerender-move-effect-to-event` — 검토 완료, **변경 불필요**. `userError`/`mandalartsError` 반응, guest 데이터 업로드, user type 추적 — 모두 비동기 상태 변화에 대한 sync effect이며 사용자 상호작용이 아님. `handleSignOut` 등 인라인 핸들러는 6-1에서 `useCallback`으로 추출 완료 | react-best-practices |
+| 6-4 ✅ | `OpenSourceLicensesPage` — `useInfiniteScroll` 훅(`src/hooks/useInfiniteScroll.ts`)으로 추출. 제네릭 타입 `<T extends HTMLElement>`, 커스텀 `rootMargin`, ref 기반 콜백 패턴(observer 재생성 방지), cleanup 포함 | 탐색 |
+| 6-5 ✅ | `rendering-content-visibility` — OSS `Item` 컴포넌트에 `[content-visibility:auto] [contain-intrinsic-size:auto_5rem]` 적용. 화면 밖 아이템 렌더링 스킵으로 스크롤 성능 개선 | react-best-practices |
+| 6-6 ✅ | 다크모드 `<meta name="theme-color">` — 기존 `#ffffff`/`#000000` → `#f2f2f7`/`#1c1c1e`로 수정하여 실제 `--background` CSS 변수값과 일치시킴 (App.tsx) | web-design-guidelines |
+| 6-7 ✅ | `text-wrap: balance` — OSS 페이지 `<h1>`에 `text-balance` 적용. Header `<h1>`은 단일 단어("Mandalart"), DrawerTitle은 `sr-only`로 효과 없어 미적용 | web-design-guidelines |
+| 6-8 ✅ | `MainPage`, `AuthenticatedView`, `GuestView` — AppLayout의 prop 인터페이스(`userHandlers: UserHandlers`) 유지로 변경 불필요. `UserHandlers` 타입 위치만 `AppLayout.tsx` → `useAppLayoutState.ts`로 이동 | 탐색 |
+| 6-9 ✅ | `motion-safe:animate-spin` — MainPage, OSS 페이지 로딩 스피너 2곳에 적용. `data-icon="inline-start"` — AppLayout의 Plus 아이콘에 적용(size-8 유지: text-2xl 버튼 예외). 미사용 `idx` 변수 제거. `gap`/`size-*`/semantic 색상은 기존 코드에서 이미 준수 | shadcn/simplify/web-design |
 
 ---
 

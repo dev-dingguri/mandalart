@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import openSourceLicensesJson from '@/assets/data/openSourceLicenses.json';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
 /*
  * openSourceLicenses.json
@@ -39,7 +40,7 @@ const licenses = Object.keys(licensesObj).map((key) => licensesObj[key]);
 
 const Item = ({ name, licenses, repository }: License) => {
   return (
-    <li className="flex flex-col items-start px-4 py-2">
+    <li className="flex flex-col items-start px-4 py-2 [content-visibility:auto] [contain-intrinsic-size:auto_5rem]">
       <span className="text-sm font-medium">{name}</span>
       <span className="text-xs text-muted-foreground">{licenses}</span>
       <a
@@ -58,7 +59,6 @@ const Item = ({ name, licenses, repository }: License) => {
 const OpenSourceLicensesPage = () => {
   const [currentLicenses, setCurrentLicenses] = useState<License[]>([]);
   const { t } = useTranslation();
-  const sentinelRef = useRef<HTMLDivElement>(null);
   const hasMore = currentLicenses.length < licenses.length;
 
   useEffect(() => {
@@ -69,23 +69,7 @@ const OpenSourceLicensesPage = () => {
     setCurrentLicenses((prev) => licenses.slice(0, prev.length + 50));
   }, []);
 
-  useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          appendLicenses();
-        }
-      },
-      { rootMargin: '200px' }
-    );
-
-    observer.observe(sentinel);
-    return () => observer.disconnect();
-  }, [appendLicenses]);
-
+  const sentinelRef = useInfiniteScroll(appendLicenses);
   const navigate = useNavigate();
 
   return (
@@ -99,19 +83,19 @@ const OpenSourceLicensesPage = () => {
         >
           <ChevronLeft />
         </Button>
-        <h1 className="text-lg font-semibold">{t('settings.oss')}</h1>
+        <h1 className="text-lg font-semibold text-balance">{t('settings.oss')}</h1>
       </header>
       <Separator />
       <div className="flex w-full justify-center overflow-y-auto [scrollbar-gutter:stable_both-edges]">
         <div className="flex w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] flex-col">
           <ul className="p-0">
-            {currentLicenses.map((data, idx) => (
+            {currentLicenses.map((data) => (
               <Item key={data.name} {...data} />
             ))}
           </ul>
           {hasMore && (
-            <div ref={sentinelRef} className="flex justify-center m-2">
-              <div className="size-12 animate-spin rounded-full border-4 border-muted border-t-foreground" />
+            <div ref={sentinelRef} className="m-2 flex justify-center">
+              <div className="size-12 motion-safe:animate-spin rounded-full border-4 border-muted border-t-foreground" />
             </div>
           )}
         </div>
