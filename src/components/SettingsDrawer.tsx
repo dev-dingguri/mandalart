@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Github, Youtube } from 'lucide-react';
 import { APP_VERSION } from '@/version';
-import { PATH_OSS } from '@/constants/constants';
+import { PATH_OSS } from '@/constants';
 import { useThemeStore, TernaryDarkMode } from '@/stores/useThemeStore';
 import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';

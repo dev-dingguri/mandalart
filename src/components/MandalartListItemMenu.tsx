@@ -1,6 +1,6 @@
 import { MoreHorizontal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { TMP_MANDALART_ID } from '@/constants/constants';
+import { TMP_MANDALART_ID } from '@/constants';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,

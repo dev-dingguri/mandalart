@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useRef } from 'react';
-import { EMPTY_META, EMPTY_TOPIC_TREE } from '@/constants/constants';
+import { createEmptyMeta, createEmptyTopicTree } from '@/constants';
 import { MandalartMeta } from '@/types/MandalartMeta';
 import { TopicNode } from '@/types/TopicNode';
 import { useTranslation } from 'react-i18next';
@@ -142,13 +142,13 @@ const useAppLayoutState = ({
   );
 
   const handleCreateMandalart = useCallback(() => {
-    createMandalart(EMPTY_META, EMPTY_TOPIC_TREE)
+    createMandalart(createEmptyMeta(), createEmptyTopicTree())
       .then(() => trackMandalartCreate())
       .catch((e: Error) => openAlert(e.message));
   }, [createMandalart, trackMandalartCreate, openAlert]);
 
   const handleCreateMandalartFromDrawer = useCallback(() => {
-    createMandalart(EMPTY_META, EMPTY_TOPIC_TREE)
+    createMandalart(createEmptyMeta(), createEmptyTopicTree())
       .then(() => {
         trackMandalartCreate();
         closeLeftDrawer();
@@ -181,8 +181,8 @@ const useAppLayoutState = ({
 
   const handleResetMandalart = useCallback(
     (mandalartId: string) => {
-      saveMandalartMeta(mandalartId, EMPTY_META);
-      saveTopicTree(mandalartId, EMPTY_TOPIC_TREE);
+      saveMandalartMeta(mandalartId, createEmptyMeta());
+      saveTopicTree(mandalartId, createEmptyTopicTree());
       trackMandalartReset();
     },
     [saveMandalartMeta, saveTopicTree, trackMandalartReset]

@@ -6,7 +6,7 @@ import {
   MAX_MANDALART_TITLE_SIZE,
   TABLE_CENTER_IDX,
   TMP_MANDALART_ID,
-} from '@/constants/constants';
+} from '@/constants';
 import MandalartViewToggle from '@/components/MandalartViewToggle';
 import { MandalartMeta } from '@/types/MandalartMeta';
 import TextInputDialog from '@/components/TextInputDialog';

@@ -19,10 +19,10 @@ import {
   STORAGE_KEY_SNIPPETS,
   STORAGE_KEY_TOPIC_TREES,
   TMP_MANDALART_ID,
-  EMPTY_META,
-  EMPTY_TOPIC_TREE,
+  createEmptyMeta,
+  createEmptyTopicTree,
   MAX_UPLOAD_MANDALARTS_SIZE,
-} from '@/constants/constants';
+} from '@/constants';
 
 // -- localStorage helpers --
 
@@ -63,8 +63,8 @@ const saveGuestTopicTrees = (map: Map<string, TopicNode>) => {
 };
 
 const isAnyChanged = (meta: MandalartMeta, topicTree: TopicNode) =>
-  JSON.stringify(meta) !== JSON.stringify(EMPTY_META) ||
-  JSON.stringify(topicTree) !== JSON.stringify(EMPTY_TOPIC_TREE);
+  JSON.stringify(meta) !== JSON.stringify(createEmptyMeta()) ||
+  JSON.stringify(topicTree) !== JSON.stringify(createEmptyTopicTree());
 
 // -- Store --
 
@@ -299,8 +299,8 @@ export const useMandalartInit = (user: User | null) => {
     let topicTrees = loadGuestTopicTrees();
 
     if (metas.size === 0 || topicTrees.size === 0) {
-      metas = new Map([[TMP_MANDALART_ID, EMPTY_META]]);
-      topicTrees = new Map([[TMP_MANDALART_ID, EMPTY_TOPIC_TREE]]);
+      metas = new Map([[TMP_MANDALART_ID, createEmptyMeta()]]);
+      topicTrees = new Map([[TMP_MANDALART_ID, createEmptyTopicTree()]]);
       saveGuestMandalartMetas(metas);
       saveGuestTopicTrees(topicTrees);
     }

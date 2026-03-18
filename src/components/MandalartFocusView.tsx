@@ -3,7 +3,7 @@ import {
   TABLE_COL_SIZE,
   TABLE_SIZE,
   TABLE_CENTER_IDX,
-} from '@/constants/constants';
+} from '@/constants';
 import AspectSquare from '@/components/AspectSquare';
 import useSwipeNavigation from '@/hooks/useSwipeNavigation';
 

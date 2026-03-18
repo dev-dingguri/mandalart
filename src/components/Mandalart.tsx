@@ -5,7 +5,7 @@ import {
   TABLE_ROW_SIZE,
   TABLE_COL_SIZE,
   TABLE_CENTER_IDX,
-} from '@/constants/constants';
+} from '@/constants';
 import { memo } from 'react';
 
 type FocusHandlers = {

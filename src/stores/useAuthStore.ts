@@ -5,7 +5,7 @@ import {
   signInWithPopup,
 } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { STORAGE_KEY_SIGN_IN_SESSION } from '@/constants/constants';
+import { STORAGE_KEY_SIGN_IN_SESSION } from '@/constants';
 
 type SignInSession = {
   shouldUploadTemp: boolean;

@@ -2,7 +2,7 @@ import { MandalartMeta } from '@/types/MandalartMeta';
 import { LayoutGrid } from 'lucide-react';
 import TextInputDialog from '@/components/TextInputDialog';
 import MandalartListItemMenu from '@/components/MandalartListItemMenu';
-import { MAX_MANDALART_TITLE_SIZE } from '@/constants/constants';
+import { MAX_MANDALART_TITLE_SIZE } from '@/constants';
 import { useTranslation } from 'react-i18next';
 import useModal from '@/hooks/useModal';
 import { cn } from '@/lib/utils';

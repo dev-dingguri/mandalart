@@ -2,7 +2,7 @@ import { memo, useEffect, useRef } from 'react';
 import ItemGrid from '@/components/ItemGrid';
 import TopicItem from '@/components/TopicItem';
 import { TopicNode } from '@/types/TopicNode';
-import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '@/constants/constants';
+import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '@/constants';
 
 type FocusHandlers = {
   isFocused: boolean;
