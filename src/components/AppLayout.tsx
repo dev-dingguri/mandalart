@@ -10,6 +10,7 @@ import { Plus } from 'lucide-react';
 import useAppLayoutState from '@/hooks/useAppLayoutState';
 import type { UserHandlers } from '@/hooks/useAppLayoutState';
 import AlertDialog from '@/components/AlertDialog';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 
@@ -19,7 +20,7 @@ type AppLayoutProps = {
 
 const AppLayout = ({ userHandlers }: AppLayoutProps) => {
   const { t } = useTranslation();
-  const { user, onSignOut, mandalart, leftDrawer, rightDrawer, signInDialog, alert } =
+  const { user, onSignOut, mandalart, leftDrawer, rightDrawer, signInDialog, alert, confirmDialog } =
     useAppLayoutState(userHandlers);
 
   return (
@@ -73,6 +74,13 @@ const AppLayout = ({ userHandlers }: AppLayoutProps) => {
         />
       </Suspense>
       <AlertDialog isOpen={alert.isOpen} message={alert.content} onClose={alert.close} />
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        message={confirmDialog.message}
+        confirmText={confirmDialog.confirmText}
+        onConfirm={confirmDialog.onConfirm}
+        onClose={confirmDialog.close}
+      />
     </div>
   );
 };

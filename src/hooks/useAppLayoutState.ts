@@ -65,6 +65,12 @@ const useAppLayoutState = ({
     close: closeAlert,
     content: alertContent,
   } = useModal<string>();
+  const {
+    isOpen: isOpenConfirmDialog,
+    open: openConfirmDialog,
+    close: closeConfirmDialog,
+    content: confirmDialogContent,
+  } = useModal<{ message: string; confirmText: string; onConfirm: () => void }>();
 
   const { t } = useTranslation();
 
@@ -166,10 +172,16 @@ const useAppLayoutState = ({
 
   const handleDeleteMandalart = useCallback(
     (mandalartId: string) => {
-      deleteMandalart(mandalartId);
-      trackMandalartDelete();
+      openConfirmDialog({
+        message: t('mandalart.confirmDelete'),
+        confirmText: t('mandalart.delete'),
+        onConfirm: () => {
+          deleteMandalart(mandalartId);
+          trackMandalartDelete();
+        },
+      });
     },
-    [deleteMandalart, trackMandalartDelete]
+    [openConfirmDialog, t, deleteMandalart, trackMandalartDelete]
   );
 
   const handleRenameMandalart = useCallback(
@@ -181,11 +193,17 @@ const useAppLayoutState = ({
 
   const handleResetMandalart = useCallback(
     (mandalartId: string) => {
-      saveMandalartMeta(mandalartId, createEmptyMeta());
-      saveTopicTree(mandalartId, createEmptyTopicTree());
-      trackMandalartReset();
+      openConfirmDialog({
+        message: t('mandalart.confirmReset'),
+        confirmText: t('mandalart.reset'),
+        onConfirm: () => {
+          saveMandalartMeta(mandalartId, createEmptyMeta());
+          saveTopicTree(mandalartId, createEmptyTopicTree());
+          trackMandalartReset();
+        },
+      });
     },
-    [saveMandalartMeta, saveTopicTree, trackMandalartReset]
+    [openConfirmDialog, t, saveMandalartMeta, saveTopicTree, trackMandalartReset]
   );
 
   return {
@@ -225,6 +243,16 @@ const useAppLayoutState = ({
       isOpen: isOpenAlert,
       content: alertContent,
       close: closeAlert,
+    },
+    confirmDialog: {
+      isOpen: isOpenConfirmDialog,
+      message: confirmDialogContent?.message ?? null,
+      confirmText: confirmDialogContent?.confirmText ?? null,
+      onConfirm: () => {
+        confirmDialogContent?.onConfirm();
+        closeConfirmDialog();
+      },
+      close: closeConfirmDialog,
     },
   };
 };
