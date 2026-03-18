@@ -33,7 +33,7 @@ const SignInDialog = ({ isOpen, onClose, onSignIn }: SignInDialogProps) => {
           className="w-full"
           onClick={() => onSignIn(ProviderId.GOOGLE)}
         >
-          <img src={googleIco} alt="google" className="size-4" />
+          <img src={googleIco} alt="google" width={16} height={16} className="size-4" />
           {t('auth.signInWithGoogle')}
         </Button>
       </DialogContent>

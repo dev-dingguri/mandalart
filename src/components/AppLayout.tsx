@@ -54,9 +54,11 @@ const AppLayout = ({
   const openRightDrawer = () => setIsOpenRightDrawer(true);
   const closeRightDrawer = () => setIsOpenRightDrawer(false);
 
-  const [isOpenSignInDialog, setIsOpenSignInDialog] = useState(false);
-  const openSignInDialog = () => setIsOpenSignInDialog(true);
-  const closeSignInDialog = () => setIsOpenSignInDialog(false);
+  const {
+    isOpen: isOpenSignInDialog,
+    open: openSignInDialog,
+    close: closeSignInDialog,
+  } = useModal();
   const {
     isOpen: isOpenAlert,
     open: openAlert,

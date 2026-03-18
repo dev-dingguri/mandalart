@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 type TextInputDialogProps = {
   isOpen: boolean;
@@ -76,18 +77,10 @@ const TextInputDialog = ({
             />
             {hasLimit && (
               <div className="mt-1 flex text-xs">
-                <span
-                  className={`flex-1 ${isLimitReached ? 'text-destructive' : ''}`}
-                >
+                <span className={cn('flex-1', isLimitReached && 'text-destructive')}>
                   {isLimitReached && t('topic.maxLengthReached')}
                 </span>
-                <span
-                  className={
-                    isLimitReached
-                      ? 'text-destructive'
-                      : 'text-muted-foreground'
-                  }
-                >
+                <span className={cn(isLimitReached ? 'text-destructive' : 'text-muted-foreground')}>
                   {`${text.length}/${textLimit}`}
                 </span>
               </div>

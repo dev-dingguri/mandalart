@@ -1,4 +1,4 @@
-import { useState, useCallback, HTMLAttributes } from 'react';
+import { useCallback, HTMLAttributes, useState } from 'react';
 import MandalartFocusView from '@/components/MandalartFocusView';
 import Mandalart, { MandalartProps } from '@/components/Mandalart';
 import { TopicNode } from '@/types/TopicNode';
@@ -12,6 +12,7 @@ import { MandalartMeta } from '@/types/MandalartMeta';
 import TextInputDialog from '@/components/TextInputDialog';
 import { useTranslation } from 'react-i18next';
 import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
+import useModal from '@/hooks/useModal';
 
 type MandalartViewProps = {
   mandalartId: string;
@@ -31,7 +32,7 @@ const MandalartView = ({
   ...rest
 }: MandalartViewProps) => {
   const [isAllView, setIsAllView] = useState(true);
-  const [isOpenTitleEditor, setIsOpenTitleEditor] = useState(false);
+  const { isOpen: isOpenTitleEditor, open: openTitleEditor, close: closeTitleEditor } = useModal();
 
   const { t } = useTranslation();
   const { trackViewModeChange } = useAnalyticsEvents();
@@ -67,11 +68,11 @@ const MandalartView = ({
           role="button"
           tabIndex={0}
           className="min-w-0 flex-1 cursor-pointer select-none truncate text-2xl font-semibold"
-          onClick={() => setIsOpenTitleEditor(true)}
+          onClick={() => openTitleEditor()}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
-              setIsOpenTitleEditor(true);
+              openTitleEditor();
             }
           }}
         >
@@ -96,7 +97,7 @@ const MandalartView = ({
         isOpen={isOpenTitleEditor}
         initialText={meta.title}
         textLimit={MAX_MANDALART_TITLE_SIZE}
-        onClose={() => setIsOpenTitleEditor(false)}
+        onClose={closeTitleEditor}
         onConfirm={(title) => onMandalartMetaChange({ title })}
       />
     </div>

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { MandalartMeta } from '@/types/MandalartMeta';
 import { LayoutGrid, MoreHorizontal } from 'lucide-react';
 import TextInputDialog from '@/components/TextInputDialog';
@@ -13,6 +12,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import useModal from '@/hooks/useModal';
+import { cn } from '@/lib/utils';
 
 type MandalartListItemProps = {
   mandalartId: string;
@@ -33,7 +34,7 @@ const MandalartListItem = ({
   onReset,
   onRename,
 }: MandalartListItemProps) => {
-  const [isOpenEditor, setIsOpenEditor] = useState(false);
+  const { isOpen: isOpenEditor, open: openEditor, close: closeEditor } = useModal();
   const { t } = useTranslation();
 
   return (
@@ -48,10 +49,10 @@ const MandalartListItem = ({
             onSelect(mandalartId);
           }
         }}
-        className={[
+        className={cn(
           'flex cursor-pointer items-center gap-1.5 rounded px-2 py-1.5 text-sm',
           isSelected ? 'bg-accent text-accent-foreground' : 'hover:bg-accent/50',
-        ].join(' ')}
+        )}
       >
         <LayoutGrid className="size-4 shrink-0 text-muted-foreground" />
         <span className="min-w-0 flex-1 truncate">
@@ -73,7 +74,7 @@ const MandalartListItem = ({
             <DropdownMenuItem onClick={() => onReset(mandalartId)}>
               {t('mandalart.reset')}
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setIsOpenEditor(true)}>
+            <DropdownMenuItem onClick={() => openEditor()}>
               {t('mandalart.rename')}
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -83,7 +84,7 @@ const MandalartListItem = ({
         isOpen={isOpenEditor}
         initialText={meta.title}
         textLimit={MAX_MANDALART_TITLE_SIZE}
-        onClose={() => setIsOpenEditor(false)}
+        onClose={closeEditor}
         onConfirm={(name) => {
           onRename(mandalartId, name);
         }}

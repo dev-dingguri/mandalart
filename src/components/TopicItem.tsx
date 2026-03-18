@@ -1,9 +1,10 @@
-import { memo, useState } from 'react';
+import { memo } from 'react';
 import TextInputDialog from '@/components/TextInputDialog';
 import { MAX_TOPIC_TEXT_SIZE } from '@/constants/constants';
 import { useTranslation } from 'react-i18next';
 import AspectSquare from '@/components/AspectSquare';
 import { cn } from '@/lib/utils';
+import useModal from '@/hooks/useModal';
 
 type TopicItemProps = {
   topic: string;
@@ -18,7 +19,7 @@ const TopicItem = memo(({
   isEditable,
   onUpdateTopic,
 }: TopicItemProps) => {
-  const [isOpenEditor, setIsOpenEditor] = useState(false);
+  const { isOpen: isOpenEditor, open: openEditor, close: closeEditor } = useModal();
   const { t } = useTranslation();
 
   return (
@@ -30,7 +31,7 @@ const TopicItem = memo(({
             ? 'bg-primary text-primary-foreground'
             : 'bg-card text-card-foreground'
         )}
-        onClick={() => isEditable && setIsOpenEditor(true)}
+        onClick={() => isEditable && openEditor()}
       >
         <p className="line-clamp-2 overflow-hidden break-words text-center text-[0.7rem] leading-[1.2em] min-[30rem]:line-clamp-3 min-[30rem]:text-[0.9rem]">
           {topic}
@@ -42,7 +43,7 @@ const TopicItem = memo(({
         initialText={topic}
         placeholder={t('topic.placeholder')}
         textLimit={MAX_TOPIC_TEXT_SIZE}
-        onClose={() => setIsOpenEditor(false)}
+        onClose={closeEditor}
         onConfirm={onUpdateTopic}
       />
     </>

@@ -1,12 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
+  AlertDialog as AlertDialogRoot,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 export type AlertDialogProps = {
   isOpen: boolean;
@@ -14,23 +15,26 @@ export type AlertDialogProps = {
   onClose: () => void;
 };
 
+// Radix AlertDialog는 외부 클릭/ESC로 닫히지 않아 에러 알림에 적합
 const AlertDialog = ({ isOpen, message, onClose }: AlertDialogProps) => {
   const { t } = useTranslation();
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent showCloseButton={false} className="gap-3 p-6 w-max">
-        <DialogHeader>
-          <DialogTitle>{t('global.app')}</DialogTitle>
-          <DialogDescription className="whitespace-pre-line break-keep">
+    <AlertDialogRoot open={isOpen}>
+      <AlertDialogContent className="gap-3 p-6 w-max">
+        <AlertDialogHeader>
+          <AlertDialogTitle>{t('global.app')}</AlertDialogTitle>
+          <AlertDialogDescription className="whitespace-pre-line break-keep">
             {message}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex justify-center">
-          <Button className="w-full" onClick={onClose}>{t('global.ok')}</Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogAction className="w-full" onClick={onClose}>
+            {t('global.ok')}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialogRoot>
   );
 };
 
