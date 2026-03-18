@@ -4,9 +4,11 @@ import { MandalartMeta } from '@/types/MandalartMeta';
 import { TopicNode } from '@/types/TopicNode';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
+import { useStoreWithEqualityFn } from 'zustand/traditional';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useMandalartStore } from '@/stores/useMandalartStore';
 import useModal from '@/hooks/useModal';
+import { useLatestRef } from '@/hooks/useLatestRef';
 import {
   trackUserType,
   trackSignIn,
@@ -21,6 +23,11 @@ export type UserHandlers = {
   user?: User | null;
   error?: Error | null;
 };
+
+// Firebase onValue가 매 snapshot마다 새 MandalartMeta 객체를 생성하므로
+// Object.is 대신 필드 수준 비교를 사용하여 내용이 같으면 리렌더 방지
+const metaEquals = (a: MandalartMeta | null, b: MandalartMeta | null) =>
+  a === b || (a !== null && b !== null && a.title === b.title);
 
 const useAppLayoutState = ({
   user = null,
@@ -37,10 +44,16 @@ const useAppLayoutState = ({
   const currentMandalartId = useMandalartStore((s) => s.currentMandalartId);
   const currentTopicTree = useMandalartStore((s) => s.currentTopicTree);
   const mandalartsError = useMandalartStore((s) => s.error);
-  // metaMap 전체가 바뀌어도, 현재 ID의 메타가 동일하면 Object.is로 리렌더 스킵
-  const currentMandalartMeta = useMandalartStore(
-    (s) => s.currentMandalartId ? s.metaMap.get(s.currentMandalartId) ?? null : null
+  // Zustand 5는 create 훅에서 equality fn을 직접 지원하지 않으므로
+  // zustand/traditional의 useStoreWithEqualityFn을 사용
+  const currentMandalartMeta = useStoreWithEqualityFn(
+    useMandalartStore,
+    (s): MandalartMeta | null => s.currentMandalartId ? s.metaMap.get(s.currentMandalartId) ?? null : null,
+    metaEquals
   );
+
+  // 콜백 전용 — ref로 참조하여 콜백 재생성 방지 (rerender-defer-reads)
+  const currentIdRef = useLatestRef(currentMandalartId);
 
   // 액션
   const selectMandalartId = useMandalartStore((s) => s.selectMandalart);
@@ -82,27 +95,29 @@ const useAppLayoutState = ({
 
   const { t } = useTranslation();
 
-  // user 변경 시 analytics에 사용자 유형 전송
-  const prevUserRef = useRef(user);
+  // 초기 마운트 시 스킵 — AuthenticatedView/GuestView가 이미 올바른 user로 마운트되므로
+  // 실제 전환(로그인/로그아웃) 시에만 추적
+  const isFirstRender = useRef(true);
   useEffect(() => {
-    if (prevUserRef.current === user) return;
-    prevUserRef.current = user;
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     trackUserType(user ? 'authenticated' : 'guest');
-  // trackUserType은 모듈 수준 함수라 의존성 배열에서 생략
   }, [user]);
 
   const handleMandalartMetaChange = useCallback(
     (meta: MandalartMeta) => {
-      saveMandalartMeta(currentMandalartId, meta);
+      saveMandalartMeta(currentIdRef.current, meta);
     },
-    [currentMandalartId, saveMandalartMeta]
+    [saveMandalartMeta, currentIdRef]
   );
 
   const handleTopicTreeChange = useCallback(
     (topicTree: TopicNode) => {
-      saveTopicTree(currentMandalartId, topicTree);
+      saveTopicTree(currentIdRef.current, topicTree);
     },
-    [currentMandalartId, saveTopicTree]
+    [saveTopicTree, currentIdRef]
   );
 
   useEffect(() => {
@@ -149,22 +164,18 @@ const useAppLayoutState = ({
     [signIn, openAlert, t]
   );
 
-  const handleCreateMandalart = useCallback(() => {
-    createMandalart(createEmptyMeta(), createEmptyTopicTree())
-      .then(() => trackMandalartCreate())
-      .catch((e: Error) => openAlert(e.message));
-  // trackMandalartCreate은 모듈 수준 함수라 의존성 배열에서 생략
-  }, [createMandalart, openAlert]);
-
-  const handleCreateMandalartFromDrawer = useCallback(() => {
-    createMandalart(createEmptyMeta(), createEmptyTopicTree())
-      .then(() => {
-        trackMandalartCreate();
-        closeLeftDrawer();
-      })
-      .catch((e: Error) => openAlert(e.message));
-  // trackMandalartCreate은 모듈 수준 함수라 의존성 배열에서 생략
-  }, [createMandalart, closeLeftDrawer, openAlert]);
+  const handleCreateMandalart = useCallback(
+    (afterSuccess?: () => void) => {
+      createMandalart(createEmptyMeta(), createEmptyTopicTree())
+        .then(() => {
+          trackMandalartCreate();
+          afterSuccess?.();
+        })
+        .catch((e: Error) => openAlert(e.message));
+    },
+    // trackMandalartCreate은 모듈 수준 함수라 의존성 배열에서 생략
+    [createMandalart, openAlert]
+  );
 
   const handleSelectMandalart = useCallback(
     (mandalartId: string) => {
@@ -212,6 +223,11 @@ const useAppLayoutState = ({
     [openConfirmDialog, t, saveMandalartMeta, saveTopicTree]
   );
 
+  const handleConfirmDialogConfirm = useCallback(() => {
+    confirmDialogContent?.onConfirm();
+    closeConfirmDialog();
+  }, [confirmDialogContent, closeConfirmDialog]);
+
   return {
     user,
     onSignOut: handleSignOut,
@@ -222,7 +238,8 @@ const useAppLayoutState = ({
       currentTopicTree,
       onMetaChange: handleMandalartMetaChange,
       onTopicTreeChange: handleTopicTreeChange,
-      onCreate: handleCreateMandalart,
+      // onClick 핸들러로 직접 전달되므로 래핑하여 MouseEvent가 afterSuccess에 전달되지 않도록 함
+      onCreate: () => handleCreateMandalart(),
     },
     leftDrawer: {
       isOpen: isOpenLeftDrawer,
@@ -232,7 +249,7 @@ const useAppLayoutState = ({
       onDelete: handleDeleteMandalart,
       onRename: handleRenameMandalart,
       onReset: handleResetMandalart,
-      onCreate: handleCreateMandalartFromDrawer,
+      onCreate: () => handleCreateMandalart(closeLeftDrawer),
     },
     rightDrawer: {
       isOpen: isOpenRightDrawer,
@@ -254,10 +271,7 @@ const useAppLayoutState = ({
       isOpen: isOpenConfirmDialog,
       message: confirmDialogContent?.message ?? null,
       confirmText: confirmDialogContent?.confirmText ?? null,
-      onConfirm: () => {
-        confirmDialogContent?.onConfirm();
-        closeConfirmDialog();
-      },
+      onConfirm: handleConfirmDialogConfirm,
       close: closeConfirmDialog,
     },
   };
