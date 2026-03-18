@@ -163,7 +163,7 @@ code-reviewer 에이전트 (코드 리뷰)
 
 ---
 
-## 그룹 5: 설정/헤더
+## 그룹 5: 설정/헤더 ✅
 
 **대상**: `SettingsDrawer`(201줄), `Header`(94줄), `MandalartViewToggle`(30줄)
 **변경 규모**: 중간~큼
@@ -172,15 +172,17 @@ code-reviewer 에이전트 (코드 리뷰)
 
 | # | 작업 | 출처 |
 |---|------|------|
-| 5-1 | SettingsDrawer 내부 `InlineSelect`를 별도 파일로 추출 — 모듈 분리 및 재사용성 확보, shadcn Select로 ARIA/키보드 접근성 자동 지원 | react-best-practices / shadcn |
-| 5-2 | `Select` 설치 — 추출한 InlineSelect를 shadcn `Select`로 대체 (ARIA, 키보드 네비게이션 자동 지원) | shadcn |
-| 5-3 | `Tooltip` 설치 — 버튼/아이콘에 tooltip 적용 검토 | shadcn |
-| 5-4 | 아이콘 `data-icon` 패턴 — 그룹 1~3에서 적용 여부 먼저 확인, 미적용 시 이 그룹에서 전 컴포넌트 대상 일괄 적용 | shadcn |
-| 5-5 | `rerender-derived-state` — 연속 값 대신 파생 boolean 구독으로 전환 가능한 곳 검사 | react-best-practices |
-| 5-6 | `MandalartViewToggle` aria-label 검토 — 번역 키 값이 "다음 동작"을 올바르게 안내하는지 확인 | 탐색 |
-| 5-7 | `Header` 드로어/다이얼로그 트리거 콜백 패턴 검토 — 현재 `onOpenLeftDrawer`, `onOpenRightDrawer`, `onOpenSignInUI`, `onSignOut` 4개 콜백 props를 AppLayout으로부터 전달받는 구조. 그룹 6의 AppLayout 드로어 상태 리팩토링과 연계하여 인터페이스 정리 필요 | 탐색 |
-| 5-8 | `text-wrap: balance` — 제목 요소에 적용 검토 | web-design-guidelines |
-| 5-9 | shadcn 스타일링 규칙, 중첩 삼항 제거, Props 통일, 모션 규칙 | shadcn/simplify/web-design |
+| 5-1 ✅ | SettingsDrawer 내부 `InlineSelect` 제거 — shadcn `Select`(Radix)로 교체. 60줄 커스텀 드롭다운(click-outside 감지, useState/useRef/useEffect) → ARIA/키보드 네비게이션 자동 지원. `@base-ui/react` 사용 시도 후 Radix 통일 방침에 따라 `@radix-ui/react-select`로 재교체 | react-best-practices / shadcn |
+| 5-2 ✅ | `Select` 설치 — `@radix-ui/react-select` 기반 `select.tsx` 생성. SelectTrigger, SelectContent, SelectItem, SelectGroup 등 전체 구성. `SelectContent`에 `position="popper"` 기본값으로 트리거 너비 자동 매칭 | shadcn |
+| 5-3 ✅ | `Tooltip` 설치 — `@radix-ui/react-tooltip` 기반 `tooltip.tsx` 생성. `TooltipProvider`를 App.tsx에 추가(`delayDuration=300`). Header 아이콘 전용 버튼(Menu, MoreHorizontal)에 Tooltip + `aria-label` 적용. `asChild` 패턴으로 Button과 합성 | shadcn |
+| 5-4 ✅ | 아이콘 `data-icon` 패턴 — 전 컴포넌트 감사 완료. 그룹 5 대상(Header, SettingsDrawer, MandalartViewToggle)에는 Button+아이콘+텍스트 조합 없음. Header 아이콘 전용 버튼에서 `className="size-5"` 제거 → Button의 `[&_svg:not([class*='size-'])]:size-4` 규칙에 위임 | shadcn |
+| 5-5 ✅ | `rerender-derived-state` — 검사 완료, **변경 불필요**. SettingsDrawer는 `ternaryDarkMode` 전체 값 필요, Header는 `user` 객체의 displayName/email 필요, MandalartViewToggle은 이미 boolean | react-best-practices |
+| 5-6 ✅ | `MandalartViewToggle` aria-label 검토 — **변경 불필요**. `isAllView ? t('viewFocus') : t('viewAll')` — pressed 상태와 대응하여 "다음 동작"을 올바르게 안내 | 탐색 |
+| 5-7 ✅ | `Header` 콜백 패턴 검토 — **그룹 6 연계**. 4개 콜백 props(`onOpenLeftDrawer`, `onOpenRightDrawer`, `onOpenSignInUI`, `onSignOut`)는 AppLayout 드로어 상태를 `useModal`로 전환(6-2a)한 후 정리 필요 | 탐색 |
+| 5-8 ✅ | `text-wrap: balance` — 검토 완료, **변경 불필요**. Header `<h1>`은 단일 단어("Mandalart")로 효과 없음, DrawerTitle은 `sr-only`로 시각적 영향 없음 | web-design-guidelines |
+| 5-9 ✅ | shadcn 스타일링 규칙 적용 — `gap` 사용 ✓, `cn()` 사용 ✓, semantic 색상 ✓, 아이콘 사이징 클래스 제거 ✓, `transition: all` 없음 ✓ | shadcn/simplify/web-design |
+
+> **추가 변경**: `vite.config.ts`의 `manualChunks.vendor-ui`에 `@radix-ui/react-tooltip` 추가 (Header에서 사용, 메인 번들 → vendor-ui 청크 이동)
 
 ---
 

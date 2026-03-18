@@ -11,6 +11,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu';
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
 type HeaderProps = {
@@ -37,14 +42,20 @@ const Header = ({
   return (
     <header className={cn('bg-background', className)}>
       <nav className="flex min-h-14 items-center">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={(e) => { e.currentTarget.blur(); onOpenLeftDrawer(); }}
-          className="mr-1"
-        >
-          <Menu className="size-5" />
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={(e) => { e.currentTarget.blur(); onOpenLeftDrawer(); }}
+              className="mr-1"
+              aria-label={t('mandalart.list')}
+            >
+              <Menu />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">{t('mandalart.list')}</TooltipContent>
+        </Tooltip>
         <h1 className="flex-1 text-[1.3rem] font-bold">{t('global.app')}</h1>
         {user ? (
           <DropdownMenu>
@@ -78,14 +89,20 @@ const Header = ({
             {t('auth.signIn')}
           </Button>
         )}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={(e) => { e.currentTarget.blur(); onOpenRightDrawer(); }}
-          className="ml-1"
-        >
-          <MoreHorizontal className="size-5" />
-        </Button>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={(e) => { e.currentTarget.blur(); onOpenRightDrawer(); }}
+              className="ml-1"
+              aria-label={t('settings.title')}
+            >
+              <MoreHorizontal />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">{t('settings.title')}</TooltipContent>
+        </Tooltip>
       </nav>
     </header>
   );

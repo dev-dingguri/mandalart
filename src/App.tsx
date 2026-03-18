@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from '@/constants/constants';
 import { useIsDarkMode } from '@/stores/useThemeStore';
 import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const OpenSourceLicensesPage = lazy(
   () => import('@/components/OpenSourceLicensesPage')
@@ -48,22 +49,24 @@ const App = () => {
   }, [t, isDarkMode]);
 
   return (
-    <div className="h-dvh">
-      <BrowserRouter>
-        <Routes>
-          <Route path={`/${lang}`} element={<MainPage />} />
-          <Route
-            path={`/${lang}${PATH_OSS}`}
-            element={
-              <Suspense fallback={null}>
-                <OpenSourceLicensesPage />
-              </Suspense>
-            }
-          />
-          <Route path="*" element={<Navigate to={`/${lang}`} />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <TooltipProvider>
+      <div className="h-dvh">
+        <BrowserRouter>
+          <Routes>
+            <Route path={`/${lang}`} element={<MainPage />} />
+            <Route
+              path={`/${lang}${PATH_OSS}`}
+              element={
+                <Suspense fallback={null}>
+                  <OpenSourceLicensesPage />
+                </Suspense>
+              }
+            />
+            <Route path="*" element={<Navigate to={`/${lang}`} />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </TooltipProvider>
   );
 };
 

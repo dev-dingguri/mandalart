@@ -1,81 +1,20 @@
-import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Github, Youtube, ChevronDown } from 'lucide-react';
+import { Github, Youtube } from 'lucide-react';
 import { APP_VERSION } from '@/version';
 import { PATH_OSS } from '@/constants/constants';
 import { useThemeStore, TernaryDarkMode } from '@/stores/useThemeStore';
 import useAnalyticsEvents from '@/hooks/useAnalyticsEvents';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { Separator } from '@/components/ui/separator';
-
-type InlineSelectProps = {
-  label: string;
-  value: string;
-  options: { value: string; label: string }[];
-  onChange: (value: string) => void;
-};
-
-const InlineSelect = ({
-  label,
-  value,
-  options,
-  onChange,
-}: InlineSelectProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const selectedLabel = options.find((o) => o.value === value)?.label ?? value;
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleClick = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('pointerdown', handleClick);
-    return () => document.removeEventListener('pointerdown', handleClick);
-  }, [isOpen]);
-
-  return (
-    <div className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium">{label}</span>
-      <div ref={ref} className="relative">
-        <button
-          type="button"
-          onClick={() => setIsOpen((v) => !v)}
-          className="flex w-full items-center justify-between rounded-lg border border-input bg-transparent px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring/50"
-        >
-          {selectedLabel}
-          <ChevronDown
-            className={`size-3 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          />
-        </button>
-        {isOpen && (
-          <div className="absolute top-full left-0 z-10 mt-1 w-full rounded-lg border border-input bg-popover shadow-lg">
-            {options.map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                onClick={() => {
-                  onChange(opt.value);
-                  setIsOpen(false);
-                }}
-                className={`w-full px-3 py-2 text-left text-sm first:rounded-t-lg last:rounded-b-lg hover:bg-accent ${
-                  opt.value === value
-                    ? 'font-medium text-foreground'
-                    : ''
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 const languageOptions = [
   { value: 'en', name: 'English' },
@@ -117,33 +56,55 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
       <DrawerContent aria-describedby={undefined}>
         <DrawerTitle className="sr-only">{t('settings.title')}</DrawerTitle>
         <div className="flex flex-col gap-4 overflow-auto p-4 [scrollbar-gutter:stable_both-edges]">
-          <InlineSelect
-            label={t('settings.theme.label')}
-            value={ternaryDarkMode}
-            options={themeOptions.map(({ value, name }) => ({
-              value,
-              label: t(name),
-            }))}
-            onChange={(val) => {
-              setTernaryDarkMode(val as TernaryDarkMode);
-              trackThemeChange(val);
-            }}
-          />
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium">{t('settings.theme.label')}</span>
+            <Select
+              value={ternaryDarkMode}
+              onValueChange={(val) => {
+                setTernaryDarkMode(val as TernaryDarkMode);
+                trackThemeChange(val);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {themeOptions.map(({ value, name }) => (
+                    <SelectItem key={value} value={value}>
+                      {t(name)}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
 
           <Separator />
 
-          <InlineSelect
-            label={t('settings.language')}
-            value={i18n.language}
-            options={languageOptions.map(({ value, name }) => ({
-              value,
-              label: name,
-            }))}
-            onChange={(val) => {
-              i18n.changeLanguage(val);
-              trackLanguageChange(val);
-            }}
-          />
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium">{t('settings.language')}</span>
+            <Select
+              value={i18n.language}
+              onValueChange={(val) => {
+                i18n.changeLanguage(val);
+                trackLanguageChange(val);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {languageOptions.map(({ value, name }) => (
+                    <SelectItem key={value} value={value}>
+                      {name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
 
           <Separator />
 
