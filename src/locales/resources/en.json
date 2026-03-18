@@ -49,6 +49,8 @@
     "viewAll": "View All",
     "viewFocus": "View Focus",
     "untitled": "Untitled",
+    "confirmDelete": "Are you sure you want to delete this mandalart?",
+    "confirmReset": "Are you sure you want to reset this mandalart?\nAll content will be cleared.",
     "errors": {
       "create": {
         "default": "Cannot add Mandalart. 😥",

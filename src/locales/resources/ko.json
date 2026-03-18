@@ -49,6 +49,8 @@
     "viewAll": "전체 보기",
     "viewFocus": "확대 보기",
     "untitled": "제목 없음",
+    "confirmDelete": "이 만다라트를 삭제하시겠습니까?",
+    "confirmReset": "이 만다라트를 초기화하시겠습니까?\n모든 내용이 지워집니다.",
     "errors": {
       "create": {
         "default": "만다라트를 추가할 수 없습니다. 😥",

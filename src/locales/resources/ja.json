@@ -49,6 +49,8 @@
     "viewAll": "全体表示",
     "viewFocus": "拡大表示",
     "untitled": "無題",
+    "confirmDelete": "このマンダラートを削除しますか？",
+    "confirmReset": "このマンダラートをリセットしますか？\nすべての内容が消去されます。",
     "errors": {
       "create": {
         "default": "マンダラートを追加できませんでした。 😥",

@@ -49,6 +49,8 @@
     "viewAll": "查看全部",
     "viewFocus": "放大查看",
     "untitled": "无标题",
+    "confirmDelete": "确定要删除这个曼达拉图吗？",
+    "confirmReset": "确定要重置这个曼达拉图吗？\n所有内容将被清除。",
     "errors": {
       "create": {
         "default": "无法添加曼达拉图。 😥",
