@@ -132,7 +132,7 @@ export const useAppLayoutState = ({
       onDelete: mandalartCallbacks.onDelete,
       onRename: mandalartCallbacks.onRename,
       onReset: mandalartCallbacks.onReset,
-      onCreate: () => mandalartCallbacks.onCreate(closeLeftDrawer),
+      onCreate: () => mandalartCallbacks.onCreate(),
     },
     rightDrawer: {
       isOpen: isOpenRightDrawer,
