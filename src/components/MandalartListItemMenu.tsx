@@ -39,14 +39,15 @@ const MandalartListItemMenu = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {mandalartId !== TMP_MANDALART_ID && (
+        {mandalartId === TMP_MANDALART_ID ? (
+          <DropdownMenuItem onClick={() => onReset(mandalartId)}>
+            {t('mandalart.reset')}
+          </DropdownMenuItem>
+        ) : (
           <DropdownMenuItem onClick={() => onDelete(mandalartId)}>
             {t('mandalart.delete')}
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onClick={() => onReset(mandalartId)}>
-          {t('mandalart.reset')}
-        </DropdownMenuItem>
         <DropdownMenuItem onClick={onRename}>
           {t('mandalart.rename')}
         </DropdownMenuItem>
