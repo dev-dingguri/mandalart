@@ -83,7 +83,7 @@ export const useMandalartCallbacks = ({
         onConfirm: () => {
           deleteMandalart(mandalartId)
             // trackMandalartDelete은 모듈 수준 함수라 의존성 배열에서 생략
-            .then(() => trackMandalartDelete())
+            .then((deleted) => { if (deleted) trackMandalartDelete(); })
             .catch((e: Error) => openAlert(e.message));
         },
       });

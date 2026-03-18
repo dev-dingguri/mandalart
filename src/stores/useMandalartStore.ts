@@ -81,7 +81,7 @@ type MandalartState = {
 
   selectMandalart: (id: string | null) => void;
   createMandalart: (meta: MandalartMeta, topicTree: TopicNode) => Promise<void>;
-  deleteMandalart: (id: string | null) => Promise<void>;
+  deleteMandalart: (id: string | null) => Promise<boolean>;
   saveMandalartMeta: (id: string | null, meta: MandalartMeta) => Promise<void>;
   saveTopicTree: (id: string | null, topicTree: TopicNode) => Promise<void>;
   resetMandalart: (id: string | null) => Promise<void>;
@@ -105,8 +105,10 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
   selectMandalart: (id) => {
     const user = get()._user;
     if (user) {
-      // User mode: topic tree will be loaded via subscription
-      set({ currentMandalartId: id, currentTopicTree: null });
+      // User mode: currentTopicTree를 null로 비우지 않음 —
+      // 새 구독의 onValue가 도착할 때까지 이전 tree를 유지하여
+      // 만다라트 전환 시 순간적 빈 화면 방지
+      set({ currentMandalartId: id });
     } else {
       // Guest mode: look up from local map
       const topicTree = id ? get()._guestTopicTrees.get(id) ?? null : null;
@@ -160,12 +162,13 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
 
   deleteMandalart: async (id) => {
     const user = get()._user;
-    if (!user || !id) return;
+    if (!user || !id) return false;
 
     await fbUpdate(ref(db, user.uid), {
       [`${DB_SNIPPETS}/${id}`]: null,
       [`${DB_TOPIC_TREES}/${id}`]: null,
     });
+    return true;
   },
 
   saveMandalartMeta: async (id, meta) => {
@@ -309,6 +312,10 @@ export const useMandalartInit = (user: User | null) => {
     return onValue(
       ref(db, `${user.uid}/${DB_TOPIC_TREES}/${currentMandalartId}`),
       (snapshot) => {
+        // selectMandalart로 ID가 이미 변경되었지만 이 구독의 useEffect cleanup이
+        // 아직 실행되지 않은 경우, 폐기된 콜백이므로 무시
+        if (useMandalartStore.getState().currentMandalartId !== currentMandalartId) return;
+
         const value: TopicNode | null = snapshot.val();
         useMandalartStore.setState({
           currentTopicTree: value,

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+import { shallow } from 'zustand/shallow';
 import { MandalartMeta } from '@/types';
 import { LayoutGrid } from 'lucide-react';
 import TextInputDialog from '@/components/TextInputDialog';
@@ -17,7 +19,9 @@ type MandalartListItemProps = {
   onRename: (mandalartId: string, name: string) => void;
 };
 
-const MandalartListItem = ({
+// Firebase onValue가 매 snapshot마다 새 MandalartMeta 객체를 생성하므로
+// meta 비교에 shallow를 사용하여 내용이 같으면 리렌더 방지
+const MandalartListItem = memo(({
   mandalartId,
   meta,
   isSelected,
@@ -68,6 +72,14 @@ const MandalartListItem = ({
       />
     </>
   );
-};
+}, (prev, next) =>
+  prev.mandalartId === next.mandalartId &&
+  prev.isSelected === next.isSelected &&
+  shallow(prev.meta, next.meta) &&
+  prev.onSelect === next.onSelect &&
+  prev.onDelete === next.onDelete &&
+  prev.onReset === next.onReset &&
+  prev.onRename === next.onRename
+);
 
 export default MandalartListItem;
