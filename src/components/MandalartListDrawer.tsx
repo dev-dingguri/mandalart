@@ -1,16 +1,14 @@
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MandalartList from '@/components/MandalartList';
-import { MandalartMeta } from '@/types/MandalartMeta';
 import { useTranslation } from 'react-i18next';
 import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import { useMandalartStore } from '@/stores/useMandalartStore';
 
 type MandalartListDrawerProps = {
   isOpen: boolean;
-  metaMap: Map<string, MandalartMeta>;
-  selectedMandalartId: string | null;
   onSelectMandalart: (mandalartId: string) => void;
   onDeleteMandalart: (mandalartId: string) => void;
   onRenameMandalart: (mandalartId: string, name: string) => void;
@@ -21,8 +19,6 @@ type MandalartListDrawerProps = {
 
 const MandalartListDrawer = ({
   isOpen,
-  metaMap,
-  selectedMandalartId,
   onSelectMandalart,
   onDeleteMandalart,
   onRenameMandalart,
@@ -31,6 +27,9 @@ const MandalartListDrawer = ({
   onClose,
 }: MandalartListDrawerProps) => {
   const { t } = useTranslation();
+  // store에서 직접 구독하여 AppLayout을 경유하지 않음 → metaMap 변경 시 이 컴포넌트만 리렌더
+  const metaMap = useMandalartStore((s) => s.metaMap);
+  const selectedMandalartId = useMandalartStore((s) => s.currentMandalartId);
 
   return (
     <Drawer

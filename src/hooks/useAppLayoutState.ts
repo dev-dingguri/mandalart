@@ -18,20 +18,29 @@ const useAppLayoutState = ({
   user = null,
   error: userError = null,
 }: UserHandlers) => {
-  const { signIn, signOut, getShouldUploadTemp, setShouldUploadTemp } =
-    useAuthStore();
-  const {
-    metaMap,
-    currentMandalartId,
-    currentTopicTree,
-    error: mandalartsError,
-    selectMandalart: selectMandalartId,
-    createMandalart,
-    deleteMandalart,
-    saveMandalartMeta,
-    saveTopicTree,
-    uploadTemp,
-  } = useMandalartStore();
+  // 액션만 구독 — Zustand 액션은 참조가 안정적이므로 리렌더를 유발하지 않음
+  const signIn = useAuthStore((s) => s.signIn);
+  const signOut = useAuthStore((s) => s.signOut);
+  const getShouldUploadTemp = useAuthStore((s) => s.getShouldUploadTemp);
+  const setShouldUploadTemp = useAuthStore((s) => s.setShouldUploadTemp);
+
+  // 상태 — 개별 selector로 필요한 값만 구독하여 무관한 store 변경에 리렌더 방지
+  const hasMandalarts = useMandalartStore((s) => s.metaMap.size > 0);
+  const currentMandalartId = useMandalartStore((s) => s.currentMandalartId);
+  const currentTopicTree = useMandalartStore((s) => s.currentTopicTree);
+  const mandalartsError = useMandalartStore((s) => s.error);
+  // metaMap 전체가 바뀌어도, 현재 ID의 메타가 동일하면 Object.is로 리렌더 스킵
+  const currentMandalartMeta = useMandalartStore(
+    (s) => s.currentMandalartId ? s.metaMap.get(s.currentMandalartId) ?? null : null
+  );
+
+  // 액션
+  const selectMandalartId = useMandalartStore((s) => s.selectMandalart);
+  const createMandalart = useMandalartStore((s) => s.createMandalart);
+  const deleteMandalart = useMandalartStore((s) => s.deleteMandalart);
+  const saveMandalartMeta = useMandalartStore((s) => s.saveMandalartMeta);
+  const saveTopicTree = useMandalartStore((s) => s.saveTopicTree);
+  const uploadTemp = useMandalartStore((s) => s.uploadTemp);
 
   // 6-2a: useState에서 useModal로 전환하여 프로젝트 내 모달 상태 패턴 통일
   const {
@@ -90,10 +99,6 @@ const useAppLayoutState = ({
     },
     [currentMandalartId, saveTopicTree]
   );
-
-  const currentMandalartMeta = currentMandalartId
-    ? metaMap.get(currentMandalartId) ?? null
-    : null;
 
   useEffect(() => {
     if (!userError) return;
@@ -185,36 +190,42 @@ const useAppLayoutState = ({
 
   return {
     user,
-    metaMap,
-    currentMandalartId,
-    currentMandalartMeta,
-    currentTopicTree,
-    handleMandalartMetaChange,
-    handleTopicTreeChange,
-    handleCreateMandalart,
-    // Left drawer
-    isOpenLeftDrawer,
-    openLeftDrawer,
-    closeLeftDrawer,
-    handleSelectMandalart,
-    handleDeleteMandalart,
-    handleRenameMandalart,
-    handleResetMandalart,
-    handleCreateMandalartFromDrawer,
-    // Right drawer
-    isOpenRightDrawer,
-    openRightDrawer,
-    closeRightDrawer,
-    // Sign-in dialog
-    isOpenSignInDialog,
-    openSignInDialog,
-    closeSignInDialog,
-    handleSignIn,
-    handleSignOut,
-    // Alert dialog
-    isOpenAlert,
-    alertContent,
-    closeAlert,
+    onSignOut: handleSignOut,
+    mandalart: {
+      hasMandalarts,
+      currentId: currentMandalartId,
+      currentMeta: currentMandalartMeta,
+      currentTopicTree,
+      onMetaChange: handleMandalartMetaChange,
+      onTopicTreeChange: handleTopicTreeChange,
+      onCreate: handleCreateMandalart,
+    },
+    leftDrawer: {
+      isOpen: isOpenLeftDrawer,
+      open: openLeftDrawer,
+      close: closeLeftDrawer,
+      onSelect: handleSelectMandalart,
+      onDelete: handleDeleteMandalart,
+      onRename: handleRenameMandalart,
+      onReset: handleResetMandalart,
+      onCreate: handleCreateMandalartFromDrawer,
+    },
+    rightDrawer: {
+      isOpen: isOpenRightDrawer,
+      open: openRightDrawer,
+      close: closeRightDrawer,
+    },
+    signInDialog: {
+      isOpen: isOpenSignInDialog,
+      open: openSignInDialog,
+      close: closeSignInDialog,
+      onSignIn: handleSignIn,
+    },
+    alert: {
+      isOpen: isOpenAlert,
+      content: alertContent,
+      close: closeAlert,
+    },
   };
 };
 

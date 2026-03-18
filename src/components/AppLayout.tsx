@@ -19,89 +19,60 @@ type AppLayoutProps = {
 
 const AppLayout = ({ userHandlers }: AppLayoutProps) => {
   const { t } = useTranslation();
-  const {
-    user,
-    metaMap,
-    currentMandalartId,
-    currentMandalartMeta,
-    currentTopicTree,
-    handleMandalartMetaChange,
-    handleTopicTreeChange,
-    handleCreateMandalart,
-    isOpenLeftDrawer,
-    openLeftDrawer,
-    closeLeftDrawer,
-    handleSelectMandalart,
-    handleDeleteMandalart,
-    handleRenameMandalart,
-    handleResetMandalart,
-    handleCreateMandalartFromDrawer,
-    isOpenRightDrawer,
-    openRightDrawer,
-    closeRightDrawer,
-    isOpenSignInDialog,
-    openSignInDialog,
-    closeSignInDialog,
-    handleSignIn,
-    handleSignOut,
-    isOpenAlert,
-    alertContent,
-    closeAlert,
-  } = useAppLayoutState(userHandlers);
+  const { user, onSignOut, mandalart, leftDrawer, rightDrawer, signInDialog, alert } =
+    useAppLayoutState(userHandlers);
 
   return (
     <div className="flex h-full w-full flex-col items-center">
       <Header
         user={user}
-        onOpenSignInUI={openSignInDialog}
-        onSignOut={handleSignOut}
-        onOpenLeftDrawer={openLeftDrawer}
-        onOpenRightDrawer={openRightDrawer}
+        onOpenSignInUI={signInDialog.open}
+        onSignOut={onSignOut}
+        onOpenLeftDrawer={leftDrawer.open}
+        onOpenRightDrawer={rightDrawer.open}
         className="w-[calc(var(--size-content-width)+1em)] min-w-[calc(var(--size-content-min-width)+1em)]"
       />
       <Separator />
       <div className="flex h-full w-full flex-col overflow-auto [scrollbar-gutter:stable_both-edges]">
-        {metaMap.size === 0 ? (
+        {!mandalart.hasMandalarts ? (
           <Button
             variant="ghost"
             className="m-auto gap-2 text-2xl"
-            onClick={handleCreateMandalart}
+            onClick={mandalart.onCreate}
           >
             {/* text-2xl 버튼에서 기본 아이콘 크기(16px)가 너무 작으므로 명시적 크기 지정 */}
             <Plus className="size-8" data-icon="inline-start" />
             {t('mandalart.new')}
           </Button>
-        ) : currentMandalartId && currentMandalartMeta && currentTopicTree ? (
+        ) : mandalart.currentId && mandalart.currentMeta && mandalart.currentTopicTree ? (
           <MandalartView
-            mandalartId={currentMandalartId}
-            meta={currentMandalartMeta}
-            topicTree={currentTopicTree}
-            onMandalartMetaChange={handleMandalartMetaChange}
-            onTopicTreeChange={handleTopicTreeChange}
+            mandalartId={mandalart.currentId}
+            meta={mandalart.currentMeta}
+            topicTree={mandalart.currentTopicTree}
+            onMandalartMetaChange={mandalart.onMetaChange}
+            onTopicTreeChange={mandalart.onTopicTreeChange}
             className="mx-auto my-auto w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] py-2"
           />
         ) : null}
       </div>
       <Suspense fallback={null}>
         <MandalartListDrawer
-          isOpen={isOpenLeftDrawer}
-          metaMap={metaMap}
-          selectedMandalartId={currentMandalartId}
-          onSelectMandalart={handleSelectMandalart}
-          onDeleteMandalart={handleDeleteMandalart}
-          onRenameMandalart={handleRenameMandalart}
-          onResetMandalart={handleResetMandalart}
-          onCreateMandalart={handleCreateMandalartFromDrawer}
-          onClose={closeLeftDrawer}
+          isOpen={leftDrawer.isOpen}
+          onSelectMandalart={leftDrawer.onSelect}
+          onDeleteMandalart={leftDrawer.onDelete}
+          onRenameMandalart={leftDrawer.onRename}
+          onResetMandalart={leftDrawer.onReset}
+          onCreateMandalart={leftDrawer.onCreate}
+          onClose={leftDrawer.close}
         />
-        <SettingsDrawer isOpen={isOpenRightDrawer} onClose={closeRightDrawer} />
+        <SettingsDrawer isOpen={rightDrawer.isOpen} onClose={rightDrawer.close} />
         <SignInDialog
-          isOpen={isOpenSignInDialog}
-          onClose={closeSignInDialog}
-          onSignIn={handleSignIn}
+          isOpen={signInDialog.isOpen}
+          onClose={signInDialog.close}
+          onSignIn={signInDialog.onSignIn}
         />
       </Suspense>
-      <AlertDialog isOpen={isOpenAlert} message={alertContent} onClose={closeAlert} />
+      <AlertDialog isOpen={alert.isOpen} message={alert.content} onClose={alert.close} />
     </div>
   );
 };
