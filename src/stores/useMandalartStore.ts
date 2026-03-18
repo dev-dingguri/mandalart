@@ -5,10 +5,9 @@ import {
   set as fbSet,
   update as fbUpdate,
   onValue,
-  Unsubscribe,
 } from 'firebase/database';
 import { User } from 'firebase/auth';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { db } from '@/lib/firebase';
 import i18next from 'i18next';
 import { MandalartMeta, TopicNode } from '@/types';
@@ -64,13 +63,12 @@ const saveGuestTopicTrees = (map: Map<string, TopicNode>) => {
   );
 };
 
-// TODO: createEmptyMeta()와 createEmptyTopicTree()가 매 호출마다 새 객체를 생성한 뒤
-// JSON.stringify하므로, empty 상태의 JSON 문자열을 모듈 레벨에서 미리 캐싱하면
-// 불필요한 객체 생성과 직렬화를 제거할 수 있다.
-// 예: const EMPTY_META_JSON = JSON.stringify(createEmptyMeta());
+const EMPTY_META_JSON = JSON.stringify(createEmptyMeta());
+const EMPTY_TOPIC_TREE_JSON = JSON.stringify(createEmptyTopicTree());
+
 const isAnyChanged = (meta: MandalartMeta, topicTree: TopicNode) =>
-  JSON.stringify(meta) !== JSON.stringify(createEmptyMeta()) ||
-  JSON.stringify(topicTree) !== JSON.stringify(createEmptyTopicTree());
+  JSON.stringify(meta) !== EMPTY_META_JSON ||
+  JSON.stringify(topicTree) !== EMPTY_TOPIC_TREE_JSON;
 
 // -- Store --
 
@@ -260,8 +258,6 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
 // -- Subscription hook --
 
 export const useMandalartInit = (user: User | null) => {
-  const topicTreeUnsubRef = useRef<Unsubscribe | null>(null);
-
   // Sync user ref to store
   useEffect(() => {
     useMandalartStore.setState({ _user: user });
@@ -300,18 +296,17 @@ export const useMandalartInit = (user: User | null) => {
   // User mode: subscribe to current topic tree
   const currentMandalartId = useMandalartStore((s) => s.currentMandalartId);
 
+  // useEffect cleanup이 다음 effect 실행 전에 자동 호출되므로
+  // onValue 반환값(unsubscribe)을 직접 cleanup으로 반환
   useEffect(() => {
     if (!user) return;
-
-    topicTreeUnsubRef.current?.();
-    topicTreeUnsubRef.current = null;
 
     if (!currentMandalartId) {
       useMandalartStore.setState({ currentTopicTree: null });
       return;
     }
 
-    topicTreeUnsubRef.current = onValue(
+    return onValue(
       ref(db, `${user.uid}/${DB_TOPIC_TREES}/${currentMandalartId}`),
       (snapshot) => {
         const value: TopicNode | null = snapshot.val();
@@ -322,11 +317,6 @@ export const useMandalartInit = (user: User | null) => {
       },
       (error) => useMandalartStore.setState({ error, isLoading: false })
     );
-
-    return () => {
-      topicTreeUnsubRef.current?.();
-      topicTreeUnsubRef.current = null;
-    };
   }, [user, currentMandalartId]);
 
   // Guest mode: initialize from localStorage

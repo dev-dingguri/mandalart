@@ -3,6 +3,7 @@ import { MandalartMeta } from '@/types';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
+import { shallow } from 'zustand/shallow';
 import { useMandalartStore } from '@/stores/useMandalartStore';
 import { useModal } from '@/hooks/useModal';
 import { useMandalartCallbacks } from '@/hooks/useMandalartCallbacks';
@@ -15,9 +16,10 @@ export type UserHandlers = {
 };
 
 // Firebase onValue가 매 snapshot마다 새 MandalartMeta 객체를 생성하므로
-// Object.is 대신 필드 수준 비교를 사용하여 내용이 같으면 리렌더 방지
+// Object.is 대신 shallow 비교를 사용하여 내용이 같으면 리렌더 방지.
+// MandalartMeta에 필드가 추가되어도 별도 수정 없이 자동으로 비교됨.
 const metaEquals = (a: MandalartMeta | null, b: MandalartMeta | null) =>
-  a === b || (a !== null && b !== null && a.title === b.title);
+  a === b || (a !== null && b !== null && shallow(a, b));
 
 export const useAppLayoutState = ({
   user = null,

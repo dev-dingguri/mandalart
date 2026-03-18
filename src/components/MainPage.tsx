@@ -1,26 +1,22 @@
 import AuthenticatedView from '@/components/AuthenticatedView';
 import GuestView from '@/components/GuestView';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { useAuthStore } from '@/stores/useAuthStore';
-import { useMandalartStore } from '@/stores/useMandalartStore';
 
 const MainPage = () => {
   const user = useAuthStore((s) => s.user);
   const isAuthLoading = useAuthStore((s) => s.isLoading);
   const userError = useAuthStore((s) => s.error);
-  const isMandalartLoading = useMandalartStore((s) => s.isLoading);
-  const isLoading = isAuthLoading || isMandalartLoading;
 
-  return (
-    <>
-      <div className={isLoading ? 'flex h-full' : 'hidden'}>
-        <div className="m-auto size-16 motion-safe:animate-spin rounded-full border-4 border-border border-t-foreground" />
-      </div>
-      {!isAuthLoading && (user ? (
-        <AuthenticatedView user={user} userError={userError} />
-      ) : (
-        <GuestView userError={userError} />
-      ))}
-    </>
+  // Auth 로딩 중에만 여기서 스피너 표시.
+  // 만다라트 데이터 로딩은 각 View 컴포넌트가 자체적으로 처리하여
+  // 사용자 전환 시 stale 데이터가 한 프레임 노출되는 문제를 방지.
+  if (isAuthLoading) return <LoadingSpinner />;
+
+  return user ? (
+    <AuthenticatedView user={user} userError={userError} />
+  ) : (
+    <GuestView userError={userError} />
   );
 };
 
