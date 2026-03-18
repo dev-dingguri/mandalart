@@ -1,4 +1,4 @@
-import { MandalartMeta } from '@/types/MandalartMeta';
+import { MandalartMeta } from '@/types';
 import MandalartListItem from '@/components/MandalartListItem';
 
 type MandalartListProps = {

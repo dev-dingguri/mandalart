@@ -1,14 +1,13 @@
 import { useCallback, HTMLAttributes, useState } from 'react';
 import MandalartFocusView from '@/components/MandalartFocusView';
 import Mandalart, { MandalartProps } from '@/components/Mandalart';
-import { TopicNode } from '@/types/TopicNode';
+import { MandalartMeta, TopicNode } from '@/types';
 import {
   MAX_MANDALART_TITLE_SIZE,
   TABLE_CENTER_IDX,
   TMP_MANDALART_ID,
 } from '@/constants';
 import MandalartViewToggle from '@/components/MandalartViewToggle';
-import { MandalartMeta } from '@/types/MandalartMeta';
 import TextInputDialog from '@/components/TextInputDialog';
 import { useTranslation } from 'react-i18next';
 import { trackViewModeChange } from '@/lib/analyticsEvents';

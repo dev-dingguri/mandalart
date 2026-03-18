@@ -11,8 +11,7 @@ import { User } from 'firebase/auth';
 import { useEffect, useRef } from 'react';
 import { db } from '@/lib/firebase';
 import i18next from 'i18next';
-import { MandalartMeta } from '@/types/MandalartMeta';
-import { TopicNode } from '@/types/TopicNode';
+import { MandalartMeta, TopicNode } from '@/types';
 import {
   DB_SNIPPETS,
   DB_TOPIC_TREES,

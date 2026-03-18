@@ -1,5 +1,4 @@
-import { MandalartMeta } from '@/types/MandalartMeta';
-import { TopicNode } from '@/types/TopicNode';
+import { MandalartMeta, TopicNode } from '@/types';
 
 // table ui
 export const TABLE_ROW_SIZE = 3;

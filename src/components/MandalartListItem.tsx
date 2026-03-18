@@ -1,4 +1,4 @@
-import { MandalartMeta } from '@/types/MandalartMeta';
+import { MandalartMeta } from '@/types';
 import { LayoutGrid } from 'lucide-react';
 import TextInputDialog from '@/components/TextInputDialog';
 import MandalartListItemMenu from '@/components/MandalartListItemMenu';

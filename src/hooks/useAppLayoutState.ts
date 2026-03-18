@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from 'react';
-import { MandalartMeta } from '@/types/MandalartMeta';
+import { MandalartMeta } from '@/types';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 import { useStoreWithEqualityFn } from 'zustand/traditional';

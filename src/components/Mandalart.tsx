@@ -1,6 +1,6 @@
 import ItemGrid from '@/components/ItemGrid';
 import TopicGrid from '@/components/TopicGrid';
-import { TopicNode } from '@/types/TopicNode';
+import { TopicNode } from '@/types';
 import {
   TABLE_ROW_SIZE,
   TABLE_COL_SIZE,

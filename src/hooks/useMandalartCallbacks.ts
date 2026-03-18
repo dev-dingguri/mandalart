@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 import { useMandalartStore } from '@/stores/useMandalartStore';
 import { createEmptyMeta, createEmptyTopicTree } from '@/constants';
-import { MandalartMeta } from '@/types/MandalartMeta';
-import { TopicNode } from '@/types/TopicNode';
+import { MandalartMeta, TopicNode } from '@/types';
 import {
   trackMandalartCreate,
   trackMandalartDelete,
