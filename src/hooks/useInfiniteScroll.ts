@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useLatestRef } from '@/hooks/useLatestRef';
 
 /**
  * IntersectionObserver 기반 무한 스크롤 훅.
@@ -10,8 +11,7 @@ const useInfiniteScroll = <T extends HTMLElement = HTMLDivElement>(
 ) => {
   const sentinelRef = useRef<T>(null);
   // 콜백을 ref로 보관하여, 콜백 변경 시 observer 재생성을 방지
-  const onLoadMoreRef = useRef(onLoadMore);
-  onLoadMoreRef.current = onLoadMore;
+  const onLoadMoreRef = useLatestRef(onLoadMore);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
