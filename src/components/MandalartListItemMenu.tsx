@@ -25,7 +25,8 @@ const MandalartListItemMenu = ({
   const { t } = useTranslation();
 
   return (
-    <DropdownMenu>
+    // vaul Drawer 안에서 modal DropdownMenu가 닫히면 Drawer도 함께 닫히는 Radix 중첩 모달 충돌 방지
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
