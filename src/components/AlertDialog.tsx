@@ -21,7 +21,7 @@ const AlertDialog = ({ isOpen, message, onClose }: AlertDialogProps) => {
 
   return (
     <AlertDialogRoot open={isOpen}>
-      <AlertDialogContent className="gap-3 p-6 w-max">
+      <AlertDialogContent className="gap-3 p-6">
         <AlertDialogHeader>
           <AlertDialogTitle>{t('global.app')}</AlertDialogTitle>
           <AlertDialogDescription className="whitespace-pre-line break-keep">
