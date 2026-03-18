@@ -60,7 +60,7 @@ const Header = ({
         {user ? (
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-1 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background">
-              <span className="flex size-8 items-center justify-center rounded-full bg-primary hover:opacity-90 select-none">
+              <span className="flex size-8 items-center justify-center rounded-full bg-primary hover:opacity-90">
                 <span className="text-sm font-semibold text-primary-foreground">{initial}</span>
               </span>
             </DropdownMenuTrigger>

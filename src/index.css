@@ -174,7 +174,7 @@ code {
     border-radius: calc(var(--size-scrollbar-width) / 2);
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground select-none;
   }
   html {
     @apply font-sans;

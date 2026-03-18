@@ -123,7 +123,7 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
 
           <Separator />
 
-          <p className="text-sm text-muted-foreground">
+          <p className="select-text text-sm text-muted-foreground">
             dingguri.lab@gmail.com
           </p>
 

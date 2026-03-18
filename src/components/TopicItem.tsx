@@ -26,7 +26,7 @@ const TopicItem = memo(({
     <>
       <AspectSquare
         className={cn(
-          'flex cursor-pointer select-none items-center justify-center',
+          'flex cursor-pointer items-center justify-center',
           isAccented
             ? 'bg-primary text-primary-foreground'
             : 'bg-card text-card-foreground'

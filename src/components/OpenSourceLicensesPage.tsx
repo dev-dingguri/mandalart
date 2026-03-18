@@ -20,7 +20,7 @@ const licenses = Object.keys(licensesObj).map((key) => licensesObj[key]);
 
 const Item = ({ name, licenses, repository }: License) => {
   return (
-    <li className="flex flex-col items-start px-4 py-2 [content-visibility:auto] [contain-intrinsic-size:auto_5rem]">
+    <li className="flex select-text flex-col items-start px-4 py-2 [content-visibility:auto] [contain-intrinsic-size:auto_5rem]">
       <span className="text-sm font-medium">{name}</span>
       <span className="text-xs text-muted-foreground">{licenses}</span>
       <a

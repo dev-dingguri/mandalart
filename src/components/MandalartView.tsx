@@ -65,7 +65,7 @@ const MandalartView = ({
         <h2
           role="button"
           tabIndex={0}
-          className="min-w-0 flex-1 cursor-pointer select-none truncate text-2xl font-semibold"
+          className="min-w-0 flex-1 cursor-pointer truncate text-2xl font-semibold"
           onClick={() => openTitleEditor()}
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
