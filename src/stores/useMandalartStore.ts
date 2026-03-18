@@ -26,6 +26,9 @@ import {
 
 // -- localStorage helpers --
 
+// TODO: guest localStorage 데이터에 스키마 버전이 없음 (client-localstorage-schema).
+// MandalartMeta/TopicNode 타입이 변경되면 기존 데이터와 호환되지 않을 수 있으므로
+// 저장 형식에 version 필드를 추가하는 것을 고려.
 const loadGuestMandalartMetas = (): Map<string, MandalartMeta> => {
   try {
     const data = JSON.parse(
@@ -62,6 +65,10 @@ const saveGuestTopicTrees = (map: Map<string, TopicNode>) => {
   );
 };
 
+// TODO: createEmptyMeta()와 createEmptyTopicTree()가 매 호출마다 새 객체를 생성한 뒤
+// JSON.stringify하므로, empty 상태의 JSON 문자열을 모듈 레벨에서 미리 캐싱하면
+// 불필요한 객체 생성과 직렬화를 제거할 수 있다.
+// 예: const EMPTY_META_JSON = JSON.stringify(createEmptyMeta());
 const isAnyChanged = (meta: MandalartMeta, topicTree: TopicNode) =>
   JSON.stringify(meta) !== JSON.stringify(createEmptyMeta()) ||
   JSON.stringify(topicTree) !== JSON.stringify(createEmptyTopicTree());

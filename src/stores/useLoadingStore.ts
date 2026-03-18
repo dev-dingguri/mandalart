@@ -16,6 +16,8 @@ export const useLoadingStore = create<LoadingState>((set, get) => ({
     conditions.set(key, condition);
     set({
       conditions,
+      // TODO: Array.from() 없이 iterator를 직접 순회하면 중간 배열 생성을 피할 수 있다.
+      // 현재 Map 크기가 2~3개이므로 실질적 영향은 미미함.
       isLoading: Array.from(conditions.values()).includes(true),
     });
   },
