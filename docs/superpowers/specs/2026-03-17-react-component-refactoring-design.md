@@ -130,26 +130,42 @@ code-reviewer 에이전트 (코드 리뷰)
 
 ---
 
+## 중간 점검 결과 (그룹 1~3 완료 후)
+
+그룹 3에서 `useModal` 통일 작업 시, 계획 범위를 넘어 그룹 4·6 대상 컴포넌트에도 선행 적용되었다.
+
+| 컴포넌트 | 선행 적용 내용 | 커밋 |
+|----------|---------------|------|
+| `MandalartListItem` (그룹 4) | `useModal` 훅 통합, `cn()` 전환 | cb982db |
+| `AppLayout` (그룹 6) | `useModal` 훅 통합 (SignInDialog, AlertDialog) | cb982db |
+| `TopicItem` (그룹 1) | `useModal` 훅 통합 | cb982db |
+
+**미적용 사항**: `AppLayout`의 드로어 상태(`isOpenLeftDrawer`, `isOpenRightDrawer`)는 여전히 `useState` 직접 사용 중 → 그룹 6에서 `useModal` 전환 필요.
+
+---
+
 ## 그룹 4: 리스트/드로어
 
 **대상**: `MandalartList`(44줄), `MandalartListItem`(96줄), `MandalartListDrawer`(71줄)
-**변경 규모**: 중간
+**변경 규모**: 작음~중간 (그룹 3에서 useModal/cn() 선행 적용 완료)
 
 ### 작업 항목
 
 | # | 작업 | 출처 |
 |---|------|------|
-| 4-1 | `MandalartListItem` 삼중 책임(렌더링 + 드롭다운 메뉴 + TextInputDialog) 분리 | 탐색 |
-| 4-2 | `architecture-compound-components` — 합성 가능한 서브컴포넌트 구성 검토 (리스트 아이템의 메뉴, 편집 등) | composition-patterns |
-| 4-3 | 그룹 3에서 통일한 `useModal` 다이얼로그 패턴 적용 확인 | 탐색 |
-| 4-4 | `ScrollArea` 설치 — 드로어 내 리스트 스크롤 영역에 적용 검토 | shadcn |
-| 4-5 | shadcn 스타일링 규칙, 중첩 삼항 제거, Props 통일, 모션 규칙 | shadcn/simplify/web-design |
+| 4-1 | `MandalartListItem` — DropdownMenu 부분을 별도 컴포넌트로 추출하여 렌더링 책임 분리. compound components 패턴은 이 규모(96줄)에서 과도하므로 단순 추출로 한정 | 탐색 |
+| 4-2 | `ScrollArea` 설치 — 드로어 내 리스트 스크롤 영역에 적용 검토 | shadcn |
+| 4-3 | shadcn 스타일링 규칙, 중첩 삼항 제거, Props 통일, 모션 규칙 | shadcn/simplify/web-design |
+
+> **삭제된 항목**:
+> - 구 4-2 (compound components 검토) → 4-1에 통합, 단순 추출로 한정
+> - 구 4-3 (useModal 패턴 적용) → 그룹 3에서 선행 완료됨 (cb982db)
 
 ---
 
 ## 그룹 5: 설정/헤더
 
-**대상**: `SettingsDrawer`(201줄), `Header`(95줄), `MandalartViewToggle`(30줄)
+**대상**: `SettingsDrawer`(201줄), `Header`(94줄), `MandalartViewToggle`(30줄)
 **변경 규모**: 중간~큼
 
 ### 작업 항목
@@ -159,11 +175,12 @@ code-reviewer 에이전트 (코드 리뷰)
 | 5-1 | SettingsDrawer 내부 `InlineSelect`를 별도 파일로 추출 — 모듈 분리 및 재사용성 확보, shadcn Select로 ARIA/키보드 접근성 자동 지원 | react-best-practices / shadcn |
 | 5-2 | `Select` 설치 — 추출한 InlineSelect를 shadcn `Select`로 대체 (ARIA, 키보드 네비게이션 자동 지원) | shadcn |
 | 5-3 | `Tooltip` 설치 — 버튼/아이콘에 tooltip 적용 검토 | shadcn |
-| 5-4 | 아이콘 `data-icon` 패턴 적용 | shadcn |
+| 5-4 | 아이콘 `data-icon` 패턴 — 그룹 1~3에서 적용 여부 먼저 확인, 미적용 시 이 그룹에서 전 컴포넌트 대상 일괄 적용 | shadcn |
 | 5-5 | `rerender-derived-state` — 연속 값 대신 파생 boolean 구독으로 전환 가능한 곳 검사 | react-best-practices |
 | 5-6 | `MandalartViewToggle` aria-label 검토 — 번역 키 값이 "다음 동작"을 올바르게 안내하는지 확인 | 탐색 |
-| 5-7 | `text-wrap: balance` — 제목 요소에 적용 검토 | web-design-guidelines |
-| 5-8 | shadcn 스타일링 규칙, 중첩 삼항 제거, Props 통일, 모션 규칙 | shadcn/simplify/web-design |
+| 5-7 | `Header` 드로어/다이얼로그 트리거 콜백 패턴 검토 — 현재 `onOpenLeftDrawer`, `onOpenRightDrawer`, `onOpenSignInUI`, `onSignOut` 4개 콜백 props를 AppLayout으로부터 전달받는 구조. 그룹 6의 AppLayout 드로어 상태 리팩토링과 연계하여 인터페이스 정리 필요 | 탐색 |
+| 5-8 | `text-wrap: balance` — 제목 요소에 적용 검토 | web-design-guidelines |
+| 5-9 | shadcn 스타일링 규칙, 중첩 삼항 제거, Props 통일, 모션 규칙 | shadcn/simplify/web-design |
 
 ---
 
@@ -179,7 +196,8 @@ code-reviewer 에이전트 (코드 리뷰)
 | # | 작업 | 출처 |
 |---|------|------|
 | 6-1 | `AppLayout` — 드로어 상태, 다이얼로그 상태, 임시 데이터 업로드 useEffect, 메타 태그 설정 등 여러 관심사를 `useAppLayoutState` 훅으로 추출하여 컴포넌트는 렌더링에만 집중 | 탐색 |
-| 6-2 | `architecture-avoid-boolean-props` — 다수의 boolean 상태(isOpenLeftDrawer, isOpenRightDrawer 등)가 props로 자식에게 전달되는 패턴 검토. Provider/Context 전환 가능성 검토 | composition-patterns |
+| 6-2a | `AppLayout` 드로어 상태를 `useModal`로 전환 — 현재 `isOpenLeftDrawer`, `isOpenRightDrawer`가 `useState` 직접 사용 중(49~55줄). 그룹 3에서 확립된 `useModal` 패턴으로 통일하면 boolean props 문제가 상당 부분 해소됨 | 탐색 / composition-patterns |
+| 6-2b | `architecture-avoid-boolean-props` — 6-2a 적용 후에도 여전히 다수의 boolean이 props로 자식에게 전달되는 경우에만 Provider/Context 전환 검토 | composition-patterns |
 | 6-3 | `rerender-move-effect-to-event` — useEffect에 들어 있는 상호작용 로직이 이벤트 핸들러로 옮겨질 수 있는지 검사 | react-best-practices |
 | 6-4 | `OpenSourceLicensesPage` — 무한 스크롤 로직(IntersectionObserver + ref)을 커스텀 훅으로 추출 | 탐색 |
 | 6-5 | `rendering-content-visibility` — OSS 라이선스 목록에 content-visibility CSS 적용 검토 | react-best-practices |
