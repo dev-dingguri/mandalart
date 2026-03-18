@@ -2,9 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Refactoring In Progress
+## Branch Status
 
-The `rewrite/incremental` branch is migrating from CRA to Vite 6 + modern stack. Core migration tasks (T1–T17) are complete. Component refactoring follows a Bottom-Up approach across 6 groups — groups 1–3 are done, groups 4–6 are pending. Design docs live in `docs/superpowers/specs/`.
+The `rewrite/incremental` branch has migrated from CRA to Vite 6 + modern stack. Core migration tasks (T1–T17) and component refactoring (6 groups, Bottom-Up) are all complete. Design docs live in `docs/superpowers/specs/`.
 
 ## Build & Development
 
@@ -63,14 +63,26 @@ Works without login — data stored in `localStorage`. On sign-in, `uploadTemp()
 ### Component Hierarchy (Key)
 
 ```
-App → MainPage → AuthenticatedView / GuestView → AppLayout
+App → MainPage → AuthenticatedView / GuestView → AppLayout (useAppLayoutState hook)
   ├── Header
   ├── MandalartView → Mandalart → ItemGrid → TopicGrid → TopicItem
-  │                 → MandalartFocusView (swipe navigation)
-  ├── MandalartListDrawer (lazy, vaul Drawer left)
+  │                 → MandalartFocusView (useSwipeNavigation hook)
+  ├── MandalartListDrawer (lazy, vaul Drawer left, subscribes to store directly)
   ├── SettingsDrawer (lazy, vaul Drawer right)
   └── SignInDialog (lazy)
 ```
+
+### `useAppLayoutState` Hook
+
+Extracts all state/logic from `AppLayout` (modals, store subscriptions, analytics, error handling, callbacks). Returns grouped object:
+
+| Group | Contents |
+|-------|----------|
+| `mandalart` | `hasMandalarts`, `currentId`, `currentMeta`, `currentTopicTree`, CRUD callbacks |
+| `leftDrawer` | `isOpen`, `open`, `close`, list action callbacks |
+| `rightDrawer` | `isOpen`, `open`, `close` |
+| `signInDialog` | `isOpen`, `open`, `close`, `onSignIn` |
+| `alert` | `isOpen`, `content`, `close` |
 
 ### Performance Patterns
 
@@ -78,6 +90,9 @@ App → MainPage → AuthenticatedView / GuestView → AppLayout
 - `React.lazy`: `MandalartListDrawer`, `SettingsDrawer`, `SignInDialog`, `OpenSourceLicensesPage`
 - Manual bundle chunk splitting: `vendor-router`, `vendor-firebase`, `vendor-i18n`, `vendor-ui`
 - `structuredClone` for deep-copying topic trees
+- Zustand individual selectors: avoid full store subscription, subscribe only to needed slices (e.g., `hasMandalarts` boolean instead of full `metaMap`)
+- Touch handler stabilization: `useCallback` + ref pattern in `useSwipeNavigation` to prevent handler recreation on every render
+- `content-visibility: auto` on OSS page items for scroll performance
 
 ### Routing
 
@@ -97,7 +112,7 @@ App → MainPage → AuthenticatedView / GuestView → AppLayout
 
 - `src/components/` — React components
 - `src/components/ui/` — shadcn/ui primitives
-- `src/hooks/` — Custom hooks (`useModal`, `useAnalytics`, `useSwipeNavigation`, etc.)
+- `src/hooks/` — Custom hooks (`useModal`, `useAnalytics`, `useSwipeNavigation`, `useAppLayoutState`, `useInfiniteScroll`, etc.)
 - `src/stores/` — Zustand stores (`useMandalartInit` hook also lives here)
 - `src/locales/` — i18n resource bundles (JSON)
 - `src/types/` — TypeScript type definitions
