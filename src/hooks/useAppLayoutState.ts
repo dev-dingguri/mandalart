@@ -3,7 +3,6 @@ import { MandalartMeta } from '@/types';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
 import { useStoreWithEqualityFn } from 'zustand/traditional';
-import { useAuthStore } from '@/stores/useAuthStore';
 import { useMandalartStore } from '@/stores/useMandalartStore';
 import { useModal } from '@/hooks/useModal';
 import { useMandalartCallbacks } from '@/hooks/useMandalartCallbacks';
@@ -36,9 +35,6 @@ export const useAppLayoutState = ({
     (s): MandalartMeta | null => s.currentMandalartId ? s.metaMap.get(s.currentMandalartId) ?? null : null,
     metaEquals
   );
-
-  // 액션만 구독 — Zustand 액션은 참조가 안정적이므로 리렌더를 유발하지 않음
-  const signOut = useAuthStore((s) => s.signOut);
 
   const { t } = useTranslation();
 
@@ -90,12 +86,11 @@ export const useAppLayoutState = ({
     openAlert(t('auth.errors.signIn.default'));
   }, [userError, openAlert, t]);
 
-  // 에러 처리 — 만다라트 동기화 에러 시 자동 로그아웃
+  // 에러 처리 — 만다라트 동기화 에러 (onValue 구독이 취소되므로 실시간 업데이트 중단)
   useEffect(() => {
     if (!mandalartsError) return;
     openAlert(t('mandalart.errors.sync.default'));
-    signOut();
-  }, [mandalartsError, openAlert, signOut, t]);
+  }, [mandalartsError, openAlert, t]);
 
   // Drawer와 통합된 콜백 — 선택 후 서랍 닫기
   const handleSelectMandalart = useCallback(

@@ -39,6 +39,7 @@ export const useMandalartCallbacks = ({
   const deleteMandalart = useMandalartStore((s) => s.deleteMandalart);
   const saveMandalartMeta = useMandalartStore((s) => s.saveMandalartMeta);
   const saveTopicTree = useMandalartStore((s) => s.saveTopicTree);
+  const resetMandalart = useMandalartStore((s) => s.resetMandalart);
 
   const handleMetaChange = useCallback(
     (meta: MandalartMeta) => {
@@ -80,13 +81,14 @@ export const useMandalartCallbacks = ({
         message: t('mandalart.confirmDelete'),
         confirmText: t('mandalart.delete'),
         onConfirm: () => {
-          deleteMandalart(mandalartId);
-          // trackMandalartDelete은 모듈 수준 함수라 의존성 배열에서 생략
-          trackMandalartDelete();
+          deleteMandalart(mandalartId)
+            // trackMandalartDelete은 모듈 수준 함수라 의존성 배열에서 생략
+            .then(() => trackMandalartDelete())
+            .catch((e: Error) => openAlert(e.message));
         },
       });
     },
-    [openConfirmDialog, t, deleteMandalart]
+    [openConfirmDialog, t, deleteMandalart, openAlert]
   );
 
   const handleRename = useCallback(
@@ -102,14 +104,14 @@ export const useMandalartCallbacks = ({
         message: t('mandalart.confirmReset'),
         confirmText: t('mandalart.reset'),
         onConfirm: () => {
-          saveMandalartMeta(mandalartId, createEmptyMeta());
-          saveTopicTree(mandalartId, createEmptyTopicTree());
-          // trackMandalartReset은 모듈 수준 함수라 의존성 배열에서 생략
-          trackMandalartReset();
+          resetMandalart(mandalartId)
+            // trackMandalartReset은 모듈 수준 함수라 의존성 배열에서 생략
+            .then(() => trackMandalartReset())
+            .catch((e: Error) => openAlert(e.message));
         },
       });
     },
-    [openConfirmDialog, t, saveMandalartMeta, saveTopicTree]
+    [openConfirmDialog, t, resetMandalart, openAlert]
   );
 
   return {

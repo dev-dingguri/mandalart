@@ -86,6 +86,7 @@ type MandalartState = {
   deleteMandalart: (id: string | null) => Promise<void>;
   saveMandalartMeta: (id: string | null, meta: MandalartMeta) => Promise<void>;
   saveTopicTree: (id: string | null, topicTree: TopicNode) => Promise<void>;
+  resetMandalart: (id: string | null) => Promise<void>;
   uploadTemp: () => Promise<void>;
 
   // Internal
@@ -143,19 +144,19 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
       );
     }
 
-    const result = await push(
-      ref(db, `${user.uid}/${DB_SNIPPETS}`),
-      meta
-    );
-    const mandalartId = result.key;
+    // push()에 값을 전달하지 않으면 키만 생성하고 실제 쓰기는 하지 않음
+    const newRef = push(ref(db, `${user.uid}/${DB_SNIPPETS}`));
+    const mandalartId = newRef.key;
     if (!mandalartId) {
       throw new Error(`${i18next.t('mandalart.errors.create.default')}`);
     }
 
-    await fbSet(
-      ref(db, `${user.uid}/${DB_TOPIC_TREES}/${mandalartId}`),
-      topicTree
-    );
+    // snippets과 topictrees를 원자적으로 쓰기 —
+    // onValue(snippets) 트리거 시점에 topicTree가 이미 존재하도록 보장
+    await fbUpdate(ref(db, user.uid), {
+      [`${DB_SNIPPETS}/${mandalartId}`]: meta,
+      [`${DB_TOPIC_TREES}/${mandalartId}`]: topicTree,
+    });
     set({ currentMandalartId: mandalartId });
   },
 
@@ -199,6 +200,37 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
         _guestTopicTrees: guestTopicTrees,
         currentTopicTree:
           id === get().currentMandalartId ? topicTree : get().currentTopicTree,
+      });
+    }
+  },
+
+  resetMandalart: async (id) => {
+    if (!id) return;
+    const user = get()._user;
+    const emptyMeta = createEmptyMeta();
+    const emptyTopicTree = createEmptyTopicTree();
+
+    if (user) {
+      // 원자적 쓰기로 meta와 topicTree를 동시에 초기화
+      await fbUpdate(ref(db, user.uid), {
+        [`${DB_SNIPPETS}/${id}`]: emptyMeta,
+        [`${DB_TOPIC_TREES}/${id}`]: emptyTopicTree,
+      });
+    } else {
+      const metaMap = new Map(get().metaMap).set(id, emptyMeta);
+      const guestTopicTrees = new Map(get()._guestTopicTrees).set(
+        id,
+        emptyTopicTree
+      );
+      saveGuestMandalartMetas(metaMap);
+      saveGuestTopicTrees(guestTopicTrees);
+      set({
+        metaMap,
+        _guestTopicTrees: guestTopicTrees,
+        currentTopicTree:
+          id === get().currentMandalartId
+            ? emptyTopicTree
+            : get().currentTopicTree,
       });
     }
   },
@@ -304,11 +336,22 @@ export const useMandalartInit = (user: User | null) => {
     let metas = loadGuestMandalartMetas();
     let topicTrees = loadGuestTopicTrees();
 
-    if (metas.size === 0 || topicTrees.size === 0) {
+    if (metas.size === 0) {
+      // 첫 방문 또는 metas 손상: 기본 만다라트 생성
       metas = new Map([[TMP_MANDALART_ID, createEmptyMeta()]]);
       topicTrees = new Map([[TMP_MANDALART_ID, createEmptyTopicTree()]]);
       saveGuestMandalartMetas(metas);
       saveGuestTopicTrees(topicTrees);
+    } else {
+      // metas에 대응하는 topicTree가 없으면 빈 트리로 복구
+      let recovered = false;
+      for (const id of metas.keys()) {
+        if (!topicTrees.has(id)) {
+          topicTrees.set(id, createEmptyTopicTree());
+          recovered = true;
+        }
+      }
+      if (recovered) saveGuestTopicTrees(topicTrees);
     }
 
     useMandalartStore.setState({ _guestTopicTrees: topicTrees });
