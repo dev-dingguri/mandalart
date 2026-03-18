@@ -33,10 +33,10 @@ const ConfirmDialog = ({ isOpen, message, confirmText, onConfirm, onClose }: Con
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onClose}>
+          <AlertDialogCancel className="w-full" onClick={onClose}>
             {t('global.cancel')}
           </AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>
+          <AlertDialogAction className="w-full" onClick={onConfirm}>
             {confirmText}
           </AlertDialogAction>
         </AlertDialogFooter>
