@@ -122,5 +122,4 @@ Extracts all state/logic from `AppLayout` (modals, store subscriptions, analytic
 
 ## Known Issues
 
-- No confirmation dialog for delete/reset actions (executes immediately)
-- No save-success feedback (no toast notifications)
+- No save-success feedback — deferred; Firebase realtime subscriptions provide sufficient immediate visual feedback
