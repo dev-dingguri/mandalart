@@ -7,7 +7,7 @@ type MandalartListProps = {
   onItemSelect: (mandalartId: string) => void;
   onItemDelete: (mandalartId: string) => void;
   onItemReset: (mandalartId: string) => void;
-  onItemRename: (mandalartId: string, name: string) => void;
+  onItemRename: (mandalartId: string) => void;
   className?: string;
 };
 

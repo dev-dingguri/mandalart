@@ -11,7 +11,7 @@ type MandalartListDrawerProps = {
   isOpen: boolean;
   onSelectMandalart: (mandalartId: string) => void;
   onDeleteMandalart: (mandalartId: string) => void;
-  onRenameMandalart: (mandalartId: string, name: string) => void;
+  onRenameMandalart: (mandalartId: string) => void;
   onResetMandalart: (mandalartId: string) => void;
   onCreateMandalart: () => void;
   onClose: () => void;

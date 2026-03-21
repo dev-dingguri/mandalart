@@ -18,15 +18,22 @@ export type ConfirmDialogOptions = {
   onConfirm: () => void;
 };
 
+export type RenameDialogOptions = {
+  initialTitle: string;
+  onConfirm: (name: string) => void;
+};
+
 type MandalartCallbackDeps = {
   openAlert: (msg: string) => void;
   openConfirmDialog: (options: ConfirmDialogOptions) => void;
+  openRenameDialog: (options: RenameDialogOptions) => void;
   t: TFunction;
 };
 
 export const useMandalartCallbacks = ({
   openAlert,
   openConfirmDialog,
+  openRenameDialog,
   t,
 }: MandalartCallbackDeps) => {
   // 콜백 전용 — ref로 참조하여 콜백 재생성 방지 (rerender-defer-reads)
@@ -92,10 +99,16 @@ export const useMandalartCallbacks = ({
   );
 
   const handleRename = useCallback(
-    (mandalartId: string, name: string) => {
-      saveMandalartMeta(mandalartId, { title: name });
+    (mandalartId: string) => {
+      const meta = useMandalartStore.getState().metaMap.get(mandalartId);
+      openRenameDialog({
+        initialTitle: meta?.title ?? '',
+        onConfirm: (name: string) => {
+          saveMandalartMeta(mandalartId, { title: name });
+        },
+      });
     },
-    [saveMandalartMeta]
+    [openRenameDialog, saveMandalartMeta]
   );
 
   const handleReset = useCallback(
