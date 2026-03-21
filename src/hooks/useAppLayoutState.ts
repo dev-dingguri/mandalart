@@ -178,7 +178,7 @@ export const useAppLayoutState = ({
       isOpen: isOpenSignInDialog,
       open: openSignInDialog,
       close: closeSignInDialog,
-      onSignIn: authCallbacks.onSignIn,
+      onSignIn: (providerId: string) => { closeSignInDialog(); authCallbacks.onSignIn(providerId); },
     },
     alert: {
       isOpen: isOpenAlert,
