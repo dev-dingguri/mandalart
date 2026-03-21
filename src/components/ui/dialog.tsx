@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { useVisualViewportOffset } from "@/hooks/useVisualViewportOffset"
 import { XIcon } from "lucide-react"
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
@@ -43,6 +44,7 @@ function DialogContent({
   children,
   showCloseButton = true,
   closeLabel,
+  style,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
@@ -50,6 +52,7 @@ function DialogContent({
 }) {
   const { t } = useTranslation()
   const resolvedCloseLabel = closeLabel ?? t("global.close")
+  const vvOffset = useVisualViewportOffset()
 
   return (
     <DialogPortal>
@@ -60,6 +63,8 @@ function DialogContent({
           "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-background p-4 text-sm ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className
         )}
+        // 모바일 키보드가 열리면 보이는 영역 기준으로 다이얼로그를 재배치
+        style={vvOffset !== 0 ? { ...style, top: `calc(50% + ${vvOffset}px)` } : style}
         {...props}
       >
         {children}
