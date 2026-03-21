@@ -101,13 +101,39 @@ export const useAppLayoutState = ({
     openAlert(t('mandalart.errors.sync.default'));
   }, [mandalartsError, openAlert, t]);
 
-  // Drawer와 통합된 콜백 — 선택 후 서랍 닫기
+  // Drawer와 통합된 콜백 — 동작 후 서랍 닫기
+  // 모바일에서 서랍과 다이얼로그가 동시에 표시되면 화면이 복잡하므로
+  // 다이얼로그를 여는 동작 시 서랍을 명시적으로 닫음
   const handleSelectMandalart = useCallback(
     (mandalartId: string) => {
       mandalartCallbacks.onSelect(mandalartId);
       closeLeftDrawer();
     },
     [mandalartCallbacks.onSelect, closeLeftDrawer]
+  );
+
+  const handleDeleteMandalart = useCallback(
+    (mandalartId: string) => {
+      mandalartCallbacks.onDelete(mandalartId);
+      closeLeftDrawer();
+    },
+    [mandalartCallbacks.onDelete, closeLeftDrawer]
+  );
+
+  const handleRenameMandalart = useCallback(
+    (mandalartId: string) => {
+      mandalartCallbacks.onRename(mandalartId);
+      closeLeftDrawer();
+    },
+    [mandalartCallbacks.onRename, closeLeftDrawer]
+  );
+
+  const handleResetMandalart = useCallback(
+    (mandalartId: string) => {
+      mandalartCallbacks.onReset(mandalartId);
+      closeLeftDrawer();
+    },
+    [mandalartCallbacks.onReset, closeLeftDrawer]
   );
 
   const handleConfirmDialogConfirm = useCallback(() => {
@@ -138,10 +164,10 @@ export const useAppLayoutState = ({
       open: openLeftDrawer,
       close: closeLeftDrawer,
       onSelect: handleSelectMandalart,
-      onDelete: mandalartCallbacks.onDelete,
-      onRename: mandalartCallbacks.onRename,
-      onReset: mandalartCallbacks.onReset,
-      onCreate: () => mandalartCallbacks.onCreate(),
+      onDelete: handleDeleteMandalart,
+      onRename: handleRenameMandalart,
+      onReset: handleResetMandalart,
+      onCreate: () => { mandalartCallbacks.onCreate(); closeLeftDrawer(); },
     },
     rightDrawer: {
       isOpen: isOpenRightDrawer,
