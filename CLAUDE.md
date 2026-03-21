@@ -22,7 +22,7 @@ The `rewrite/incremental` branch has migrated from CRA to Vite 6 + modern stack.
 - Tailwind CSS v4 + shadcn/ui (Radix-based — do not use Base UI)
 - Zustand 5 (state management)
 - Firebase v12 (Auth, Realtime Database, Analytics, Hosting)
-- react-router v7, i18next v25, vaul (Drawer)
+- react-router v7, i18next v25
 - lucide-react (icons), `@/` path alias via `vite-tsconfig-paths`
 
 ## Environment Variables
@@ -67,8 +67,8 @@ App → MainPage → AuthenticatedView / GuestView → AppLayout (useAppLayoutSt
   ├── Header
   ├── MandalartView → Mandalart → ItemGrid → TopicGrid → TopicItem
   │                 → MandalartFocusView (useSwipeNavigation hook)
-  ├── MandalartListDrawer (lazy, vaul Drawer left, subscribes to store directly)
-  ├── SettingsDrawer (lazy, vaul Drawer right)
+  ├── MandalartListDrawer (lazy, Radix Sheet left, subscribes to store directly)
+  ├── SettingsDrawer (lazy, Radix Sheet right)
   └── SignInDialog (lazy)
 ```
 
