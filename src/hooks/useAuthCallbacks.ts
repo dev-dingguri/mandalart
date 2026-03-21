@@ -42,10 +42,14 @@ export const useAuthCallbacks = ({
   useEffect(() => {
     const shouldUploadTemp = !!user && getShouldUploadTemp();
     if (!shouldUploadTemp) return;
+    // effect 재실행 방지를 위해 먼저 false로 설정하되, 실패 시 복원하여 재시도 가능하게 함
     setShouldUploadTemp(false);
     uploadTemp()
       .then(() => trackGuestUpload())
-      .catch((e: Error) => openAlert(e.message));
+      .catch((e: Error) => {
+        setShouldUploadTemp(true);
+        openAlert(e.message);
+      });
   // trackGuestUpload은 모듈 수준 함수라 의존성 배열에서 생략
   }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert]);
 

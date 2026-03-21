@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { toast } from 'sonner';
 import { useMandalartStore } from '@/stores/useMandalartStore';
 import { createEmptyMeta, createEmptyTopicTree } from '@/constants';
 import { MandalartMeta, TopicNode } from '@/types';
@@ -48,18 +49,23 @@ export const useMandalartCallbacks = ({
   const saveTopicTree = useMandalartStore((s) => s.saveTopicTree);
   const resetMandalart = useMandalartStore((s) => s.resetMandalart);
 
+  // 저장 실패 시 사용자 작업 흐름을 방해하지 않도록 토스트로 피드백
+  const showSaveError = useCallback(() => {
+    toast.error(t('mandalart.errors.save.default'));
+  }, [t]);
+
   const handleMetaChange = useCallback(
     (meta: MandalartMeta) => {
-      saveMandalartMeta(currentIdRef.current, meta);
+      saveMandalartMeta(currentIdRef.current, meta)?.catch(showSaveError);
     },
-    [saveMandalartMeta, currentIdRef]
+    [saveMandalartMeta, currentIdRef, showSaveError]
   );
 
   const handleTopicTreeChange = useCallback(
     (topicTree: TopicNode) => {
-      saveTopicTree(currentIdRef.current, topicTree);
+      saveTopicTree(currentIdRef.current, topicTree)?.catch(showSaveError);
     },
-    [saveTopicTree, currentIdRef]
+    [saveTopicTree, currentIdRef, showSaveError]
   );
 
   const handleCreate = useCallback(
@@ -104,11 +110,11 @@ export const useMandalartCallbacks = ({
       openRenameDialog({
         initialTitle: meta?.title ?? '',
         onConfirm: (name: string) => {
-          saveMandalartMeta(mandalartId, { title: name });
+          saveMandalartMeta(mandalartId, { title: name })?.catch(showSaveError);
         },
       });
     },
-    [openRenameDialog, saveMandalartMeta]
+    [openRenameDialog, saveMandalartMeta, showSaveError]
   );
 
   const handleReset = useCallback(

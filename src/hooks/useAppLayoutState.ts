@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { MandalartMeta } from '@/types';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
@@ -96,10 +96,21 @@ export const useAppLayoutState = ({
   }, [userError, openAlert, t]);
 
   // 에러 처리 — 만다라트 동기화 에러 (onValue 구독이 취소되므로 실시간 업데이트 중단)
+  // alert 닫힘 시 새로고침하여 구독 재시작 (복구 불가하므로)
+  const hasSyncErrorRef = useRef(false);
   useEffect(() => {
     if (!mandalartsError) return;
+    hasSyncErrorRef.current = true;
     openAlert(t('mandalart.errors.sync.default'));
   }, [mandalartsError, openAlert, t]);
+
+  const handleAlertClose = useCallback(() => {
+    closeAlert();
+    if (hasSyncErrorRef.current) {
+      hasSyncErrorRef.current = false;
+      window.location.reload();
+    }
+  }, [closeAlert]);
 
   // Drawer와 통합된 콜백 — 동작 후 서랍 닫기
   // 모바일에서 서랍과 다이얼로그가 동시에 표시되면 화면이 복잡하므로
@@ -183,7 +194,7 @@ export const useAppLayoutState = ({
     alert: {
       isOpen: isOpenAlert,
       content: alertContent,
-      close: closeAlert,
+      close: handleAlertClose,
     },
     confirmDialog: {
       isOpen: isOpenConfirmDialog,

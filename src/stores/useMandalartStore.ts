@@ -252,6 +252,16 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
 
     if (!isAnyChanged(meta, topicTree)) return;
 
+    // createMandalart보다 먼저 한도 체크하여 마이그레이션 전용 에러 메시지 사용
+    const { metaMap } = get();
+    if (metaMap.size + 1 > MAX_UPLOAD_MANDALARTS_SIZE) {
+      throw new Error(
+        i18next.t('mandalart.errors.uploadTemp.maxUploaded', {
+          maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
+        })
+      );
+    }
+
     await get().createMandalart(meta, topicTree);
     saveGuestMandalartMetas(new Map());
     saveGuestTopicTrees(new Map());

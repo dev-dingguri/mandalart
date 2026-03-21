@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Github, Youtube } from 'lucide-react';
 import { APP_VERSION } from '@/version';
@@ -40,6 +40,7 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
   const { t, i18n } = useTranslation();
 
   const navigate = useNavigate();
+  const location = useLocation();
   const goToOpenSourceLicense = () => {
     navigate(`/${i18n.language}${PATH_OSS}`);
   };
@@ -87,6 +88,9 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
               onValueChange={(val) => {
                 i18n.changeLanguage(val);
                 trackLanguageChange(val);
+                // URL 경로의 언어 세그먼트를 새 언어로 교체
+                const newPath = location.pathname.replace(/^\/[^/]+/, `/${val}`);
+                navigate(newPath, { replace: true });
               }}
             >
               <SelectTrigger className="w-full">

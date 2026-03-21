@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { PATH_OSS } from '@/constants';
 import { useIsDarkMode } from '@/stores/useThemeStore';
 import { trackAppVersion } from '@/lib/analyticsEvents';
+import { Toaster } from 'sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 const OpenSourceLicensesPage = lazy(
@@ -50,6 +51,12 @@ const App = () => {
 
   return (
     <TooltipProvider>
+      <Toaster
+        theme={isDarkMode ? 'dark' : 'light'}
+        position="bottom-center"
+        duration={3000}
+        toastOptions={{ className: 'text-sm' }}
+      />
       <div className="h-dvh">
         <BrowserRouter>
           <Routes>

@@ -60,8 +60,11 @@
       "uploadTemp": {
         "maxUploaded": "Cannot save local Mandalart. 😥\nYou can save up to {{maxSize}} Mandalarts.\nPlease delete an existing one and sign in again."
       },
+      "save": {
+        "default": "Couldn't save changes."
+      },
       "sync": {
-        "default": "Your session has expired.\nPlease sign in again."
+        "default": "Your session has expired.\nThe page will refresh when you click OK."
       }
     }
   },
