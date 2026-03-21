@@ -58,31 +58,35 @@ const MandalartView = ({
 
   return (
     <div className={className} {...rest}>
-      <p className="text-sm text-muted-foreground">
-        {mandalartId === TMP_MANDALART_ID && `(${t('mandalart.temp')})`}
-      </p>
-      <div className="flex items-center gap-3">
-        <h2
-          role="button"
-          tabIndex={0}
-          className="min-w-0 flex-1 cursor-pointer truncate text-2xl font-semibold"
-          onClick={() => openTitleEditor()}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              openTitleEditor();
-            }
-          }}
-        >
-          {meta.title ? meta.title : t('mandalart.untitled')}
-        </h2>
-        <MandalartViewToggle
-          isAllView={isAllView}
-          onChange={(val) => {
-            setIsAllView(val);
-            trackViewModeChange(val ? 'all' : 'focus');
-          }}
-        />
+      <div className="relative">
+        {mandalartId === TMP_MANDALART_ID && (
+          <p className="absolute bottom-full text-sm text-muted-foreground">
+            ({t('mandalart.temp')})
+          </p>
+        )}
+        <div className="flex items-center gap-3">
+          <h2
+            role="button"
+            tabIndex={0}
+            className="min-w-0 flex-1 cursor-pointer truncate text-2xl font-semibold"
+            onClick={() => openTitleEditor()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openTitleEditor();
+              }
+            }}
+          >
+            {meta.title ? meta.title : t('mandalart.untitled')}
+          </h2>
+          <MandalartViewToggle
+            isAllView={isAllView}
+            onChange={(val) => {
+              setIsAllView(val);
+              trackViewModeChange(val ? 'all' : 'focus');
+            }}
+          />
+        </div>
       </div>
       <div className="mb-2 mt-3">
         {isAllView ? (
