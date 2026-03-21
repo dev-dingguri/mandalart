@@ -104,11 +104,6 @@
     "repository": "https://github.com/Wombosvideo/tw-animate-css",
     "name": "tw-animate-css"
   },
-  "vaul@1.1.2": {
-    "licenses": "MIT",
-    "repository": "https://github.com/emilkowalski/vaul",
-    "name": "vaul"
-  },
   "zustand@5.0.11": {
     "licenses": "MIT",
     "repository": "https://github.com/pmndrs/zustand",

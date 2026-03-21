@@ -5,7 +5,7 @@ import { APP_VERSION } from '@/version';
 import { PATH_OSS } from '@/constants';
 import { useThemeStore, TernaryDarkMode } from '@/stores/useThemeStore';
 import { trackLanguageChange, trackThemeChange } from '@/lib/analyticsEvents';
-import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
 import {
   Select,
@@ -45,15 +45,14 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
   };
 
   return (
-    <Drawer
+    <Sheet
       open={isOpen}
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
-      direction="right"
     >
-      <DrawerContent aria-describedby={undefined}>
-        <DrawerTitle className="sr-only">{t('settings.title')}</DrawerTitle>
+      <SheetContent side="right" aria-describedby={undefined}>
+        <SheetTitle className="sr-only">{t('settings.title')}</SheetTitle>
         <div className="flex flex-col gap-4 overflow-auto p-4 [scrollbar-gutter:stable_both-edges]">
           <div className="flex flex-col gap-1.5">
             <span className="text-sm font-medium">{t('settings.theme.label')}</span>
@@ -152,8 +151,8 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
             DINGGURI.LAB. ALL RIGHTS RESERVED
           </p>
         </div>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 };
 

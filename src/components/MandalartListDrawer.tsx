@@ -2,7 +2,7 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import MandalartList from '@/components/MandalartList';
 import { useTranslation } from 'react-i18next';
-import { Drawer, DrawerContent, DrawerTitle } from '@/components/ui/drawer';
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useMandalartStore } from '@/stores/useMandalartStore';
@@ -32,15 +32,14 @@ const MandalartListDrawer = ({
   const selectedMandalartId = useMandalartStore((s) => s.currentMandalartId);
 
   return (
-    <Drawer
+    <Sheet
       open={isOpen}
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
-      direction="left"
     >
-      <DrawerContent aria-describedby={undefined}>
-        <DrawerTitle className="sr-only">{t('mandalart.list')}</DrawerTitle>
+      <SheetContent side="left" showCloseButton={false} aria-describedby={undefined}>
+        <SheetTitle className="sr-only">{t('mandalart.list')}</SheetTitle>
         <ScrollArea className="flex-1">
           <MandalartList
             metaMap={metaMap}
@@ -65,8 +64,8 @@ const MandalartListDrawer = ({
             </Button>
           </div>
         </ScrollArea>
-      </DrawerContent>
-    </Drawer>
+      </SheetContent>
+    </Sheet>
   );
 };
 
