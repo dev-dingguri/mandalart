@@ -21,7 +21,7 @@ const SignInDialog = ({ isOpen, onClose, onSignIn }: SignInDialogProps) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="gap-3 p-6 w-max">
+      <DialogContent className="gap-3 p-6 w-max min-w-xs">
         <DialogHeader>
           <DialogTitle>{t('global.app')}</DialogTitle>
           <DialogDescription className="whitespace-pre-line break-keep text-center">
