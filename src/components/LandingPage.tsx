@@ -37,7 +37,7 @@ const LandingPage = () => {
   }
 
   return (
-    <div className="min-h-dvh">
+    <main className="min-h-dvh">
       <SEOHead
         title={t('landing.seo.title')}
         description={t('landing.seo.description')}
@@ -264,7 +264,7 @@ const LandingPage = () => {
           </Link>
         </div>
       </section>
-    </div>
+    </main>
   );
 };
 

@@ -53,7 +53,7 @@ const GuidePage = () => {
   }));
 
   return (
-    <div className="min-h-dvh bg-background">
+    <main className="min-h-dvh bg-background">
       <SEOHead
         title={t('guide.seo.title')}
         description={t('guide.seo.description')}
@@ -374,7 +374,7 @@ const GuidePage = () => {
           </Link>
         </section>
       </article>
-    </div>
+    </main>
   );
 };
 

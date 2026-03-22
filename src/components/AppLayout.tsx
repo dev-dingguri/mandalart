@@ -29,7 +29,7 @@ const AppLayout = ({ userHandlers }: AppLayoutProps) => {
   return (
     // TooltipProvider — Header 내 Tooltip에 필요, App 전역이 아닌 도구 페이지에서만 로드
     <TooltipProvider>
-    <div className="flex h-full w-full flex-col items-center">
+    <main className="flex h-full w-full flex-col items-center">
       <Header
         user={user}
         onOpenSignInUI={signInDialog.open}
@@ -93,7 +93,7 @@ const AppLayout = ({ userHandlers }: AppLayoutProps) => {
         onClose={renameDialog.close}
         onConfirm={renameDialog.onConfirm}
       />
-    </div>
+    </main>
     </TooltipProvider>
   );
 };
