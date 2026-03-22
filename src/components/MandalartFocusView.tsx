@@ -8,7 +8,7 @@ import AspectSquare from '@/components/AspectSquare';
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
 
 const MandalartFocusView = (props: MandalartProps) => {
-  const { focusedIdx, setFocusedIdx, containerRef, touchHandlers } =
+  const { focusedIdx, setFocusedIdx, containerRef, touchHandlers, keyboardHandlers } =
     useSwipeNavigation({
       gridSize: TABLE_SIZE,
       colSize: TABLE_COL_SIZE,
@@ -18,8 +18,10 @@ const MandalartFocusView = (props: MandalartProps) => {
   return (
     <div
       ref={containerRef}
-      className="aspect-square w-full overflow-hidden"
+      tabIndex={-1}
+      className="aspect-square w-full overflow-hidden outline-none"
       {...touchHandlers}
+      {...keyboardHandlers}
     >
       <AspectSquare style={{ width: '240%' }}>
         <Mandalart

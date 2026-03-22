@@ -25,6 +25,9 @@ const TopicItem = memo(({
   return (
     <>
       <AspectSquare
+        role="button"
+        tabIndex={0}
+        aria-label={topic || t('topic.placeholder')}
         className={cn(
           'flex cursor-pointer items-center justify-center',
           isAccented
@@ -32,6 +35,12 @@ const TopicItem = memo(({
             : 'bg-card text-card-foreground'
         )}
         onClick={() => isEditable && openEditor()}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (isEditable) openEditor();
+          }
+        }}
       >
         <p className="line-clamp-2 overflow-hidden break-words text-center text-[0.7rem] leading-[1.2em] min-[30rem]:line-clamp-3 min-[30rem]:text-[0.9rem]">
           {topic}

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState, type TouchEvent } from 'react';
+import { useCallback, useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from 'react';
 import { useLatestRef } from '@/hooks/useLatestRef';
 
 /** 스와이프 인식 기준: 컨테이너 너비 대비 비율 */
@@ -91,6 +91,16 @@ export const useSwipeNavigation = ({
     });
   }, []);
 
+  const handleKeyDown = useCallback((ev: KeyboardEvent) => {
+    const { gridSize, colSize } = configRef.current;
+    const currentIdx = focusedIdxRef.current;
+    const movedIdx = calculateKeyboardIdx(currentIdx, ev.key, colSize, gridSize);
+    if (movedIdx !== currentIdx) {
+      ev.preventDefault(); // 방향키에 의한 스크롤 방지
+      setFocusedIdx(movedIdx);
+    }
+  }, []);
+
   const touchHandlers = useMemo(() => ({
     onTouchStart: handleTouchStart,
     onTouchEnd: handleTouchEnd,
@@ -98,11 +108,16 @@ export const useSwipeNavigation = ({
     onTouchMove: handleTouchMove,
   }), [handleTouchStart, handleTouchEnd, handleTouchMove]);
 
+  const keyboardHandlers = useMemo(() => ({
+    onKeyDown: handleKeyDown,
+  }), [handleKeyDown]);
+
   return {
     focusedIdx,
     setFocusedIdx,
     containerRef,
     touchHandlers,
+    keyboardHandlers,
   };
 };
 
@@ -156,5 +171,26 @@ const calculateSwipedIdx = ({
   }
 
   return movedIdx;
+};
+
+/** 키보드 방향키에 따라 이동할 그리드 인덱스를 계산 */
+const calculateKeyboardIdx = (
+  currentIdx: number,
+  key: string,
+  colSize: number,
+  gridSize: number,
+): number => {
+  switch (key) {
+    case 'ArrowDown':
+      return currentIdx + colSize < gridSize ? currentIdx + colSize : currentIdx;
+    case 'ArrowUp':
+      return currentIdx - colSize >= 0 ? currentIdx - colSize : currentIdx;
+    case 'ArrowRight':
+      return currentIdx % colSize !== colSize - 1 ? currentIdx + 1 : currentIdx;
+    case 'ArrowLeft':
+      return currentIdx % colSize !== 0 ? currentIdx - 1 : currentIdx;
+    default:
+      return currentIdx;
+  }
 };
 

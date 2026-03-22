@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { toast } from 'sonner';
 import { useMandalartStore } from '@/stores/useMandalartStore';
+import { useLoadingStore } from '@/stores/useLoadingStore';
 import { createEmptyMeta, createEmptyTopicTree } from '@/constants';
 import { MandalartMeta, TopicNode } from '@/types';
 import {
@@ -10,6 +11,10 @@ import {
 } from '@/lib/analyticsEvents';
 import { useLatestRef } from '@/hooks/useLatestRef';
 import type { TFunction } from 'i18next';
+
+const LOADING_KEY_CREATE = 'mandalart:create';
+const LOADING_KEY_DELETE = 'mandalart:delete';
+const LOADING_KEY_RESET = 'mandalart:reset';
 
 // useAppLayoutState가 아닌 이 파일에 정의하여 순환 의존성 방지
 // (useAppLayoutState가 이 훅을 import하므로 타입도 여기에 있어야 함)
@@ -70,13 +75,17 @@ export const useMandalartCallbacks = ({
 
   const handleCreate = useCallback(
     (afterSuccess?: () => void) => {
+      const { conditions, addCondition, deleteCondition } = useLoadingStore.getState();
+      if (conditions.get(LOADING_KEY_CREATE)) return;
+      addCondition(LOADING_KEY_CREATE, true);
       createMandalart(createEmptyMeta(), createEmptyTopicTree())
         .then(() => {
           // trackMandalartCreate은 모듈 수준 함수라 의존성 배열에서 생략
           trackMandalartCreate();
           afterSuccess?.();
         })
-        .catch((e: Error) => openAlert(e.message));
+        .catch((e: Error) => openAlert(e.message))
+        .finally(() => deleteCondition(LOADING_KEY_CREATE));
     },
     [createMandalart, openAlert]
   );
@@ -94,10 +103,14 @@ export const useMandalartCallbacks = ({
         message: t('mandalart.confirmDelete'),
         confirmText: t('mandalart.delete'),
         onConfirm: () => {
+          const { conditions, addCondition, deleteCondition } = useLoadingStore.getState();
+          if (conditions.get(LOADING_KEY_DELETE)) return;
+          addCondition(LOADING_KEY_DELETE, true);
           deleteMandalart(mandalartId)
             // trackMandalartDelete은 모듈 수준 함수라 의존성 배열에서 생략
             .then((deleted) => { if (deleted) trackMandalartDelete(); })
-            .catch((e: Error) => openAlert(e.message));
+            .catch((e: Error) => openAlert(e.message))
+            .finally(() => deleteCondition(LOADING_KEY_DELETE));
         },
       });
     },
@@ -123,10 +136,14 @@ export const useMandalartCallbacks = ({
         message: t('mandalart.confirmReset'),
         confirmText: t('mandalart.reset'),
         onConfirm: () => {
+          const { conditions, addCondition, deleteCondition } = useLoadingStore.getState();
+          if (conditions.get(LOADING_KEY_RESET)) return;
+          addCondition(LOADING_KEY_RESET, true);
           resetMandalart(mandalartId)
             // trackMandalartReset은 모듈 수준 함수라 의존성 배열에서 생략
             .then(() => trackMandalartReset())
-            .catch((e: Error) => openAlert(e.message));
+            .catch((e: Error) => openAlert(e.message))
+            .finally(() => deleteCondition(LOADING_KEY_RESET));
         },
       });
     },
