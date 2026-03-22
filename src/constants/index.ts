@@ -17,6 +17,7 @@ export {
   STORAGE_KEY_SNIPPETS,
   STORAGE_KEY_TOPIC_TREES,
   STORAGE_KEY_SIGN_IN_SESSION,
+  STORAGE_KEY_HAS_USED_TOOL,
 } from './storage';
 
-export { PATH_OSS } from './routes';
+export { PATH_OSS, PATH_APP, PATH_GUIDE } from './routes';
