@@ -59,7 +59,10 @@ export default defineConfig({
             'react-i18next',
             'i18next-browser-languagedetector',
           ],
-          'vendor-ui': ['lucide-react', '@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toggle', '@radix-ui/react-separator', '@radix-ui/react-tooltip'],
+          // lucide-react 분리 — 콘텐츠 페이지(랜딩/가이드)는 아이콘만 필요하므로
+          // Radix UI 전체(vendor-ui)를 같이 로드하지 않도록 별도 청크로 분리
+          'vendor-icons': ['lucide-react'],
+          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toggle', '@radix-ui/react-separator', '@radix-ui/react-tooltip'],
         },
       },
     },

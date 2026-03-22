@@ -19,6 +19,27 @@ const extractSubpath = (path: string): string => {
 const SEOHead = ({ title, description, path, ogImage = '/image.png' }: SEOHeadProps) => {
   const subpath = extractSubpath(path);
 
+  // BreadcrumbList — 홈페이지가 아닌 하위 페이지에서만 생성
+  // 홈페이지는 계층 상위가 없으므로 breadcrumb 의미 없음
+  const breadcrumbJsonLd = subpath ? JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Mandalart',
+        'item': `${SITE_URL}${path.replace(subpath, '')}`,
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': title,
+        'item': `${SITE_URL}${path}`,
+      },
+    ],
+  }) : null;
+
   return (
     <Helmet>
       <title>{title}</title>
@@ -35,6 +56,9 @@ const SEOHead = ({ title, description, path, ogImage = '/image.png' }: SEOHeadPr
       <meta property="og:url" content={`${SITE_URL}${path}`} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:site_name" content="Mandalart" />
+      {breadcrumbJsonLd && (
+        <script type="application/ld+json">{breadcrumbJsonLd}</script>
+      )}
     </Helmet>
   );
 };

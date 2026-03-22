@@ -1,12 +1,10 @@
 import { useEffect, useLayoutEffect, lazy, Suspense } from 'react';
-import MainPage from '@/components/MainPage';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS, PATH_APP, PATH_GUIDE } from '@/constants';
 import { useIsDarkMode } from '@/stores/useThemeStore';
 import { trackAppVersion } from '@/lib/analyticsEvents';
 import { Toaster } from 'sonner';
-import { TooltipProvider } from '@/components/ui/tooltip';
 import { HelmetProvider } from 'react-helmet-async';
 
 // SPA는 라우트 변경 시 브라우저가 스크롤을 자동 초기화하지 않으므로 수동 처리
@@ -23,6 +21,7 @@ const OpenSourceLicensesPage = lazy(
 );
 const LandingPage = lazy(() => import('@/components/LandingPage'));
 const GuidePage = lazy(() => import('@/components/GuidePage'));
+const MainPage = lazy(() => import('@/components/MainPage'));
 
 const App = () => {
   const { i18n } = useTranslation();
@@ -60,56 +59,56 @@ const App = () => {
 
   return (
     <HelmetProvider>
-      <TooltipProvider>
-        <Toaster
-          theme={isDarkMode ? 'dark' : 'light'}
-          position="bottom-center"
-          duration={3000}
-          toastOptions={{ className: 'text-sm' }}
-        />
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
-            <Route
-              path={`/${lang}`}
-              element={
+      <Toaster
+        theme={isDarkMode ? 'dark' : 'light'}
+        position="bottom-center"
+        duration={3000}
+        toastOptions={{ className: 'text-sm' }}
+      />
+      <BrowserRouter>
+        <ScrollToTop />
+        <Routes>
+          <Route
+            path={`/${lang}`}
+            element={
+              <Suspense fallback={null}>
+                <LandingPage />
+              </Suspense>
+            }
+          />
+          {/* 도구 페이지만 h-dvh로 감쌈 — 랜딩/가이드는 스크롤이 필요한 긴 콘텐츠 페이지 */}
+          <Route
+            path={`/${lang}${PATH_APP}`}
+            element={
+              <div className="h-dvh">
                 <Suspense fallback={null}>
-                  <LandingPage />
-                </Suspense>
-              }
-            />
-            {/* 도구 페이지만 h-dvh로 감쌈 — 랜딩/가이드는 스크롤이 필요한 긴 콘텐츠 페이지 */}
-            <Route
-              path={`/${lang}${PATH_APP}`}
-              element={
-                <div className="h-dvh">
                   <MainPage />
-                </div>
-              }
-            />
-            <Route
-              path={`/${lang}${PATH_GUIDE}`}
-              element={
-                <Suspense fallback={null}>
-                  <GuidePage />
                 </Suspense>
-              }
-            />
-            {/* OSS 페이지도 h-full + overflow-y-auto 패턴이므로 고정 높이 필요 */}
-            <Route
-              path={`/${lang}${PATH_OSS}`}
-              element={
-                <div className="h-dvh">
-                  <Suspense fallback={null}>
-                    <OpenSourceLicensesPage />
-                  </Suspense>
-                </div>
-              }
-            />
-            <Route path="*" element={<Navigate to={`/${lang}`} />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+              </div>
+            }
+          />
+          <Route
+            path={`/${lang}${PATH_GUIDE}`}
+            element={
+              <Suspense fallback={null}>
+                <GuidePage />
+              </Suspense>
+            }
+          />
+          {/* OSS 페이지도 h-full + overflow-y-auto 패턴이므로 고정 높이 필요 */}
+          <Route
+            path={`/${lang}${PATH_OSS}`}
+            element={
+              <div className="h-dvh">
+                <Suspense fallback={null}>
+                  <OpenSourceLicensesPage />
+                </Suspense>
+              </div>
+            }
+          />
+          <Route path="*" element={<Navigate to={`/${lang}`} />} />
+        </Routes>
+      </BrowserRouter>
     </HelmetProvider>
   );
 };

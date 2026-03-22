@@ -5,6 +5,10 @@
   <meta charset="utf-8" />
   <!-- hreflang은 SEOHead 컴포넌트가 페이지별로 동적 생성 -->
   <link rel="icon" href="/favicon.ico" />
+  <!-- Firebase 도메인 사전 연결 — DNS/TLS 오버헤드를 초기에 처리하여 Auth·DB 요청 지연 감소 -->
+  <link rel="preconnect" href="https://apis.google.com" />
+  <link rel="preconnect" href="https://www.googleapis.com" crossorigin />
+  <link rel="dns-prefetch" href="https://firebaseinstallations.googleapis.com" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#f2f2f7" />
 

@@ -15,6 +15,7 @@ import TextInputDialog from '@/components/TextInputDialog';
 import { MAX_MANDALART_TITLE_SIZE } from '@/constants';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 type AppLayoutProps = {
   userHandlers: UserHandlers;
@@ -26,6 +27,8 @@ const AppLayout = ({ userHandlers }: AppLayoutProps) => {
     useAppLayoutState(userHandlers);
 
   return (
+    // TooltipProvider — Header 내 Tooltip에 필요, App 전역이 아닌 도구 페이지에서만 로드
+    <TooltipProvider>
     <div className="flex h-full w-full flex-col items-center">
       <Header
         user={user}
@@ -91,6 +94,7 @@ const AppLayout = ({ userHandlers }: AppLayoutProps) => {
         onConfirm={renameDialog.onConfirm}
       />
     </div>
+    </TooltipProvider>
   );
 };
 
