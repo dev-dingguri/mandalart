@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Github, Youtube } from 'lucide-react';
 import { APP_VERSION } from '@/version';
-import { PATH_OSS } from '@/constants';
+import { PATH_OSS, PATH_GUIDE } from '@/constants';
 import { useThemeStore, TernaryDarkMode } from '@/stores/useThemeStore';
 import { trackLanguageChange, trackThemeChange } from '@/lib/analyticsEvents';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
@@ -109,6 +109,13 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
           </div>
 
           <Separator />
+
+          <button
+            className="cursor-pointer text-left text-sm hover:text-foreground"
+            onClick={() => navigate(`/${i18n.language}${PATH_GUIDE}`)}
+          >
+            {t('settings.guide')}
+          </button>
 
           <button
             className="cursor-pointer text-left text-sm hover:text-foreground"
