@@ -6,6 +6,10 @@ import { useIsDarkMode } from '@/stores/useThemeStore';
 import { trackAppVersion } from '@/lib/analyticsEvents';
 import { Toaster } from 'sonner';
 import { HelmetProvider } from 'react-helmet-async';
+// 프리렌더링 대상 페이지(Landing·Guide)는 eager import — lazy()로 감싸면
+// render-event 발생 시점에 컴포넌트가 아직 로드되지 않아 빈 HTML이 캡처됨
+import LandingPage from '@/components/LandingPage';
+import GuidePage from '@/components/GuidePage';
 
 // SPA는 라우트 변경 시 브라우저가 스크롤을 자동 초기화하지 않으므로 수동 처리
 const ScrollToTop = () => {
@@ -15,11 +19,6 @@ const ScrollToTop = () => {
   }, [pathname]);
   return null;
 };
-
-// 프리렌더링 대상 페이지(Landing·Guide)는 eager import — lazy()로 감싸면
-// render-event 발생 시점에 컴포넌트가 아직 로드되지 않아 빈 HTML이 캡처됨
-import LandingPage from '@/components/LandingPage';
-import GuidePage from '@/components/GuidePage';
 
 const OpenSourceLicensesPage = lazy(
   () => import('@/components/OpenSourceLicensesPage')
