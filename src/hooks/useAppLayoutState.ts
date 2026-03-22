@@ -7,7 +7,7 @@ import { shallow } from 'zustand/shallow';
 import { useMandalartStore } from '@/stores/useMandalartStore';
 import { useModal } from '@/hooks/useModal';
 import { useMandalartCallbacks } from '@/hooks/useMandalartCallbacks';
-import type { ConfirmDialogOptions, RenameDialogOptions } from '@/hooks/useMandalartCallbacks';
+import type { ConfirmDialogOptions } from '@/hooks/useMandalartCallbacks';
 import { useAuthCallbacks } from '@/hooks/useAuthCallbacks';
 
 export type UserHandlers = {
@@ -68,18 +68,11 @@ export const useAppLayoutState = ({
     close: closeConfirmDialog,
     content: confirmDialogContent,
   } = useModal<ConfirmDialogOptions>();
-  const {
-    isOpen: isOpenRenameDialog,
-    open: openRenameDialog,
-    close: closeRenameDialog,
-    content: renameDialogContent,
-  } = useModal<RenameDialogOptions>();
 
   // 서브 훅 조합 — 각 도메인의 콜백을 위임
   const mandalartCallbacks = useMandalartCallbacks({
     openAlert,
     openConfirmDialog,
-    openRenameDialog,
     t,
   });
 
@@ -131,14 +124,6 @@ export const useAppLayoutState = ({
     [mandalartCallbacks.onDelete, closeLeftDrawer]
   );
 
-  const handleRenameMandalart = useCallback(
-    (mandalartId: string) => {
-      mandalartCallbacks.onRename(mandalartId);
-      closeLeftDrawer();
-    },
-    [mandalartCallbacks.onRename, closeLeftDrawer]
-  );
-
   const handleResetMandalart = useCallback(
     (mandalartId: string) => {
       mandalartCallbacks.onReset(mandalartId);
@@ -151,11 +136,6 @@ export const useAppLayoutState = ({
     confirmDialogContent?.onConfirm();
     closeConfirmDialog();
   }, [confirmDialogContent, closeConfirmDialog]);
-
-  const handleRenameDialogConfirm = useCallback((name: string) => {
-    renameDialogContent?.onConfirm(name);
-    closeRenameDialog();
-  }, [renameDialogContent, closeRenameDialog]);
 
   return {
     user,
@@ -176,7 +156,6 @@ export const useAppLayoutState = ({
       close: closeLeftDrawer,
       onSelect: handleSelectMandalart,
       onDelete: handleDeleteMandalart,
-      onRename: handleRenameMandalart,
       onReset: handleResetMandalart,
       onCreate: () => { mandalartCallbacks.onCreate(); closeLeftDrawer(); },
     },
@@ -202,12 +181,6 @@ export const useAppLayoutState = ({
       confirmText: confirmDialogContent?.confirmText ?? null,
       onConfirm: handleConfirmDialogConfirm,
       close: closeConfirmDialog,
-    },
-    renameDialog: {
-      isOpen: isOpenRenameDialog,
-      initialTitle: renameDialogContent?.initialTitle ?? '',
-      onConfirm: handleRenameDialogConfirm,
-      close: closeRenameDialog,
     },
   };
 };

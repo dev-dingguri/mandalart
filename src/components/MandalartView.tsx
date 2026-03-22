@@ -1,4 +1,4 @@
-import { useCallback, HTMLAttributes, useState, useRef, useEffect } from 'react';
+import { useCallback, HTMLAttributes, useState, useRef, useEffect, KeyboardEvent, ChangeEvent } from 'react';
 import MandalartFocusView from '@/components/MandalartFocusView';
 import Mandalart, { MandalartProps, SelectedCell } from '@/components/Mandalart';
 import BottomInputBar from '@/components/BottomInputBar';
@@ -15,11 +15,10 @@ import {
   TMP_MANDALART_ID,
 } from '@/constants';
 import MandalartViewToggle from '@/components/MandalartViewToggle';
-import TextInputDialog from '@/components/TextInputDialog';
 import { useTranslation } from 'react-i18next';
 import { trackViewModeChange } from '@/lib/analyticsEvents';
-import { useModal } from '@/hooks/useModal';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
+import { cn } from '@/lib/utils';
 
 type MandalartViewProps = {
   mandalartId: string;
@@ -106,11 +105,13 @@ const MandalartView = ({
 }: MandalartViewProps) => {
   const [isAllView, setIsAllView] = useState(true);
   const [selectedCell, setSelectedCell] = useState<SelectedCell | null>(null);
-  const { isOpen: isOpenTitleEditor, open: openTitleEditor, close: closeTitleEditor } = useModal();
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [titleText, setTitleText] = useState(meta.title);
   const { t } = useTranslation();
   const isDesktop = useMediaQuery('(min-width: 48rem)');
 
   const rootRef = useRef<HTMLDivElement>(null);
+  const titleInputRef = useRef<HTMLInputElement>(null);
 
   // Refs — stable 콜백에서 최신 값에 접근하기 위한 "useLatest" 패턴
   const selectedCellRef = useRef<SelectedCell | null>(null);
@@ -123,6 +124,61 @@ const MandalartView = ({
   topicTreeRef.current = topicTree;
   onTopicTreeChangeRef.current = onTopicTreeChange;
   isAllViewRef.current = isAllView;
+
+  // 만다라트 전환 시 제목 편집 취소
+  useEffect(() => {
+    setIsEditingTitle(false);
+  }, [mandalartId]);
+
+  // 외부에서 title이 바뀌면(Firebase 실시간 구독 등) 편집 중이 아닐 때만 동기화
+  useEffect(() => {
+    if (!isEditingTitle) setTitleText(meta.title);
+  }, [meta.title, isEditingTitle]);
+
+  // 편집 모드 진입 시 input 포커스 + 전체 선택
+  useEffect(() => {
+    if (isEditingTitle) {
+      const input = titleInputRef.current;
+      if (input) {
+        input.focus();
+        input.select();
+      }
+    }
+  }, [isEditingTitle]);
+
+  const startTitleEdit = () => {
+    setTitleText(meta.title);
+    setIsEditingTitle(true);
+  };
+
+  const saveTitleEdit = () => {
+    setIsEditingTitle(false);
+    const title = titleText;
+    if (title !== meta.title && title.length <= MAX_MANDALART_TITLE_SIZE) {
+      onMandalartMetaChange({ title });
+    }
+  };
+
+  const cancelTitleEdit = () => {
+    setIsEditingTitle(false);
+    setTitleText(meta.title);
+  };
+
+  const handleTitleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      saveTitleEdit();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      cancelTitleEdit();
+    }
+  };
+
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitleText(e.target.value);
+  };
+
+  const isTitleLimitReached = titleText.length > MAX_MANDALART_TITLE_SIZE;
 
   const handleGetTopic = useCallback(
     (gridIdx: number, gridItemIdx: number) =>
@@ -348,20 +404,47 @@ const MandalartView = ({
           </p>
         )}
         <div className="flex items-center gap-3">
-          <h2
-            role="button"
-            tabIndex={0}
-            className="min-w-0 flex-1 cursor-pointer truncate text-2xl font-semibold"
-            onClick={() => openTitleEditor()}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                openTitleEditor();
-              }
-            }}
-          >
-            {meta.title ? meta.title : t('mandalart.untitled')}
-          </h2>
+          {isEditingTitle ? (
+            <div className="min-w-0 flex-1">
+              <input
+                ref={titleInputRef}
+                type="text"
+                value={titleText}
+                onChange={handleTitleChange}
+                onKeyDown={handleTitleKeyDown}
+                onBlur={saveTitleEdit}
+                placeholder={t('mandalart.untitled')}
+                autoComplete="off"
+                aria-invalid={isTitleLimitReached || undefined}
+                className={cn(
+                  'w-full rounded-md border border-input bg-transparent px-1 text-2xl font-semibold outline-none transition-colors',
+                  'placeholder:text-muted-foreground',
+                  'focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50',
+                  'aria-invalid:border-destructive aria-invalid:ring-destructive/20',
+                )}
+              />
+              {isTitleLimitReached && (
+                <p className="mt-0.5 text-xs text-destructive">
+                  {t('topic.maxLengthReached')} ({titleText.length}/{MAX_MANDALART_TITLE_SIZE})
+                </p>
+              )}
+            </div>
+          ) : (
+            <h2
+              role="button"
+              tabIndex={0}
+              className="min-w-0 flex-1 cursor-pointer truncate rounded-md px-1 text-2xl font-semibold hover:bg-accent/50"
+              onClick={startTitleEdit}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  startTitleEdit();
+                }
+              }}
+            >
+              {meta.title ? meta.title : t('mandalart.untitled')}
+            </h2>
+          )}
           <MandalartViewToggle
             isAllView={isAllView}
             onChange={handleViewToggle}
@@ -402,13 +485,6 @@ const MandalartView = ({
       {!isDesktop && selectedCell && (
         <BottomInputBar {...cellInputProps} />
       )}
-      <TextInputDialog
-        isOpen={isOpenTitleEditor}
-        initialText={meta.title}
-        textLimit={MAX_MANDALART_TITLE_SIZE}
-        onClose={closeTitleEditor}
-        onConfirm={(title) => onMandalartMetaChange({ title })}
-      />
     </div>
   );
 };

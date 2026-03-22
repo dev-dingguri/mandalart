@@ -11,7 +11,6 @@ type MandalartListDrawerProps = {
   isOpen: boolean;
   onSelectMandalart: (mandalartId: string) => void;
   onDeleteMandalart: (mandalartId: string) => void;
-  onRenameMandalart: (mandalartId: string) => void;
   onResetMandalart: (mandalartId: string) => void;
   onCreateMandalart: () => void;
   onClose: () => void;
@@ -21,7 +20,6 @@ const MandalartListDrawer = ({
   isOpen,
   onSelectMandalart,
   onDeleteMandalart,
-  onRenameMandalart,
   onResetMandalart,
   onCreateMandalart,
   onClose,
@@ -46,7 +44,6 @@ const MandalartListDrawer = ({
             selectedId={selectedMandalartId}
             onItemSelect={onSelectMandalart}
             onItemDelete={onDeleteMandalart}
-            onItemRename={onRenameMandalart}
             onItemReset={onResetMandalart}
             className="p-2 pt-4"
           />

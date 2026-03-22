@@ -13,7 +13,6 @@ type MandalartListItemProps = {
   onSelect: (mandalartId: string) => void;
   onDelete: (mandalartId: string) => void;
   onReset: (mandalartId: string) => void;
-  onRename: (mandalartId: string) => void;
 };
 
 // Firebase onValue가 매 snapshot마다 새 MandalartMeta 객체를 생성하므로
@@ -25,7 +24,6 @@ const MandalartListItem = memo(({
   onSelect,
   onDelete,
   onReset,
-  onRename,
 }: MandalartListItemProps) => {
   const { t } = useTranslation();
 
@@ -53,7 +51,6 @@ const MandalartListItem = memo(({
         mandalartId={mandalartId}
         onDelete={onDelete}
         onReset={onReset}
-        onRename={() => onRename(mandalartId)}
       />
     </div>
   );
@@ -63,8 +60,7 @@ const MandalartListItem = memo(({
   shallow(prev.meta, next.meta) &&
   prev.onSelect === next.onSelect &&
   prev.onDelete === next.onDelete &&
-  prev.onReset === next.onReset &&
-  prev.onRename === next.onRename
+  prev.onReset === next.onReset
 );
 
 export default MandalartListItem;

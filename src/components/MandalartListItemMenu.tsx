@@ -13,14 +13,12 @@ type MandalartListItemMenuProps = {
   mandalartId: string;
   onDelete: (mandalartId: string) => void;
   onReset: (mandalartId: string) => void;
-  onRename: () => void;
 };
 
 const MandalartListItemMenu = ({
   mandalartId,
   onDelete,
   onReset,
-  onRename,
 }: MandalartListItemMenuProps) => {
   const { t } = useTranslation();
 
@@ -48,9 +46,6 @@ const MandalartListItemMenu = ({
             {t('mandalart.delete')}
           </DropdownMenuItem>
         )}
-        <DropdownMenuItem onClick={onRename}>
-          {t('mandalart.rename')}
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

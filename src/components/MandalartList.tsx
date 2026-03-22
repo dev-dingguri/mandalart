@@ -7,7 +7,6 @@ type MandalartListProps = {
   onItemSelect: (mandalartId: string) => void;
   onItemDelete: (mandalartId: string) => void;
   onItemReset: (mandalartId: string) => void;
-  onItemRename: (mandalartId: string) => void;
   className?: string;
 };
 
@@ -17,7 +16,6 @@ const MandalartList = ({
   onItemSelect,
   onItemDelete,
   onItemReset,
-  onItemRename,
   className,
 }: MandalartListProps) => {
   return (
@@ -33,7 +31,6 @@ const MandalartList = ({
             onSelect={onItemSelect}
             onDelete={onItemDelete}
             onReset={onItemReset}
-            onRename={onItemRename}
           />
         ))}
     </div>

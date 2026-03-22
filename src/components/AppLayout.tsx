@@ -11,8 +11,6 @@ import { useAppLayoutState } from '@/hooks/useAppLayoutState';
 import type { UserHandlers } from '@/hooks/useAppLayoutState';
 import AlertDialog from '@/components/AlertDialog';
 import ConfirmDialog from '@/components/ConfirmDialog';
-import TextInputDialog from '@/components/TextInputDialog';
-import { MAX_MANDALART_TITLE_SIZE } from '@/constants';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -23,7 +21,7 @@ type AppLayoutProps = {
 
 const AppLayout = ({ userHandlers }: AppLayoutProps) => {
   const { t } = useTranslation();
-  const { user, onSignOut, mandalart, leftDrawer, rightDrawer, signInDialog, alert, confirmDialog, renameDialog } =
+  const { user, onSignOut, mandalart, leftDrawer, rightDrawer, signInDialog, alert, confirmDialog } =
     useAppLayoutState(userHandlers);
 
   return (
@@ -66,7 +64,6 @@ const AppLayout = ({ userHandlers }: AppLayoutProps) => {
           isOpen={leftDrawer.isOpen}
           onSelectMandalart={leftDrawer.onSelect}
           onDeleteMandalart={leftDrawer.onDelete}
-          onRenameMandalart={leftDrawer.onRename}
           onResetMandalart={leftDrawer.onReset}
           onCreateMandalart={leftDrawer.onCreate}
           onClose={leftDrawer.close}
@@ -85,13 +82,6 @@ const AppLayout = ({ userHandlers }: AppLayoutProps) => {
         confirmText={confirmDialog.confirmText}
         onConfirm={confirmDialog.onConfirm}
         onClose={confirmDialog.close}
-      />
-      <TextInputDialog
-        isOpen={renameDialog.isOpen}
-        initialText={renameDialog.initialTitle}
-        textLimit={MAX_MANDALART_TITLE_SIZE}
-        onClose={renameDialog.close}
-        onConfirm={renameDialog.onConfirm}
       />
     </main>
     </TooltipProvider>
