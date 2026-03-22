@@ -414,6 +414,7 @@ const MandalartView = ({
                 onKeyDown={handleTitleKeyDown}
                 onBlur={saveTitleEdit}
                 placeholder={t('mandalart.untitled')}
+                enterKeyHint="done"
                 autoComplete="off"
                 aria-invalid={isTitleLimitReached || undefined}
                 className={cn(

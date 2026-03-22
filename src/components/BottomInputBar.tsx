@@ -117,6 +117,7 @@ const BottomInputBar = ({
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder={t('topic.placeholder')}
+            enterKeyHint="next"
             autoComplete="off"
             aria-invalid={isLimitReached || undefined}
             className={cn(
