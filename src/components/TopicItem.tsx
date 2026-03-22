@@ -37,7 +37,7 @@ const TopicItem = memo(({
           : 'bg-card text-card-foreground shadow-[0_0_0_0.5px_var(--color-border)]',
         // 선택 상태 하이라이트 — editable일 때만 표시하여
         // Focus View 스와이프 후 이전 그리드 셀에 잔여 하이라이트 방지
-        isSelected && isEditable && 'ring-2 ring-ring'
+        isSelected && isEditable && 'ring-2 ring-(--ring-selection)'
       )}
       // mousedown의 기본 동작(포커스 이동)을 막아
       // 입력 바/팝오버 입력 중 다른 셀 탭 시 키보드가 닫혔다 열리는 jitter 방지

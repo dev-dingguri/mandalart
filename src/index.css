@@ -34,6 +34,8 @@
   --border: oklch(0.82 0.001 270);
   --input: oklch(0.82 0.001 270);
   --ring: oklch(0.56 0.19 252);
+  /* 셀 선택 링 — primary보다 어두운 네이비로 파란 셀 위에서도 구분 */
+  --ring-selection: oklch(0.40 0.19 252);
   /* Chart: Apple system colors (light) — Blue, Teal, Green, Yellow, Orange */
   --chart-1: oklch(0.56 0.19 252);
   --chart-2: oklch(0.73 0.09 216);
@@ -77,6 +79,8 @@
   --border: oklch(0.30 0 0);
   --input: oklch(0.28 0 0);
   --ring: oklch(0.60 0.20 252);
+  /* 셀 선택 링 — primary보다 밝은 블루로 다크 배경에서도 구분 */
+  --ring-selection: oklch(0.80 0.15 252);
   /* Chart: Apple system colors (dark) — Blue, Teal, Green, Yellow, Orange */
   --chart-1: oklch(0.60 0.20 252);
   --chart-2: oklch(0.78 0.10 216);
