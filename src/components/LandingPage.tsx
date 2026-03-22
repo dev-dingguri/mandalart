@@ -1,6 +1,7 @@
 import { Navigate, Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Target, Grid3X3, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import SEOHead from '@/components/SEOHead';
 import { buttonVariants } from '@/components/ui/button';
 import { PATH_APP, PATH_GUIDE, STORAGE_KEY_HAS_USED_TOOL } from '@/constants';
@@ -236,6 +237,22 @@ const LandingPage = () => {
 
       {/* FAQ Section */}
       <section className="py-16 md:py-24">
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": FAQS.map((faq) => ({
+                "@type": "Question",
+                "name": faq.question,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": faq.answer,
+                },
+              })),
+            })}
+          </script>
+        </Helmet>
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-foreground">
             자주 묻는 질문
