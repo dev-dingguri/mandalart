@@ -14,6 +14,7 @@ type TopicGridProps = {
   onGetTopic: (gridItemIdx: number) => TopicNode;
   onSelectItem: (gridItemIdx: number) => void;
   selectedGridItemIdx: number | null;
+  usePopoverAnchor?: boolean;
   focusHandlers?: FocusHandlers;
 };
 
@@ -22,6 +23,7 @@ const TopicGrid = memo(({
   onGetTopic,
   onSelectItem,
   selectedGridItemIdx,
+  usePopoverAnchor,
   focusHandlers,
 }: TopicGridProps) => {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -56,6 +58,7 @@ const TopicGrid = memo(({
             isAccented={onIsAccented(gridItemIdx)}
             isEditable={isFocused !== false}
             isSelected={selectedGridItemIdx === gridItemIdx}
+            isPopoverAnchor={usePopoverAnchor && selectedGridItemIdx === gridItemIdx}
             onSelect={() => onSelectItem(gridItemIdx)}
           />
         )}

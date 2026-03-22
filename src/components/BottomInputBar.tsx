@@ -12,6 +12,8 @@ type BottomInputBarProps = {
   onTextChange: (text: string) => void;
   onSaveAndPrev: () => void;
   onSaveAndNext: () => void;
+  onSaveAndUp: () => void;
+  onSaveAndDown: () => void;
   onSaveAndClose: () => void;
 };
 
@@ -22,6 +24,8 @@ const BottomInputBar = ({
   onTextChange,
   onSaveAndPrev,
   onSaveAndNext,
+  onSaveAndUp,
+  onSaveAndDown,
   onSaveAndClose,
 }: BottomInputBarProps) => {
   const [text, setText] = useState(initialText);
@@ -75,9 +79,18 @@ const BottomInputBar = ({
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' || (e.key === 'Tab' && !e.shiftKey)) {
       e.preventDefault();
       onSaveAndNext();
+    } else if (e.key === 'Tab' && e.shiftKey) {
+      e.preventDefault();
+      onSaveAndPrev();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      onSaveAndUp();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      onSaveAndDown();
     } else if (e.key === 'Escape') {
       e.preventDefault();
       onSaveAndClose();
@@ -85,12 +98,12 @@ const BottomInputBar = ({
   };
 
   return (
-    <div ref={barRef} className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-sm">
+    <div ref={barRef} data-bottom-input className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-sm">
       <div className="mx-auto flex max-w-[var(--size-content-width)] items-center gap-1.5 px-3 py-2">
         <Button
           variant="ghost"
           size="icon"
-          className="size-8 shrink-0"
+          className="size-10 shrink-0"
           onClick={onSaveAndPrev}
           aria-label={t('topic.prevCell')}
         >
@@ -125,7 +138,7 @@ const BottomInputBar = ({
         <Button
           variant="ghost"
           size="icon"
-          className="size-8 shrink-0"
+          className="size-10 shrink-0"
           onClick={onSaveAndNext}
           aria-label={t('topic.nextCell')}
         >
@@ -134,7 +147,7 @@ const BottomInputBar = ({
         <Button
           variant="ghost"
           size="icon"
-          className="size-8 shrink-0"
+          className="size-10 shrink-0"
           onClick={onSaveAndClose}
           aria-label={t('global.save')}
         >

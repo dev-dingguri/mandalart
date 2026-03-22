@@ -2,6 +2,8 @@ import { useCallback, HTMLAttributes, useState, useRef, useEffect } from 'react'
 import MandalartFocusView from '@/components/MandalartFocusView';
 import Mandalart, { MandalartProps, SelectedCell } from '@/components/Mandalart';
 import BottomInputBar from '@/components/BottomInputBar';
+import PopoverCellInput from '@/components/PopoverCellInput';
+import { Popover, PopoverContent } from '@/components/ui/popover';
 import { MandalartMeta, TopicNode } from '@/types';
 import {
   MAX_MANDALART_TITLE_SIZE,
@@ -17,6 +19,7 @@ import TextInputDialog from '@/components/TextInputDialog';
 import { useTranslation } from 'react-i18next';
 import { trackViewModeChange } from '@/lib/analyticsEvents';
 import { useModal } from '@/hooks/useModal';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 type MandalartViewProps = {
   mandalartId: string;
@@ -63,6 +66,29 @@ function getAdjacentCell(cell: SelectedCell, delta: 1 | -1, isAllView: boolean):
   };
 }
 
+// ↑↓ 키로 같은 열의 위/아래 셀로 이동 (2D 그리드 네비게이션)
+function getVerticalAdjacentCell(
+  cell: SelectedCell,
+  delta: 1 | -1,
+  isAllView: boolean
+): SelectedCell {
+  if (isAllView) {
+    const linear = cellToLinear(cell.gridIdx, cell.gridItemIdx);
+    const row = Math.floor(linear / TABLE_SIZE);
+    const col = linear % TABLE_SIZE;
+    const newRow = (row + delta + TABLE_SIZE) % TABLE_SIZE;
+    return linearToCell(newRow * TABLE_SIZE + col);
+  }
+  // Focus View: 3×3 그리드 내에서 세로 이동
+  const row = Math.floor(cell.gridItemIdx / TABLE_COL_SIZE);
+  const col = cell.gridItemIdx % TABLE_COL_SIZE;
+  const newRow = (row + delta + TABLE_ROW_SIZE) % TABLE_ROW_SIZE;
+  return {
+    gridIdx: cell.gridIdx,
+    gridItemIdx: newRow * TABLE_COL_SIZE + col,
+  };
+}
+
 function getCellPosition(cell: SelectedCell, isAllView: boolean): string {
   if (isAllView) {
     return `${cellToLinear(cell.gridIdx, cell.gridItemIdx) + 1}/${TOTAL_CELLS}`;
@@ -85,6 +111,7 @@ const MandalartView = ({
   const [selectedCell, setSelectedCell] = useState<SelectedCell | null>(null);
   const { isOpen: isOpenTitleEditor, open: openTitleEditor, close: closeTitleEditor } = useModal();
   const { t } = useTranslation();
+  const isDesktop = useMediaQuery('(min-width: 48rem)');
 
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -135,7 +162,8 @@ const MandalartView = ({
     [saveCellText]
   );
 
-  // 편집 시 키보드를 고려한 중앙 정렬
+  // 편집 시 키보드를 고려한 중앙 정렬 (모바일 전용)
+  // 데스크톱에서는 팝오버가 셀 근처에 위치하므로 패딩 보정이 불필요.
   // 부모 스크롤 컨테이너에 padding-bottom을 동적으로 추가하여
   // my-auto가 '키보드를 제외한 보이는 영역' 기준으로 중앙 정렬하도록 함.
   // iOS: layout viewport는 그대로이고 visual viewport만 축소되므로,
@@ -144,7 +172,7 @@ const MandalartView = ({
   const isEditing = selectedCell !== null;
   useEffect(() => {
     const el = rootRef.current;
-    if (!isEditing || !el) return;
+    if (!isEditing || isDesktop || !el) return;
 
     const scrollContainer = el.parentElement;
     if (!scrollContainer) return;
@@ -176,7 +204,7 @@ const MandalartView = ({
         vv.removeEventListener('scroll', updateCentering);
       }
     };
-  }, [isEditing]);
+  }, [isEditing, isDesktop]);
 
   // 만다라트 전환 시 선택 해제
   useEffect(() => {
@@ -222,11 +250,50 @@ const MandalartView = ({
     [handleSaveAndNavigate]
   );
 
-  // BottomInputBar 닫기: 저장 후 선택 해제
+  // ↑↓ 키 네비게이션: 저장 후 같은 열의 위/아래 셀로 이동
+  const handleSaveAndNavigateVertical = useCallback(
+    (delta: 1 | -1) => {
+      saveCellText();
+      const cell = selectedCellRef.current;
+      if (!cell) return;
+      const nextCell = getVerticalAdjacentCell(cell, delta, isAllViewRef.current);
+      setSelectedCell(nextCell);
+      editingTextRef.current = getTopic(
+        topicTreeRef.current,
+        nextCell.gridIdx,
+        nextCell.gridItemIdx
+      ).text;
+    },
+    [saveCellText]
+  );
+
+  const handleSaveAndUp = useCallback(
+    () => handleSaveAndNavigateVertical(-1),
+    [handleSaveAndNavigateVertical]
+  );
+
+  const handleSaveAndDown = useCallback(
+    () => handleSaveAndNavigateVertical(1),
+    [handleSaveAndNavigateVertical]
+  );
+
+  // 입력 바/팝오버 닫기: 저장 후 선택 해제
   const handleSaveAndClose = useCallback(() => {
     saveCellText();
     setSelectedCell(null);
   }, [saveCellText]);
+
+  // 그리드 바깥 클릭 시 편집 종료 (모바일 전용 — 데스크톱은 Popover의 onInteractOutside에서 처리)
+  const handleRootPointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      if (!selectedCellRef.current || isDesktop) return;
+      const target = e.target as HTMLElement;
+      // 셀 클릭이면 handleSelectCell이 처리, 입력 바 클릭이면 무시
+      if (target.closest('[data-cell]') || target.closest('[data-bottom-input]')) return;
+      handleSaveAndClose();
+    },
+    [isDesktop, handleSaveAndClose]
+  );
 
   // 뷰 전환: 현재 편집 저장 후 선택 해제
   const handleViewToggle = useCallback((val: boolean) => {
@@ -240,9 +307,10 @@ const MandalartView = ({
     onGetTopic: handleGetTopic,
     onSelectCell: handleSelectCell,
     selectedCell,
+    usePopoverAnchor: isDesktop,
   };
 
-  // BottomInputBar에 전달할 값 계산
+  // 입력 바/팝오버에 전달할 값 계산
   const cellKey = selectedCell
     ? `${selectedCell.gridIdx}-${selectedCell.gridItemIdx}`
     : '';
@@ -253,8 +321,29 @@ const MandalartView = ({
     ? getCellPosition(selectedCell, isAllView)
     : '';
 
+  const cellInputProps = {
+    initialText,
+    cellKey,
+    cellPosition,
+    onTextChange: handleEditingTextChange,
+    onSaveAndPrev: handleSaveAndPrev,
+    onSaveAndNext: handleSaveAndNext,
+    onSaveAndUp: handleSaveAndUp,
+    onSaveAndDown: handleSaveAndDown,
+    onSaveAndClose: handleSaveAndClose,
+  };
+
+  const gridView = isAllView ? (
+    <Mandalart {...mandalartProps} />
+  ) : (
+    <MandalartFocusView
+      {...mandalartProps}
+      onFocusedGridChange={handleFocusedGridChange}
+    />
+  );
+
   return (
-    <div ref={rootRef} className={className} {...rest}>
+    <div ref={rootRef} className={className} onPointerDown={handleRootPointerDown} {...rest}>
       <div className="relative">
         {mandalartId === TMP_MANDALART_ID && (
           <p className="absolute bottom-full text-sm text-muted-foreground">
@@ -283,25 +372,38 @@ const MandalartView = ({
         </div>
       </div>
       <div className="mb-2 mt-3">
-        {isAllView ? (
-          <Mandalart {...mandalartProps} />
+        {isDesktop ? (
+          // 데스크톱: Popover로 감싸서 선택된 셀 근처에 입력 UI 표시
+          // TopicItem 내부의 PopoverAnchor가 앵커 역할을 함
+          <Popover open={!!selectedCell}>
+            {gridView}
+            <PopoverContent
+              side="bottom"
+              align="center"
+              sideOffset={8}
+              className="w-80"
+              // 셀 클릭 시 팝오버 유지, 그 외 바깥 클릭 시 편집 종료
+              onInteractOutside={(e) => {
+                e.preventDefault();
+                const target = e.target as HTMLElement;
+                if (!target.closest('[data-cell]')) {
+                  handleSaveAndClose();
+                }
+              }}
+              // Radix의 자동 포커스 이동을 방지 — PopoverCellInput이 직접 포커스 관리
+              onOpenAutoFocus={(e) => e.preventDefault()}
+              onCloseAutoFocus={(e) => e.preventDefault()}
+            >
+              <PopoverCellInput {...cellInputProps} />
+            </PopoverContent>
+          </Popover>
         ) : (
-          <MandalartFocusView
-            {...mandalartProps}
-            onFocusedGridChange={handleFocusedGridChange}
-          />
+          gridView
         )}
       </div>
-      {selectedCell && (
-        <BottomInputBar
-          initialText={initialText}
-          cellKey={cellKey}
-          cellPosition={cellPosition}
-          onTextChange={handleEditingTextChange}
-          onSaveAndPrev={handleSaveAndPrev}
-          onSaveAndNext={handleSaveAndNext}
-          onSaveAndClose={handleSaveAndClose}
-        />
+      {/* 모바일: 하단 고정 입력 바 */}
+      {!isDesktop && selectedCell && (
+        <BottomInputBar {...cellInputProps} />
       )}
       <TextInputDialog
         isOpen={isOpenTitleEditor}

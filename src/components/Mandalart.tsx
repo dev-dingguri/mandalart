@@ -22,11 +22,12 @@ export type MandalartProps = {
   onGetTopic: (gridIdx: number, gridItemIdx: number) => TopicNode;
   onSelectCell: (gridIdx: number, gridItemIdx: number) => void;
   selectedCell: SelectedCell | null;
+  usePopoverAnchor?: boolean;
   focusHandlers?: FocusHandlers;
 };
 
 const Mandalart = memo(
-  ({ onGetTopic, onSelectCell, selectedCell, focusHandlers }: MandalartProps) => {
+  ({ onGetTopic, onSelectCell, selectedCell, usePopoverAnchor, focusHandlers }: MandalartProps) => {
     return (
       <ItemGrid
         rowSize={TABLE_ROW_SIZE}
@@ -40,6 +41,7 @@ const Mandalart = memo(
             selectedGridItemIdx={
               selectedCell?.gridIdx === gridIdx ? selectedCell.gridItemIdx : null
             }
+            usePopoverAnchor={usePopoverAnchor}
             focusHandlers={
               focusHandlers
                 ? {
