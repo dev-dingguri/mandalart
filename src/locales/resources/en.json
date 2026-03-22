@@ -72,5 +72,228 @@
   "topic": {
     "placeholder": "Enter a goal or keyword",
     "maxLengthReached": "Character limit reached"
+  },
+  "landing": {
+    "seo": {
+      "title": "Mandalart - The 81-Square System That Turns Dreams Into Reality",
+      "description": "Turn vague resolutions into concrete actions. Boost your execution with Mandalart. Start for free today."
+    },
+    "hero": {
+      "badge": "81-Square Goal Achievement System",
+      "titleLine1": "Turn Dreams Into Reality",
+      "titleLine2": "The Magic of 81 Squares",
+      "subtitle": "Turn vague resolutions into concrete actions. Boost your execution with Mandalart.",
+      "cta": "Get Started"
+    },
+    "steps": {
+      "title": "Build Your Action Plan in 3 Steps",
+      "0": {
+        "title": "Set Your Core Goal",
+        "description": "Write one big goal in the center"
+      },
+      "1": {
+        "title": "Identify 8 Key Areas",
+        "description": "Define 8 essential areas to achieve your goal"
+      },
+      "2": {
+        "title": "Complete 64 Action Items",
+        "description": "Break each area into 8 specific actions"
+      }
+    },
+    "comparison": {
+      "title": "What Mandalart Changes",
+      "before": {
+        "label": "Before",
+        "title": "A Vague Goal",
+        "quote": "\"This year, I'll get healthy\"",
+        "description": "You don't know what to do, how, or how much. It ends after three days."
+      },
+      "after": {
+        "label": "After",
+        "title": "A Concrete Plan in 81 Squares",
+        "items": ["Exercise", "Diet", "Sleep", "Checkups", "Stress Management", "Quit Smoking", "Moderate Drinking", "Mental Care"],
+        "description": "8 key areas and 64 specific action plans are created."
+      }
+    },
+    "useCases": {
+      "title": "Mandalart for Any Goal",
+      "subtitle": "From career to health, self-improvement to business — applicable to every area of life.",
+      "0": {
+        "title": "Job Hunting",
+        "description": "Cover letters, interviews, certifications, and fitness at a glance"
+      },
+      "1": {
+        "title": "Weight Loss",
+        "description": "Diet, exercise, sleep, and motivation — systematically organized"
+      },
+      "2": {
+        "title": "Self-Improvement",
+        "description": "Reading, languages, finance, and networking in balance"
+      },
+      "3": {
+        "title": "Business Planning",
+        "description": "Marketing, finance, product, and customer management — nothing missed"
+      }
+    },
+    "socialProof": {
+      "quote": "Shohei Ohtani used Mandalart as a high school student",
+      "description": "Shohei Ohtani, one of the greatest players in MLB history, used Mandalart to map out his goals when he was a first-year high school student.",
+      "cta": "Learn more about Mandalart"
+    },
+    "faqs": {
+      "title": "Frequently Asked Questions",
+      "0": {
+        "question": "What is Mandalart?",
+        "answer": "Mandalart is a thinking expansion tool developed by Japanese designer Hiroaki Imaizumi in 1987. It breaks a central goal into 8 key elements, and each element into 8 detailed actions, creating a total of 81 squares of action plans."
+      },
+      "1": {
+        "question": "Is the Mandalart planner free?",
+        "answer": "Yes, it's completely free. You can start using it without signing up. Sign in to sync your data across multiple devices."
+      },
+      "2": {
+        "question": "Can I save my Mandalart?",
+        "answer": "In guest mode, it's automatically saved in your browser. Sign in with a Google account to save it securely in the cloud."
+      },
+      "3": {
+        "question": "How many squares does a Mandalart have?",
+        "answer": "81 squares in total. It consists of 1 center square (core goal) + 8 squares (key elements) + 72 squares (detailed action plans)."
+      },
+      "4": {
+        "question": "What does Shohei Ohtani's Mandalart look like?",
+        "answer": "Shohei Ohtani created his Mandalart as a first-year high school student with 'First pick in the draft by 8 teams' as his central goal. He set 8 key elements including physical strength, mental toughness, pitching power, and control, with detailed action plans for each."
+      }
+    },
+    "cta": {
+      "title": "Create Your Own Mandalart Now",
+      "subtitle": "Start right away without signing in. Completely free.",
+      "button": "Start for Free"
+    }
+  },
+  "guide": {
+    "seo": {
+      "title": "What is Mandalart? — The Ultimate Thinking Expansion Tool for Achieving Goals",
+      "description": "Discover the origin, structure, and methods of Mandalart. Learn how to turn your goals into concrete action plans with 81 squares."
+    },
+    "nav": {
+      "home": "Home"
+    },
+    "header": {
+      "title": "What is Mandalart?",
+      "subtitle": "The ultimate thinking expansion tool for achieving goals"
+    },
+    "history": {
+      "title": "Origin and History of Mandalart",
+      "paragraph1": "Mandalart is a thinking expansion tool developed by Japanese designer Hiroaki Imaizumi (今泉浩晃) in {{year}}. It originated from the symmetrical structure inspired by the Buddhist Mandala (曼荼羅).",
+      "paragraph1Strong": "Japanese designer Hiroaki Imaizumi (今泉浩晃) in 1987",
+      "paragraph2": "The name itself is a compound of three words.",
+      "paragraph2Strong": "\"Goal Achievement (Manda) + Skill (la) + Art\"",
+      "paragraph2Suffix": " — it embodies the idea of elevating the skill of achieving goals into an art form.",
+      "paragraph3": "Like the radial symmetry of a Mandala, Mandalart starts from a central goal and expands thinking outward in a balanced way. This structural characteristic naturally helps the brain perform association and divergent thinking, similar to a Mandala."
+    },
+    "structure": {
+      "title": "The Structure of Mandalart — The Secret of 81 Squares",
+      "intro": "Mandalart consists of a 9×9 = 81-square grid. These 81 squares form an elaborate three-level structure.",
+      "introStrong": "9×9 = 81 squares",
+      "card0": {
+        "count": "1 Square",
+        "label": "Core Goal",
+        "description": "The very center of the 9×9 grid"
+      },
+      "card1": {
+        "count": "8 Squares",
+        "label": "Key Elements",
+        "description": "8 surrounding the central goal"
+      },
+      "card2": {
+        "count": "64 Squares",
+        "label": "Action Items",
+        "description": "8 actions per key element"
+      },
+      "centerMatrix": "The center square is the core goal, and the 8 surrounding squares are the key elements.",
+      "centerMatrixStrong": "Center 3×3 matrix:",
+      "outerMatrix": "Each key element occupies the center of its own 3×3 block, with the surrounding 8 squares becoming specific action items.",
+      "outerMatrixStrong": "8 outer 3×3 matrices:",
+      "summary": "As a result,",
+      "summaryStrong": "1 core goal + 8 key elements + 64 action items = 73 meaningful squares",
+      "summarySuffix": " are completed. (The remaining 8 squares are structurally empty corner blocks.)"
+    },
+    "howto": {
+      "title": "How to Create a Mandalart — 5-Step Guide",
+      "0": {
+        "title": "Set Your Central Goal",
+        "body": "Apply the SMART principle. Write a Specific, Measurable, Achievable, Relevant, and Time-bound goal in the center square."
+      },
+      "1": {
+        "title": "Identify 8 Key Elements",
+        "body": "Brainstorm 8 essential categories needed to achieve your goal. This step is the core of Mandalart. Write down everything that comes to mind, then select the 8 most important ones."
+      },
+      "2": {
+        "title": "Write Detailed Actions",
+        "body": "For each key element, create 8 specific action plans. Make them concrete enough to actually execute, like \"Walk 30 minutes every day.\""
+      },
+      "3": {
+        "title": "Set Priorities",
+        "body": "Start with the most important and feasible among the 64 action items. You don't need to fill all squares at once."
+      },
+      "4": {
+        "title": "Execute and Review",
+        "body": "Regularly check your progress and mark completed items. Don't hesitate to revise when circumstances change. A Mandalart should be a living plan."
+      }
+    },
+    "comparisonTable": {
+      "title": "Mandalart vs Other Goal-Setting Methods",
+      "description": "Among various goal-setting methods, Mandalart stands out in terms of specificity and comprehensive overview.",
+      "headers": {
+        "method": "Method",
+        "structure": "Structure",
+        "specificity": "Specificity",
+        "overview": "Overview",
+        "difficulty": "Difficulty"
+      },
+      "0": { "method": "Mandalart", "structure": "9×9 Matrix" },
+      "1": { "method": "Mind Map", "structure": "Radial Tree" },
+      "2": { "method": "OKR", "structure": "Objectives & Key Results" },
+      "3": { "method": "Vision Board", "structure": "Image Collage" },
+      "4": { "method": "Bucket List", "structure": "Simple List" }
+    },
+    "ohtani": {
+      "title": "Shohei Ohtani's Mandalart",
+      "intro": "The most famous example that brought Mandalart to worldwide attention is Shohei Ohtani. He created his Mandalart as a first-year student at Hanamaki Higashi High School.",
+      "introStrong": "Shohei Ohtani",
+      "goalLabel": "Central Goal",
+      "goalText": "First pick in the draft by 8 teams",
+      "elementsLabel": "8 Key Elements",
+      "elements": ["Physical Strength", "Control", "Pitching Power", "Speed 160km/h", "Breaking Balls", "Luck", "Character", "Mental Toughness"],
+      "luckLabel": "'Luck' Action Items (Partial)",
+      "luckActions": ["Greet people", "Pick up trash", "Clean the dorm", "Attitude toward umpires", "Become someone people root for"],
+      "conclusion": "Ohtani has indeed achieved historic success in MLB. What's particularly noteworthy is the key element of \"Luck.\" He treated even luck as something controllable, and the fact that its action items focused on",
+      "conclusionStrong": " character and attitude",
+      "conclusionSuffix": " shows the depth of the Mandalart approach."
+    },
+    "applications": {
+      "title": "Mandalart Applications",
+      "0": {
+        "category": "Personal Goals",
+        "items": ["Health Management", "Self-Improvement", "Financial Planning", "Building Habits"]
+      },
+      "1": {
+        "category": "Academics",
+        "items": ["Exam Preparation", "Certifications", "Career Planning", "Language Study"]
+      },
+      "2": {
+        "category": "Business",
+        "items": ["Business Planning", "Project Management", "Marketing Strategy", "Performance Goals"]
+      },
+      "3": {
+        "category": "Team Workshops",
+        "items": ["Organizational Vision", "Team Goal Alignment", "Process Improvement", "Idea Generation"]
+      }
+    },
+    "cta": {
+      "preTitle": "Enough theory.",
+      "title": "Create your Mandalart now",
+      "button": "Get Started",
+      "ariaLabel": "Get started"
+    }
   }
 }
