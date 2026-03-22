@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, lazy, Suspense } from 'react';
 import MainPage from '@/components/MainPage';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS, PATH_APP, PATH_GUIDE } from '@/constants';
 import { useIsDarkMode } from '@/stores/useThemeStore';
@@ -8,6 +8,15 @@ import { trackAppVersion } from '@/lib/analyticsEvents';
 import { Toaster } from 'sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { HelmetProvider } from 'react-helmet-async';
+
+// SPA는 라우트 변경 시 브라우저가 스크롤을 자동 초기화하지 않으므로 수동 처리
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
 
 const OpenSourceLicensesPage = lazy(
   () => import('@/components/OpenSourceLicensesPage')
@@ -59,6 +68,7 @@ const App = () => {
           toastOptions={{ className: 'text-sm' }}
         />
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route
               path={`/${lang}`}
