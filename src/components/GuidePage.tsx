@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import SEOHead from '@/components/SEOHead';
 import { buttonVariants } from '@/components/ui/button';
@@ -165,6 +166,23 @@ const GuidePage = () => {
 
         {/* 3. 작성법 5단계 */}
         <section className="mb-12" aria-labelledby="section-howto">
+          {/* HowTo 구조화 데이터 — Google 리치 결과("How-to" 스니펫)에 노출하기 위한 JSON-LD */}
+          <Helmet>
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "HowTo",
+                "name": t('guide.howto.title'),
+                "description": t('guide.seo.description'),
+                "step": HOWTO_STEPS.map(({ title, body }, i) => ({
+                  "@type": "HowToStep",
+                  "position": i + 1,
+                  "name": title,
+                  "text": body,
+                })),
+              })}
+            </script>
+          </Helmet>
           <h2
             id="section-howto"
             className="text-2xl font-bold mb-6 text-foreground"
