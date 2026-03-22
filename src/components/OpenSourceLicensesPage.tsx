@@ -3,6 +3,7 @@ import { ChevronLeft } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import openSourceLicensesJson from '@/assets/data/openSourceLicenses.json';
+import { PATH_APP } from '@/constants';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
@@ -38,7 +39,7 @@ const Item = ({ name, licenses, repository }: License) => {
 
 const OpenSourceLicensesPage = () => {
   const [currentLicenses, setCurrentLicenses] = useState<License[]>([]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const hasMore = currentLicenses.length < licenses.length;
 
   useEffect(() => {
@@ -55,10 +56,11 @@ const OpenSourceLicensesPage = () => {
   return (
     <div className="flex h-full flex-col items-center">
       <header className="flex w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] items-center gap-1 py-2">
+        {/* 라우팅 변경 후 '..'은 랜딩 페이지로 이동하므로, 도구 페이지 절대 경로로 명시 */}
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => navigate('..')}
+          onClick={() => navigate(`/${i18n.language}${PATH_APP}`)}
           className="mr-1"
         >
           <ChevronLeft />
