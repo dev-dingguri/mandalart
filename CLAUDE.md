@@ -10,7 +10,7 @@ The `rewrite/incremental` branch has migrated from CRA to Vite 6 + modern stack.
 
 - Package manager: pnpm
 - `pnpm dev` — dev server (localhost:3000)
-- `pnpm build` — production build (`tsc -b && vite build`, output: `build/`)
+- `pnpm build` — production build (`tsc -b && vite build`, output: `build/`); prerenders `/ko` and `/ko/guide` to static HTML for SEO
 - `pnpm test` — run Vitest tests (single file: `pnpm vitest run src/test/<filename>`)
 - `pnpm test:watch` — Vitest watch mode
 - `pnpm deploy:firebase` — deploy to Firebase Hosting
@@ -24,6 +24,8 @@ The `rewrite/incremental` branch has migrated from CRA to Vite 6 + modern stack.
 - Firebase v12 (Auth, Realtime Database, Analytics, Hosting)
 - react-router v7, i18next v25
 - lucide-react (icons), `@/` path alias via `vite-tsconfig-paths`
+- react-helmet-async (per-page meta tags for SEO)
+- @prerenderer/rollup-plugin (build-time prerendering for static HTML)
 
 ## Environment Variables
 
@@ -63,13 +65,15 @@ Works without login — data stored in `localStorage`. On sign-in, `uploadTemp()
 ### Component Hierarchy (Key)
 
 ```
-App → MainPage → AuthenticatedView / GuestView → AppLayout (useAppLayoutState hook)
-  ├── Header
-  ├── MandalartView → Mandalart → ItemGrid → TopicGrid → TopicItem
-  │                 → MandalartFocusView (useSwipeNavigation hook)
-  ├── MandalartListDrawer (lazy, Radix Sheet left, subscribes to store directly)
-  ├── SettingsDrawer (lazy, Radix Sheet right)
-  └── SignInDialog (lazy)
+App → LandingPage (재방문자 리다이렉트 → /app)
+    → MainPage → AuthenticatedView / GuestView → AppLayout (useAppLayoutState hook)
+    │   ├── Header
+    │   ├── MandalartView → Mandalart → ItemGrid → TopicGrid → TopicItem
+    │   │                 → MandalartFocusView (useSwipeNavigation hook)
+    │   ├── MandalartListDrawer (lazy, Radix Sheet left)
+    │   ├── SettingsDrawer (lazy, Radix Sheet right)
+    │   └── SignInDialog (lazy)
+    → GuidePage
 ```
 
 ### `useAppLayoutState` Hook
@@ -95,12 +99,20 @@ Extracts all state/logic from `AppLayout` (modals, store subscriptions, analytic
 - Touch handler stabilization: `useCallback` + ref pattern in `useSwipeNavigation` to prevent handler recreation on every render
 - `content-visibility: auto` on OSS page items for scroll performance
 
+### SEO Infrastructure
+
+- `SEOHead` component manages per-page meta tags via react-helmet-async
+- Content pages (LandingPage, GuidePage) use `min-h-dvh` for scrollable layout
+- Tool pages (MainPage, OpenSourceLicensesPage) use `h-dvh` for fixed viewport
+
 ### Routing
 
 ```
-/{lang}      → MainPage
-/{lang}/oss  → OpenSourceLicensesPage (lazy)
-*            → Navigate to /{lang}
+/{lang}        → LandingPage (재방문자: /app으로 리다이렉트)
+/{lang}/app    → MainPage (만다라트 도구)
+/{lang}/guide  → GuidePage
+/{lang}/oss    → OpenSourceLicensesPage (lazy)
+*              → Navigate to /{lang}
 ```
 
 ### i18n
