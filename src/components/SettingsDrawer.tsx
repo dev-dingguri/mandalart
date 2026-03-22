@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Github, Youtube } from 'lucide-react';
+import { Github, Youtube, ChevronRight } from 'lucide-react';
 import { APP_VERSION } from '@/version';
 import { PATH_OSS, PATH_GUIDE } from '@/constants';
 import { useThemeStore, TernaryDarkMode } from '@/stores/useThemeStore';
@@ -111,17 +111,19 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
           <Separator />
 
           <button
-            className="cursor-pointer text-left text-sm hover:text-foreground"
+            className="flex w-full items-center justify-between rounded-md px-2 py-2 text-left text-sm text-foreground hover:bg-accent transition-colors"
             onClick={() => navigate(`/${i18n.language}${PATH_GUIDE}`)}
           >
             {t('settings.guide')}
+            <ChevronRight className="size-4 text-muted-foreground" />
           </button>
 
           <button
-            className="cursor-pointer text-left text-sm hover:text-foreground"
+            className="flex w-full items-center justify-between rounded-md px-2 py-2 text-left text-sm text-foreground hover:bg-accent transition-colors"
             onClick={goToOpenSourceLicense}
           >
             {t('settings.oss')}
+            <ChevronRight className="size-4 text-muted-foreground" />
           </button>
 
           <Separator />
