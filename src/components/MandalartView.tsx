@@ -1,10 +1,15 @@
-import { useCallback, HTMLAttributes, useState } from 'react';
+import { useCallback, HTMLAttributes, useState, useRef, useEffect } from 'react';
 import MandalartFocusView from '@/components/MandalartFocusView';
-import Mandalart, { MandalartProps } from '@/components/Mandalart';
+import Mandalart, { MandalartProps, SelectedCell } from '@/components/Mandalart';
+import BottomInputBar from '@/components/BottomInputBar';
 import { MandalartMeta, TopicNode } from '@/types';
 import {
   MAX_MANDALART_TITLE_SIZE,
+  MAX_TOPIC_TEXT_SIZE,
   TABLE_CENTER_IDX,
+  TABLE_COL_SIZE,
+  TABLE_ROW_SIZE,
+  TABLE_SIZE,
   TMP_MANDALART_ID,
 } from '@/constants';
 import MandalartViewToggle from '@/components/MandalartViewToggle';
@@ -21,6 +26,52 @@ type MandalartViewProps = {
   onTopicTreeChange: (topicTree: TopicNode) => void;
 } & HTMLAttributes<HTMLDivElement>;
 
+// --- 셀 네비게이션 유틸리티 ---
+// 9×9 그리드는 3×3 TopicGrid 9개로 구성됨
+// 읽기 순서(좌→우, 위→아래)로 선형 인덱스(0-80)를 (gridIdx, gridItemIdx)와 상호 변환
+
+const TOTAL_CELLS = TABLE_SIZE * TABLE_SIZE; // 81
+
+function cellToLinear(gridIdx: number, gridItemIdx: number): number {
+  const gridRow = Math.floor(gridIdx / TABLE_COL_SIZE);
+  const gridCol = gridIdx % TABLE_COL_SIZE;
+  const itemRow = Math.floor(gridItemIdx / TABLE_COL_SIZE);
+  const itemCol = gridItemIdx % TABLE_COL_SIZE;
+  const row = gridRow * TABLE_ROW_SIZE + itemRow;
+  const col = gridCol * TABLE_COL_SIZE + itemCol;
+  return row * TABLE_SIZE + col;
+}
+
+function linearToCell(linearIdx: number): SelectedCell {
+  const row = Math.floor(linearIdx / TABLE_SIZE);
+  const col = linearIdx % TABLE_SIZE;
+  const gridIdx = Math.floor(row / TABLE_ROW_SIZE) * TABLE_COL_SIZE + Math.floor(col / TABLE_COL_SIZE);
+  const gridItemIdx = (row % TABLE_ROW_SIZE) * TABLE_COL_SIZE + (col % TABLE_COL_SIZE);
+  return { gridIdx, gridItemIdx };
+}
+
+function getAdjacentCell(cell: SelectedCell, delta: 1 | -1, isAllView: boolean): SelectedCell {
+  if (isAllView) {
+    // All View: 81개 셀 전체를 순회
+    const linear = cellToLinear(cell.gridIdx, cell.gridItemIdx);
+    return linearToCell((linear + delta + TOTAL_CELLS) % TOTAL_CELLS);
+  }
+  // Focus View: 현재 그리드(9개 셀) 내에서만 순회
+  return {
+    gridIdx: cell.gridIdx,
+    gridItemIdx: (cell.gridItemIdx + delta + TABLE_SIZE) % TABLE_SIZE,
+  };
+}
+
+function getCellPosition(cell: SelectedCell, isAllView: boolean): string {
+  if (isAllView) {
+    return `${cellToLinear(cell.gridIdx, cell.gridItemIdx) + 1}/${TOTAL_CELLS}`;
+  }
+  return `${cell.gridItemIdx + 1}/${TABLE_SIZE}`;
+}
+
+// --- 컴포넌트 ---
+
 const MandalartView = ({
   mandalartId,
   meta,
@@ -31,9 +82,23 @@ const MandalartView = ({
   ...rest
 }: MandalartViewProps) => {
   const [isAllView, setIsAllView] = useState(true);
+  const [selectedCell, setSelectedCell] = useState<SelectedCell | null>(null);
   const { isOpen: isOpenTitleEditor, open: openTitleEditor, close: closeTitleEditor } = useModal();
-
   const { t } = useTranslation();
+
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // Refs — stable 콜백에서 최신 값에 접근하기 위한 "useLatest" 패턴
+  const selectedCellRef = useRef<SelectedCell | null>(null);
+  const editingTextRef = useRef('');
+  const topicTreeRef = useRef(topicTree);
+  const onTopicTreeChangeRef = useRef(onTopicTreeChange);
+  const isAllViewRef = useRef(isAllView);
+
+  selectedCellRef.current = selectedCell;
+  topicTreeRef.current = topicTree;
+  onTopicTreeChangeRef.current = onTopicTreeChange;
+  isAllViewRef.current = isAllView;
 
   const handleGetTopic = useCallback(
     (gridIdx: number, gridItemIdx: number) =>
@@ -41,23 +106,155 @@ const MandalartView = ({
     [topicTree]
   );
 
-  const handleUpdateTopic = useCallback(
-    (gridIdx: number, gridItemIdx: number, text: string) => {
-      const newTopicTree = structuredClone(topicTree);
-      const newTopic = getTopic(newTopicTree, gridIdx, gridItemIdx);
-      newTopic.text = text;
-      onTopicTreeChange(newTopicTree);
+  // 현재 편집 중인 셀의 텍스트를 저장 (변경된 경우에만)
+  const saveCellText = useCallback(() => {
+    const cell = selectedCellRef.current;
+    if (!cell) return;
+    const text = editingTextRef.current;
+    if (text.length > MAX_TOPIC_TEXT_SIZE) return;
+    const tree = topicTreeRef.current;
+    const node = getTopic(tree, cell.gridIdx, cell.gridItemIdx);
+    if (node.text === text) return;
+
+    const newTree = structuredClone(tree);
+    getTopic(newTree, cell.gridIdx, cell.gridItemIdx).text = text;
+    onTopicTreeChangeRef.current(newTree);
+  }, []);
+
+  // 셀 선택 — Mandalart → TopicGrid → TopicItem으로 전달되는 stable 콜백
+  const handleSelectCell = useCallback(
+    (gridIdx: number, gridItemIdx: number) => {
+      saveCellText();
+      setSelectedCell({ gridIdx, gridItemIdx });
+      editingTextRef.current = getTopic(
+        topicTreeRef.current,
+        gridIdx,
+        gridItemIdx
+      ).text;
     },
-    [topicTree, onTopicTreeChange]
+    [saveCellText]
   );
+
+  // 편집 시 키보드를 고려한 중앙 정렬
+  // 부모 스크롤 컨테이너에 padding-bottom을 동적으로 추가하여
+  // my-auto가 '키보드를 제외한 보이는 영역' 기준으로 중앙 정렬하도록 함.
+  // iOS: layout viewport는 그대로이고 visual viewport만 축소되므로,
+  // padding-bottom으로 flex 가용 공간을 줄여 my-auto 재계산을 유도.
+  // Android: innerHeight도 함께 줄어들어 keyboardOffset ≈ 0 → 입력 바 높이만 반영.
+  const isEditing = selectedCell !== null;
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!isEditing || !el) return;
+
+    const scrollContainer = el.parentElement;
+    if (!scrollContainer) return;
+
+    const INPUT_BAR_HEIGHT = 64;
+
+    const updateCentering = () => {
+      const vv = window.visualViewport;
+      const keyboardOffset = vv
+        ? Math.max(0, window.innerHeight - vv.height - vv.offsetTop)
+        : 0;
+
+      scrollContainer.style.paddingBottom =
+        `${keyboardOffset + INPUT_BAR_HEIGHT}px`;
+    };
+
+    updateCentering();
+
+    const vv = window.visualViewport;
+    if (vv) {
+      vv.addEventListener('resize', updateCentering);
+      vv.addEventListener('scroll', updateCentering);
+    }
+
+    return () => {
+      scrollContainer.style.paddingBottom = '';
+      if (vv) {
+        vv.removeEventListener('resize', updateCentering);
+        vv.removeEventListener('scroll', updateCentering);
+      }
+    };
+  }, [isEditing]);
+
+  // 만다라트 전환 시 선택 해제
+  useEffect(() => {
+    setSelectedCell(null);
+    editingTextRef.current = '';
+  }, [mandalartId]);
+
+  // Focus View 스와이프 시 현재 편집 저장 후 선택 해제
+  const handleFocusedGridChange = useCallback(() => {
+    saveCellText();
+    setSelectedCell(null);
+  }, [saveCellText]);
+
+  // BottomInputBar에서 텍스트 변경 시 ref만 갱신 (state 불필요 — 그리드 리렌더 방지)
+  const handleEditingTextChange = useCallback((text: string) => {
+    editingTextRef.current = text;
+  }, []);
+
+  // BottomInputBar 네비게이션: 저장 후 인접 셀로 이동
+  const handleSaveAndNavigate = useCallback(
+    (delta: 1 | -1) => {
+      saveCellText();
+      const cell = selectedCellRef.current;
+      if (!cell) return;
+      const nextCell = getAdjacentCell(cell, delta, isAllViewRef.current);
+      setSelectedCell(nextCell);
+      editingTextRef.current = getTopic(
+        topicTreeRef.current,
+        nextCell.gridIdx,
+        nextCell.gridItemIdx
+      ).text;
+    },
+    [saveCellText]
+  );
+
+  const handleSaveAndPrev = useCallback(
+    () => handleSaveAndNavigate(-1),
+    [handleSaveAndNavigate]
+  );
+
+  const handleSaveAndNext = useCallback(
+    () => handleSaveAndNavigate(1),
+    [handleSaveAndNavigate]
+  );
+
+  // BottomInputBar 닫기: 저장 후 선택 해제
+  const handleSaveAndClose = useCallback(() => {
+    saveCellText();
+    setSelectedCell(null);
+  }, [saveCellText]);
+
+  // 뷰 전환: 현재 편집 저장 후 선택 해제
+  const handleViewToggle = useCallback((val: boolean) => {
+    saveCellText();
+    setSelectedCell(null);
+    setIsAllView(val);
+    trackViewModeChange(val ? 'all' : 'focus');
+  }, [saveCellText]);
 
   const mandalartProps: MandalartProps = {
     onGetTopic: handleGetTopic,
-    onUpdateTopic: handleUpdateTopic,
+    onSelectCell: handleSelectCell,
+    selectedCell,
   };
 
+  // BottomInputBar에 전달할 값 계산
+  const cellKey = selectedCell
+    ? `${selectedCell.gridIdx}-${selectedCell.gridItemIdx}`
+    : '';
+  const initialText = selectedCell
+    ? getTopic(topicTree, selectedCell.gridIdx, selectedCell.gridItemIdx).text
+    : '';
+  const cellPosition = selectedCell
+    ? getCellPosition(selectedCell, isAllView)
+    : '';
+
   return (
-    <div className={className} {...rest}>
+    <div ref={rootRef} className={className} {...rest}>
       <div className="relative">
         {mandalartId === TMP_MANDALART_ID && (
           <p className="absolute bottom-full text-sm text-muted-foreground">
@@ -81,10 +278,7 @@ const MandalartView = ({
           </h2>
           <MandalartViewToggle
             isAllView={isAllView}
-            onChange={(val) => {
-              setIsAllView(val);
-              trackViewModeChange(val ? 'all' : 'focus');
-            }}
+            onChange={handleViewToggle}
           />
         </div>
       </div>
@@ -92,9 +286,23 @@ const MandalartView = ({
         {isAllView ? (
           <Mandalart {...mandalartProps} />
         ) : (
-          <MandalartFocusView {...mandalartProps} />
+          <MandalartFocusView
+            {...mandalartProps}
+            onFocusedGridChange={handleFocusedGridChange}
+          />
         )}
       </div>
+      {selectedCell && (
+        <BottomInputBar
+          initialText={initialText}
+          cellKey={cellKey}
+          cellPosition={cellPosition}
+          onTextChange={handleEditingTextChange}
+          onSaveAndPrev={handleSaveAndPrev}
+          onSaveAndNext={handleSaveAndNext}
+          onSaveAndClose={handleSaveAndClose}
+        />
+      )}
       <TextInputDialog
         isOpen={isOpenTitleEditor}
         initialText={meta.title}

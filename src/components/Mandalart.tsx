@@ -8,6 +8,11 @@ import {
 } from '@/constants';
 import { memo } from 'react';
 
+export type SelectedCell = {
+  gridIdx: number;
+  gridItemIdx: number;
+};
+
 type FocusHandlers = {
   focusedIdx: number;
   onUpdateFocus: (gridIdx: number) => void;
@@ -15,12 +20,13 @@ type FocusHandlers = {
 
 export type MandalartProps = {
   onGetTopic: (gridIdx: number, gridItemIdx: number) => TopicNode;
-  onUpdateTopic: (gridIdx: number, gridItemIdx: number, text: string) => void;
+  onSelectCell: (gridIdx: number, gridItemIdx: number) => void;
+  selectedCell: SelectedCell | null;
   focusHandlers?: FocusHandlers;
 };
 
 const Mandalart = memo(
-  ({ onGetTopic, onUpdateTopic, focusHandlers }: MandalartProps) => {
+  ({ onGetTopic, onSelectCell, selectedCell, focusHandlers }: MandalartProps) => {
     return (
       <ItemGrid
         rowSize={TABLE_ROW_SIZE}
@@ -30,8 +36,9 @@ const Mandalart = memo(
           <TopicGrid
             onIsAccented={(gridItemIdx) => isAccented(gridIdx, gridItemIdx)}
             onGetTopic={(gridItemIdx) => onGetTopic(gridIdx, gridItemIdx)}
-            onUpdateTopic={(gridItemIdx, text) =>
-              onUpdateTopic(gridIdx, gridItemIdx, text)
+            onSelectItem={(gridItemIdx) => onSelectCell(gridIdx, gridItemIdx)}
+            selectedGridItemIdx={
+              selectedCell?.gridIdx === gridIdx ? selectedCell.gridItemIdx : null
             }
             focusHandlers={
               focusHandlers

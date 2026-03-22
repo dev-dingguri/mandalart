@@ -71,7 +71,9 @@
   },
   "topic": {
     "placeholder": "목표나 키워드를 입력하세요",
-    "maxLengthReached": "최대 글자 수 초과"
+    "maxLengthReached": "최대 글자 수 초과",
+    "prevCell": "이전 셀",
+    "nextCell": "다음 셀"
   },
   "landing": {
     "seo": {

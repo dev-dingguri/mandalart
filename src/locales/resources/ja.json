@@ -71,7 +71,9 @@
   },
   "topic": {
     "placeholder": "目標やキーワードを入力してください",
-    "maxLengthReached": "文字数の上限に達しました"
+    "maxLengthReached": "文字数の上限に達しました",
+    "prevCell": "前のセル",
+    "nextCell": "次のセル"
   },
   "landing": {
     "seo": {

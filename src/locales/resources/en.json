@@ -71,7 +71,9 @@
   },
   "topic": {
     "placeholder": "Enter a goal or keyword",
-    "maxLengthReached": "Character limit reached"
+    "maxLengthReached": "Character limit reached",
+    "prevCell": "Previous cell",
+    "nextCell": "Next cell"
   },
   "landing": {
     "seo": {

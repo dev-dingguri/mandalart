@@ -71,7 +71,9 @@
   },
   "topic": {
     "placeholder": "请输入目标或关键词",
-    "maxLengthReached": "已达到字数上限"
+    "maxLengthReached": "已达到字数上限",
+    "prevCell": "上一格",
+    "nextCell": "下一格"
   },
   "landing": {
     "seo": {

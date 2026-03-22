@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Mandalart, { MandalartProps } from '@/components/Mandalart';
 import {
   TABLE_COL_SIZE,
@@ -8,7 +8,11 @@ import {
 import AspectSquare from '@/components/AspectSquare';
 import { useSwipeNavigation } from '@/hooks/useSwipeNavigation';
 
-const MandalartFocusView = (props: MandalartProps) => {
+type MandalartFocusViewProps = MandalartProps & {
+  onFocusedGridChange?: () => void;
+};
+
+const MandalartFocusView = ({ onFocusedGridChange, ...props }: MandalartFocusViewProps) => {
   const { focusedIdx, setFocusedIdx, containerRef, touchHandlers, keyboardHandlers } =
     useSwipeNavigation({
       gridSize: TABLE_SIZE,
@@ -20,6 +24,15 @@ const MandalartFocusView = (props: MandalartProps) => {
   useEffect(() => {
     containerRef.current?.focus();
   }, []);
+
+  // 포커스 그리드 변경 시 부모에 알림 (편집 중인 셀 저장 및 선택 해제용)
+  const prevFocusedIdxRef = useRef(focusedIdx);
+  useEffect(() => {
+    if (prevFocusedIdxRef.current !== focusedIdx) {
+      prevFocusedIdxRef.current = focusedIdx;
+      onFocusedGridChange?.();
+    }
+  }, [focusedIdx, onFocusedGridChange]);
 
   return (
     <div

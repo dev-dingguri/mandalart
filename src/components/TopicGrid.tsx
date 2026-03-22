@@ -12,14 +12,16 @@ type FocusHandlers = {
 type TopicGridProps = {
   onIsAccented: (gridItemIdx: number) => boolean;
   onGetTopic: (gridItemIdx: number) => TopicNode;
-  onUpdateTopic: (gridItemIdx: number, text: string) => void;
+  onSelectItem: (gridItemIdx: number) => void;
+  selectedGridItemIdx: number | null;
   focusHandlers?: FocusHandlers;
 };
 
 const TopicGrid = memo(({
   onIsAccented,
   onGetTopic,
-  onUpdateTopic,
+  onSelectItem,
+  selectedGridItemIdx,
   focusHandlers,
 }: TopicGridProps) => {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -53,7 +55,8 @@ const TopicGrid = memo(({
             topic={onGetTopic(gridItemIdx).text}
             isAccented={onIsAccented(gridItemIdx)}
             isEditable={isFocused !== false}
-            onUpdateTopic={(text) => onUpdateTopic(gridItemIdx, text)}
+            isSelected={selectedGridItemIdx === gridItemIdx}
+            onSelect={() => onSelectItem(gridItemIdx)}
           />
         )}
         spacing="2px"
