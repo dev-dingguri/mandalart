@@ -19,9 +19,14 @@ export default defineConfig({
     react(),
     tsconfigPaths(),
     tailwindcss(),
-    // 콘텐츠 페이지(/ko, /ko/guide)만 프리렌더링 — /ko/app은 로그인이 필요한 도구 페이지이므로 제외
+    // 콘텐츠 페이지(랜딩·가이드)를 전 언어 프리렌더링 — /app은 로그인이 필요한 도구 페이지이므로 제외
     prerender({
-      routes: ['/ko', '/ko/guide'],
+      routes: [
+        '/ko', '/ko/guide',
+        '/en', '/en/guide',
+        '/ja', '/ja/guide',
+        '/zh-CN', '/zh-CN/guide',
+      ],
       renderer: '@prerenderer/renderer-puppeteer',
       rendererOptions: {
         // App.tsx의 useEffect에서 dispatch하는 이벤트를 기다린 뒤 HTML 캡처
