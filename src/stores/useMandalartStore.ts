@@ -16,6 +16,7 @@ import {
   DB_TOPIC_TREES,
   STORAGE_KEY_SNIPPETS,
   STORAGE_KEY_TOPIC_TREES,
+  STORAGE_KEY_HAS_USED_TOOL,
   TMP_MANDALART_ID,
   createEmptyMeta,
   createEmptyTopicTree,
@@ -181,6 +182,10 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
       saveGuestMandalartMetas(metaMap);
       set({ metaMap });
     }
+    // 도구 사용 플래그 설정 — 재방문 시 랜딩 페이지 스킵용
+    if (!localStorage.getItem(STORAGE_KEY_HAS_USED_TOOL)) {
+      localStorage.setItem(STORAGE_KEY_HAS_USED_TOOL, 'true');
+    }
   },
 
   saveTopicTree: async (id, topicTree) => {
@@ -202,6 +207,10 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
         currentTopicTree:
           id === get().currentMandalartId ? topicTree : get().currentTopicTree,
       });
+    }
+    // 도구 사용 플래그 설정 — 재방문 시 랜딩 페이지 스킵용
+    if (!localStorage.getItem(STORAGE_KEY_HAS_USED_TOOL)) {
+      localStorage.setItem(STORAGE_KEY_HAS_USED_TOOL, 'true');
     }
   },
 
