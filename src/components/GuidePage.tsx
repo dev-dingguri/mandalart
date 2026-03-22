@@ -58,6 +58,7 @@ const GuidePage = () => {
         title={t('guide.seo.title')}
         description={t('guide.seo.description')}
         path={`/${lang}${PATH_GUIDE}`}
+        ogImage={lang === 'ko' ? '/og-guide-ko.png' : '/og-guide-en.png'}
       />
 
       {/* 상단 내비게이션 — 랜딩 페이지로 돌아가기 */}

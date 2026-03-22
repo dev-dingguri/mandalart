@@ -42,7 +42,27 @@ const LandingPage = () => {
         title={t('landing.seo.title')}
         description={t('landing.seo.description')}
         path={`/${lang}`}
+        ogImage={lang === 'ko' ? '/og-landing-ko.png' : '/og-landing-en.png'}
       />
+      <Helmet>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Mandalart",
+            "url": "https://mandalart.me",
+            "applicationCategory": "ProductivityApplication",
+            "operatingSystem": "Any",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD",
+            },
+            "description": t('landing.seo.description'),
+            "inLanguage": ["ko", "en", "ja", "zh-CN"],
+          })}
+        </script>
+      </Helmet>
 
       {/* Hero Section */}
       <section className="py-16 md:py-24 bg-gradient-to-b from-background to-muted/30">

@@ -16,11 +16,14 @@ const ScrollToTop = () => {
   return null;
 };
 
+// 프리렌더링 대상 페이지(Landing·Guide)는 eager import — lazy()로 감싸면
+// render-event 발생 시점에 컴포넌트가 아직 로드되지 않아 빈 HTML이 캡처됨
+import LandingPage from '@/components/LandingPage';
+import GuidePage from '@/components/GuidePage';
+
 const OpenSourceLicensesPage = lazy(
   () => import('@/components/OpenSourceLicensesPage')
 );
-const LandingPage = lazy(() => import('@/components/LandingPage'));
-const GuidePage = lazy(() => import('@/components/GuidePage'));
 const MainPage = lazy(() => import('@/components/MainPage'));
 
 const App = () => {
@@ -70,11 +73,7 @@ const App = () => {
         <Routes>
           <Route
             path={`/${lang}`}
-            element={
-              <Suspense fallback={null}>
-                <LandingPage />
-              </Suspense>
-            }
+            element={<LandingPage />}
           />
           {/* 도구 페이지만 h-dvh로 감쌈 — 랜딩/가이드는 스크롤이 필요한 긴 콘텐츠 페이지 */}
           <Route
@@ -89,11 +88,7 @@ const App = () => {
           />
           <Route
             path={`/${lang}${PATH_GUIDE}`}
-            element={
-              <Suspense fallback={null}>
-                <GuidePage />
-              </Suspense>
-            }
+            element={<GuidePage />}
           />
           {/* OSS 페이지도 h-full + overflow-y-auto 패턴이므로 고정 높이 필요 */}
           <Route

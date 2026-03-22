@@ -5,6 +5,7 @@ type SEOHeadProps = {
   description: string;
   path: string;
   ogImage?: string;
+  noindex?: boolean;
 };
 
 const SITE_URL = 'https://mandalart.me';
@@ -16,7 +17,7 @@ const extractSubpath = (path: string): string => {
   return match?.[1] ?? '';
 };
 
-const SEOHead = ({ title, description, path, ogImage = '/image.png' }: SEOHeadProps) => {
+const SEOHead = ({ title, description, path, ogImage = '/image.png', noindex = false }: SEOHeadProps) => {
   const subpath = extractSubpath(path);
 
   // BreadcrumbList — 홈페이지가 아닌 하위 페이지에서만 생성
@@ -44,6 +45,7 @@ const SEOHead = ({ title, description, path, ogImage = '/image.png' }: SEOHeadPr
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
       <link rel="canonical" href={`${SITE_URL}${path}`} />
       {/* hrefLang — 검색엔진에 각 언어별 동일 페이지를 알림 */}
       <link rel="alternate" hrefLang="x-default" href={`${SITE_URL}/en${subpath}`} />
@@ -56,6 +58,11 @@ const SEOHead = ({ title, description, path, ogImage = '/image.png' }: SEOHeadPr
       <meta property="og:url" content={`${SITE_URL}${path}`} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:site_name" content="Mandalart" />
+      {/* Twitter Card — OG 태그와 동일 값 사용, summary_large_image로 큰 이미지 카드 표시 */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={ogImage} />
       {breadcrumbJsonLd && (
         <script type="application/ld+json">{breadcrumbJsonLd}</script>
       )}
