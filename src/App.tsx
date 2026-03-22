@@ -24,6 +24,12 @@ const App = () => {
     // 모듈 수준 함수는 의존성 배열 생략 — 마운트 시 1회만 실행하면 충분
   }, []);
 
+  useEffect(() => {
+    // 빌드 타임 프리렌더러(vite-plugin-prerender)가 이 이벤트를 기다렸다가 HTML을 캡처함
+    // 이벤트 없이 타임아웃에 의존하면 React hydration 전 빈 DOM이 스냅샷될 수 있음
+    document.dispatchEvent(new Event('render-event'));
+  }, []);
+
   const isDarkMode = useIsDarkMode();
 
   useLayoutEffect(() => {

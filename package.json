@@ -41,6 +41,8 @@
     "licenses": "node scripts/generate-licenses.mjs"
   },
   "devDependencies": {
+    "@prerenderer/renderer-puppeteer": "^1.2.4",
+    "@prerenderer/rollup-plugin": "^0.3.12",
     "@tailwindcss/vite": "^4.2.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -51,6 +53,7 @@
     "@vitest/coverage-v8": "^4.1.0",
     "firebase-tools": "^15.10.0",
     "jsdom": "^28.1.0",
+    "puppeteer": "^24.40.0",
     "shadcn": "^4.0.6",
     "tailwindcss": "^4.2.1",
     "typescript": "^5.9.3",
