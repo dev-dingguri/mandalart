@@ -101,8 +101,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* disable pull to refresh */
-  overflow: hidden;
+  /* pull-to-refresh 방지 — overflow: hidden 대신 overscroll-behavior 사용
+     콘텐츠 페이지(랜딩/가이드)는 document 스크롤이 필요하므로 overflow: hidden 불가 */
+  overscroll-behavior: none;
 }
 
 code {
