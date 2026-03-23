@@ -1,4 +1,5 @@
 import { useCallback, HTMLAttributes, useState, useRef, useEffect, KeyboardEvent, ChangeEvent } from 'react';
+import { useLatestRef } from '@/hooks/useLatestRef';
 import MandalartFocusView from '@/components/MandalartFocusView';
 import Mandalart, { MandalartProps, SelectedCell } from '@/components/Mandalart';
 import BottomInputBar from '@/components/BottomInputBar';
@@ -113,17 +114,12 @@ const MandalartView = ({
   const rootRef = useRef<HTMLDivElement>(null);
   const titleInputRef = useRef<HTMLInputElement>(null);
 
-  // Refs — stable 콜백에서 최신 값에 접근하기 위한 "useLatest" 패턴
-  const selectedCellRef = useRef<SelectedCell | null>(null);
-  const editingTextRef = useRef('');
-  const topicTreeRef = useRef(topicTree);
-  const onTopicTreeChangeRef = useRef(onTopicTreeChange);
-  const isAllViewRef = useRef(isAllView);
-
-  selectedCellRef.current = selectedCell;
-  topicTreeRef.current = topicTree;
-  onTopicTreeChangeRef.current = onTopicTreeChange;
-  isAllViewRef.current = isAllView;
+  // Refs — stable 콜백에서 최신 값에 접근하기 위한 useLatestRef 패턴
+  const selectedCellRef = useLatestRef(selectedCell);
+  const editingTextRef = useRef(''); // 콜백에서 imperative하게 갱신하는 값 — useLatestRef 불가
+  const topicTreeRef = useLatestRef(topicTree);
+  const onTopicTreeChangeRef = useLatestRef(onTopicTreeChange);
+  const isAllViewRef = useLatestRef(isAllView);
 
   // 만다라트 전환 시 제목 편집 취소
   useEffect(() => {

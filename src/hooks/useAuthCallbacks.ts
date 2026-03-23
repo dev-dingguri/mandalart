@@ -76,7 +76,6 @@ export const useAuthCallbacks = ({
   }, [signOut]);
 
   return {
-    signOut,
     onSignIn: handleSignIn,
     onSignOut: handleSignOut,
   };
