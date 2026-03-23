@@ -14,7 +14,21 @@
 
   <!-- 아래 태그들은 비프리렌더링 페이지(/app 등)의 소셜 공유 fallback용
        프리렌더링 페이지에서는 SEOHead가 생성한 태그만 남기고 빌드 시 중복 제거됨 -->
-  <title>Mandalart - Turn One Goal Into 81 Action Plans</title>
+  <title>Mandalart</title>
+  <!-- React(react-helmet-async)가 마운트되기 전까지 ~500ms 동안 위 fallback 타이틀이 보이므로,
+       URL path에서 언어를 읽어 즉시 올바른 타이틀로 교체 -->
+  <script>
+    (function () {
+      var titles = {
+        ko: '만다라트(Mandalart) - 하나의 목표를 81개의 행동으로 만드는 계획표',
+        en: 'Mandalart - Turn One Goal Into 81 Action Plans',
+        ja: 'マンダラート(Mandalart) - 1つの目標を81のアクションプランに変える計画表',
+        'zh-CN': '曼达拉图(Mandalart) - 将一个目标分解为81个行动计划'
+      };
+      var lang = location.pathname.split('/')[1];
+      if (titles[lang]) document.title = titles[lang];
+    })();
+  </script>
   <meta name="description" content="Break overwhelming goals into 81 concrete action steps. Mandalart is the ultimate tool for visualizing your thinking and achieving your goals. Start planning for free today." />
   <meta name="keywords" content="만다라트, 만다라트 계획표, Mandalart, 목표 설정, 계획 세우기, 오타니 계획표, 아이디어 정리 도구, 자기계발, 목표 달성 방법, 브레인스토밍, 81칸 계획표" />
   <meta property="og:type" content="website">
