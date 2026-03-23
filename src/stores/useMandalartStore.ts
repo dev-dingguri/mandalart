@@ -17,6 +17,7 @@ import {
   STORAGE_KEY_SNIPPETS,
   STORAGE_KEY_TOPIC_TREES,
   STORAGE_KEY_HAS_USED_TOOL,
+  STORAGE_KEY_LAST_SELECTED_MANDALART_ID,
   TMP_MANDALART_ID,
   createEmptyMeta,
   createEmptyTopicTree,
@@ -104,6 +105,13 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
   _guestTopicTrees: new Map(),
 
   selectMandalart: (id) => {
+    // 새로고침 후에도 마지막 선택 상태를 복원하기 위해 localStorage에 저장
+    if (id) {
+      localStorage.setItem(STORAGE_KEY_LAST_SELECTED_MANDALART_ID, id);
+    } else {
+      localStorage.removeItem(STORAGE_KEY_LAST_SELECTED_MANDALART_ID);
+    }
+
     const user = get()._user;
     if (user) {
       // User mode: currentTopicTree를 null로 비우지 않음 —
@@ -125,8 +133,10 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
 
     set({ metaMap });
     if (!isSelected) {
-      const lastId = Array.from(metaMap.keys()).pop() ?? null;
-      selectMandalart(lastId);
+      // 저장된 ID가 현재 metaMap에 존재하면 복원, 없으면 마지막 항목으로 fallback
+      const savedId = localStorage.getItem(STORAGE_KEY_LAST_SELECTED_MANDALART_ID);
+      const restoredId = savedId && metaMap.has(savedId) ? savedId : (Array.from(metaMap.keys()).pop() ?? null);
+      selectMandalart(restoredId);
     }
   },
 
