@@ -15,8 +15,8 @@
   <!-- 아래 태그들은 비프리렌더링 페이지(/app 등)의 소셜 공유 fallback용
        프리렌더링 페이지에서는 SEOHead가 생성한 태그만 남기고 빌드 시 중복 제거됨 -->
   <title>Mandalart</title>
-  <!-- React(react-helmet-async)가 마운트되기 전까지 ~500ms 동안 위 fallback 타이틀이 보이므로,
-       URL path에서 언어를 읽어 즉시 올바른 타이틀로 교체 -->
+  <!-- React(react-helmet-async)가 마운트되기 전까지 ~500ms간 fallback이 보이므로,
+       URL path에서 언어를 읽어 즉시 html lang·title을 교체 -->
   <script>
     (function () {
       var titles = {
@@ -26,7 +26,10 @@
         'zh-CN': '曼达拉图(Mandalart) - 将一个目标分解为81个行动计划'
       };
       var lang = location.pathname.split('/')[1];
-      if (titles[lang]) document.title = titles[lang];
+      if (titles[lang]) {
+        document.documentElement.lang = lang;
+        document.title = titles[lang];
+      }
     })();
   </script>
   <meta name="description" content="Break overwhelming goals into 81 concrete action steps. Mandalart is the ultimate tool for visualizing your thinking and achieving your goals. Start planning for free today." />
