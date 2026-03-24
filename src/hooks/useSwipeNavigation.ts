@@ -139,7 +139,7 @@ export const useSwipeNavigation = ({
   };
 };
 
-type SwipeParams = {
+export type SwipeParams = {
   currentIdx: number;
   startY: number;
   startX: number;
@@ -152,7 +152,7 @@ type SwipeParams = {
 };
 
 /** 스와이프 방향과 속도를 기반으로 이동할 그리드 인덱스를 계산 */
-const calculateSwipedIdx = ({
+export const calculateSwipedIdx = ({
   currentIdx,
   startY,
   startX,
@@ -195,7 +195,7 @@ const calculateSwipedIdx = ({
 };
 
 /** 키보드 방향키에 따라 이동할 그리드 인덱스를 계산 */
-const calculateKeyboardIdx = (
+export const calculateKeyboardIdx = (
   currentIdx: number,
   key: string,
   colSize: number,

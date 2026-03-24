@@ -2,7 +2,7 @@
 
 ## Current Status (2026-03-24)
 
-- **11 test files, 103 tests** — all passing
+- **19 test files, 227 tests** — all passing
 - Framework: Vitest + @testing-library/react (jsdom)
 
 ### Completed Tests
@@ -20,52 +20,37 @@
 | `useTitleEdit.test.ts` | Edit/save/cancel, limit, keydown, external sync, mandalart switch | 13 |
 | `useCellInput.test.ts` | Key handlers, text change, limit, cellKey change, text preservation | 15 |
 | `useMediaQuery.test.ts` | matchMedia subscription, change event, cleanup | 5 |
-| **Total** | | **103** |
+| `useSwipeNavigation.test.ts` | Pure functions: calculateKeyboardIdx (방향/경계), calculateSwipedIdx (스와이프/플릭/대각선) | 28 |
+| `useInfiniteScroll.test.ts` | IntersectionObserver mock, 교차/비교차, cleanup, rootMargin, ref 패턴 | 10 |
+| `useVisualViewportOffset.test.ts` | visualViewport mock, 오프셋 계산, resize/scroll, cleanup | 6 |
+| `useMandalartCallbacks.test.ts` | Store mock + toast + loading guard, CRUD 콜백 (select/meta/topicTree/create/delete/reset) | 19 |
+| `useAuthCallbacks.test.ts` | signIn/signOut, userType 추적, uploadTemp 마이그레이션, 에러 처리 | 13 |
+| `useAuthStore.test.ts` | Firebase Auth mock, signIn/signOut, session 관리, onAuthStateChanged | 13 |
+| `useAppLayoutState.test.ts` | 오케스트레이터 통합: 반환 구조, 서랍+콜백 연동, 에러→alert→reload, confirmDialog | 14 |
+| `useMandalartStore.user.test.ts` | User mode: Firebase CRUD, 원자적 쓰기, uploadTemp 마이그레이션, 경계 조건 | 21 |
+| **Total** | | **227** |
 
-## Remaining: Hooks (Difficulty: Hard)
+### Source Changes for Testability
 
-These hooks require extensive mocking (Firebase, Analytics, i18next, toast, etc.) and are better suited for a dedicated session.
+- `useSwipeNavigation.ts`: `calculateSwipedIdx`, `calculateKeyboardIdx`, `SwipeParams` type을 `export`로 변경 (로직 변경 없음)
 
-### useSwipeNavigation
-- **Difficulty:** Hard
-- **Why:** Touch event simulation + DOM container ref. Pure functions (`calculateSwipedIdx`, `calculateKeyboardIdx`) are not exported.
-- **Approach options:**
-  - A) Export pure functions and test them separately (recommended — low-effort, high-value)
-  - B) Full renderHook with touch event simulation
+### Mocking Patterns Reference
 
-### useVisualViewportOffset
-- **Difficulty:** Hard
-- **Why:** Requires `window.visualViewport` API mocking (not available in jsdom)
-- **Approach:** Mock visualViewport with resize/scroll event triggers
+| Mock 대상 | 기법 | 사용 파일 |
+|-----------|------|-----------|
+| `IntersectionObserver` | `vi.stubGlobal` + 콜백 캡처 | `useInfiniteScroll.test.ts` |
+| `window.visualViewport` | `Object.defineProperty` + 이벤트 핸들러 캡처 | `useVisualViewportOffset.test.ts` |
+| Firebase Auth | `vi.mock('@/lib/firebase')` + `vi.mock('firebase/auth')` | `useAuthStore.test.ts`, `useAuthCallbacks.test.ts` |
+| Firebase RTDB | `vi.mock('firebase/database')` + mock 함수 주입 | `useMandalartStore.user.test.ts` |
+| Zustand 스토어 | `store.setState()`로 mock 함수 주입 (실제 스토어 사용) | `useMandalartCallbacks.test.ts`, `useAuthCallbacks.test.ts` |
+| Module-level side effects | `vi.hoisted()`로 콜백 참조 선언 후 `vi.mock` 팩토리에서 캡처 | `useAuthStore.test.ts` |
+| `react-i18next` | 모듈 스코프 stable `t` 함수 반환 | `useAppLayoutState.test.ts` |
+| `sonner` | `vi.mock('sonner')` + `toast.error` spy | `useMandalartCallbacks.test.ts` |
 
-### useAppLayoutState
-- **Difficulty:** Hard (orchestrator hook)
-- **Why:** Depends on MandalartStore, i18next, useModal, useMandalartCallbacks, useAuthCallbacks. Essentially an integration test.
-- **Approach:** Mock stores and i18next, verify output structure and callback wiring
+## Remaining
 
-### useAuthCallbacks
-- **Difficulty:** Hard
-- **Why:** Depends on AuthStore (Firebase Auth), MandalartStore, analytics events
-- **Approach:** Mock Firebase auth, verify signIn/signOut flows, uploadTemp migration
-
-### useMandalartCallbacks
-- **Difficulty:** Hard
-- **Why:** Depends on MandalartStore, LoadingStore, analytics events, sonner toast
-- **Approach:** Mock stores and toast, verify CRUD callback flows and loading state management
-
-### useInfiniteScroll
-- **Difficulty:** Medium-Hard
-- **Why:** Requires `IntersectionObserver` mock
-- **Approach:** Mock IntersectionObserver, trigger intersection, verify callback
-
-## Remaining: Stores
-
-### useAuthStore
-- **Difficulty:** Hard
-- **Why:** Firebase Auth dependency (onAuthStateChanged, GoogleAuthProvider, signInWithPopup)
-- **Approach:** Mock Firebase Auth module
-
-### useMandalartStore (User mode)
-- **Difficulty:** Hard
-- **Why:** Firebase Realtime Database dependency (onValue, push, set, update)
-- **Approach:** Mock Firebase Database module, test subscription logic
+### useMandalartInit (Subscription Hook)
+- **Difficulty:** Very Hard
+- **Why:** `renderHook` 내에서 Firebase `onValue` 구독/해제, user 전환에 따른 Guest↔User 모드 전환, 3개의 `useEffect`가 연쇄적으로 동작
+- **Approach:** `onValue` mock에서 콜백을 캡처하여 snapshot을 시뮬레이션. user prop 변경 시 구독 재설정 검증
+- **Priority:** Medium — CRUD 로직은 이미 커버됨. 구독 연결/해제 로직이 주요 테스트 대상
