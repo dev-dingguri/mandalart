@@ -43,6 +43,7 @@ const MandalartFocusView = ({
       ref={containerRef}
       tabIndex={-1}
       className="aspect-square w-full overflow-hidden outline-none"
+      data-testid="mandalart-focus-view"
       {...touchHandlers}
       {...keyboardHandlers}
     >

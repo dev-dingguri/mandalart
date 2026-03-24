@@ -354,7 +354,7 @@ const MandalartView = ({
           />
         </div>
       </div>
-      <div className="mb-2 mt-3">
+      <div className="mb-2 mt-3" data-testid="mandalart-container">
         {isDesktop ? (
           // 데스크톱: Popover로 감싸서 선택된 셀 근처에 입력 UI 표시
           // TopicItem 내부의 PopoverAnchor가 앵커 역할을 함

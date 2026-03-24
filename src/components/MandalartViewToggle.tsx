@@ -15,6 +15,7 @@ const MandalartViewToggle = ({
 
   return (
     <Toggle
+      data-testid="view-toggle"
       variant="outline"
       className="size-10 [&_svg]:size-5 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:border-primary"
       pressed={!isAllView}
