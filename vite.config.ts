@@ -72,7 +72,7 @@ function postBuildSeo(): Plugin {
   return {
     name: 'post-build-seo',
     closeBundle() {
-      const buildDir = resolve(__dirname, 'build');
+      const buildDir = resolve(__dirname, 'dist');
 
       // 1. sitemap.xml lastmod를 오늘 날짜로 갱신
       try {
@@ -109,7 +109,7 @@ function postBuildSeo(): Plugin {
       try {
         walkHtml(buildDir);
       } catch {
-        /* build 폴더 없으면 무시 */
+        /* dist 폴더 없으면 무시 */
       }
     },
   };
@@ -148,7 +148,7 @@ export default defineConfig({
     open: true,
   },
   build: {
-    outDir: 'build',
+    outDir: 'dist',
     sourcemap: false,
     rollupOptions: {
       output: {
@@ -186,7 +186,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ['./src/__tests__/setup.ts'],
     exclude: ['e2e/**', 'node_modules/**'],
   },
 });

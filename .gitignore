@@ -13,7 +13,7 @@
 /playwright/.cache/
 
 # production
-/build
+/dist
 
 # typescript
 tsconfig.tsbuildinfo

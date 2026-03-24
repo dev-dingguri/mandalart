@@ -1,2 +1,2 @@
-export type { MandalartMeta } from './MandalartMeta';
-export type { TopicNode } from './TopicNode';
+export type { MandalartMeta } from './mandalartMeta';
+export type { TopicNode } from './topicNode';

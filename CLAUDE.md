@@ -10,8 +10,8 @@ The `rewrite/incremental` branch has migrated from CRA to Vite 6 + modern stack.
 
 - Package manager: pnpm
 - `pnpm dev` — dev server (localhost:3000)
-- `pnpm build` — production build (`tsc -b && vite build`, output: `build/`); prerenders `/ko` and `/ko/guide` to static HTML for SEO
-- `pnpm test` — run Vitest unit tests (single file: `pnpm vitest run src/test/<filename>`)
+- `pnpm build` — production build (`tsc -b && vite build`, output: `dist/`); prerenders `/ko` and `/ko/guide` to static HTML for SEO
+- `pnpm test` — run Vitest unit tests (single file: `pnpm vitest run src/__tests__/<filename>`)
 - `pnpm test:watch` — Vitest watch mode
 - `pnpm test:e2e` — run Playwright E2E tests (single file: `pnpm test:e2e e2e/<filename>`)
 - `pnpm test:e2e:ui` — Playwright UI mode (interactive debugging)
@@ -142,7 +142,7 @@ Extracts all state/logic from `AppLayout` (modals, store subscriptions, analytic
 ### Unit Tests (Vitest)
 
 - Config: `vite.config.ts` → `test` section (jsdom environment)
-- Tests: `src/test/` — stores, hooks, utilities, routing
+- Tests: `src/__tests__/` — stores, hooks, utilities, routing
 - `e2e/**` is excluded from Vitest via `test.exclude`
 
 ### E2E Tests (Playwright)

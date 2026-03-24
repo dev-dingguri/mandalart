@@ -21,7 +21,7 @@ const SEOHead = ({
   title,
   description,
   path,
-  ogImage = '/image.png',
+  ogImage = '/og-default.png',
   noindex = false,
 }: SEOHeadProps) => {
   const subpath = extractSubpath(path);
