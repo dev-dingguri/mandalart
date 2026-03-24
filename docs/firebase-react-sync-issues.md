@@ -87,13 +87,11 @@ TypeScript 타입은 `TopicNode.children: TopicNode[]`로 선언되어 있지만
 
 ---
 
-## 5. 게스트 localStorage 스키마 버전 관리 없음
+## 5. ~~게스트 localStorage 스키마 버전 관리 없음~~ (해결됨)
 
-**심각도:** 마이그레이션 위험
+**심각도:** ~~마이그레이션 위험~~ → 해결 완료 (2026-03-24)
 
-`useMandalartStore.ts:27-29`에 TODO로 이미 표시되어 있음.
-
-게스트 모드의 localStorage 데이터에 스키마 버전이 없다. `MandalartMeta`나 `TopicNode` 타입 구조가 변경되면 기존 localStorage 데이터와 호환되지 않을 수 있다. 현재 유일한 보호 장치는 `JSON.parse` 실패 시 빈 Map을 반환하는 try-catch뿐이며, 파싱은 성공하지만 구조가 달라진 경우(필드 추가/삭제/이름 변경)는 감지하지 못한다.
+`src/lib/guestStorage.ts`에서 `{ version, data }` 래퍼 형식으로 저장하고, 레거시 데이터는 자동으로 v1으로 마이그레이션한다. 마이그레이션 레지스트리 패턴으로 향후 타입 변경 시 순차적 마이그레이션을 지원한다.
 
 ---
 
