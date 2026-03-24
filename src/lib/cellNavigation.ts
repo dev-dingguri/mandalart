@@ -90,11 +90,11 @@ export function getTopic(
   let node = topicTree;
   [gridIdx, gridItemIdx].forEach((idx) => {
     if (idx !== TABLE_CENTER_IDX) {
-      node = node.children[idx < TABLE_CENTER_IDX ? idx : idx - 1];
+      // 배열 접근 직후 guard — TypeScript가 범위 초과를 잡지 못하므로 런타임 방어
+      const child = node.children[idx < TABLE_CENTER_IDX ? idx : idx - 1];
+      if (!child) throw new Error(`Cannot get topicNode at idx ${idx}.`);
+      node = child;
     }
   });
-  if (!node) {
-    throw new Error('Cannot get topicNode.');
-  }
   return node;
 }
