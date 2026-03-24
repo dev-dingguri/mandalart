@@ -55,9 +55,11 @@ function load<T>(
       version++;
     }
 
-    // 레거시 형식이거나 마이그레이션이 발생했으면 새 형식으로 재저장
+    // 레거시 형식이거나 마이그레이션이 완료됐으면 새 형식으로 재저장
+    // 마이그레이션이 중단된 경우(migrate 함수 누락) 부분 변환 데이터를 저장하지 않도록
+    // version === CURRENT_SCHEMA_VERSION 조건으로 완료 여부를 확인한다.
     const isLegacy = typeof parsed.version !== 'number';
-    if (isLegacy || version !== parsed.version) {
+    if (isLegacy || (version === CURRENT_SCHEMA_VERSION && version !== parsed.version)) {
       save(key, new Map(Object.entries(data)));
     }
 
@@ -68,11 +70,15 @@ function load<T>(
 }
 
 function save<T>(key: string, map: Map<string, T>): void {
-  const wrapped: VersionedData<T> = {
-    version: CURRENT_SCHEMA_VERSION,
-    data: Object.fromEntries(map),
-  };
-  localStorage.setItem(key, JSON.stringify(wrapped));
+  try {
+    const wrapped: VersionedData<T> = {
+      version: CURRENT_SCHEMA_VERSION,
+      data: Object.fromEntries(map),
+    };
+    localStorage.setItem(key, JSON.stringify(wrapped));
+  } catch {
+    // QuotaExceededError 등 — 기존 데이터 유지, 조용히 실패
+  }
 }
 
 // -- Public API --
