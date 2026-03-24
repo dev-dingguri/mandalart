@@ -70,12 +70,19 @@ Works without login — data stored in `localStorage`. On sign-in, `uploadTemp()
 ```
 App → LandingPage (재방문자 리다이렉트 → /app)
     → MainPage → AuthenticatedView / GuestView → AppLayout (useAppLayoutState hook)
-    │   ├── Header
-    │   ├── MandalartView → Mandalart → ItemGrid → TopicGrid → TopicItem
-    │   │                 → MandalartFocusView (useSwipeNavigation hook)
+    │   ├── Header (useTitleEdit hook — inline title editing)
+    │   ├── MandalartView (useCellInput, useMediaQuery hooks)
+    │   │   ├── Mandalart → ItemGrid → TopicGrid → TopicItem
+    │   │   ├── MandalartFocusView (useSwipeNavigation hook)
+    │   │   ├── MandalartViewToggle (All View ↔ Focus View)
+    │   │   ├── PopoverCellInput (desktop: Radix Popover)
+    │   │   └── BottomInputBar (mobile: fixed bottom, visualViewport API)
     │   ├── MandalartListDrawer (lazy, Radix Sheet left)
+    │   │   └── MandalartList → MandalartListItem → MandalartListItemMenu
     │   ├── SettingsDrawer (lazy, Radix Sheet right)
-    │   └── SignInDialog (lazy)
+    │   ├── SignInDialog (lazy)
+    │   ├── ConfirmDialog (delete/reset confirmation)
+    │   └── AlertDialog (error alerts)
     → GuidePage
 ```
 
@@ -96,7 +103,7 @@ Extracts all state/logic from `AppLayout` (modals, store subscriptions, analytic
 
 - `memo`: entire grid hierarchy (`Mandalart`, `TopicGrid`, `TopicItem`, `ItemGrid`)
 - `React.lazy`: `MandalartListDrawer`, `SettingsDrawer`, `SignInDialog`, `OpenSourceLicensesPage`
-- Manual bundle chunk splitting: `vendor-router`, `vendor-firebase`, `vendor-i18n`, `vendor-ui`
+- Manual bundle chunk splitting: `vendor-router`, `vendor-firebase`, `vendor-i18n`, `vendor-ui`, `vendor-icons`
 - `structuredClone` for deep-copying topic trees
 - Zustand individual selectors: avoid full store subscription, subscribe only to needed slices (e.g., `hasMandalarts` boolean instead of full `metaMap`)
 - Touch handler stabilization: `useCallback` + ref pattern in `useSwipeNavigation` to prevent handler recreation on every render
@@ -128,7 +135,7 @@ Extracts all state/logic from `AppLayout` (modals, store subscriptions, analytic
 
 - `src/components/` — React components
 - `src/components/ui/` — shadcn/ui primitives
-- `src/hooks/` — Custom hooks (`useModal`, `useAnalytics`, `useSwipeNavigation`, `useAppLayoutState`, `useInfiniteScroll`, etc.)
+- `src/hooks/` — Custom hooks (`useAppLayoutState`, `useAuthCallbacks`, `useCellInput`, `useInfiniteScroll`, `useLatestRef`, `useMandalartCallbacks`, `useMediaQuery`, `useModal`, `useSwipeNavigation`, `useTitleEdit`, `useVisualViewportOffset`)
 - `src/stores/` — Zustand stores (`useMandalartInit` hook also lives here)
 - `src/locales/` — i18n resource bundles (JSON)
 - `src/types/` — TypeScript type definitions
