@@ -41,7 +41,7 @@ const TopicGrid = memo(({
   useEffect(() => {
     if (!isFocused) return;
     const handler = () => scrollCenter(gridRef.current, 'auto');
-    window.addEventListener('resize', handler);
+    window.addEventListener('resize', handler, { passive: true });
     return () => window.removeEventListener('resize', handler);
   }, [isFocused]);
 

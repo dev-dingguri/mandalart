@@ -242,8 +242,8 @@ const MandalartView = ({
 
     const vv = window.visualViewport;
     if (vv) {
-      vv.addEventListener('resize', updateCentering);
-      vv.addEventListener('scroll', updateCentering);
+      vv.addEventListener('resize', updateCentering, { passive: true });
+      vv.addEventListener('scroll', updateCentering, { passive: true });
     }
 
     return () => {

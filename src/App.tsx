@@ -6,6 +6,7 @@ import { useIsDarkMode } from '@/stores/useThemeStore';
 import { trackAppVersion } from '@/lib/analyticsEvents';
 import { Toaster } from 'sonner';
 import { HelmetProvider } from 'react-helmet-async';
+import ErrorBoundary from '@/components/ErrorBoundary';
 // 프리렌더링 대상 페이지(Landing·Guide)는 eager import — lazy()로 감싸면
 // render-event 발생 시점에 컴포넌트가 아직 로드되지 않아 빈 HTML이 캡처됨
 import LandingPage from '@/components/LandingPage';
@@ -60,50 +61,52 @@ const App = () => {
   }, [isDarkMode]);
 
   return (
-    <HelmetProvider>
-      <Toaster
-        theme={isDarkMode ? 'dark' : 'light'}
-        position="bottom-center"
-        duration={3000}
-        toastOptions={{ className: 'text-sm' }}
-      />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route
-            path={`/${lang}`}
-            element={<LandingPage />}
-          />
-          {/* 도구 페이지만 h-dvh로 감쌈 — 랜딩/가이드는 스크롤이 필요한 긴 콘텐츠 페이지 */}
-          <Route
-            path={`/${lang}${PATH_APP}`}
-            element={
-              <div className="h-dvh">
-                <Suspense fallback={null}>
-                  <MainPage />
-                </Suspense>
-              </div>
-            }
-          />
-          <Route
-            path={`/${lang}${PATH_GUIDE}`}
-            element={<GuidePage />}
-          />
-          {/* OSS 페이지도 h-full + overflow-y-auto 패턴이므로 고정 높이 필요 */}
-          <Route
-            path={`/${lang}${PATH_OSS}`}
-            element={
-              <div className="h-dvh">
-                <Suspense fallback={null}>
-                  <OpenSourceLicensesPage />
-                </Suspense>
-              </div>
-            }
-          />
-          <Route path="*" element={<Navigate to={`/${lang}`} />} />
-        </Routes>
-      </BrowserRouter>
-    </HelmetProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <Toaster
+          theme={isDarkMode ? 'dark' : 'light'}
+          position="bottom-center"
+          duration={3000}
+          toastOptions={{ className: 'text-sm' }}
+        />
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route
+              path={`/${lang}`}
+              element={<LandingPage />}
+            />
+            {/* 도구 페이지만 h-dvh로 감쌈 — 랜딩/가이드는 스크롤이 필요한 긴 콘텐츠 페이지 */}
+            <Route
+              path={`/${lang}${PATH_APP}`}
+              element={
+                <div className="h-dvh">
+                  <Suspense fallback={null}>
+                    <MainPage />
+                  </Suspense>
+                </div>
+              }
+            />
+            <Route
+              path={`/${lang}${PATH_GUIDE}`}
+              element={<GuidePage />}
+            />
+            {/* OSS 페이지도 h-full + overflow-y-auto 패턴이므로 고정 높이 필요 */}
+            <Route
+              path={`/${lang}${PATH_OSS}`}
+              element={
+                <div className="h-dvh">
+                  <Suspense fallback={null}>
+                    <OpenSourceLicensesPage />
+                  </Suspense>
+                </div>
+              }
+            />
+            <Route path="*" element={<Navigate to={`/${lang}`} />} />
+          </Routes>
+        </BrowserRouter>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 };
 

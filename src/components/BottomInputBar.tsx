@@ -34,8 +34,8 @@ const BottomInputBar = (props: BottomInputBarProps) => {
     const vv = window.visualViewport;
     if (!vv) return;
 
-    vv.addEventListener('resize', updateBarPosition);
-    vv.addEventListener('scroll', updateBarPosition);
+    vv.addEventListener('resize', updateBarPosition, { passive: true });
+    vv.addEventListener('scroll', updateBarPosition, { passive: true });
 
     return () => {
       vv.removeEventListener('resize', updateBarPosition);
