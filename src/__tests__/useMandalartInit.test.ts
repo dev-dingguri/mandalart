@@ -3,7 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 
 // -- Firebase module mocks --
 
-const mockRef = vi.fn((_db: any, path?: string) => ({ __path: path }));
+const mockRef = vi.fn((..._args: any[]) => ({}));
 const mockOnValue = vi.fn();
 
 vi.mock('@/lib/firebase', () => ({
@@ -19,11 +19,13 @@ vi.mock('firebase/auth', () => ({
 }));
 
 vi.mock('firebase/database', () => ({
-  ref: (...args: unknown[]) => mockRef(...args),
+  // vi.mock은 파일 최상단으로 호이스팅되어 mockRef/mockOnValue가 아직 초기화 전이므로
+  // 클로저 래퍼로 지연 참조해야 함 (직접 할당 시 undefined)
+  ref: (...args: any[]) => mockRef(...args),
   push: vi.fn(),
   set: vi.fn(),
   update: vi.fn(),
-  onValue: (...args: unknown[]) => mockOnValue(...args),
+  onValue: (...args: any[]) => mockOnValue(...args),
 }));
 
 import {
