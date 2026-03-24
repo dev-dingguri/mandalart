@@ -1,8 +1,8 @@
 # Test Coverage Plan
 
-## Current Status (2026-03-24)
+## Current Status (2026-03-25)
 
-- **19 test files, 227 tests** — all passing
+- **20 test files, 252 tests** — all passing
 - Framework: Vitest + @testing-library/react (jsdom)
 
 ### Completed Tests
@@ -28,7 +28,8 @@
 | `useAuthStore.test.ts` | Firebase Auth mock, signIn/signOut, session 관리, onAuthStateChanged | 13 |
 | `useAppLayoutState.test.ts` | 오케스트레이터 통합: 반환 구조, 서랍+콜백 연동, 에러→alert→reload, confirmDialog | 14 |
 | `useMandalartStore.user.test.ts` | User mode: Firebase CRUD, 원자적 쓰기, uploadTemp 마이그레이션, 경계 조건 | 21 |
-| **Total** | | **227** |
+| `useMandalartInit.test.ts` | onValue 구독/해제, Guest↔User 모드 전환, stale 콜백 guard, localStorage 초기화/복구 | 25 |
+| **Total** | | **252** |
 
 ### Source Changes for Testability
 
@@ -41,7 +42,7 @@
 | `IntersectionObserver` | `vi.stubGlobal` + 콜백 캡처 | `useInfiniteScroll.test.ts` |
 | `window.visualViewport` | `Object.defineProperty` + 이벤트 핸들러 캡처 | `useVisualViewportOffset.test.ts` |
 | Firebase Auth | `vi.mock('@/lib/firebase')` + `vi.mock('firebase/auth')` | `useAuthStore.test.ts`, `useAuthCallbacks.test.ts` |
-| Firebase RTDB | `vi.mock('firebase/database')` + mock 함수 주입 | `useMandalartStore.user.test.ts` |
+| Firebase RTDB | `vi.mock('firebase/database')` + mock 함수 주입 | `useMandalartStore.user.test.ts`, `useMandalartInit.test.ts` |
 | Zustand 스토어 | `store.setState()`로 mock 함수 주입 (실제 스토어 사용) | `useMandalartCallbacks.test.ts`, `useAuthCallbacks.test.ts` |
 | Module-level side effects | `vi.hoisted()`로 콜백 참조 선언 후 `vi.mock` 팩토리에서 캡처 | `useAuthStore.test.ts` |
 | `react-i18next` | 모듈 스코프 stable `t` 함수 반환 | `useAppLayoutState.test.ts` |
@@ -49,8 +50,4 @@
 
 ## Remaining
 
-### useMandalartInit (Subscription Hook)
-- **Difficulty:** Very Hard
-- **Why:** `renderHook` 내에서 Firebase `onValue` 구독/해제, user 전환에 따른 Guest↔User 모드 전환, 3개의 `useEffect`가 연쇄적으로 동작
-- **Approach:** `onValue` mock에서 콜백을 캡처하여 snapshot을 시뮬레이션. user prop 변경 시 구독 재설정 검증
-- **Priority:** Medium — CRUD 로직은 이미 커버됨. 구독 연결/해제 로직이 주요 테스트 대상
+All planned unit tests are complete.
