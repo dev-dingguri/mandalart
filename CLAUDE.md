@@ -11,8 +11,10 @@ The `rewrite/incremental` branch has migrated from CRA to Vite 6 + modern stack.
 - Package manager: pnpm
 - `pnpm dev` — dev server (localhost:3000)
 - `pnpm build` — production build (`tsc -b && vite build`, output: `build/`); prerenders `/ko` and `/ko/guide` to static HTML for SEO
-- `pnpm test` — run Vitest tests (single file: `pnpm vitest run src/test/<filename>`)
+- `pnpm test` — run Vitest unit tests (single file: `pnpm vitest run src/test/<filename>`)
 - `pnpm test:watch` — Vitest watch mode
+- `pnpm test:e2e` — run Playwright E2E tests (single file: `pnpm test:e2e e2e/<filename>`)
+- `pnpm test:e2e:ui` — Playwright UI mode (interactive debugging)
 - `pnpm deploy:firebase` — deploy to Firebase Hosting
 - `pnpm deploy:preview` — deploy to Firebase preview channel (expires in 7 days)
 
@@ -26,6 +28,7 @@ The `rewrite/incremental` branch has migrated from CRA to Vite 6 + modern stack.
 - lucide-react (icons), `@/` path alias via `vite-tsconfig-paths`
 - react-helmet-async (per-page meta tags for SEO)
 - @prerenderer/rollup-plugin (build-time prerendering for static HTML)
+- Playwright (E2E testing, Chromium only)
 
 ## Environment Variables
 
@@ -131,7 +134,23 @@ Extracts all state/logic from `AppLayout` (modals, store subscriptions, analytic
 - `src/types/` — TypeScript type definitions
 - `src/lib/` — Utilities (`firebase.ts`, `utils.ts`)
 - `src/constants/` — Constants (TABLE_SIZE=9, TABLE_CENTER_IDX=4, MAX_UPLOAD_MANDALARTS_SIZE=20, etc.)
+- `e2e/` — Playwright E2E tests (guest mode: grid, view toggle, cell editing)
 - `docs/` — Refactoring design docs, migration history
+
+## Testing
+
+### Unit Tests (Vitest)
+
+- Config: `vite.config.ts` → `test` section (jsdom environment)
+- Tests: `src/test/` — stores, hooks, utilities, routing
+- `e2e/**` is excluded from Vitest via `test.exclude`
+
+### E2E Tests (Playwright)
+
+- Config: `playwright.config.ts` — Chromium only, webServer starts `pnpm dev`
+- Tests: `e2e/` — Phase 1 covers guest mode (no Firebase dependency)
+- Selectors: `[data-cell]` (pre-existing), `data-testid` on MandalartView container, FocusView container, ViewToggle
+- Desktop viewport (1280×720) tests the Popover input path; mobile BottomInputBar path is not yet covered
 
 ## Known Issues
 
