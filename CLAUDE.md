@@ -33,7 +33,7 @@ The `rewrite/incremental` branch has migrated from CRA to Vite 6 + modern stack.
 ## Environment Variables
 
 - Vite convention: `VITE_` prefix (`import.meta.env.VITE_*`)
-- Firebase config: requires `VITE_FIREBASE_*` variables in `.env` (see template.env)
+- Firebase config: requires `VITE_FIREBASE_*` variables in `.env` (see .env.example)
 
 ## Data Model
 
