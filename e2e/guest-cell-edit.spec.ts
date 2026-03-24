@@ -1,9 +1,17 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+// Radix Popover 내부 속성에 의존 — Radix 메이저 업데이트 시 이 한 줄만 수정
+const popoverInput = (page: Page) =>
+  page.locator('[data-radix-popper-content-wrapper] input');
 
 test.describe('Guest mode — Cell editing', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/ko/app');
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => {
+      localStorage.removeItem('mandalarts__snippets');
+      localStorage.removeItem('mandalarts__topictrees');
+      localStorage.removeItem('last_selected_mandalart_id');
+    });
     await page.goto('/ko/app');
     await page.waitForSelector('[data-cell]');
   });
@@ -12,9 +20,7 @@ test.describe('Guest mode — Cell editing', () => {
     const firstCell = page.locator('[data-cell]').first();
     await firstCell.click();
 
-    // Popover content should appear (contains an input)
-    const input = page.locator('[data-radix-popper-content-wrapper] input');
-    await expect(input).toBeVisible({ timeout: 3000 });
+    await expect(popoverInput(page)).toBeVisible({ timeout: 3000 });
   });
 
   test('typing in cell input updates cell text', async ({ page }) => {
@@ -22,46 +28,35 @@ test.describe('Guest mode — Cell editing', () => {
     const targetCell = cells.first();
     await targetCell.click();
 
-    // Type text into the popover input
-    const input = page.locator('[data-radix-popper-content-wrapper] input');
-    await input.fill('My Goal');
+    await popoverInput(page).fill('My Goal');
 
     // Close by pressing Escape — triggers onSaveAndClose via useCellInput's keydown handler
     await page.keyboard.press('Escape');
 
-    // Cell text should now show "My Goal"
     await expect(targetCell).toContainText('My Goal');
   });
 
   test('edited text persists after page reload', async ({ page }) => {
-    // Edit a cell
     const cells = page.locator('[data-cell]');
     await cells.first().click();
 
-    const input = page.locator('[data-radix-popper-content-wrapper] input');
-    await input.fill('Persistent Text');
+    await popoverInput(page).fill('Persistent Text');
 
-    // Close input
     await page.keyboard.press('Escape');
     await expect(cells.first()).toContainText('Persistent Text');
 
-    // Reload page
     await page.reload();
     await page.waitForSelector('[data-cell]');
 
-    // Text should persist from localStorage
     await expect(page.locator('[data-cell]').first()).toContainText(
       'Persistent Text',
     );
   });
 
   test('localStorage contains guest data after editing', async ({ page }) => {
-    // Edit a cell
     await page.locator('[data-cell]').first().click();
-    const input = page.locator('[data-radix-popper-content-wrapper] input');
-    await input.fill('Storage Check');
+    await popoverInput(page).fill('Storage Check');
 
-    // Close and verify localStorage
     await page.keyboard.press('Escape');
 
     const stored = await page.evaluate(() => {
@@ -71,7 +66,6 @@ test.describe('Guest mode — Cell editing', () => {
 
     expect(stored).not.toBeNull();
     expect(stored.version).toBe(1);
-    // At least one topic tree should have "Storage Check" somewhere in serialized data
     const serialized = JSON.stringify(stored.data);
     expect(serialized).toContain('Storage Check');
   });

@@ -67,6 +67,8 @@ test.describe('Guest mode — View toggle', () => {
     const toggle = page.getByTestId('view-toggle');
     await toggle.click();
 
+    // Focus View 전환 완료 대기 후 셀 카운트 — 전환 중 race condition 방지
+    await expect(page.getByTestId('mandalart-focus-view')).toBeVisible();
     // All 81 cells still rendered (FocusView renders full Mandalart at 240% scale)
     await expect(page.locator('[data-cell]')).toHaveCount(81);
   });
