@@ -55,7 +55,7 @@ cd mandalart
 pnpm install
 
 # Configure environment variables
-cp template.env .env
+cp .env.example .env
 # Edit .env and fill in your Firebase config values
 ```
 
