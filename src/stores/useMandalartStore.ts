@@ -14,8 +14,6 @@ import { MandalartMeta, TopicNode } from '@/types';
 import {
   DB_SNIPPETS,
   DB_TOPIC_TREES,
-  STORAGE_KEY_SNIPPETS,
-  STORAGE_KEY_TOPIC_TREES,
   STORAGE_KEY_HAS_USED_TOOL,
   STORAGE_KEY_LAST_SELECTED_MANDALART_ID,
   TMP_MANDALART_ID,
@@ -23,45 +21,12 @@ import {
   createEmptyTopicTree,
   MAX_UPLOAD_MANDALARTS_SIZE,
 } from '@/constants';
-
-// -- localStorage helpers --
-
-// TODO: guest localStorage 데이터에 스키마 버전이 없음 (client-localstorage-schema).
-// MandalartMeta/TopicNode 타입이 변경되면 기존 데이터와 호환되지 않을 수 있으므로
-// 저장 형식에 version 필드를 추가하는 것을 고려.
-const loadGuestMandalartMetas = (): Map<string, MandalartMeta> => {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY_SNIPPETS) || '{}');
-    return new Map(Object.entries(data));
-  } catch {
-    return new Map();
-  }
-};
-
-const saveGuestMandalartMetas = (map: Map<string, MandalartMeta>) => {
-  localStorage.setItem(
-    STORAGE_KEY_SNIPPETS,
-    JSON.stringify(Object.fromEntries(map)),
-  );
-};
-
-const loadGuestTopicTrees = (): Map<string, TopicNode> => {
-  try {
-    const data = JSON.parse(
-      localStorage.getItem(STORAGE_KEY_TOPIC_TREES) || '{}',
-    );
-    return new Map(Object.entries(data));
-  } catch {
-    return new Map();
-  }
-};
-
-const saveGuestTopicTrees = (map: Map<string, TopicNode>) => {
-  localStorage.setItem(
-    STORAGE_KEY_TOPIC_TREES,
-    JSON.stringify(Object.fromEntries(map)),
-  );
-};
+import {
+  loadGuestMandalartMetas,
+  saveGuestMandalartMetas,
+  loadGuestTopicTrees,
+  saveGuestTopicTrees,
+} from '@/lib/guestStorage';
 
 const EMPTY_META_JSON = JSON.stringify(createEmptyMeta());
 const EMPTY_TOPIC_TREE_JSON = JSON.stringify(createEmptyTopicTree());
