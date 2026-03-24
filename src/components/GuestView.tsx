@@ -1,6 +1,9 @@
 import AppLayout from '@/components/AppLayout';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { useMandalartInit, useMandalartStore } from '@/stores/useMandalartStore';
+import {
+  useMandalartInit,
+  useMandalartStore,
+} from '@/stores/useMandalartStore';
 
 type GuestViewProps = {
   userError: Error | null;
@@ -12,9 +15,7 @@ const GuestView = ({ userError }: GuestViewProps) => {
 
   if (isLoading) return <LoadingSpinner />;
 
-  return (
-    <AppLayout userHandlers={{ error: userError }} />
-  );
+  return <AppLayout userHandlers={{ error: userError }} />;
 };
 
 export default GuestView;

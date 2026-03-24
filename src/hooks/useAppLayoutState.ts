@@ -34,8 +34,11 @@ export const useAppLayoutState = ({
   // zustand/traditional의 useStoreWithEqualityFn을 사용
   const currentMandalartMeta = useStoreWithEqualityFn(
     useMandalartStore,
-    (s): MandalartMeta | null => s.currentMandalartId ? s.metaMap.get(s.currentMandalartId) ?? null : null,
-    metaEquals
+    (s): MandalartMeta | null =>
+      s.currentMandalartId
+        ? (s.metaMap.get(s.currentMandalartId) ?? null)
+        : null,
+    metaEquals,
   );
 
   const { t } = useTranslation();
@@ -113,7 +116,7 @@ export const useAppLayoutState = ({
       mandalartCallbacks.onSelect(mandalartId);
       closeLeftDrawer();
     },
-    [mandalartCallbacks.onSelect, closeLeftDrawer]
+    [mandalartCallbacks.onSelect, closeLeftDrawer],
   );
 
   const handleDeleteMandalart = useCallback(
@@ -121,7 +124,7 @@ export const useAppLayoutState = ({
       mandalartCallbacks.onDelete(mandalartId);
       closeLeftDrawer();
     },
-    [mandalartCallbacks.onDelete, closeLeftDrawer]
+    [mandalartCallbacks.onDelete, closeLeftDrawer],
   );
 
   const handleResetMandalart = useCallback(
@@ -129,7 +132,7 @@ export const useAppLayoutState = ({
       mandalartCallbacks.onReset(mandalartId);
       closeLeftDrawer();
     },
-    [mandalartCallbacks.onReset, closeLeftDrawer]
+    [mandalartCallbacks.onReset, closeLeftDrawer],
   );
 
   const handleConfirmDialogConfirm = useCallback(() => {
@@ -157,7 +160,10 @@ export const useAppLayoutState = ({
       onSelect: handleSelectMandalart,
       onDelete: handleDeleteMandalart,
       onReset: handleResetMandalart,
-      onCreate: () => { mandalartCallbacks.onCreate(); closeLeftDrawer(); },
+      onCreate: () => {
+        mandalartCallbacks.onCreate();
+        closeLeftDrawer();
+      },
     },
     rightDrawer: {
       isOpen: isOpenRightDrawer,
@@ -168,7 +174,10 @@ export const useAppLayoutState = ({
       isOpen: isOpenSignInDialog,
       open: openSignInDialog,
       close: closeSignInDialog,
-      onSignIn: (providerId: string) => { closeSignInDialog(); authCallbacks.onSignIn(providerId); },
+      onSignIn: (providerId: string) => {
+        closeSignInDialog();
+        authCallbacks.onSignIn(providerId);
+      },
     },
     alert: {
       isOpen: isOpenAlert,

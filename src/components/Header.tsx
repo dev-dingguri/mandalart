@@ -37,7 +37,11 @@ const Header = ({
 }: HeaderProps) => {
   const { t } = useTranslation();
 
-  const initial = (user?.displayName?.[0] ?? user?.email?.[0] ?? '?').toUpperCase();
+  const initial = (
+    user?.displayName?.[0] ??
+    user?.email?.[0] ??
+    '?'
+  ).toUpperCase();
 
   return (
     <header className={cn('bg-background', className)}>
@@ -47,7 +51,10 @@ const Header = ({
             <Button
               variant="ghost"
               size="icon"
-              onClick={(e) => { e.currentTarget.blur(); onOpenLeftDrawer(); }}
+              onClick={(e) => {
+                e.currentTarget.blur();
+                onOpenLeftDrawer();
+              }}
               className="mr-1"
               aria-label={t('mandalart.list')}
             >
@@ -61,7 +68,9 @@ const Header = ({
           <DropdownMenu>
             <DropdownMenuTrigger className="ml-1 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background">
               <span className="flex size-8 items-center justify-center rounded-full bg-primary hover:opacity-90">
-                <span className="text-sm font-semibold text-primary-foreground">{initial}</span>
+                <span className="text-sm font-semibold text-primary-foreground">
+                  {initial}
+                </span>
               </span>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-auto">
@@ -69,10 +78,14 @@ const Header = ({
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col gap-0.5">
                     {user.displayName && (
-                      <span className="text-sm font-medium">{user.displayName}</span>
+                      <span className="text-sm font-medium">
+                        {user.displayName}
+                      </span>
                     )}
                     {user.email && (
-                      <span className="text-xs text-muted-foreground">{user.email}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {user.email}
+                      </span>
                     )}
                   </div>
                 </DropdownMenuLabel>
@@ -85,7 +98,13 @@ const Header = ({
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <Button variant="ghost" onClick={(e) => { e.currentTarget.blur(); onOpenSignInUI(); }}>
+          <Button
+            variant="ghost"
+            onClick={(e) => {
+              e.currentTarget.blur();
+              onOpenSignInUI();
+            }}
+          >
             {t('auth.signIn')}
           </Button>
         )}
@@ -94,7 +113,10 @@ const Header = ({
             <Button
               variant="ghost"
               size="icon"
-              onClick={(e) => { e.currentTarget.blur(); onOpenRightDrawer(); }}
+              onClick={(e) => {
+                e.currentTarget.blur();
+                onOpenRightDrawer();
+              }}
               className="ml-1"
               aria-label={t('settings.title')}
             >

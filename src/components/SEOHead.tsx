@@ -17,29 +17,37 @@ const extractSubpath = (path: string): string => {
   return match?.[1] ?? '';
 };
 
-const SEOHead = ({ title, description, path, ogImage = '/image.png', noindex = false }: SEOHeadProps) => {
+const SEOHead = ({
+  title,
+  description,
+  path,
+  ogImage = '/image.png',
+  noindex = false,
+}: SEOHeadProps) => {
   const subpath = extractSubpath(path);
 
   // BreadcrumbList — 홈페이지가 아닌 하위 페이지에서만 생성
   // 홈페이지는 계층 상위가 없으므로 breadcrumb 의미 없음
-  const breadcrumbJsonLd = subpath ? JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    'itemListElement': [
-      {
-        '@type': 'ListItem',
-        'position': 1,
-        'name': 'Mandalart',
-        'item': `${SITE_URL}${path.replace(subpath, '')}`,
-      },
-      {
-        '@type': 'ListItem',
-        'position': 2,
-        'name': title,
-        'item': `${SITE_URL}${path}`,
-      },
-    ],
-  }) : null;
+  const breadcrumbJsonLd = subpath
+    ? JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          {
+            '@type': 'ListItem',
+            position: 1,
+            name: 'Mandalart',
+            item: `${SITE_URL}${path.replace(subpath, '')}`,
+          },
+          {
+            '@type': 'ListItem',
+            position: 2,
+            name: title,
+            item: `${SITE_URL}${path}`,
+          },
+        ],
+      })
+    : null;
 
   return (
     <Helmet>
@@ -48,9 +56,18 @@ const SEOHead = ({ title, description, path, ogImage = '/image.png', noindex = f
       {noindex && <meta name="robots" content="noindex, nofollow" />}
       <link rel="canonical" href={`${SITE_URL}${path}`} />
       {/* hrefLang — 검색엔진에 각 언어별 동일 페이지를 알림 */}
-      <link rel="alternate" hrefLang="x-default" href={`${SITE_URL}/en${subpath}`} />
+      <link
+        rel="alternate"
+        hrefLang="x-default"
+        href={`${SITE_URL}/en${subpath}`}
+      />
       {SUPPORTED_LANGS.map((lang) => (
-        <link key={lang} rel="alternate" hrefLang={lang} href={`${SITE_URL}/${lang}${subpath}`} />
+        <link
+          key={lang}
+          rel="alternate"
+          hrefLang={lang}
+          href={`${SITE_URL}/${lang}${subpath}`}
+        />
       ))}
       <meta property="og:type" content="website" />
       <meta property="og:title" content={title} />

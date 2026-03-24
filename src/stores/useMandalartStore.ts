@@ -31,9 +31,7 @@ import {
 // 저장 형식에 version 필드를 추가하는 것을 고려.
 const loadGuestMandalartMetas = (): Map<string, MandalartMeta> => {
   try {
-    const data = JSON.parse(
-      localStorage.getItem(STORAGE_KEY_SNIPPETS) || '{}'
-    );
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY_SNIPPETS) || '{}');
     return new Map(Object.entries(data));
   } catch {
     return new Map();
@@ -43,14 +41,14 @@ const loadGuestMandalartMetas = (): Map<string, MandalartMeta> => {
 const saveGuestMandalartMetas = (map: Map<string, MandalartMeta>) => {
   localStorage.setItem(
     STORAGE_KEY_SNIPPETS,
-    JSON.stringify(Object.fromEntries(map))
+    JSON.stringify(Object.fromEntries(map)),
   );
 };
 
 const loadGuestTopicTrees = (): Map<string, TopicNode> => {
   try {
     const data = JSON.parse(
-      localStorage.getItem(STORAGE_KEY_TOPIC_TREES) || '{}'
+      localStorage.getItem(STORAGE_KEY_TOPIC_TREES) || '{}',
     );
     return new Map(Object.entries(data));
   } catch {
@@ -61,7 +59,7 @@ const loadGuestTopicTrees = (): Map<string, TopicNode> => {
 const saveGuestTopicTrees = (map: Map<string, TopicNode>) => {
   localStorage.setItem(
     STORAGE_KEY_TOPIC_TREES,
-    JSON.stringify(Object.fromEntries(map))
+    JSON.stringify(Object.fromEntries(map)),
   );
 };
 
@@ -120,7 +118,7 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
       set({ currentMandalartId: id });
     } else {
       // Guest mode: look up from local map
-      const topicTree = id ? get()._guestTopicTrees.get(id) ?? null : null;
+      const topicTree = id ? (get()._guestTopicTrees.get(id) ?? null) : null;
       set({ currentMandalartId: id, currentTopicTree: topicTree });
     }
   },
@@ -134,8 +132,13 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
     set({ metaMap });
     if (!isSelected) {
       // 저장된 ID가 현재 metaMap에 존재하면 복원, 없으면 마지막 항목으로 fallback
-      const savedId = localStorage.getItem(STORAGE_KEY_LAST_SELECTED_MANDALART_ID);
-      const restoredId = savedId && metaMap.has(savedId) ? savedId : (Array.from(metaMap.keys()).pop() ?? null);
+      const savedId = localStorage.getItem(
+        STORAGE_KEY_LAST_SELECTED_MANDALART_ID,
+      );
+      const restoredId =
+        savedId && metaMap.has(savedId)
+          ? savedId
+          : (Array.from(metaMap.keys()).pop() ?? null);
       selectMandalart(restoredId);
     }
   },
@@ -151,7 +154,7 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
       throw new Error(
         `${i18next.t('mandalart.errors.create.maxUploaded', {
           maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
-        })}`
+        })}`,
       );
     }
 
@@ -202,14 +205,11 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
     if (!id) return;
     const user = get()._user;
     if (user) {
-      await fbSet(
-        ref(db, `${user.uid}/${DB_TOPIC_TREES}/${id}`),
-        topicTree
-      );
+      await fbSet(ref(db, `${user.uid}/${DB_TOPIC_TREES}/${id}`), topicTree);
     } else {
       const guestTopicTrees = new Map(get()._guestTopicTrees).set(
         id,
-        topicTree
+        topicTree,
       );
       saveGuestTopicTrees(guestTopicTrees);
       set({
@@ -240,7 +240,7 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
       const metaMap = new Map(get().metaMap).set(id, emptyMeta);
       const guestTopicTrees = new Map(get()._guestTopicTrees).set(
         id,
-        emptyTopicTree
+        emptyTopicTree,
       );
       saveGuestMandalartMetas(metaMap);
       saveGuestTopicTrees(guestTopicTrees);
@@ -277,7 +277,7 @@ export const useMandalartStore = create<MandalartState>((set, get) => ({
       throw new Error(
         i18next.t('mandalart.errors.uploadTemp.maxUploaded', {
           maxSize: MAX_UPLOAD_MANDALARTS_SIZE,
-        })
+        }),
       );
     }
 
@@ -319,7 +319,7 @@ export const useMandalartInit = (user: User | null) => {
           useMandalartStore.setState({ isLoading: false });
         }
       },
-      (error) => useMandalartStore.setState({ error, isLoading: false })
+      (error) => useMandalartStore.setState({ error, isLoading: false }),
     );
 
     return unsub;
@@ -343,7 +343,10 @@ export const useMandalartInit = (user: User | null) => {
       (snapshot) => {
         // selectMandalart로 ID가 이미 변경되었지만 이 구독의 useEffect cleanup이
         // 아직 실행되지 않은 경우, 폐기된 콜백이므로 무시
-        if (useMandalartStore.getState().currentMandalartId !== currentMandalartId) return;
+        if (
+          useMandalartStore.getState().currentMandalartId !== currentMandalartId
+        )
+          return;
 
         const value: TopicNode | null = snapshot.val();
         useMandalartStore.setState({
@@ -351,7 +354,7 @@ export const useMandalartInit = (user: User | null) => {
           isLoading: false,
         });
       },
-      (error) => useMandalartStore.setState({ error, isLoading: false })
+      (error) => useMandalartStore.setState({ error, isLoading: false }),
     );
   }, [user, currentMandalartId]);
 

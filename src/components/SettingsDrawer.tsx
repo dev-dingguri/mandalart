@@ -56,7 +56,9 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
         <SheetTitle className="sr-only">{t('settings.title')}</SheetTitle>
         <div className="flex flex-col gap-4 overflow-auto p-4 [scrollbar-gutter:stable_both-edges]">
           <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">{t('settings.theme.label')}</span>
+            <span className="text-sm font-medium">
+              {t('settings.theme.label')}
+            </span>
             <Select
               value={ternaryDarkMode}
               onValueChange={(val) => {
@@ -82,14 +84,19 @@ const SettingsDrawer = ({ isOpen, onClose }: SettingsDrawerProps) => {
           <Separator />
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium">{t('settings.language')}</span>
+            <span className="text-sm font-medium">
+              {t('settings.language')}
+            </span>
             <Select
               value={i18n.language}
               onValueChange={(val) => {
                 i18n.changeLanguage(val);
                 trackLanguageChange(val);
                 // URL 경로의 언어 세그먼트를 새 언어로 교체
-                const newPath = location.pathname.replace(/^\/[^/]+/, `/${val}`);
+                const newPath = location.pathname.replace(
+                  /^\/[^/]+/,
+                  `/${val}`,
+                );
                 navigate(newPath, { replace: true });
               }}
             >

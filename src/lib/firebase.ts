@@ -16,4 +16,6 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getDatabase(app);
-export const analytics = firebaseConfig.measurementId ? getAnalytics(app) : null;
+export const analytics = firebaseConfig.measurementId
+  ? getAnalytics(app)
+  : null;

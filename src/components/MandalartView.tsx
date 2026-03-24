@@ -1,7 +1,18 @@
-import { useCallback, HTMLAttributes, useState, useRef, useEffect, KeyboardEvent, ChangeEvent } from 'react';
+import {
+  useCallback,
+  HTMLAttributes,
+  useState,
+  useRef,
+  useEffect,
+  KeyboardEvent,
+  ChangeEvent,
+} from 'react';
 import { useLatestRef } from '@/hooks/useLatestRef';
 import MandalartFocusView from '@/components/MandalartFocusView';
-import Mandalart, { MandalartProps, SelectedCell } from '@/components/Mandalart';
+import Mandalart, {
+  MandalartProps,
+  SelectedCell,
+} from '@/components/Mandalart';
 import BottomInputBar from '@/components/BottomInputBar';
 import PopoverCellInput from '@/components/PopoverCellInput';
 import { Popover, PopoverContent } from '@/components/ui/popover';
@@ -45,11 +56,19 @@ const CELL_ORDER = [4, 0, 1, 2, 3, 5, 6, 7, 8] as const;
 
 // 역방향 매핑: 실제 인덱스 → 순회 순서 내 위치 (O(1) 조회)
 const GROUP_POS: Record<number, number> = {};
-GROUP_ORDER.forEach((g, i) => { GROUP_POS[g] = i; });
+GROUP_ORDER.forEach((g, i) => {
+  GROUP_POS[g] = i;
+});
 const CELL_POS: Record<number, number> = {};
-CELL_ORDER.forEach((c, i) => { CELL_POS[c] = i; });
+CELL_ORDER.forEach((c, i) => {
+  CELL_POS[c] = i;
+});
 
-function getAdjacentCell(cell: SelectedCell, delta: 1 | -1, isAllView: boolean): SelectedCell {
+function getAdjacentCell(
+  cell: SelectedCell,
+  delta: 1 | -1,
+  isAllView: boolean,
+): SelectedCell {
   const cellPos = CELL_POS[cell.gridItemIdx];
   if (isAllView) {
     // All View: 그룹 단위 순회 — 그룹 내 셀을 다 돌면 다음 그룹으로 이동
@@ -179,7 +198,7 @@ const MandalartView = ({
   const handleGetTopic = useCallback(
     (gridIdx: number, gridItemIdx: number) =>
       getTopic(topicTree, gridIdx, gridItemIdx),
-    [topicTree]
+    [topicTree],
   );
 
   // 현재 편집 중인 셀의 텍스트를 저장 (변경된 경우에만)
@@ -205,10 +224,10 @@ const MandalartView = ({
       editingTextRef.current = getTopic(
         topicTreeRef.current,
         gridIdx,
-        gridItemIdx
+        gridItemIdx,
       ).text;
     },
-    [saveCellText]
+    [saveCellText],
   );
 
   // 편집 시 키보드를 고려한 중앙 정렬 (모바일 전용)
@@ -234,8 +253,7 @@ const MandalartView = ({
         ? Math.max(0, window.innerHeight - vv.height - vv.offsetTop)
         : 0;
 
-      scrollContainer.style.paddingBottom =
-        `${keyboardOffset + INPUT_BAR_HEIGHT}px`;
+      scrollContainer.style.paddingBottom = `${keyboardOffset + INPUT_BAR_HEIGHT}px`;
     };
 
     updateCentering();
@@ -283,20 +301,20 @@ const MandalartView = ({
       editingTextRef.current = getTopic(
         topicTreeRef.current,
         nextCell.gridIdx,
-        nextCell.gridItemIdx
+        nextCell.gridItemIdx,
       ).text;
     },
-    [saveCellText]
+    [saveCellText],
   );
 
   const handleSaveAndPrev = useCallback(
     () => handleSaveAndNavigate(-1),
-    [handleSaveAndNavigate]
+    [handleSaveAndNavigate],
   );
 
   const handleSaveAndNext = useCallback(
     () => handleSaveAndNavigate(1),
-    [handleSaveAndNavigate]
+    [handleSaveAndNavigate],
   );
 
   // ↑↓ 키 네비게이션: 저장 후 같은 열의 위/아래 셀로 이동
@@ -310,20 +328,20 @@ const MandalartView = ({
       editingTextRef.current = getTopic(
         topicTreeRef.current,
         nextCell.gridIdx,
-        nextCell.gridItemIdx
+        nextCell.gridItemIdx,
       ).text;
     },
-    [saveCellText]
+    [saveCellText],
   );
 
   const handleSaveAndUp = useCallback(
     () => handleSaveAndNavigateVertical(-1),
-    [handleSaveAndNavigateVertical]
+    [handleSaveAndNavigateVertical],
   );
 
   const handleSaveAndDown = useCallback(
     () => handleSaveAndNavigateVertical(1),
-    [handleSaveAndNavigateVertical]
+    [handleSaveAndNavigateVertical],
   );
 
   // 입력 바/팝오버 닫기: 저장 후 선택 해제
@@ -338,19 +356,26 @@ const MandalartView = ({
       if (!selectedCellRef.current || isDesktop) return;
       const target = e.target as HTMLElement;
       // 셀 클릭이면 handleSelectCell이 처리, 입력 바 클릭이면 무시
-      if (target.closest('[data-cell]') || target.closest('[data-bottom-input]')) return;
+      if (
+        target.closest('[data-cell]') ||
+        target.closest('[data-bottom-input]')
+      )
+        return;
       handleSaveAndClose();
     },
-    [isDesktop, handleSaveAndClose]
+    [isDesktop, handleSaveAndClose],
   );
 
   // 뷰 전환: 현재 편집 저장 후 선택 해제
-  const handleViewToggle = useCallback((val: boolean) => {
-    saveCellText();
-    setSelectedCell(null);
-    setIsAllView(val);
-    trackViewModeChange(val ? 'all' : 'focus');
-  }, [saveCellText]);
+  const handleViewToggle = useCallback(
+    (val: boolean) => {
+      saveCellText();
+      setSelectedCell(null);
+      setIsAllView(val);
+      trackViewModeChange(val ? 'all' : 'focus');
+    },
+    [saveCellText],
+  );
 
   const mandalartProps: MandalartProps = {
     onGetTopic: handleGetTopic,
@@ -392,7 +417,12 @@ const MandalartView = ({
   );
 
   return (
-    <div ref={rootRef} className={className} onPointerDown={handleRootPointerDown} {...rest}>
+    <div
+      ref={rootRef}
+      className={className}
+      onPointerDown={handleRootPointerDown}
+      {...rest}
+    >
       <div className="relative">
         {mandalartId === TMP_MANDALART_ID && (
           <p className="absolute bottom-full text-sm text-muted-foreground">
@@ -422,7 +452,8 @@ const MandalartView = ({
               />
               {isTitleLimitReached && (
                 <p className="mt-0.5 text-xs text-destructive">
-                  {t('topic.maxLengthReached')} ({titleText.length}/{MAX_MANDALART_TITLE_SIZE})
+                  {t('topic.maxLengthReached')} ({titleText.length}/
+                  {MAX_MANDALART_TITLE_SIZE})
                 </p>
               )}
             </div>
@@ -479,9 +510,7 @@ const MandalartView = ({
         )}
       </div>
       {/* 모바일: 하단 고정 입력 바 */}
-      {!isDesktop && selectedCell && (
-        <BottomInputBar {...cellInputProps} />
-      )}
+      {!isDesktop && selectedCell && <BottomInputBar {...cellInputProps} />}
     </div>
   );
 };
@@ -489,7 +518,7 @@ const MandalartView = ({
 const getTopic = (
   topicTree: TopicNode,
   gridIdx: number,
-  gridItemIdx: number
+  gridItemIdx: number,
 ) => {
   let node = topicTree;
   [gridIdx, gridItemIdx].forEach((idx) => {

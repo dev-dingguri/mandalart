@@ -1,11 +1,7 @@
 import ItemGrid from '@/components/ItemGrid';
 import TopicGrid from '@/components/TopicGrid';
 import { TopicNode } from '@/types';
-import {
-  TABLE_ROW_SIZE,
-  TABLE_COL_SIZE,
-  TABLE_CENTER_IDX,
-} from '@/constants';
+import { TABLE_ROW_SIZE, TABLE_COL_SIZE, TABLE_CENTER_IDX } from '@/constants';
 import { memo } from 'react';
 
 export type SelectedCell = {
@@ -27,7 +23,13 @@ export type MandalartProps = {
 };
 
 const Mandalart = memo(
-  ({ onGetTopic, onSelectCell, selectedCell, usePopoverAnchor, focusHandlers }: MandalartProps) => {
+  ({
+    onGetTopic,
+    onSelectCell,
+    selectedCell,
+    usePopoverAnchor,
+    focusHandlers,
+  }: MandalartProps) => {
     return (
       <ItemGrid
         rowSize={TABLE_ROW_SIZE}
@@ -39,7 +41,9 @@ const Mandalart = memo(
             onGetTopic={(gridItemIdx) => onGetTopic(gridIdx, gridItemIdx)}
             onSelectItem={(gridItemIdx) => onSelectCell(gridIdx, gridItemIdx)}
             selectedGridItemIdx={
-              selectedCell?.gridIdx === gridIdx ? selectedCell.gridItemIdx : null
+              selectedCell?.gridIdx === gridIdx
+                ? selectedCell.gridItemIdx
+                : null
             }
             usePopoverAnchor={usePopoverAnchor}
             focusHandlers={
@@ -55,7 +59,7 @@ const Mandalart = memo(
         spacing="4px"
       />
     );
-  }
+  },
 );
 Mandalart.displayName = 'Mandalart';
 

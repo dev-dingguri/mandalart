@@ -36,7 +36,11 @@ const MandalartListDrawer = ({
         if (!open) onClose();
       }}
     >
-      <SheetContent side="left" showCloseButton={false} aria-describedby={undefined}>
+      <SheetContent
+        side="left"
+        showCloseButton={false}
+        aria-describedby={undefined}
+      >
         <SheetTitle className="sr-only">{t('mandalart.list')}</SheetTitle>
         <ScrollArea className="flex-1">
           <MandalartList

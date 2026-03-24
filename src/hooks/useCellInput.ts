@@ -1,4 +1,11 @@
-import { useState, useRef, useEffect, useCallback, KeyboardEvent, ChangeEvent } from 'react';
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  KeyboardEvent,
+  ChangeEvent,
+} from 'react';
 import { MAX_TOPIC_TEXT_SIZE } from '@/constants';
 
 export type CellInputConfig = {
@@ -43,7 +50,7 @@ export const useCellInput = ({
       setText(newText);
       onTextChange(newText);
     },
-    [onTextChange]
+    [onTextChange],
   );
 
   const handleKeyDown = useCallback(
@@ -65,7 +72,7 @@ export const useCellInput = ({
         onSaveAndClose();
       }
     },
-    [onSaveAndNext, onSaveAndPrev, onSaveAndUp, onSaveAndDown, onSaveAndClose]
+    [onSaveAndNext, onSaveAndPrev, onSaveAndUp, onSaveAndDown, onSaveAndClose],
   );
 
   return { text, inputRef, isLimitReached, handleChange, handleKeyDown };

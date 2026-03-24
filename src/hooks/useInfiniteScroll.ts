@@ -7,7 +7,7 @@ import { useLatestRef } from '@/hooks/useLatestRef';
  */
 export const useInfiniteScroll = <T extends HTMLElement = HTMLDivElement>(
   onLoadMore: () => void,
-  rootMargin = '200px'
+  rootMargin = '200px',
 ) => {
   const sentinelRef = useRef<T>(null);
   // 콜백을 ref로 보관하여, 콜백 변경 시 observer 재생성을 방지
@@ -21,7 +21,7 @@ export const useInfiniteScroll = <T extends HTMLElement = HTMLDivElement>(
       (entries) => {
         if (entries[0].isIntersecting) onLoadMoreRef.current();
       },
-      { rootMargin }
+      { rootMargin },
     );
 
     observer.observe(sentinel);
@@ -30,4 +30,3 @@ export const useInfiniteScroll = <T extends HTMLElement = HTMLDivElement>(
 
   return sentinelRef;
 };
-

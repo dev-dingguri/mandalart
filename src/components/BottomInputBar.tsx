@@ -12,7 +12,8 @@ type BottomInputBarProps = CellInputConfig & {
 
 const BottomInputBar = (props: BottomInputBarProps) => {
   const { cellPosition, onSaveAndPrev, onSaveAndNext, onSaveAndClose } = props;
-  const { text, inputRef, isLimitReached, handleChange, handleKeyDown } = useCellInput(props);
+  const { text, inputRef, isLimitReached, handleChange, handleKeyDown } =
+    useCellInput(props);
   const { t } = useTranslation();
 
   const barRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,11 @@ const BottomInputBar = (props: BottomInputBarProps) => {
   }, [updateBarPosition]);
 
   return (
-    <div ref={barRef} data-bottom-input className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-sm">
+    <div
+      ref={barRef}
+      data-bottom-input
+      className="fixed inset-x-0 bottom-0 z-50 border-t bg-background/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-sm"
+    >
       <div className="mx-auto flex max-w-[var(--size-content-width)] items-center gap-1.5 px-3 py-2">
         <Button
           variant="ghost"
@@ -70,7 +75,7 @@ const BottomInputBar = (props: BottomInputBarProps) => {
               'w-full rounded-md border border-input bg-transparent px-2.5 py-1.5 text-sm outline-none transition-colors',
               'placeholder:text-muted-foreground',
               'focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50',
-              'aria-invalid:border-destructive aria-invalid:ring-destructive/20'
+              'aria-invalid:border-destructive aria-invalid:ring-destructive/20',
             )}
           />
           <div className="mt-0.5 flex justify-between px-0.5 text-[0.65rem] leading-tight text-muted-foreground">

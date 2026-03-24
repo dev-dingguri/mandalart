@@ -1,4 +1,11 @@
-import { useCallback, useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type TouchEvent,
+} from 'react';
 import { useLatestRef } from '@/hooks/useLatestRef';
 
 /** 스와이프 인식 기준: 컨테이너 너비 대비 비율 */
@@ -94,23 +101,34 @@ export const useSwipeNavigation = ({
   const handleKeyDown = useCallback((ev: KeyboardEvent) => {
     const { gridSize, colSize } = configRef.current;
     const currentIdx = focusedIdxRef.current;
-    const movedIdx = calculateKeyboardIdx(currentIdx, ev.key, colSize, gridSize);
+    const movedIdx = calculateKeyboardIdx(
+      currentIdx,
+      ev.key,
+      colSize,
+      gridSize,
+    );
     if (movedIdx !== currentIdx) {
       ev.preventDefault(); // 방향키에 의한 스크롤 방지
       setFocusedIdx(movedIdx);
     }
   }, []);
 
-  const touchHandlers = useMemo(() => ({
-    onTouchStart: handleTouchStart,
-    onTouchEnd: handleTouchEnd,
-    onTouchCancel: handleTouchEnd,
-    onTouchMove: handleTouchMove,
-  }), [handleTouchStart, handleTouchEnd, handleTouchMove]);
+  const touchHandlers = useMemo(
+    () => ({
+      onTouchStart: handleTouchStart,
+      onTouchEnd: handleTouchEnd,
+      onTouchCancel: handleTouchEnd,
+      onTouchMove: handleTouchMove,
+    }),
+    [handleTouchStart, handleTouchEnd, handleTouchMove],
+  );
 
-  const keyboardHandlers = useMemo(() => ({
-    onKeyDown: handleKeyDown,
-  }), [handleKeyDown]);
+  const keyboardHandlers = useMemo(
+    () => ({
+      onKeyDown: handleKeyDown,
+    }),
+    [handleKeyDown],
+  );
 
   return {
     focusedIdx,
@@ -148,7 +166,10 @@ const calculateSwipedIdx = ({
   let movedIdx = currentIdx;
   const period = Date.now() - startTime;
   // FLICK_MAX_DURATION_MS 안에 스와이프가 끝나면 가중치를 적용하여 빠른 플릭 제스처를 인식
-  const weight = Math.min(Math.max((FLICK_MAX_DURATION_MS - period) * FLICK_WEIGHT_FACTOR, 1), FLICK_MAX_WEIGHT);
+  const weight = Math.min(
+    Math.max((FLICK_MAX_DURATION_MS - period) * FLICK_WEIGHT_FACTOR, 1),
+    FLICK_MAX_WEIGHT,
+  );
   const forceY = (endY - startY) * weight;
   const forceX = (endX - startX) * weight;
 
@@ -182,7 +203,9 @@ const calculateKeyboardIdx = (
 ): number => {
   switch (key) {
     case 'ArrowDown':
-      return currentIdx + colSize < gridSize ? currentIdx + colSize : currentIdx;
+      return currentIdx + colSize < gridSize
+        ? currentIdx + colSize
+        : currentIdx;
     case 'ArrowUp':
       return currentIdx - colSize >= 0 ? currentIdx - colSize : currentIdx;
     case 'ArrowRight':
@@ -193,4 +216,3 @@ const calculateKeyboardIdx = (
       return currentIdx;
   }
 };
-

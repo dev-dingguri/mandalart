@@ -28,7 +28,9 @@ const LandingPage = () => {
     answer: t(`landing.faqs.${i}.answer`),
   }));
 
-  const afterItems = t('landing.comparison.after.items', { returnObjects: true }) as string[];
+  const afterItems = t('landing.comparison.after.items', {
+    returnObjects: true,
+  }) as string[];
 
   // 재방문자는 도구 페이지로 리다이렉트 — 이미 도구를 사용한 적이 있으면 랜딩 스킵
   const hasUsedTool = localStorage.getItem(STORAGE_KEY_HAS_USED_TOOL);
@@ -47,19 +49,19 @@ const LandingPage = () => {
       <Helmet>
         <script type="application/ld+json">
           {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "name": "Mandalart",
-            "url": "https://mandalart.me",
-            "applicationCategory": "ProductivityApplication",
-            "operatingSystem": "Any",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD",
+            '@context': 'https://schema.org',
+            '@type': 'WebApplication',
+            name: 'Mandalart',
+            url: 'https://mandalart.me',
+            applicationCategory: 'ProductivityApplication',
+            operatingSystem: 'Any',
+            offers: {
+              '@type': 'Offer',
+              price: '0',
+              priceCurrency: 'USD',
             },
-            "description": t('landing.seo.description'),
-            "inLanguage": ["ko", "en", "ja", "zh-CN"],
+            description: t('landing.seo.description'),
+            inLanguage: ['ko', 'en', 'ja', 'zh-CN'],
           })}
         </script>
       </Helmet>
@@ -81,7 +83,9 @@ const LandingPage = () => {
           </p>
           <Link
             to={`/${lang}${PATH_APP}`}
-            className={buttonVariants({ className: 'h-12 px-8 text-base rounded-xl' })}
+            className={buttonVariants({
+              className: 'h-12 px-8 text-base rounded-xl',
+            })}
           >
             {t('landing.hero.cta')}
             <ArrowRight className="size-5" />
@@ -101,12 +105,18 @@ const LandingPage = () => {
                 key={step.number}
                 className="flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border"
               >
-                <div className="text-3xl font-bold text-primary mb-4">{step.number}</div>
+                <div className="text-3xl font-bold text-primary mb-4">
+                  {step.number}
+                </div>
                 <div className="flex items-center gap-2 mb-3">
                   <Target className="size-5 text-primary" />
-                  <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>
+                  <h3 className="text-lg font-semibold text-foreground">
+                    {step.title}
+                  </h3>
                 </div>
-                <p className="text-muted-foreground text-sm leading-relaxed">{step.description}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {step.description}
+                </p>
               </div>
             ))}
           </div>
@@ -126,7 +136,9 @@ const LandingPage = () => {
                 <span className="inline-block px-2 py-0.5 rounded-md bg-destructive/15 text-destructive text-xs font-semibold">
                   {t('landing.comparison.before.label')}
                 </span>
-                <h3 className="text-lg font-semibold text-foreground">{t('landing.comparison.before.title')}</h3>
+                <h3 className="text-lg font-semibold text-foreground">
+                  {t('landing.comparison.before.title')}
+                </h3>
               </div>
               <blockquote className="text-2xl font-bold text-muted-foreground/70 mb-3">
                 {t('landing.comparison.before.quote')}
@@ -141,20 +153,20 @@ const LandingPage = () => {
                 <span className="inline-block px-2 py-0.5 rounded-md bg-primary/15 text-primary text-xs font-semibold">
                   {t('landing.comparison.after.label')}
                 </span>
-                <h3 className="text-lg font-semibold text-foreground">{t('landing.comparison.after.title')}</h3>
+                <h3 className="text-lg font-semibold text-foreground">
+                  {t('landing.comparison.after.title')}
+                </h3>
               </div>
               <div className="flex flex-wrap gap-2 mb-3">
-                {afterItems.map(
-                  (item) => (
-                    <span
-                      key={item}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium"
-                    >
-                      <CheckCircle2 className="size-3" />
-                      {item}
-                    </span>
-                  )
-                )}
+                {afterItems.map((item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-primary/10 text-primary text-xs font-medium"
+                  >
+                    <CheckCircle2 className="size-3" />
+                    {item}
+                  </span>
+                ))}
               </div>
               <p className="text-sm text-muted-foreground">
                 {t('landing.comparison.after.description')}
@@ -179,8 +191,12 @@ const LandingPage = () => {
                 key={useCase.title}
                 className="p-5 rounded-2xl bg-card border border-border hover:border-primary/40 hover:shadow-md transition-all"
               >
-                <h3 className="text-base font-semibold text-foreground mb-2">{useCase.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{useCase.description}</p>
+                <h3 className="text-base font-semibold text-foreground mb-2">
+                  {useCase.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {useCase.description}
+                </p>
               </div>
             ))}
           </div>
@@ -200,7 +216,10 @@ const LandingPage = () => {
             </p>
             <Link
               to={`/${lang}${PATH_GUIDE}`}
-              className={buttonVariants({ variant: 'outline', className: 'h-10 px-6 rounded-xl' })}
+              className={buttonVariants({
+                variant: 'outline',
+                className: 'h-10 px-6 rounded-xl',
+              })}
             >
               {t('landing.socialProof.cta')}
               <ArrowRight className="size-4" />
@@ -214,14 +233,14 @@ const LandingPage = () => {
         <Helmet>
           <script type="application/ld+json">
             {JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": FAQS.map((faq) => ({
-                "@type": "Question",
-                "name": faq.question,
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": faq.answer,
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: FAQS.map((faq) => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.answer,
                 },
               })),
             })}
@@ -277,7 +296,9 @@ const LandingPage = () => {
           </p>
           <Link
             to={`/${lang}${PATH_APP}`}
-            className={buttonVariants({ className: 'h-12 px-8 text-base rounded-xl' })}
+            className={buttonVariants({
+              className: 'h-12 px-8 text-base rounded-xl',
+            })}
           >
             {t('landing.cta.button')}
             <ArrowRight className="size-5" />

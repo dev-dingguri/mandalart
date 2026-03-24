@@ -14,7 +14,9 @@ const CHROME_PATHS: Record<string, string> = {
   linux: '/usr/bin/google-chrome',
 };
 const chromePath =
-  process.env.CHROME_EXECUTABLE_PATH ?? CHROME_PATHS[process.platform] ?? undefined;
+  process.env.CHROME_EXECUTABLE_PATH ??
+  CHROME_PATHS[process.platform] ??
+  undefined;
 
 // 프리렌더링된 HTML에서 index.html 원본 메타 태그(fallback용)와 SEOHead가 생성한 태그가
 // 중복되므로, SEOHead 태그(data-rh 없음)만 남기고 원본 fallback 태그를 제거
@@ -52,7 +54,9 @@ function dedupeMetaTags(html: string): string {
     lastSeen.set(key, Math.max(lastSeen.get(key) ?? -1, index));
   }
   const removeOffsets = new Set(
-    metaMatches.filter(({ key, index }) => lastSeen.get(key) !== index).map(({ index }) => index),
+    metaMatches
+      .filter(({ key, index }) => lastSeen.get(key) !== index)
+      .map(({ index }) => index),
   );
   if (removeOffsets.size > 0) {
     html = html.replace(/<meta\s[^>]*>/g, (match, offset) =>
@@ -75,7 +79,13 @@ function postBuildSeo(): Plugin {
         const sitemapPath = resolve(buildDir, 'sitemap.xml');
         const today = new Date().toISOString().split('T')[0];
         const content = readFileSync(sitemapPath, 'utf-8');
-        writeFileSync(sitemapPath, content.replace(/<lastmod>[^<]+<\/lastmod>/g, `<lastmod>${today}</lastmod>`));
+        writeFileSync(
+          sitemapPath,
+          content.replace(
+            /<lastmod>[^<]+<\/lastmod>/g,
+            `<lastmod>${today}</lastmod>`,
+          ),
+        );
       } catch {
         // sitemap.xml이 없으면 무시 (dev 모드 등)
       }
@@ -86,14 +96,21 @@ function postBuildSeo(): Plugin {
           const fullPath = join(dir, entry);
           if (statSync(fullPath).isDirectory()) {
             walkHtml(fullPath);
-          } else if (entry === 'index.html' && fullPath !== join(buildDir, 'index.html')) {
+          } else if (
+            entry === 'index.html' &&
+            fullPath !== join(buildDir, 'index.html')
+          ) {
             const html = readFileSync(fullPath, 'utf-8');
             const cleaned = dedupeMetaTags(html);
             if (cleaned !== html) writeFileSync(fullPath, cleaned);
           }
         }
       };
-      try { walkHtml(buildDir); } catch { /* build 폴더 없으면 무시 */ }
+      try {
+        walkHtml(buildDir);
+      } catch {
+        /* build 폴더 없으면 무시 */
+      }
     },
   };
 }
@@ -106,10 +123,14 @@ export default defineConfig({
     // 콘텐츠 페이지(랜딩·가이드)를 전 언어 프리렌더링 — /app은 로그인이 필요한 도구 페이지이므로 제외
     prerender({
       routes: [
-        '/ko', '/ko/guide',
-        '/en', '/en/guide',
-        '/ja', '/ja/guide',
-        '/zh-CN', '/zh-CN/guide',
+        '/ko',
+        '/ko/guide',
+        '/en',
+        '/en/guide',
+        '/ja',
+        '/ja/guide',
+        '/zh-CN',
+        '/zh-CN/guide',
       ],
       renderer: '@prerenderer/renderer-puppeteer',
       rendererOptions: {

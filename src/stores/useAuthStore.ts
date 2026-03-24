@@ -1,9 +1,5 @@
 import { create } from 'zustand';
-import {
-  User,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from 'firebase/auth';
+import { User, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { STORAGE_KEY_SIGN_IN_SESSION } from '@/constants';
 
@@ -35,7 +31,7 @@ const getProvider = (providerId: string) => {
 const readSessions = (): Record<string, SignInSession> => {
   try {
     return JSON.parse(
-      sessionStorage.getItem(STORAGE_KEY_SIGN_IN_SESSION) || '{}'
+      sessionStorage.getItem(STORAGE_KEY_SIGN_IN_SESSION) || '{}',
     );
   } catch {
     return {};
@@ -43,10 +39,7 @@ const readSessions = (): Record<string, SignInSession> => {
 };
 
 const writeSessions = (sessions: Record<string, SignInSession>) => {
-  sessionStorage.setItem(
-    STORAGE_KEY_SIGN_IN_SESSION,
-    JSON.stringify(sessions)
-  );
+  sessionStorage.setItem(STORAGE_KEY_SIGN_IN_SESSION, JSON.stringify(sessions));
 };
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -84,5 +77,5 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
 auth.onAuthStateChanged(
   (user) => useAuthStore.setState({ user, isLoading: false, error: null }),
-  (error) => useAuthStore.setState({ user: null, isLoading: false, error })
+  (error) => useAuthStore.setState({ user: null, isLoading: false, error }),
 );

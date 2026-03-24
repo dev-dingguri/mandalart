@@ -19,13 +19,22 @@ export type ConfirmDialogProps = {
 };
 
 // AlertDialog와 달리 Cancel 버튼을 제공하여 사용자가 파괴적 작업을 취소할 수 있음
-const ConfirmDialog = ({ isOpen, message, confirmText, onConfirm, onClose }: ConfirmDialogProps) => {
+const ConfirmDialog = ({
+  isOpen,
+  message,
+  confirmText,
+  onConfirm,
+  onClose,
+}: ConfirmDialogProps) => {
   const { t } = useTranslation();
 
   return (
     <AlertDialogRoot open={isOpen}>
       {/* Radix AlertDialog는 기본적으로 ESC/외부 클릭을 차단하므로 명시적으로 ESC 핸들러 추가 */}
-      <AlertDialogContent className="max-w-xs gap-3 p-6 sm:max-w-xs" onEscapeKeyDown={onClose}>
+      <AlertDialogContent
+        className="max-w-xs gap-3 p-6 sm:max-w-xs"
+        onEscapeKeyDown={onClose}
+      >
         <AlertDialogHeader>
           <AlertDialogTitle>{t('global.app')}</AlertDialogTitle>
           <AlertDialogDescription className="whitespace-pre-line break-keep">

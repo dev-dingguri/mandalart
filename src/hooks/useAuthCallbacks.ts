@@ -16,11 +16,7 @@ type AuthCallbackDeps = {
   t: TFunction;
 };
 
-export const useAuthCallbacks = ({
-  user,
-  openAlert,
-  t,
-}: AuthCallbackDeps) => {
+export const useAuthCallbacks = ({ user, openAlert, t }: AuthCallbackDeps) => {
   const signIn = useAuthStore((s) => s.signIn);
   const signOut = useAuthStore((s) => s.signOut);
   const getShouldUploadTemp = useAuthStore((s) => s.getShouldUploadTemp);
@@ -50,7 +46,7 @@ export const useAuthCallbacks = ({
         setShouldUploadTemp(true);
         openAlert(e.message);
       });
-  // trackGuestUpload은 모듈 수준 함수라 의존성 배열에서 생략
+    // trackGuestUpload은 모듈 수준 함수라 의존성 배열에서 생략
   }, [user, getShouldUploadTemp, setShouldUploadTemp, uploadTemp, openAlert]);
 
   const handleSignIn = useCallback(
@@ -66,7 +62,7 @@ export const useAuthCallbacks = ({
         }
       }
     },
-    [signIn, openAlert, t]
+    [signIn, openAlert, t],
   );
 
   const handleSignOut = useCallback(() => {

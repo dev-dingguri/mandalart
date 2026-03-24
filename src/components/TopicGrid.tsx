@@ -18,58 +18,62 @@ type TopicGridProps = {
   focusHandlers?: FocusHandlers;
 };
 
-const TopicGrid = memo(({
-  onIsAccented,
-  onGetTopic,
-  onSelectItem,
-  selectedGridItemIdx,
-  usePopoverAnchor,
-  focusHandlers,
-}: TopicGridProps) => {
-  const gridRef = useRef<HTMLDivElement>(null);
-  const isFocusTriedRef = useRef(false);
+const TopicGrid = memo(
+  ({
+    onIsAccented,
+    onGetTopic,
+    onSelectItem,
+    selectedGridItemIdx,
+    usePopoverAnchor,
+    focusHandlers,
+  }: TopicGridProps) => {
+    const gridRef = useRef<HTMLDivElement>(null);
+    const isFocusTriedRef = useRef(false);
 
-  const isFocused = focusHandlers?.isFocused;
+    const isFocused = focusHandlers?.isFocused;
 
-  useEffect(() => {
-    const isTried = isFocusTriedRef.current;
-    isFocusTriedRef.current = true;
+    useEffect(() => {
+      const isTried = isFocusTriedRef.current;
+      isFocusTriedRef.current = true;
 
-    isFocused && scrollCenter(gridRef.current, isTried ? 'smooth' : 'auto');
-  }, [isFocused]);
+      isFocused && scrollCenter(gridRef.current, isTried ? 'smooth' : 'auto');
+    }, [isFocused]);
 
-  useEffect(() => {
-    if (!isFocused) return;
-    const handler = () => scrollCenter(gridRef.current, 'auto');
-    window.addEventListener('resize', handler, { passive: true });
-    return () => window.removeEventListener('resize', handler);
-  }, [isFocused]);
+    useEffect(() => {
+      if (!isFocused) return;
+      const handler = () => scrollCenter(gridRef.current, 'auto');
+      window.addEventListener('resize', handler, { passive: true });
+      return () => window.removeEventListener('resize', handler);
+    }, [isFocused]);
 
-  return (
-    <div ref={gridRef}>
-      <ItemGrid
-        rowSize={TABLE_ROW_SIZE}
-        colSize={TABLE_COL_SIZE}
-        createItem={(gridItemIdx) => (
-          <TopicItem
-            key={gridItemIdx}
-            topic={onGetTopic(gridItemIdx).text}
-            isAccented={onIsAccented(gridItemIdx)}
-            isEditable={isFocused !== false}
-            isSelected={selectedGridItemIdx === gridItemIdx}
-            isPopoverAnchor={usePopoverAnchor && selectedGridItemIdx === gridItemIdx}
-            onSelect={() => onSelectItem(gridItemIdx)}
-          />
-        )}
-        spacing="2px"
-        onClick={() => {
-          scrollCenter(gridRef.current, 'smooth');
-          focusHandlers?.onUpdateFocus();
-        }}
-      />
-    </div>
-  );
-});
+    return (
+      <div ref={gridRef}>
+        <ItemGrid
+          rowSize={TABLE_ROW_SIZE}
+          colSize={TABLE_COL_SIZE}
+          createItem={(gridItemIdx) => (
+            <TopicItem
+              key={gridItemIdx}
+              topic={onGetTopic(gridItemIdx).text}
+              isAccented={onIsAccented(gridItemIdx)}
+              isEditable={isFocused !== false}
+              isSelected={selectedGridItemIdx === gridItemIdx}
+              isPopoverAnchor={
+                usePopoverAnchor && selectedGridItemIdx === gridItemIdx
+              }
+              onSelect={() => onSelectItem(gridItemIdx)}
+            />
+          )}
+          spacing="2px"
+          onClick={() => {
+            scrollCenter(gridRef.current, 'smooth');
+            focusHandlers?.onUpdateFocus();
+          }}
+        />
+      </div>
+    );
+  },
+);
 TopicGrid.displayName = 'TopicGrid';
 
 const scrollCenter = (element: Element | null, behavior: ScrollBehavior) => {

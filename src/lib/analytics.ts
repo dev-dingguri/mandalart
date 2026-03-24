@@ -11,7 +11,7 @@ import {
  */
 export const logEvent = (
   eventName: string,
-  eventParams?: Record<string, string | number | boolean>
+  eventParams?: Record<string, string | number | boolean>,
 ) => {
   if (analytics) firebaseLogEvent(analytics, eventName, eventParams);
 };

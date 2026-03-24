@@ -1,6 +1,9 @@
 import AppLayout from '@/components/AppLayout';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { useMandalartInit, useMandalartStore } from '@/stores/useMandalartStore';
+import {
+  useMandalartInit,
+  useMandalartStore,
+} from '@/stores/useMandalartStore';
 import { User } from 'firebase/auth';
 
 type AuthenticatedViewProps = {
@@ -14,11 +17,7 @@ const AuthenticatedView = ({ user, userError }: AuthenticatedViewProps) => {
 
   if (isLoading) return <LoadingSpinner />;
 
-  return (
-    <AppLayout
-      userHandlers={{ user, error: userError }}
-    />
-  );
+  return <AppLayout userHandlers={{ user, error: userError }} />;
 };
 
 export default AuthenticatedView;

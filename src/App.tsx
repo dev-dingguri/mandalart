@@ -1,5 +1,11 @@
 import { useEffect, useLayoutEffect, lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { PATH_OSS, PATH_APP, PATH_GUIDE } from '@/constants';
 import { useIsDarkMode } from '@/stores/useThemeStore';
@@ -22,7 +28,7 @@ const ScrollToTop = () => {
 };
 
 const OpenSourceLicensesPage = lazy(
-  () => import('@/components/OpenSourceLicensesPage')
+  () => import('@/components/OpenSourceLicensesPage'),
 );
 const MainPage = lazy(() => import('@/components/MainPage'));
 
@@ -72,10 +78,7 @@ const App = () => {
         <BrowserRouter>
           <ScrollToTop />
           <Routes>
-            <Route
-              path={`/${lang}`}
-              element={<LandingPage />}
-            />
+            <Route path={`/${lang}`} element={<LandingPage />} />
             {/* 도구 페이지만 h-dvh로 감쌈 — 랜딩/가이드는 스크롤이 필요한 긴 콘텐츠 페이지 */}
             <Route
               path={`/${lang}${PATH_APP}`}
@@ -87,10 +90,7 @@ const App = () => {
                 </div>
               }
             />
-            <Route
-              path={`/${lang}${PATH_GUIDE}`}
-              element={<GuidePage />}
-            />
+            <Route path={`/${lang}${PATH_GUIDE}`} element={<GuidePage />} />
             {/* OSS 페이지도 h-full + overflow-y-auto 패턴이므로 고정 높이 필요 */}
             <Route
               path={`/${lang}${PATH_OSS}`}

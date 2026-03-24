@@ -31,4 +31,3 @@ export const useModal = <T = ReactNode>() => {
     content,
   };
 };
-

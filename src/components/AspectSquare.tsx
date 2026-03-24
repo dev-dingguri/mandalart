@@ -4,9 +4,7 @@ const AspectSquare = ({
   className,
   ...rest
 }: React.HTMLAttributes<HTMLDivElement>) => {
-  return (
-    <div className={cn('w-full aspect-square', className)} {...rest} />
-  );
+  return <div className={cn('w-full aspect-square', className)} {...rest} />;
 };
 
 export default AspectSquare;

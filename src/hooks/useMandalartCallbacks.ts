@@ -37,7 +37,7 @@ export const useMandalartCallbacks = ({
 }: MandalartCallbackDeps) => {
   // 콜백 전용 — ref로 참조하여 콜백 재생성 방지 (rerender-defer-reads)
   const currentIdRef = useLatestRef(
-    useMandalartStore((s) => s.currentMandalartId)
+    useMandalartStore((s) => s.currentMandalartId),
   );
 
   const selectMandalartId = useMandalartStore((s) => s.selectMandalart);
@@ -56,19 +56,20 @@ export const useMandalartCallbacks = ({
     (meta: MandalartMeta) => {
       saveMandalartMeta(currentIdRef.current, meta)?.catch(showSaveError);
     },
-    [saveMandalartMeta, currentIdRef, showSaveError]
+    [saveMandalartMeta, currentIdRef, showSaveError],
   );
 
   const handleTopicTreeChange = useCallback(
     (topicTree: TopicNode) => {
       saveTopicTree(currentIdRef.current, topicTree)?.catch(showSaveError);
     },
-    [saveTopicTree, currentIdRef, showSaveError]
+    [saveTopicTree, currentIdRef, showSaveError],
   );
 
   const handleCreate = useCallback(
     (afterSuccess?: () => void) => {
-      const { conditions, addCondition, deleteCondition } = useLoadingStore.getState();
+      const { conditions, addCondition, deleteCondition } =
+        useLoadingStore.getState();
       if (conditions.get(LOADING_KEY_CREATE)) return;
       addCondition(LOADING_KEY_CREATE, true);
       createMandalart(createEmptyMeta(), createEmptyTopicTree())
@@ -80,14 +81,14 @@ export const useMandalartCallbacks = ({
         .catch((e: Error) => openAlert(e.message))
         .finally(() => deleteCondition(LOADING_KEY_CREATE));
     },
-    [createMandalart, openAlert]
+    [createMandalart, openAlert],
   );
 
   const handleSelect = useCallback(
     (mandalartId: string) => {
       selectMandalartId(mandalartId);
     },
-    [selectMandalartId]
+    [selectMandalartId],
   );
 
   const handleDelete = useCallback(
@@ -96,18 +97,21 @@ export const useMandalartCallbacks = ({
         message: t('mandalart.confirmDelete'),
         confirmText: t('mandalart.delete'),
         onConfirm: () => {
-          const { conditions, addCondition, deleteCondition } = useLoadingStore.getState();
+          const { conditions, addCondition, deleteCondition } =
+            useLoadingStore.getState();
           if (conditions.get(LOADING_KEY_DELETE)) return;
           addCondition(LOADING_KEY_DELETE, true);
           deleteMandalart(mandalartId)
             // trackMandalartDelete은 모듈 수준 함수라 의존성 배열에서 생략
-            .then((deleted) => { if (deleted) trackMandalartDelete(); })
+            .then((deleted) => {
+              if (deleted) trackMandalartDelete();
+            })
             .catch((e: Error) => openAlert(e.message))
             .finally(() => deleteCondition(LOADING_KEY_DELETE));
         },
       });
     },
-    [openConfirmDialog, t, deleteMandalart, openAlert]
+    [openConfirmDialog, t, deleteMandalart, openAlert],
   );
 
   const handleReset = useCallback(
@@ -116,7 +120,8 @@ export const useMandalartCallbacks = ({
         message: t('mandalart.confirmReset'),
         confirmText: t('mandalart.reset'),
         onConfirm: () => {
-          const { conditions, addCondition, deleteCondition } = useLoadingStore.getState();
+          const { conditions, addCondition, deleteCondition } =
+            useLoadingStore.getState();
           if (conditions.get(LOADING_KEY_RESET)) return;
           addCondition(LOADING_KEY_RESET, true);
           resetMandalart(mandalartId)
@@ -127,7 +132,7 @@ export const useMandalartCallbacks = ({
         },
       });
     },
-    [openConfirmDialog, t, resetMandalart, openAlert]
+    [openConfirmDialog, t, resetMandalart, openAlert],
   );
 
   return {
