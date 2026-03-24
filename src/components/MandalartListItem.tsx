@@ -1,117 +1,70 @@
-import React, { useState } from 'react';
-import { Snippet } from 'types/Snippet';
-import IconButton from '@mui/material/IconButton';
-import { BsGrid3X3, BsThreeDots } from 'react-icons/bs';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import TextEditor from 'components/TextEditor';
-import {
-  MAX_MANDALART_TITLE_SIZE,
-  TMP_MANDALART_ID,
-} from 'constants/constants';
+import { memo } from 'react';
+import { shallow } from 'zustand/shallow';
+import { MandalartMeta } from '@/types';
+import { LayoutGrid } from 'lucide-react';
+import MandalartListItemMenu from '@/components/MandalartListItemMenu';
 import { useTranslation } from 'react-i18next';
-import Typography from '@mui/material/Typography';
-import { useBoolean } from 'usehooks-ts';
+import { cn } from '@/lib/utils';
 
 type MandalartListItemProps = {
   mandalartId: string;
-  snippet: Snippet;
+  meta: MandalartMeta;
   isSelected: boolean;
   onSelect: (mandalartId: string) => void;
   onDelete: (mandalartId: string) => void;
   onReset: (mandalartId: string) => void;
-  onRename: (mandalartId: string, name: string) => void;
 };
 
-const MandalartListItem = ({
-  mandalartId,
-  snippet,
-  isSelected,
-  onSelect,
-  onDelete,
-  onReset,
-  onRename,
-}: MandalartListItemProps) => {
-  const {
-    value: isOpenEditor,
-    setTrue: openEditor,
-    setFalse: closeEditor,
-  } = useBoolean(false);
-  const {
-    value: isOpenMenu,
-    setTrue: openMenu,
-    setFalse: closeMenu,
-  } = useBoolean(false);
-  const [menuY, setMenuY] = useState(0);
-  const [menuX, setMenuX] = useState(0);
-  const { t } = useTranslation();
+// Firebase onValue가 매 snapshot마다 새 MandalartMeta 객체를 생성하므로
+// meta 비교에 shallow를 사용하여 내용이 같으면 리렌더 방지
+const MandalartListItem = memo(
+  ({
+    mandalartId,
+    meta,
+    isSelected,
+    onSelect,
+    onDelete,
+    onReset,
+  }: MandalartListItemProps) => {
+    const { t } = useTranslation();
 
-  const handleOpenMenu = (ev: React.MouseEvent<Element, MouseEvent>) => {
-    ev.preventDefault();
-    setMenuY(ev.pageY);
-    setMenuX(ev.pageX);
-    openMenu();
-  };
-
-  return (
-    <>
-      <ListItemButton
-        selected={isSelected}
+    return (
+      <div
+        role="button"
+        tabIndex={0}
         onClick={() => onSelect(mandalartId)}
-        onContextMenu={handleOpenMenu}
-        sx={{ borderRadius: '4px' }}
-      >
-        <ListItemIcon sx={{ minWidth: '26px' }}>
-          <BsGrid3X3 />
-        </ListItemIcon>
-        <ListItemText
-          primary={
-            <Typography variant="body1" noWrap>
-              {snippet.title ? snippet.title : t('mandalart.snippet.untitled')}
-            </Typography>
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onSelect(mandalartId);
           }
-        />
-        <IconButton
-          size="small"
-          onClick={(ev) => {
-            ev.stopPropagation(); // 만다라트 리스트 항목이 선택되는 것 방지
-            handleOpenMenu(ev);
-          }}
-        >
-          <BsThreeDots />
-        </IconButton>
-      </ListItemButton>
-      <Menu
-        open={isOpenMenu}
-        onClick={closeMenu}
-        onClose={closeMenu}
-        anchorReference="anchorPosition"
-        anchorPosition={isOpenMenu ? { top: menuY, left: menuX } : undefined}
-      >
-        {mandalartId !== TMP_MANDALART_ID && (
-          <MenuItem onClick={() => onDelete(mandalartId)}>
-            {t('mandalart.delete')}
-          </MenuItem>
-        )}
-        <MenuItem onClick={() => onReset(mandalartId)}>
-          {t('mandalart.reset')}
-        </MenuItem>
-        <MenuItem onClick={openEditor}>{t('mandalart.rename')}</MenuItem>
-      </Menu>
-      <TextEditor
-        isOpen={isOpenEditor}
-        initialText={snippet.title}
-        textLimit={MAX_MANDALART_TITLE_SIZE}
-        onClose={closeEditor}
-        onConfirm={(name) => {
-          onRename(mandalartId, name);
         }}
-      />
-    </>
-  );
-};
+        className={cn(
+          'flex cursor-pointer items-center gap-1.5 rounded px-2 py-1.5 text-sm',
+          isSelected
+            ? 'bg-accent text-accent-foreground'
+            : 'hover:bg-accent/50',
+        )}
+      >
+        <LayoutGrid className="size-4 shrink-0 text-muted-foreground" />
+        <span className="min-w-0 flex-1 truncate">
+          {meta.title || t('mandalart.untitled')}
+        </span>
+        <MandalartListItemMenu
+          mandalartId={mandalartId}
+          onDelete={onDelete}
+          onReset={onReset}
+        />
+      </div>
+    );
+  },
+  (prev, next) =>
+    prev.mandalartId === next.mandalartId &&
+    prev.isSelected === next.isSelected &&
+    shallow(prev.meta, next.meta) &&
+    prev.onSelect === next.onSelect &&
+    prev.onDelete === next.onDelete &&
+    prev.onReset === next.onReset,
+);
 
 export default MandalartListItem;

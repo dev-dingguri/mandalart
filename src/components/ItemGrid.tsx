@@ -1,31 +1,42 @@
-import Grid from '@mui/material/Unstable_Grid2';
-import Box, { BoxProps } from '@mui/material/Box';
+import { memo } from 'react';
 
 type ItemGridProps = {
   rowSize: number;
   colSize: number;
-  createItem: (idx: number, row: number, col: number) => JSX.Element;
+  createItem: (idx: number, row: number, col: number) => React.JSX.Element;
   spacing?: string | number;
-} & BoxProps;
+} & React.HTMLAttributes<HTMLDivElement>;
 
-const ItemGrid = ({
-  rowSize,
-  colSize,
-  createItem,
-  spacing,
-  ...rest
-}: ItemGridProps) => {
-  return (
-    <Box {...rest}>
-      <Grid container spacing={{ xs: spacing }} columns={{ xs: colSize }}>
-        {Array.from({ length: rowSize }, (_, row) =>
-          Array.from({ length: colSize }, (_, col) => (
-            <Grid xs={1}>{createItem(row * rowSize + col, row, col)}</Grid>
-          ))
-        )}
-      </Grid>
-    </Box>
-  );
-};
+const ItemGrid = memo(
+  ({
+    rowSize,
+    colSize,
+    createItem,
+    spacing,
+    className,
+    ...rest
+  }: ItemGridProps) => {
+    return (
+      <div className={className} {...rest}>
+        <div
+          className="grid"
+          style={{
+            gridTemplateColumns: `repeat(${colSize}, 1fr)`,
+            gap: spacing,
+          }}
+        >
+          {Array.from({ length: rowSize }, (_, row) =>
+            Array.from({ length: colSize }, (_, col) => (
+              <div key={row * colSize + col} className="aspect-square">
+                {createItem(row * colSize + col, row, col)}
+              </div>
+            )),
+          )}
+        </div>
+      </div>
+    );
+  },
+);
+ItemGrid.displayName = 'ItemGrid';
 
 export default ItemGrid;

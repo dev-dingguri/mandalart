@@ -1,19 +1,30 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { User } from 'firebase/auth';
-import AppBar, { AppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import { BsList, BsThreeDots } from 'react-icons/bs';
+import { Menu, MoreHorizontal, LogOut } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu';
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
 
-type HeaderProps = AppBarProps & {
+type HeaderProps = {
   user: User | null;
   onOpenSignInUI: () => void;
   onSignOut: () => void;
   onOpenLeftDrawer: () => void;
   onOpenRightDrawer: () => void;
+  className?: string;
 };
 
 const Header = ({
@@ -22,36 +33,100 @@ const Header = ({
   onSignOut,
   onOpenLeftDrawer,
   onOpenRightDrawer,
-  ...rest
+  className,
 }: HeaderProps) => {
   const { t } = useTranslation();
 
+  const initial = (
+    user?.displayName?.[0] ??
+    user?.email?.[0] ??
+    '?'
+  ).toUpperCase();
+
   return (
-    <AppBar position="static" elevation={0} {...rest}>
-      <Toolbar>
-        <IconButton onClick={onOpenLeftDrawer} sx={{ marginRight: '0.25em' }}>
-          <BsList />
-        </IconButton>
-        <Typography variant="h1" sx={{ flexGrow: 1 }}>
-          {t('global.app')}
-        </Typography>
-        <Typography variant="body1" sx={{ margin: '0.5em' }}>
-          {user && user.displayName}
-        </Typography>
+    <header className={cn('bg-background', className)}>
+      <nav className="flex min-h-14 items-center">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={(e) => {
+                e.currentTarget.blur();
+                onOpenLeftDrawer();
+              }}
+              className="mr-1"
+              aria-label={t('mandalart.list')}
+            >
+              <Menu />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">{t('mandalart.list')}</TooltipContent>
+        </Tooltip>
+        <h1 className="flex-1 text-[1.3rem] font-bold">{t('global.app')}</h1>
         {user ? (
-          <Button sx={{ height: '2.63em' }} onClick={onSignOut}>
-            {t('auth.signOut')}
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="ml-1 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background">
+              <span className="flex size-8 items-center justify-center rounded-full bg-primary hover:opacity-90">
+                <span className="text-sm font-semibold text-primary-foreground">
+                  {initial}
+                </span>
+              </span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-auto">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col gap-0.5">
+                    {user.displayName && (
+                      <span className="text-sm font-medium">
+                        {user.displayName}
+                      </span>
+                    )}
+                    {user.email && (
+                      <span className="text-xs text-muted-foreground">
+                        {user.email}
+                      </span>
+                    )}
+                  </div>
+                </DropdownMenuLabel>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={onSignOut}>
+                <LogOut />
+                {t('auth.signOut')}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : (
-          <Button sx={{ height: '2.63em' }} onClick={onOpenSignInUI}>
+          <Button
+            variant="ghost"
+            onClick={(e) => {
+              e.currentTarget.blur();
+              onOpenSignInUI();
+            }}
+          >
             {t('auth.signIn')}
           </Button>
         )}
-        <IconButton onClick={onOpenRightDrawer} sx={{ marginLeft: '0.25em' }}>
-          <BsThreeDots />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={(e) => {
+                e.currentTarget.blur();
+                onOpenRightDrawer();
+              }}
+              className="ml-1"
+              aria-label={t('settings.title')}
+            >
+              <MoreHorizontal />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">{t('settings.title')}</TooltipContent>
+        </Tooltip>
+      </nav>
+    </header>
   );
 };
 

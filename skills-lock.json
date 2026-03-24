@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "skills": {
+    "developing-genkit-dart": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "ba0025db33c95d8b66cd6de1f4c25b8b70456fb2789ec6c97cd88d432eed3fb3"
+    },
+    "developing-genkit-js": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "4d3de47b5be279ab3b0ee6055ae541f28d1cc45f8e8986c0b5df2f8d89f4ea30"
+    },
+    "firebase-ai-logic": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "6ddf74ac9b3366d396e5fa85e695a7c5871e39edffc385533eaee2be159fcf03"
+    },
+    "firebase-app-hosting-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a3ba088442abf5b97281bcf3e4dd11e1f7bdefdc5bd404b4fb30f344d19742d2"
+    },
+    "firebase-auth-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "3d85cfda10a68f0afabdad69d40ad83357f47acf9f5ba4d88a23182f6a59a5b4"
+    },
+    "firebase-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "f19996128577803fef0ff041c8be37a858e0dae01c3f35080e932f7a61ad341c"
+    },
+    "firebase-data-connect": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "94bc7d16a4c368c9f3b29b3b26cea952a6a016c0e36b13b5805878ef2df1f7b6"
+    },
+    "firebase-firestore-enterprise-native-mode": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "3da0087413ed1b75705d1197aefa162d767773827266aea10a4e60040a072a7d"
+    },
+    "firebase-firestore-standard": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "c8f877055f84a29eeece4c7949edcd623bb8f129b34cdece7e0ea8d57202cc60"
+    },
+    "firebase-hosting-basics": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "0688a8ad6cb72149924352cc47e6cc8bf815e944b636a67b9da225cc9b025afc"
+    },
+    "firebase-local-env-setup": {
+      "source": "firebase/agent-skills",
+      "sourceType": "github",
+      "computedHash": "bb96442dbc29cb15cd6a82fb5771309bc8ff64c668f4a0c51ccc28b2da468218"
+    }
+  }
+}

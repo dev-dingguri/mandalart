@@ -1,76 +1,71 @@
-import TextEditor from 'components/TextEditor';
-import { MAX_TOPIC_TEXT_SIZE } from 'constants/constants';
+import { memo } from 'react';
+import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
-import SquareBox from 'components/SquareBox';
-import { BoxProps } from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
-import MaxLinesTypography from 'components/MaxLinesTypography';
-import { useBoolean, useMediaQuery } from 'usehooks-ts';
-
-const TopicItemBox = styled(SquareBox, {
-  shouldForwardProp: (prop) => prop !== 'accented',
-})<BoxProps & { accented?: boolean }>(({ theme, accented }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: accented
-    ? theme.palette.secondary.main
-    : theme.palette.primary.main,
-}));
+import AspectSquare from '@/components/AspectSquare';
+import { PopoverAnchor } from '@/components/ui/popover';
 
 type TopicItemProps = {
   topic: string;
   isAccented: boolean;
   isEditable: boolean;
-  onUpdateTopic: (text: string) => void;
+  isSelected: boolean;
+  isPopoverAnchor?: boolean;
+  onSelect: () => void;
 };
 
-const TopicItem = ({
-  topic,
-  isAccented,
-  isEditable,
-  onUpdateTopic,
-}: TopicItemProps) => {
-  const {
-    value: isOpenEditor,
-    setTrue: openEditor,
-    setFalse: closeEditor,
-  } = useBoolean(false);
-  const isMinWidthReached = useMediaQuery('screen and (min-width: 30rem)');
-  const { t } = useTranslation();
-  return (
-    <>
-      <TopicItemBox
-        accented={isAccented}
-        onClick={() => isEditable && openEditor()}
+const TopicItem = memo(
+  ({
+    topic,
+    isAccented,
+    isEditable,
+    isSelected,
+    isPopoverAnchor,
+    onSelect,
+  }: TopicItemProps) => {
+    const { t } = useTranslation();
+
+    const cell = (
+      <AspectSquare
+        data-cell
+        role="button"
+        tabIndex={0}
+        aria-label={topic || t('topic.placeholder')}
+        className={cn(
+          'flex cursor-pointer items-center justify-center',
+          isAccented
+            ? 'bg-primary text-primary-foreground'
+            : // 라이트 모드에서 흰색 셀과 배경(#f2f2f7) 간 대비 부족을 hairline border로 보완
+              'bg-card text-card-foreground shadow-[0_0_0_0.5px_var(--color-border)]',
+          // 선택 상태 하이라이트 — editable일 때만 표시하여
+          // Focus View 스와이프 후 이전 그리드 셀에 잔여 하이라이트 방지
+          isSelected && isEditable && 'ring-2 ring-(--ring-selection)',
+        )}
+        // mousedown의 기본 동작(포커스 이동)을 막아
+        // 입력 바/팝오버 입력 중 다른 셀 탭 시 키보드가 닫혔다 열리는 jitter 방지
+        onMouseDown={(e) => isEditable && e.preventDefault()}
+        onClick={() => isEditable && onSelect()}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (isEditable) onSelect();
+          }
+        }}
       >
-        <MaxLinesTypography
-          variant="body1"
-          maxLines={isMinWidthReached ? 3 : 2}
-          sx={{
-            textAlign: 'center',
-            lineHeight: '1.2em',
-            fontSize: '0.7rem',
-            // todo: 컴포넌트 크기에 따라서 폰트 사이즈 다르게
-            '@media screen and (min-width: 30rem)': {
-              fontSize: '0.9rem',
-            },
-          }}
-        >
+        <p className="line-clamp-2 overflow-hidden break-words text-center text-[0.7rem] leading-[1.2em] min-[30rem]:line-clamp-3 min-[30rem]:text-[0.9rem]">
           {topic}
-        </MaxLinesTypography>
-      </TopicItemBox>
-      <TextEditor
-        isOpen={isOpenEditor}
-        title={`${t('global.topic')}`}
-        initialText={topic}
-        placeholder={`${t('textEditor.placeholder')}`}
-        textLimit={MAX_TOPIC_TEXT_SIZE}
-        onClose={closeEditor}
-        onConfirm={onUpdateTopic}
-      />
-    </>
-  );
-};
+        </p>
+      </AspectSquare>
+    );
+
+    // 데스크톱 팝오버 모드에서 선택된 셀을 Radix PopoverAnchor로 래핑하여
+    // PopoverContent가 이 셀 근처에 위치하도록 함
+    if (isPopoverAnchor) {
+      return <PopoverAnchor asChild>{cell}</PopoverAnchor>;
+    }
+
+    return cell;
+  },
+);
+TopicItem.displayName = 'TopicItem';
 
 export default TopicItem;

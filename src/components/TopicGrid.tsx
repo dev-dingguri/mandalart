@@ -1,74 +1,85 @@
-import { useEffect, useRef } from 'react';
-import ItemGrid from 'components/ItemGrid';
-import TopicItem from 'components/TopicItem';
-import { TopicNode } from 'types/TopicNode';
-import { scrollIntoView } from 'seamless-scroll-polyfill';
-import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from 'constants/constants';
-import Box from '@mui/material/Box';
-import { useEventListener } from 'usehooks-ts';
+import { memo, useEffect, useRef } from 'react';
+import ItemGrid from '@/components/ItemGrid';
+import TopicItem from '@/components/TopicItem';
+import { TopicNode } from '@/types';
+import { TABLE_ROW_SIZE, TABLE_COL_SIZE } from '@/constants';
 
 type FocusHandlers = {
   isFocused: boolean;
-  onUpdateFocuse: () => void;
+  onUpdateFocus: () => void;
 };
 
 type TopicGridProps = {
   onIsAccented: (gridItemIdx: number) => boolean;
   onGetTopic: (gridItemIdx: number) => TopicNode;
-  onUpdateTopic: (gridItemIdx: number, text: string) => void;
+  onSelectItem: (gridItemIdx: number) => void;
+  selectedGridItemIdx: number | null;
+  usePopoverAnchor?: boolean;
   focusHandlers?: FocusHandlers;
 };
 
-const TopicGrid = ({
-  onIsAccented,
-  onGetTopic,
-  onUpdateTopic,
-  focusHandlers,
-}: TopicGridProps) => {
-  const gridRef = useRef<HTMLDivElement>(null);
-  const isFocuseTriedRef = useRef(false);
+const TopicGrid = memo(
+  ({
+    onIsAccented,
+    onGetTopic,
+    onSelectItem,
+    selectedGridItemIdx,
+    usePopoverAnchor,
+    focusHandlers,
+  }: TopicGridProps) => {
+    const gridRef = useRef<HTMLDivElement>(null);
+    const isFocusTriedRef = useRef(false);
 
-  const isFocused = focusHandlers?.isFocused;
+    const isFocused = focusHandlers?.isFocused;
 
-  useEffect(() => {
-    const isTried = isFocuseTriedRef.current;
-    isFocuseTriedRef.current = true;
+    useEffect(() => {
+      const isTried = isFocusTriedRef.current;
+      isFocusTriedRef.current = true;
 
-    isFocused && scrollCenter(gridRef.current, isTried ? 'smooth' : 'auto');
-  }, [isFocused]);
+      isFocused && scrollCenter(gridRef.current, isTried ? 'smooth' : 'auto');
+    }, [isFocused]);
 
-  useEventListener('resize', () => {
-    isFocused && scrollCenter(gridRef.current, 'auto');
-  });
+    useEffect(() => {
+      if (!isFocused) return;
+      const handler = () => scrollCenter(gridRef.current, 'auto');
+      window.addEventListener('resize', handler, { passive: true });
+      return () => window.removeEventListener('resize', handler);
+    }, [isFocused]);
 
-  return (
-    <Box ref={gridRef}>
-      <ItemGrid
-        rowSize={TABLE_ROW_SIZE}
-        colSize={TABLE_COL_SIZE}
-        createItem={(gridItemIdx) => (
-          <TopicItem
-            key={gridItemIdx}
-            topic={onGetTopic(gridItemIdx).text}
-            isAccented={onIsAccented(gridItemIdx)}
-            isEditable={isFocused !== false}
-            onUpdateTopic={(text) => onUpdateTopic(gridItemIdx, text)}
-          />
-        )}
-        spacing="2px"
-        onClick={() => {
-          scrollCenter(gridRef.current, 'smooth');
-          focusHandlers?.onUpdateFocuse();
-        }}
-      />
-    </Box>
-  );
-};
+    return (
+      <div ref={gridRef}>
+        <ItemGrid
+          rowSize={TABLE_ROW_SIZE}
+          colSize={TABLE_COL_SIZE}
+          createItem={(gridItemIdx) => (
+            <TopicItem
+              key={gridItemIdx}
+              topic={onGetTopic(gridItemIdx).text}
+              isAccented={onIsAccented(gridItemIdx)}
+              isEditable={isFocused !== false}
+              isSelected={selectedGridItemIdx === gridItemIdx}
+              isPopoverAnchor={
+                usePopoverAnchor && selectedGridItemIdx === gridItemIdx
+              }
+              onSelect={() => onSelectItem(gridItemIdx)}
+            />
+          )}
+          spacing="2px"
+          onClick={() => {
+            scrollCenter(gridRef.current, 'smooth');
+            focusHandlers?.onUpdateFocus();
+          }}
+        />
+      </div>
+    );
+  },
+);
+TopicGrid.displayName = 'TopicGrid';
 
 const scrollCenter = (element: Element | null, behavior: ScrollBehavior) => {
   if (!element) return;
-  scrollIntoView(element, {
-    behavior: behavior,
+  element.scrollIntoView({
+    behavior,
     block: 'center',
     inline: 'center',
   });
