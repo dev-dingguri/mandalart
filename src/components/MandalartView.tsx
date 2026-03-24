@@ -4,10 +4,9 @@ import {
   useState,
   useRef,
   useEffect,
-  KeyboardEvent,
-  ChangeEvent,
 } from 'react';
 import { useLatestRef } from '@/hooks/useLatestRef';
+import { useTitleEdit } from '@/hooks/useTitleEdit';
 import MandalartFocusView from '@/components/MandalartFocusView';
 import Mandalart, {
   MandalartProps,
@@ -20,12 +19,14 @@ import { MandalartMeta, TopicNode } from '@/types';
 import {
   MAX_MANDALART_TITLE_SIZE,
   MAX_TOPIC_TEXT_SIZE,
-  TABLE_CENTER_IDX,
-  TABLE_COL_SIZE,
-  TABLE_ROW_SIZE,
-  TABLE_SIZE,
   TMP_MANDALART_ID,
 } from '@/constants';
+import {
+  getAdjacentCell,
+  getVerticalAdjacentCell,
+  getCellPosition,
+  getTopic,
+} from '@/lib/cellNavigation';
 import MandalartViewToggle from '@/components/MandalartViewToggle';
 import { useTranslation } from 'react-i18next';
 import { trackViewModeChange } from '@/lib/analyticsEvents';
@@ -40,80 +41,6 @@ type MandalartViewProps = {
   onTopicTreeChange: (topicTree: TopicNode) => void;
 } & HTMLAttributes<HTMLDivElement>;
 
-// --- 셀 네비게이션 유틸리티 ---
-// 9×9 그리드는 3×3 TopicGrid 9개로 구성됨
-// 만다라트 작성 흐름(핵심 목표 → 하위 목표 확장)에 맞춰 그룹 단위로 순회
-
-const TOTAL_CELLS = TABLE_SIZE * TABLE_SIZE; // 81
-
-// 그룹 순회 순서: 중앙 그룹(G4) 먼저 → 나머지 읽기 순서
-// 만다라트는 중심에서 확장하는 구조이므로 핵심 목표 그룹부터 시작
-const GROUP_ORDER = [4, 0, 1, 2, 3, 5, 6, 7, 8] as const;
-
-// 그룹 내 셀 순회 순서: 중앙 셀(idx 4, 그룹 주제) 먼저 → 나머지 읽기 순서
-// 각 그룹의 주제를 먼저 확인/작성한 뒤 세부 항목을 채움
-const CELL_ORDER = [4, 0, 1, 2, 3, 5, 6, 7, 8] as const;
-
-// 역방향 매핑: 실제 인덱스 → 순회 순서 내 위치 (O(1) 조회)
-const GROUP_POS: Record<number, number> = {};
-GROUP_ORDER.forEach((g, i) => {
-  GROUP_POS[g] = i;
-});
-const CELL_POS: Record<number, number> = {};
-CELL_ORDER.forEach((c, i) => {
-  CELL_POS[c] = i;
-});
-
-function getAdjacentCell(
-  cell: SelectedCell,
-  delta: 1 | -1,
-  isAllView: boolean,
-): SelectedCell {
-  const cellPos = CELL_POS[cell.gridItemIdx];
-  if (isAllView) {
-    // All View: 그룹 단위 순회 — 그룹 내 셀을 다 돌면 다음 그룹으로 이동
-    const groupPos = GROUP_POS[cell.gridIdx];
-    const combined = groupPos * TABLE_SIZE + cellPos;
-    const newCombined = (combined + delta + TOTAL_CELLS) % TOTAL_CELLS;
-    return {
-      gridIdx: GROUP_ORDER[Math.floor(newCombined / TABLE_SIZE)],
-      gridItemIdx: CELL_ORDER[newCombined % TABLE_SIZE],
-    };
-  }
-  // Focus View: 현재 그리드 내에서만 순회 (같은 중앙 우선 순서)
-  const newCellPos = (cellPos + delta + TABLE_SIZE) % TABLE_SIZE;
-  return {
-    gridIdx: cell.gridIdx,
-    gridItemIdx: CELL_ORDER[newCellPos],
-  };
-}
-
-// ↑↓ 키로 같은 그룹 내 같은 열의 위/아래 셀로 이동 (시각적 2D 네비게이션)
-// All View와 Focus View 모두 현재 그룹 내에서만 이동 — 그룹 기반 멘탈 모델 유지
-function getVerticalAdjacentCell(
-  cell: SelectedCell,
-  delta: 1 | -1,
-): SelectedCell {
-  const row = Math.floor(cell.gridItemIdx / TABLE_COL_SIZE);
-  const col = cell.gridItemIdx % TABLE_COL_SIZE;
-  const newRow = (row + delta + TABLE_ROW_SIZE) % TABLE_ROW_SIZE;
-  return {
-    gridIdx: cell.gridIdx,
-    gridItemIdx: newRow * TABLE_COL_SIZE + col,
-  };
-}
-
-function getCellPosition(cell: SelectedCell, isAllView: boolean): string {
-  if (isAllView) {
-    const groupPos = GROUP_POS[cell.gridIdx];
-    const cellPos = CELL_POS[cell.gridItemIdx];
-    return `${groupPos * TABLE_SIZE + cellPos + 1}/${TOTAL_CELLS}`;
-  }
-  return `${CELL_POS[cell.gridItemIdx] + 1}/${TABLE_SIZE}`;
-}
-
-// --- 컴포넌트 ---
-
 const MandalartView = ({
   mandalartId,
   meta,
@@ -125,13 +52,16 @@ const MandalartView = ({
 }: MandalartViewProps) => {
   const [isAllView, setIsAllView] = useState(true);
   const [selectedCell, setSelectedCell] = useState<SelectedCell | null>(null);
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [titleText, setTitleText] = useState(meta.title);
   const { t } = useTranslation();
   const isDesktop = useMediaQuery('(min-width: 48rem)');
 
+  const titleEdit = useTitleEdit({
+    mandalartId,
+    metaTitle: meta.title,
+    onMandalartMetaChange,
+  });
+
   const rootRef = useRef<HTMLDivElement>(null);
-  const titleInputRef = useRef<HTMLInputElement>(null);
 
   // Refs — stable 콜백에서 최신 값에 접근하기 위한 useLatestRef 패턴
   const selectedCellRef = useLatestRef(selectedCell);
@@ -139,61 +69,6 @@ const MandalartView = ({
   const topicTreeRef = useLatestRef(topicTree);
   const onTopicTreeChangeRef = useLatestRef(onTopicTreeChange);
   const isAllViewRef = useLatestRef(isAllView);
-
-  // 만다라트 전환 시 제목 편집 취소
-  useEffect(() => {
-    setIsEditingTitle(false);
-  }, [mandalartId]);
-
-  // 외부에서 title이 바뀌면(Firebase 실시간 구독 등) 편집 중이 아닐 때만 동기화
-  useEffect(() => {
-    if (!isEditingTitle) setTitleText(meta.title);
-  }, [meta.title, isEditingTitle]);
-
-  // 편집 모드 진입 시 input 포커스 + 전체 선택
-  useEffect(() => {
-    if (isEditingTitle) {
-      const input = titleInputRef.current;
-      if (input) {
-        input.focus();
-        input.select();
-      }
-    }
-  }, [isEditingTitle]);
-
-  const startTitleEdit = () => {
-    setTitleText(meta.title);
-    setIsEditingTitle(true);
-  };
-
-  const saveTitleEdit = () => {
-    setIsEditingTitle(false);
-    const title = titleText;
-    if (title !== meta.title && title.length <= MAX_MANDALART_TITLE_SIZE) {
-      onMandalartMetaChange({ title });
-    }
-  };
-
-  const cancelTitleEdit = () => {
-    setIsEditingTitle(false);
-    setTitleText(meta.title);
-  };
-
-  const handleTitleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      saveTitleEdit();
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      cancelTitleEdit();
-    }
-  };
-
-  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitleText(e.target.value);
-  };
-
-  const isTitleLimitReached = titleText.length > MAX_MANDALART_TITLE_SIZE;
 
   const handleGetTopic = useCallback(
     (gridIdx: number, gridItemIdx: number) =>
@@ -430,19 +305,19 @@ const MandalartView = ({
           </p>
         )}
         <div className="flex items-center gap-3">
-          {isEditingTitle ? (
+          {titleEdit.isEditing ? (
             <div className="min-w-0 flex-1">
               <input
-                ref={titleInputRef}
+                ref={titleEdit.inputRef}
                 type="text"
-                value={titleText}
-                onChange={handleTitleChange}
-                onKeyDown={handleTitleKeyDown}
-                onBlur={saveTitleEdit}
+                value={titleEdit.titleText}
+                onChange={titleEdit.handleChange}
+                onKeyDown={titleEdit.handleKeyDown}
+                onBlur={titleEdit.save}
                 placeholder={t('mandalart.untitled')}
                 enterKeyHint="done"
                 autoComplete="off"
-                aria-invalid={isTitleLimitReached || undefined}
+                aria-invalid={titleEdit.isLimitReached || undefined}
                 className={cn(
                   'w-full rounded-md border border-input bg-transparent px-1 text-2xl font-semibold outline-none transition-colors',
                   'placeholder:text-muted-foreground',
@@ -450,9 +325,9 @@ const MandalartView = ({
                   'aria-invalid:border-destructive aria-invalid:ring-destructive/20',
                 )}
               />
-              {isTitleLimitReached && (
+              {titleEdit.isLimitReached && (
                 <p className="mt-0.5 text-xs text-destructive">
-                  {t('topic.maxLengthReached')} ({titleText.length}/
+                  {t('topic.maxLengthReached')} ({titleEdit.titleText.length}/
                   {MAX_MANDALART_TITLE_SIZE})
                 </p>
               )}
@@ -462,11 +337,11 @@ const MandalartView = ({
               role="button"
               tabIndex={0}
               className="min-w-0 flex-1 cursor-pointer truncate rounded-md px-1 text-2xl font-semibold hover:bg-accent/50"
-              onClick={startTitleEdit}
+              onClick={titleEdit.start}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  startTitleEdit();
+                  titleEdit.start();
                 }
               }}
             >
@@ -513,23 +388,6 @@ const MandalartView = ({
       {!isDesktop && selectedCell && <BottomInputBar {...cellInputProps} />}
     </div>
   );
-};
-
-const getTopic = (
-  topicTree: TopicNode,
-  gridIdx: number,
-  gridItemIdx: number,
-) => {
-  let node = topicTree;
-  [gridIdx, gridItemIdx].forEach((idx) => {
-    if (idx !== TABLE_CENTER_IDX) {
-      node = node.children[idx < TABLE_CENTER_IDX ? idx : idx - 1];
-    }
-  });
-  if (!node) {
-    throw new Error('Cannot get topicNode.');
-  }
-  return node;
 };
 
 export default MandalartView;

@@ -4,10 +4,8 @@ import { TopicNode } from '@/types';
 import { TABLE_ROW_SIZE, TABLE_COL_SIZE, TABLE_CENTER_IDX } from '@/constants';
 import { memo } from 'react';
 
-export type SelectedCell = {
-  gridIdx: number;
-  gridItemIdx: number;
-};
+import type { SelectedCell } from '@/lib/cellNavigation';
+export type { SelectedCell } from '@/lib/cellNavigation';
 
 type FocusHandlers = {
   focusedIdx: number;
