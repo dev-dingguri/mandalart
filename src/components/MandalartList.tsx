@@ -1,43 +1,39 @@
-import React from 'react';
-import List, { ListProps } from '@mui/material/List';
-import { Snippet } from 'types/Snippet';
-import MandalartListItem from 'components/MandalartListItem';
+import { MandalartMeta } from '@/types';
+import MandalartListItem from '@/components/MandalartListItem';
 
 type MandalartListProps = {
-  snippetMap: Map<string, Snippet>;
+  metaMap: Map<string, MandalartMeta>;
   selectedId: string | null;
   onItemSelect: (mandalartId: string) => void;
   onItemDelete: (mandalartId: string) => void;
   onItemReset: (mandalartId: string) => void;
-  onItemRename: (mandalartId: string, name: string) => void;
-} & Omit<ListProps, 'onSelect' | 'onReset'>;
+  className?: string;
+};
 
 const MandalartList = ({
-  snippetMap,
+  metaMap,
   selectedId,
   onItemSelect,
   onItemDelete,
   onItemReset,
-  onItemRename,
-  ...listProps
+  className,
 }: MandalartListProps) => {
   return (
-    <List {...listProps} disablePadding>
-      {Array.from(snippetMap)
+    <div className={className}>
+      {Array.from(metaMap)
         .reverse()
-        .map(([mandalartId, snippet]) => (
+        .map(([mandalartId, meta]) => (
           <MandalartListItem
             key={mandalartId}
             mandalartId={mandalartId}
-            snippet={snippet}
+            meta={meta}
             isSelected={selectedId === mandalartId}
             onSelect={onItemSelect}
             onDelete={onItemDelete}
             onReset={onItemReset}
-            onRename={onItemRename}
           />
         ))}
-    </List>
+    </div>
   );
 };
 

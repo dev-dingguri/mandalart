@@ -1,26 +1,33 @@
-import ItemGrid from 'components/ItemGrid';
-import TopicGrid from 'components/TopicGrid';
-import { TopicNode } from 'types/TopicNode';
-import {
-  TABLE_ROW_SIZE,
-  TABLE_COL_SIZE,
-  TABLE_CENTER_IDX,
-} from 'constants/constants';
+import ItemGrid from '@/components/ItemGrid';
+import TopicGrid from '@/components/TopicGrid';
+import { TopicNode } from '@/types';
+import { TABLE_ROW_SIZE, TABLE_COL_SIZE, TABLE_CENTER_IDX } from '@/constants';
 import { memo } from 'react';
+
+import type { SelectedCell } from '@/lib/cellNavigation';
+export type { SelectedCell } from '@/lib/cellNavigation';
 
 type FocusHandlers = {
   focusedIdx: number;
-  onUpdateFocuse: (gridIdx: number) => void;
+  onUpdateFocus: (gridIdx: number) => void;
 };
 
 export type MandalartProps = {
   onGetTopic: (gridIdx: number, gridItemIdx: number) => TopicNode;
-  onUpdateTopic: (gridIdx: number, gridItemIdx: number, text: string) => void;
+  onSelectCell: (gridIdx: number, gridItemIdx: number) => void;
+  selectedCell: SelectedCell | null;
+  usePopoverAnchor?: boolean;
   focusHandlers?: FocusHandlers;
 };
 
 const Mandalart = memo(
-  ({ onGetTopic, onUpdateTopic, focusHandlers }: MandalartProps) => {
+  ({
+    onGetTopic,
+    onSelectCell,
+    selectedCell,
+    usePopoverAnchor,
+    focusHandlers,
+  }: MandalartProps) => {
     return (
       <ItemGrid
         rowSize={TABLE_ROW_SIZE}
@@ -30,14 +37,18 @@ const Mandalart = memo(
           <TopicGrid
             onIsAccented={(gridItemIdx) => isAccented(gridIdx, gridItemIdx)}
             onGetTopic={(gridItemIdx) => onGetTopic(gridIdx, gridItemIdx)}
-            onUpdateTopic={(gridItemIdx, text) =>
-              onUpdateTopic(gridIdx, gridItemIdx, text)
+            onSelectItem={(gridItemIdx) => onSelectCell(gridIdx, gridItemIdx)}
+            selectedGridItemIdx={
+              selectedCell?.gridIdx === gridIdx
+                ? selectedCell.gridItemIdx
+                : null
             }
+            usePopoverAnchor={usePopoverAnchor}
             focusHandlers={
               focusHandlers
                 ? {
                     isFocused: focusHandlers.focusedIdx === gridIdx,
-                    onUpdateFocuse: () => focusHandlers.onUpdateFocuse(gridIdx),
+                    onUpdateFocus: () => focusHandlers.onUpdateFocus(gridIdx),
                   }
                 : undefined
             }
@@ -46,8 +57,9 @@ const Mandalart = memo(
         spacing="4px"
       />
     );
-  }
+  },
 );
+Mandalart.displayName = 'Mandalart';
 
 const isAccented = (gridIdx: number, gridItemIdx: number) => {
   return gridIdx === TABLE_CENTER_IDX

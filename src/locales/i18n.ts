@@ -17,6 +17,9 @@ i18n
     },
     keySeparator: '.',
     resources: resources,
+    // 리소스가 인라인이므로 동기 초기화해도 무방 — 비동기(기본값 true)면
+    // isInitialized가 setTimeout으로 지연되어 첫 렌더에서 fallback 언어가 잠깐 보임
+    initImmediate: false,
   });
 
 export default i18n;

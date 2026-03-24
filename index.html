@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <!-- hreflang은 SEOHead 컴포넌트가 페이지별로 동적 생성 -->
+  <link rel="icon" href="/favicon.ico" />
+  <!-- Firebase 도메인 사전 연결 — DNS/TLS 오버헤드를 초기에 처리하여 Auth·DB 요청 지연 감소 -->
+  <link rel="preconnect" href="https://apis.google.com" />
+  <link rel="preconnect" href="https://www.googleapis.com" crossorigin />
+  <link rel="dns-prefetch" href="https://firebaseinstallations.googleapis.com" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Geist latin subset preload — font-display: optional의 ~100ms 윈도우 전에 폰트 도착시켜 FOUT 방지 -->
+  <link rel="preload" href="/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+  <meta name="theme-color" content="#f2f2f7" />
+
+  <!-- 아래 태그들은 비프리렌더링 페이지(/app 등)의 소셜 공유 fallback용
+       프리렌더링 페이지에서는 SEOHead가 생성한 태그만 남기고 빌드 시 중복 제거됨 -->
+  <title>Mandalart</title>
+  <!-- React(react-helmet-async)가 마운트되기 전까지 ~500ms간 fallback이 보이므로,
+       URL path에서 언어를 읽어 즉시 html lang·title을 교체 -->
+  <script>
+    (function () {
+      var titles = {
+        ko: '만다라트(Mandalart) - 하나의 목표를 81개의 행동으로 만드는 계획표',
+        en: 'Mandalart - Turn One Goal Into 81 Action Plans',
+        ja: 'マンダラート(Mandalart) - 1つの目標を81のアクションプランに変える計画表',
+        'zh-CN': '曼达拉图(Mandalart) - 将一个目标分解为81个行动计划'
+      };
+      var lang = location.pathname.split('/')[1];
+      if (titles[lang]) {
+        document.documentElement.lang = lang;
+        document.title = titles[lang];
+      }
+    })();
+  </script>
+  <meta name="description" content="Break overwhelming goals into 81 concrete action steps. Mandalart is the ultimate tool for visualizing your thinking and achieving your goals. Start planning for free today." />
+  <meta name="keywords" content="만다라트, 만다라트 계획표, Mandalart, 목표 설정, 계획 세우기, 오타니 계획표, 아이디어 정리 도구, 자기계발, 목표 달성 방법, 브레인스토밍, 81칸 계획표" />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mandalart.me/">
+  <meta property="og:title" content="Mandalart - Turn One Goal Into 81 Action Plans">
+  <meta property="og:description" content="Break overwhelming goals into 81 concrete action steps. Mandalart is the ultimate tool for visualizing your thinking and achieving your goals. Start planning for free today.">
+  <meta property="og:image" content="/og-default.png">
+  <meta property="og:site_name" content="Mandalart">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mandalart - Turn One Goal Into 81 Action Plans">
+  <meta name="twitter:description" content="Break overwhelming goals into 81 concrete action steps. Mandalart is the ultimate tool for visualizing your thinking and achieving your goals. Start planning for free today.">
+  <meta name="twitter:image" content="/og-default.png">
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>

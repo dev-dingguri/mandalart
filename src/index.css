@@ -1,15 +1,135 @@
-@import 'assets/css/sizes.css';
+@import 'tailwindcss';
+@import './assets/css/sizes.css';
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+/* @fontsource-variable/geist를 직접 선언 — font-display: optional로 FOUT 방지
+   optional: 캐시에 있으면 즉시 사용, 없으면 fallback 유지 (swap처럼 깜빡이지 않음) */
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 100 900;
+  src: url(@fontsource-variable/geist/files/geist-cyrillic-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 100 900;
+  src: url(@fontsource-variable/geist/files/geist-latin-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Geist Variable';
+  font-style: normal;
+  font-display: optional;
+  font-weight: 100 900;
+  src: url(/fonts/geist-latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  color-scheme: light;
+  /* ── Minimalist Apple-style Light Theme ── */
+  /* systemGroupedBackground #f2f2f7 — grid gap에서 비쳐 셀 경계 자연스럽게 형성 */
+  --background: oklch(0.96 0.004 270);
+  --foreground: oklch(0.14 0 0);
+  /* systemBackground #ffffff — 카드(셀)가 회색 배경 위에서 선명하게 분리됨 */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.14 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.14 0 0);
+  /* Apple Blue (light mode) — #007aff */
+  --primary: oklch(0.56 0.19 252);
+  --primary-foreground: oklch(1 0 0);
+  /* secondarySystemGroupedBackground — #e5e5ea */
+  --secondary: oklch(0.93 0.003 270);
+  --secondary-foreground: oklch(0.14 0 0);
+  --muted: oklch(0.93 0.003 270);
+  /* Secondary label — rgba(60,60,67,0.6) 혼합 효과 */
+  --muted-foreground: oklch(0.60 0.003 270);
+  --accent: oklch(0.93 0.003 270);
+  --accent-foreground: oklch(0.14 0 0);
+  /* Apple system Red (light mode) — #ff3b30 */
+  --destructive: oklch(0.60 0.22 27);
+  /* Separator #c6c6c8 — solid으로 정의해 /30, /50 수정자 올바르게 작동 */
+  --border: oklch(0.82 0.001 270);
+  --input: oklch(0.82 0.001 270);
+  --ring: oklch(0.56 0.19 252);
+  /* 셀 선택 링 — primary보다 어두운 네이비로 파란 셀 위에서도 구분 */
+  --ring-selection: oklch(0.40 0.19 252);
+  /* Chart: Apple system colors (light) — Blue, Teal, Green, Yellow, Orange */
+  --chart-1: oklch(0.56 0.19 252);
+  --chart-2: oklch(0.73 0.09 216);
+  --chart-3: oklch(0.71 0.17 152);
+  --chart-4: oklch(0.82 0.15 95);
+  --chart-5: oklch(0.72 0.16 68);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.96 0.004 270);
+  --sidebar-foreground: oklch(0.14 0 0);
+  --sidebar-primary: oklch(0.14 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.93 0.003 270);
+  --sidebar-accent-foreground: oklch(0.14 0 0);
+  --sidebar-border: oklch(0.82 0.001 270);
+  --sidebar-ring: oklch(0.56 0.19 252);
+}
+
+.dark {
+  color-scheme: dark;
+  /* ── Minimalist Apple-style Dark Theme ── */
+  /* Background layers: #1c1c1e → #2c2c2e → #3a3a3c (macOS system bg) */
+  --background: oklch(0.13 0 0);
+  --foreground: oklch(0.96 0.004 270);
+  --card: oklch(0.20 0 0);
+  --card-foreground: oklch(0.96 0.004 270);
+  --popover: oklch(0.20 0 0);
+  --popover-foreground: oklch(0.96 0.004 270);
+  /* Apple Blue (dark mode) — #0a84ff */
+  --primary: oklch(0.60 0.20 252);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.26 0 0);
+  --secondary-foreground: oklch(0.96 0.004 270);
+  --muted: oklch(0.22 0 0);
+  /* Secondary label — rgba(235,235,245, 0.6) */
+  --muted-foreground: oklch(0.64 0.005 270);
+  --accent: oklch(0.26 0 0);
+  --accent-foreground: oklch(0.96 0.004 270);
+  /* Apple system Red (dark mode) — #ff453a */
+  --destructive: oklch(0.63 0.22 27);
+  /* Solid surface colors so Tailwind /30, /50 opacity modifiers work correctly */
+  --border: oklch(0.30 0 0);
+  --input: oklch(0.28 0 0);
+  --ring: oklch(0.60 0.20 252);
+  /* 셀 선택 링 — primary보다 밝은 블루로 다크 배경에서도 구분 */
+  --ring-selection: oklch(0.80 0.15 252);
+  /* Chart: Apple system colors (dark) — Blue, Teal, Green, Yellow, Orange */
+  --chart-1: oklch(0.60 0.20 252);
+  --chart-2: oklch(0.78 0.10 216);
+  --chart-3: oklch(0.77 0.17 152);
+  --chart-4: oklch(0.88 0.16 95);
+  --chart-5: oklch(0.78 0.16 68);
+  --sidebar: oklch(0.13 0 0);
+  --sidebar-foreground: oklch(0.96 0.004 270);
+  --sidebar-primary: oklch(0.60 0.20 252);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.22 0 0);
+  --sidebar-accent-foreground: oklch(0.96 0.004 270);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.60 0.20 252);
+}
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* disable pull to refresh */
-  overflow: hidden;
+  /* pull-to-refresh 방지 — overflow: hidden 대신 overscroll-behavior 사용
+     콘텐츠 페이지(랜딩/가이드)는 document 스크롤이 필요하므로 overflow: hidden 불가 */
+  overscroll-behavior: none;
 }
 
 code {
@@ -21,6 +141,70 @@ code {
   pointer-events: none;
 }
 
-.react-icons {
-  font-size: inherit;
+@theme inline {
+  /* Geist → system-ui로 CJK(한중일) 글리프 자동 fallback */
+  --font-sans: 'Geist Variable', system-ui, -apple-system, sans-serif;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-muted-foreground) var(--color-muted);
+  }
+  *::-webkit-scrollbar {
+    width: var(--size-scrollbar-width);
+    height: var(--size-scrollbar-width);
+  }
+  *::-webkit-scrollbar-track {
+    background-color: var(--color-muted);
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--color-muted-foreground);
+    border-radius: calc(var(--size-scrollbar-width) / 2);
+  }
+  body {
+    @apply bg-background text-foreground select-none;
+  }
+  html {
+    @apply font-sans;
+  }
 }

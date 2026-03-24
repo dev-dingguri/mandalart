@@ -1,38 +1,33 @@
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import useUser from 'hooks/useUser';
-import MainUserPage from 'components/MainUserPage';
-import MainGuestPage from 'components/MainGuestPage';
-import { useAddLoadingCondition, useIsLoading } from 'contexts/LoadingContext';
+import AuthenticatedView from '@/components/AuthenticatedView';
+import GuestView from '@/components/GuestView';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import SEOHead from '@/components/SEOHead';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { PATH_APP } from '@/constants';
+import { useTranslation } from 'react-i18next';
 
 const MainPage = () => {
-  const { user, isLoading: isUserLoading, error: userError } = useUser();
-  const isLoading = useIsLoading();
-  useAddLoadingCondition('user', isUserLoading);
+  const { t, i18n } = useTranslation();
+  const user = useAuthStore((s) => s.user);
+  const isAuthLoading = useAuthStore((s) => s.isLoading);
+  const userError = useAuthStore((s) => s.error);
+
+  // Auth 로딩 중에만 여기서 스피너 표시.
+  // 만다라트 데이터 로딩은 각 View 컴포넌트가 자체적으로 처리하여
+  // 사용자 전환 시 stale 데이터가 한 프레임 노출되는 문제를 방지.
+  if (isAuthLoading) return <LoadingSpinner />;
 
   return (
     <>
-      <Box
-        sx={
-          isLoading
-            ? {
-                display: 'flex',
-                height: '100%',
-              }
-            : { display: 'none' }
-        }
-      >
-        <CircularProgress
-          size="4rem"
-          thickness={4}
-          sx={{ m: 'auto' }}
-          color="secondary"
-        />
-      </Box>
+      <SEOHead
+        title={t('seo.title')}
+        description={t('seo.description')}
+        path={`/${i18n.language}${PATH_APP}`}
+      />
       {user ? (
-        <MainUserPage user={user} userError={userError} />
+        <AuthenticatedView user={user} userError={userError} />
       ) : (
-        <MainGuestPage userError={userError} />
+        <GuestView userError={userError} />
       )}
     </>
   );

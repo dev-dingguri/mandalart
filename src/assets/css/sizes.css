@@ -6,7 +6,7 @@
 
 @media screen and (min-width: 30rem) {
   :root {
-    --size-content-width: min(90vw, 80vh);
+    --size-content-width: min(90vw, 80dvh);
     --size-content-min-width: 27em;
   }
 }

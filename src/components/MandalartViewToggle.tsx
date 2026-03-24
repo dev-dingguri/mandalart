@@ -1,8 +1,6 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { BsGrid3X3 } from 'react-icons/bs';
+import { Maximize2 } from 'lucide-react';
+import { Toggle } from '@/components/ui/toggle';
+import { useTranslation } from 'react-i18next';
 
 type MandalartViewToggleProps = {
   isAllView: boolean;
@@ -13,40 +11,19 @@ const MandalartViewToggle = ({
   isAllView,
   onChange,
 }: MandalartViewToggleProps) => {
-  const handleChange = (
-    _: React.MouseEvent<HTMLElement>,
-    value: boolean | null
-  ) => value !== null && onChange(value);
+  const { t } = useTranslation();
 
   return (
-    <ToggleButtonGroup
-      sx={{ display: 'flex' }}
-      color="secondary"
-      value={isAllView}
-      exclusive
-      onChange={handleChange}
-      aria-label="mandalart view type"
+    <Toggle
+      data-testid="view-toggle"
+      variant="outline"
+      className="size-10 [&_svg]:size-5 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:border-primary"
+      pressed={!isAllView}
+      onPressedChange={(pressed) => onChange(!pressed)}
+      aria-label={isAllView ? t('mandalart.viewFocus') : t('mandalart.viewAll')}
     >
-      <ToggleButton sx={{ flex: 1 }} value={true}>
-        <BsGrid3X3 style={{ fontSize: '1.5rem' }} />
-      </ToggleButton>
-      <ToggleButton sx={{ flex: 1 }} value={false}>
-        <Box
-          sx={{
-            maxWidth: '1.5rem',
-            maxHeight: '1.5rem',
-            overflow: 'hidden',
-          }}
-        >
-          <BsGrid3X3
-            style={{
-              fontSize: '2.5rem',
-              transform: 'translate(-20%, -20%)',
-            }}
-          />
-        </Box>
-      </ToggleButton>
-    </ToggleButtonGroup>
+      <Maximize2 />
+    </Toggle>
   );
 };
 

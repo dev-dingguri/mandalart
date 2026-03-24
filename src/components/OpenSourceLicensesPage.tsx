@@ -1,41 +1,15 @@
-import { useEffect, useState } from 'react';
-import { BsChevronLeft } from 'react-icons/bs';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Link from '@mui/material/Link';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { ChevronLeft } from 'lucide-react';
+import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import openSourceLicensesJson from 'assets/data/openSourceLicenses.json';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import CircularProgress from '@mui/material/CircularProgress';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import openSourceLicensesJson from '@/assets/data/openSourceLicenses.json';
+import { PATH_APP, PATH_OSS } from '@/constants';
+import SEOHead from '@/components/SEOHead';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
 
-/*
- * openSourceLicenses.json
- * Created with 'license-checker --production -excludePrivatePackages --customPath [customPath.json] --json > openSourceLicenses.json'
- * 만들어진 파일에 공백("")이 있을 수 있습니다.
- * [customPath.json]
- * {
- *   "name": "",
- *   "version": false,
- *   "description": false,
- *   "repository": "",
- *   "publisher": false,
- *   "email": false,
- *   "url": false,
- *   "licenses": "",
- *   "licenseFile": false,
- *   "licenseText": false,
- *   "licenseModified": false,
- *   "copyright": false,
- *   "path": false
- *  }
- */
+// openSourceLicenses.json — `pnpm licenses` 로 재생성
 
 type License = {
   name: string;
@@ -48,114 +22,76 @@ const licenses = Object.keys(licensesObj).map((key) => licensesObj[key]);
 
 const Item = ({ name, licenses, repository }: License) => {
   return (
-    <>
-      <ListItem
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'flex-start',
-        }}
+    <li className="flex select-text flex-col items-start px-4 py-2 [content-visibility:auto] [contain-intrinsic-size:auto_5rem]">
+      <span className="text-sm font-medium">{name}</span>
+      <span className="text-xs text-muted-foreground">{licenses}</span>
+      <a
+        href={repository}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-xs text-foreground/70 no-underline"
       >
-        <Typography variant="subtitle1">{name}</Typography>
-        <Typography variant="body2">{licenses}</Typography>
-        <Link
-          href={repository}
-          target="blank"
-          color="inherit"
-          underline="none"
-          variant="body2"
-        >
-          {repository}
-        </Link>
-      </ListItem>
-      <Divider component="li" />
-    </>
+        {repository}
+      </a>
+      <Separator className="mt-2 -mx-4 w-[calc(100%+2rem)]" />
+    </li>
   );
 };
 
 const OpenSourceLicensesPage = () => {
   const [currentLicenses, setCurrentLicenses] = useState<License[]>([]);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const hasMore = currentLicenses.length < licenses.length;
 
   useEffect(() => {
     setCurrentLicenses(licenses.slice(0, 50));
   }, []);
 
-  const appendLicenses = () => {
-    setTimeout(() => {
-      setCurrentLicenses((currentLicenses) =>
-        licenses.slice(0, currentLicenses.length + 50)
-      );
-    }, 300);
-  };
+  const appendLicenses = useCallback(() => {
+    setCurrentLicenses((prev) => licenses.slice(0, prev.length + 50));
+  }, []);
 
+  const sentinelRef = useInfiniteScroll(appendLicenses);
   const navigate = useNavigate();
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        height: '100%',
-      }}
-    >
-      <AppBar
-        position="static"
-        elevation={0}
-        sx={{
-          width: 'var(--size-content-width)',
-          minWidth: 'var(--size-content-min-width)',
-          '& .MuiToolbar-root': {
-            padding: '0',
-          },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            onClick={() => navigate('..')}
-            sx={{ marginRight: '0.25em' }}
-          >
-            <BsChevronLeft />
-          </IconButton>
-          <Typography variant="h1">{t('oss.label')}</Typography>
-        </Toolbar>
-      </AppBar>
-      <Divider flexItem />
-      <Box
-        id="scrollableBox"
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          textAlign: 'center',
-          width: '100%',
-          overflowY: 'auto',
-          scrollbarGutter: 'stable both-edges',
-        }}
-      >
-        <InfiniteScroll
-          dataLength={currentLicenses.length}
-          next={appendLicenses}
-          hasMore={currentLicenses.length < licenses.length}
-          loader={
-            <CircularProgress size="3rem" thickness={4} sx={{ m: '0.5em' }} />
-          }
-          scrollableTarget="scrollableBox"
+    <div className="flex h-full flex-col items-center">
+      <SEOHead
+        title={t('settings.oss')}
+        description="Open source licenses"
+        path={`/${i18n.language}${PATH_OSS}`}
+        noindex
+      />
+      <header className="flex w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] items-center gap-1 py-2">
+        {/* 라우팅 변경 후 '..'은 랜딩 페이지로 이동하므로, 도구 페이지 절대 경로로 명시 */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate(`/${i18n.language}${PATH_APP}`)}
+          className="mr-1"
         >
-          <List
-            sx={{
-              width: 'var(--size-content-width)',
-              minWidth: 'var(--size-content-min-width)',
-              padding: 0,
-            }}
-          >
-            {currentLicenses.map((data, idx) => (
-              <Item key={idx} {...data} />
+          <ChevronLeft />
+        </Button>
+        <h1 className="text-lg font-semibold text-balance">
+          {t('settings.oss')}
+        </h1>
+      </header>
+      <Separator />
+      <div className="flex w-full justify-center overflow-y-auto [scrollbar-gutter:stable_both-edges]">
+        <div className="flex w-[var(--size-content-width)] min-w-[var(--size-content-min-width)] flex-col">
+          <ul className="p-0">
+            {currentLicenses.map((data) => (
+              <Item key={data.name} {...data} />
             ))}
-          </List>
-        </InfiniteScroll>
-      </Box>
-    </Box>
+          </ul>
+          {hasMore && (
+            <div ref={sentinelRef} className="m-2 flex justify-center">
+              <div className="size-12 motion-safe:animate-spin rounded-full border-4 border-muted border-t-foreground" />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
