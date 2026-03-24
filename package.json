@@ -39,9 +39,12 @@
     "deploy:firebase": "firebase deploy",
     "predeploy:preview": "pnpm build",
     "deploy:preview": "firebase hosting:channel:deploy preview --expires 7d",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "licenses": "node scripts/generate-licenses.mjs"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@prerenderer/renderer-puppeteer": "^1.2.4",
     "@prerenderer/rollup-plugin": "^0.3.12",
     "@tailwindcss/vite": "^4.2.1",
