@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +28,7 @@ const PopoverCellInput = (props: PopoverCellInputProps) => {
         <ChevronLeft />
       </Button>
       <div className="min-w-0 flex-1">
-        <input
+        <Input
           ref={inputRef}
           type="text"
           value={text}
@@ -37,12 +38,6 @@ const PopoverCellInput = (props: PopoverCellInputProps) => {
           enterKeyHint="next"
           autoComplete="off"
           aria-invalid={isLimitReached || undefined}
-          className={cn(
-            'w-full rounded-md border border-input bg-transparent px-2.5 py-1.5 text-sm outline-none transition-colors',
-            'placeholder:text-muted-foreground',
-            'focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50',
-            'aria-invalid:border-destructive aria-invalid:ring-destructive/20',
-          )}
         />
         <div className="mt-0.5 flex justify-between px-0.5 text-[0.65rem] leading-tight text-muted-foreground">
           <span className={cn(isLimitReached && 'text-destructive')}>
